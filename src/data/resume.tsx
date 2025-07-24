@@ -1,32 +1,56 @@
 import { Icons } from "@/components/icons";
-import { HomeIcon, NotebookIcon } from "lucide-react";
+import { HomeIcon, NotebookIcon, TerminalIcon } from "lucide-react";
 
 export const DATA = {
-  name: "Dillion Verma",
-  initials: "DV",
-  url: "https://dillion.io",
-  location: "San Francisco, CA",
-  locationLink: "https://www.google.com/maps/place/sanfrancisco",
+  name: "Rahfi",
+  initials: "R",
+  url: "https://rahfi.space",
+  location: "Jakarta, Indonesia",
+  locationLink: "https://www.google.com/maps/place/jakarta",
   description:
-    "Software Engineer turned Entrepreneur. I love building things and helping people. Very active on Twitter.",
+    "A versatile and highly adaptable #Software/AI Engineer with a rapid learning curve, specializing in AI, Machine Learning, Cloud Computing, and Website Development.",
   summary:
-    "At the end of 2022, I quit my job as a software engineer to go fulltime into building and scaling my own SaaS businesses. In the past, [I pursued a double degree in computer science and business](/#education), [interned at big tech companies in Silicon Valley](https://www.youtube.com/watch?v=d-LJ2e5qKdE), and [competed in over 21 hackathons for fun](/#hackathons). I also had the pleasure of being a part of the first ever in-person cohort of buildspace called [buildspace sf1](https://buildspace.so/sf1).",
-  avatarUrl: "/me.png",
-  skills: [
-    "React",
-    "Next.js",
-    "Typescript",
-    "Node.js",
+    "I'm a versatile and highly adaptable #Software/AI Engineer with a rapid learning curve, specializing in AI, Machine Learning, Cloud Computing, and Website Development. With a strong foundation in cutting-edge technologies, I am passionate about leveraging my expertise to design and implement innovative, scalable solutions.",
+  avatarUrl: "",
+  programmingLanguages: [
     "Python",
-    "Go",
-    "Postgres",
-    "Docker",
-    "Kubernetes",
-    "Java",
+    "JavaScript",
+    "TypeScript",
     "C++",
+  ],
+  frameworks: [
+    "TensorFlow",
+    "Keras",
+    "PyTorch",
+    "Pandas",
+    "NumPy",
+    "Scikit-learn",
+    "Matplotlib",
+    "Seaborn",
+    "Flask",
+    "FastAPI",
+    "Next.js",
+    "React",
+    "Node.js",
+    "Tailwind CSS",
+    "Bootstrap",
+  ],
+  databases: [
+    "MySQL",
+    "SQLite",
+  ],
+  tools: [
+    "Docker",
+    "AWS",
+    "Google Cloud",
+    "Azure",
+    "Git",
+    "GitHub",
+    "Postman",
   ],
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
+    { href: "/project", icon: TerminalIcon, label: "Project" },
     { href: "/blog", icon: NotebookIcon, label: "Blog" },
   ],
   contact: {
@@ -35,37 +59,17 @@ export const DATA = {
     social: {
       GitHub: {
         name: "GitHub",
-        url: "https://dub.sh/dillion-github",
+        url: "https://github.com/rahfianugerah",
         icon: Icons.github,
 
         navbar: true,
       },
       LinkedIn: {
         name: "LinkedIn",
-        url: "https://dub.sh/dillion-linkedin",
+        url: "https://www.linkedin.com/in/rahfianugerah/",
         icon: Icons.linkedin,
 
         navbar: true,
-      },
-      X: {
-        name: "X",
-        url: "https://dub.sh/dillion-twitter",
-        icon: Icons.x,
-
-        navbar: true,
-      },
-      Youtube: {
-        name: "Youtube",
-        url: "https://dub.sh/dillion-youtube",
-        icon: Icons.youtube,
-        navbar: true,
-      },
-      email: {
-        name: "Send Email",
-        url: "#",
-        icon: Icons.email,
-
-        navbar: false,
       },
     },
   },
@@ -302,7 +306,7 @@ export const DATA = {
         "https://pub-83c5db439b40468498f97946200806f7.r2.dev/automatic-chat.mp4",
     },
   ],
-  hackathons: [
+  hardwork: [
     {
       title: "Hack Western 5",
       dates: "November 23rd - 25th, 2018",
@@ -530,11 +534,6 @@ export const DATA = {
           href: "https://devpost.com/software/pocketdoc-react-native",
         },
         {
-          title: "YouTube",
-          icon: <Icons.youtube className="h-4 w-4" />,
-          href: "https://www.youtube.com/watch?v=XwFdn5Rmx68",
-        },
-        {
           title: "Source",
           icon: <Icons.github className="h-4 w-4" />,
           href: "https://github.com/dillionverma/pocketdoc-react-native",
@@ -563,11 +562,6 @@ export const DATA = {
           title: "Devpost",
           icon: <Icons.globe className="h-4 w-4" />,
           href: "https://devpost.com/software/pocketdoc-react-native",
-        },
-        {
-          title: "YouTube",
-          icon: <Icons.youtube className="h-4 w-4" />,
-          href: "https://www.youtube.com/watch?v=XwFdn5Rmx68",
         },
         {
           title: "Source",
