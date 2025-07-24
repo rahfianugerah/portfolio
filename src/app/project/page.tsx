@@ -11,16 +11,13 @@ export default function ProjectPage() {
                 <BlurFade delay={BLUR_FADE_DELAY * 11}>
                     <div className="flex flex-col items-center justify-center space-y-4 text-center">
                         <div className="space-y-2">
-                            <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                                My Projects
-                            </div>
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                                Check out my latest work
+                                Rahfi's Projects
                             </h2>
                             <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                I&apos;ve worked on a variety of projects, from simple
-                                websites to complex web applications. Here are a few of my
-                                favorites.
+                                I have worked on various projects, both personal and collaborative,
+                                that showcase my skills and creativity. Here are some of my notable
+                                projects that I am proud to share.
                             </p>
                         </div>
                     </div>
