@@ -67,6 +67,11 @@ export default function RootLayout({
             <Navbar />
           </TooltipProvider>
         </ThemeProvider>
+        <footer className="mt-12 text-center text-sm text-muted-foreground">
+          <p>
+            © {new Date().getFullYear()} Naufal Rahfi Anugerah | All rights reserved.
+          </p>
+        </footer>
       </body>
     </html>
   );
