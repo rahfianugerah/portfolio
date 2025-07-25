@@ -9,26 +9,68 @@ import Markdown from "react-markdown";
 
 const BLUR_FADE_DELAY = 0.04;
 
+type JobEntry = {
+  title: string;
+  subtitle?: string;
+  period: string;
+  description?: string;
+};
+
+type GroupedCompany = {
+  company: string;
+  logoUrl: string;
+  href?: string;
+  badges?: readonly string[];
+  jobs: JobEntry[];
+  period: string;
+};
+
+const groupedWork: GroupedCompany[] = Object.values(
+  DATA.work.reduce((acc, item) => {
+    if (!acc[item.company]) {
+      acc[item.company] = {
+        company: item.company,
+        logoUrl: item.logoUrl,
+        href: item.href,
+        badges: item.badges,
+        jobs: [],
+        period: `${item.start} - ${item.end ?? 'Present'}`,
+      };
+    } else {
+      // update overall period to reflect latest job
+      const prevEnd = acc[item.company].period.split(' - ')[1] || '';
+      const newEnd = item.end ?? 'Present';
+      acc[item.company].period = `${item.start < acc[item.company].period.split(' - ')[0] ? item.start : acc[item.company].period.split(' - ')[0]} - ${newEnd}`;
+    }
+    acc[item.company].jobs.push({
+      title: item.title,
+      subtitle: item.location,
+      period: `${item.start} - ${item.end ?? 'Present'}`,
+      description: item.description,
+    });
+    return acc;
+  }, {} as Record<string, GroupedCompany>)
+);
 export default function Page() {
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10">
       <section id="hero">
-        <div className="mx-auto w-full max-w-2xl space-y-8">
-          <div className="gap-2 flex justify-between">
-            <div className="flex-col flex flex-1 space-y-1.5">
-              <BlurFadeText
-                delay={BLUR_FADE_DELAY}
-                className="text-3xl font-bold tracking-tighter"
-                yOffset={8}
-                text={`Hello, World! I'm ${DATA.name.split(" ")[0]}.`}
-              />
-              <BlurFadeText
-                className="max-w-full text-pretty text-justify text-sm text-muted-foreground"
-                delay={BLUR_FADE_DELAY}
-                text={DATA.description}
-              />
+        <div className="flex-col flex flex-1 space-y-1.5">
+          <BlurFade delay={BLUR_FADE_DELAY * 2}>
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
+                  Welcome to Rahfi's Space
+                </div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                  Hello, World! I&apos;m Rahfi
+                </h2>
+                <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  {DATA.description}
+                </p>
+              </div>
             </div>
-          </div>
+          </BlurFade>
         </div>
       </section>
       <section id="about">
@@ -46,44 +88,40 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
             <h2 className="text-xl font-bold">Rahfi's Experiences.</h2>
           </BlurFade>
-          {DATA.work.map((work, id) => (
-            <BlurFade
-              key={work.company}
-              delay={BLUR_FADE_DELAY * 6 + id * 0.05}
-            >
+          {groupedWork.map((company, id) => (
+            <BlurFade key={company.company} delay={BLUR_FADE_DELAY * 6 + id * 0.05}>
               <ResumeCard
-                key={work.company}
-                logoUrl={work.logoUrl}
-                altText={work.company}
-                title={work.company}
-                subtitle={work.title}
-                href={work.href}
-                badges={work.badges}
-                period={`${work.start} - ${work.end ?? "Present"}`}
-                description={work.description}
+                logoUrl={company.logoUrl}
+                altText={company.company}
+                title={company.company}
+                href={company.href}
+                badges={company.badges}
+                period={company.period}
+                jobs={company.jobs}
               />
             </BlurFade>
           ))}
         </div>
       </section>
+
       <section id="education">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 7}>
             <h2 className="text-xl font-bold">Rahfi's Education.</h2>
           </BlurFade>
-          {DATA.education.map((education, id) => (
-            <BlurFade
-              key={education.school}
-              delay={BLUR_FADE_DELAY * 8 + id * 0.05}
-            >
+          {DATA.education.map((edu, id) => (
+            <BlurFade key={edu.school} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
               <ResumeCard
-                key={education.school}
-                href={education.href}
-                logoUrl={education.logoUrl}
-                altText={education.school}
-                title={education.school}
-                subtitle={education.degree}
-                period={`${education.start} - ${education.end}`}
+                logoUrl={edu.logoUrl}
+                altText={edu.school}
+                title={edu.school}
+                href={edu.href}
+                badges={[]}
+                period={`${edu.start} - ${edu.end}`}
+                jobs={[{
+                  title: edu.degree,
+                  period: `${edu.start} - ${edu.end}`,
+                }]}
               />
             </BlurFade>
           ))}
@@ -142,10 +180,10 @@ export default function Page() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                  Hardwork & Achievements
+                  Hardwork
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Indefatigability
+                  Achievements
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   I have participated in various events, where I have
