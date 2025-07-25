@@ -8,19 +8,18 @@ import Link from "next/link";
 import Markdown from "react-markdown";
 
 const BLUR_FADE_DELAY = 0.04;
-
 type JobEntry = {
   title: string;
   subtitle?: string;
   period: string;        // e.g. "Jan 2022 - Mar 2023" or "Feb 2023 - Present"
   description?: string;
+  badges?: readonly string[];     // include badges here
 };
 
 type GroupedCompany = {
   company: string;
   logoUrl: string;
   href?: string;
-  badges?: readonly string[];
   jobs: JobEntry[];
   period: string;        // taken from the latest job below
 };
@@ -31,7 +30,6 @@ const groupedRaw = DATA.work.reduce((acc, item) => {
       company: item.company,
       logoUrl: item.logoUrl,
       href: item.href,
-      badges: item.badges,
       jobs: [] as JobEntry[],
     };
   }
@@ -40,6 +38,7 @@ const groupedRaw = DATA.work.reduce((acc, item) => {
     subtitle:    item.location,
     period:      `${item.start} - ${item.end ?? "Present"}`,
     description: item.description,
+    badges:      item.badges,        // ← carry per‑item badges here
   });
   return acc;
 }, {} as Record<string, Omit<GroupedCompany, "period">>);
@@ -62,6 +61,7 @@ const groupedWork: GroupedCompany[] = Object.values(groupedRaw).map(group => {
     period: latestJob.period,
   };
 });
+
 
 export default function Page() {
   return (
@@ -107,7 +107,6 @@ export default function Page() {
                 altText={company.company}
                 title={company.company}
                 href={company.href}
-                badges={company.badges}
                 period={company.period}
                 jobs={company.jobs}
               />
@@ -115,28 +114,31 @@ export default function Page() {
           ))}
         </div>
       </section>
-
       <section id="education">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 7}>
             <h2 className="text-xl font-bold">Rahfi's Education.</h2>
           </BlurFade>
-          {DATA.education.map((edu, id) => (
-            <BlurFade key={edu.school} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
-              <ResumeCard
-                logoUrl={edu.logoUrl}
-                altText={edu.school}
-                title={edu.school}
-                href={edu.href}
-                badges={[]}
-                period={`${edu.start} - ${edu.end}`}
-                jobs={[{
-                  title: edu.degree,
-                  period: `${edu.start} - ${edu.end}`,
-                }]}
-              />
-            </BlurFade>
-          ))}
+          {DATA.education.map((edu, id) => {
+            const job: JobEntry = {
+              title:   edu.degree,
+              period:  `${edu.start} - ${edu.end}`,
+              description: edu.description,
+            };
+            return (
+              <BlurFade key={edu.school} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
+                <ResumeCard
+                  logoUrl={edu.logoUrl}
+                  altText={edu.school}
+                  title={edu.school}
+                  href={edu.href}
+                  period={`${edu.start} - ${edu.end}`}
+                  jobs={[job]}
+                  description={edu.description}
+                />
+              </BlurFade>
+            );
+          })}
         </div>
       </section>
       <section id="skills">

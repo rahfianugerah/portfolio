@@ -13,15 +13,18 @@ interface Job {
   subtitle?: string;
   period: string;
   description?: string;
+  badges?: readonly string[];
 }
+
 interface ResumeCardProps {
   logoUrl: string;
   altText: string;
   title: string;
   href?: string;
-  badges?: readonly string[];
   period: string;
+  badges?: readonly string[];
   jobs: Job[];
+  description?: string;
 }
 
 export const ResumeCard: React.FC<ResumeCardProps> = ({
@@ -29,24 +32,22 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({
   altText,
   title,
   href,
-  badges,
   period,
   jobs,
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
-  const jobsSorted = [...jobs].sort((a, b) => {
-  const dateA = new Date(a.period.split(' - ')[0]).getTime();
-  const dateB = new Date(b.period.split(' - ')[0]).getTime();
-  return dateB - dateA;
-  });
 
+  const jobsSorted = [...jobs].sort((a, b) => {
+    const dateA = new Date(a.period.split(' - ')[0]).getTime();
+    const dateB = new Date(b.period.split(' - ')[0]).getTime();
+    return dateB - dateA;
+  });
   const latestJob = jobsSorted[0];
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     setIsExpanded(prev => !prev);
   };
-
   return (
     <a href={href || '#'} className="block cursor-pointer" onClick={handleClick}>
       <Card className="flex">
@@ -66,19 +67,6 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({
               <div>
                 <h3 className="flex items-center gap-x-1 font-semibold text-sm">
                   {title}
-                  {badges && (
-                    <span className="inline-flex gap-x-1">
-                      {badges.map((b, i) => (
-                        <Badge
-                          key={i}
-                          variant="secondary"
-                          className="text-xs"
-                        >
-                          {b}
-                        </Badge>
-                      ))}
-                    </span>
-                  )}
                   <ChevronRightIcon
                     className={cn(
                       "size-4 translate-x-0 transform opacity-0 transition-all duration-300 ease-out",
@@ -114,6 +102,15 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({
                 {job.subtitle && (
                   <div className="text-xs text-muted-foreground ml-2">
                     {job.subtitle}
+                  </div>
+                )}
+                {job.badges && job.badges.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-1 justify-start ml-2">
+                    {job.badges.map((b, i) => (
+                      <Badge key={i} variant="secondary" className="text-xs">
+                        {b}
+                      </Badge>
+                    ))}
                   </div>
                 )}
                 <div className="text-xs tabular-nums ml-2 mt-1">
