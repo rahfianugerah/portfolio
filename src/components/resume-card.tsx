@@ -14,19 +14,34 @@ interface Job {
   period: string;
   description?: string;
 }
-
 interface ResumeCardProps {
   logoUrl: string;
   altText: string;
-  title: string; // company or school
+  title: string;
   href?: string;
   badges?: readonly string[];
-  period?: string; // overall period for header
-  jobs: Job[]; // each dropdown entry
+  period: string;
+  jobs: Job[];
 }
 
-export const ResumeCard: React.FC<ResumeCardProps> = ({ logoUrl, altText, title, href, badges, period, jobs }) => {
+export const ResumeCard: React.FC<ResumeCardProps> = ({
+  logoUrl,
+  altText,
+  title,
+  href,
+  badges,
+  period,
+  jobs,
+}) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
+  const jobsSorted = [...jobs].sort((a, b) => {
+  const dateA = new Date(a.period.split(' - ')[0]).getTime();
+  const dateB = new Date(b.period.split(' - ')[0]).getTime();
+  return dateB - dateA;
+  });
+
+  const latestJob = jobsSorted[0];
+
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     setIsExpanded(prev => !prev);
@@ -37,51 +52,76 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({ logoUrl, altText, title,
       <Card className="flex">
         <div className="flex-none">
           <Avatar className="border size-12 m-auto bg-muted-background dark:bg-foreground">
-            <AvatarImage src={logoUrl} alt={altText} className="object-contain" />
+            <AvatarImage
+              src={logoUrl}
+              alt={altText}
+              className="object-contain"
+            />
             <AvatarFallback>{altText[0]}</AvatarFallback>
           </Avatar>
         </div>
         <div className="flex-grow ml-4 flex flex-col group">
           <CardHeader>
-            <div className="flex items-center justify-between gap-x-2">
-              <h3 className="flex items-center gap-x-1 font-semibold text-sm">
-                {title}
-                {badges && (
-                  <span className="inline-flex gap-x-1">
-                    {badges.map((b, i) => (
-                      <Badge key={i} variant="secondary" className="text-xs">{b}</Badge>
-                    ))}
-                  </span>
-                )}
-                <ChevronRightIcon
-                  className={cn(
-                    "size-4 translate-x-0 transform opacity-0 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:opacity-100",
-                    isExpanded ? "rotate-90" : "rotate-0"
+            <div className="flex items-center justify-between gap-x-4">
+              <div>
+                <h3 className="flex items-center gap-x-1 font-semibold text-sm">
+                  {title}
+                  {badges && (
+                    <span className="inline-flex gap-x-1">
+                      {badges.map((b, i) => (
+                        <Badge
+                          key={i}
+                          variant="secondary"
+                          className="text-xs"
+                        >
+                          {b}
+                        </Badge>
+                      ))}
+                    </span>
                   )}
-                />
-              </h3>
-              {period && (
-                <div className="text-xs sm:text-sm tabular-nums text-muted-foreground">
-                  {period}
+                  <ChevronRightIcon
+                    className={cn(
+                      "size-4 translate-x-0 transform opacity-0 transition-all duration-300 ease-out",
+                      "group-hover:translate-x-1 group-hover:opacity-100",
+                      isExpanded ? "rotate-90" : "rotate-0"
+                    )}
+                  />
+                </h3>
+                <div className="text-xs text-muted-foreground">
+                  {latestJob.title}
                 </div>
-              )}
+              </div>
+              <div className="text-xs sm:text-sm tabular-nums text-muted-foreground">
+                {period}
+              </div>
             </div>
           </CardHeader>
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: isExpanded ? 1 : 0, height: isExpanded ? 'auto' : 0 }}
+            animate={{
+              opacity: isExpanded ? 1 : 0,
+              height: isExpanded ? 'auto' : 0,
+            }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="w-full mt-2 overflow-hidden"
           >
-            {jobs.map((job, idx) => (
+            {jobsSorted.map((job, idx) => (
               <div key={idx} className="mb-4">
                 <div className="flex items-center gap-x-2">
                   <span className="h-5 w-0.5 bg-primary block" />
                   <h4 className="font-medium text-sm">{job.title}</h4>
                 </div>
-                {job.subtitle && <div className="text-xs text-muted-foreground ml-2">{job.subtitle}</div>}
-                <div className="text-xs tabular-nums ml-2 mt-1">{job.period}</div>
-                {job.description && <p className="text-xs ml-2 mt-1">{job.description}</p>}
+                {job.subtitle && (
+                  <div className="text-xs text-muted-foreground ml-2">
+                    {job.subtitle}
+                  </div>
+                )}
+                <div className="text-xs tabular-nums ml-2 mt-1">
+                  {job.period}
+                </div>
+                {job.description && (
+                  <p className="text-xs ml-2 mt-1">{job.description}</p>
+                )}
               </div>
             ))}
           </motion.div>

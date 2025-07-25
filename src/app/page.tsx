@@ -12,7 +12,7 @@ const BLUR_FADE_DELAY = 0.04;
 type JobEntry = {
   title: string;
   subtitle?: string;
-  period: string;
+  period: string;        // e.g. "Jan 2022 - Mar 2023" or "Feb 2023 - Present"
   description?: string;
 };
 
@@ -22,35 +22,47 @@ type GroupedCompany = {
   href?: string;
   badges?: readonly string[];
   jobs: JobEntry[];
-  period: string;
+  period: string;        // taken from the latest job below
 };
 
-const groupedWork: GroupedCompany[] = Object.values(
-  DATA.work.reduce((acc, item) => {
-    if (!acc[item.company]) {
-      acc[item.company] = {
-        company: item.company,
-        logoUrl: item.logoUrl,
-        href: item.href,
-        badges: item.badges,
-        jobs: [],
-        period: `${item.start} - ${item.end ?? 'Present'}`,
-      };
-    } else {
-      // update overall period to reflect latest job
-      const prevEnd = acc[item.company].period.split(' - ')[1] || '';
-      const newEnd = item.end ?? 'Present';
-      acc[item.company].period = `${item.start < acc[item.company].period.split(' - ')[0] ? item.start : acc[item.company].period.split(' - ')[0]} - ${newEnd}`;
-    }
-    acc[item.company].jobs.push({
-      title: item.title,
-      subtitle: item.location,
-      period: `${item.start} - ${item.end ?? 'Present'}`,
-      description: item.description,
-    });
-    return acc;
-  }, {} as Record<string, GroupedCompany>)
-);
+const groupedRaw = DATA.work.reduce((acc, item) => {
+  if (!acc[item.company]) {
+    acc[item.company] = {
+      company: item.company,
+      logoUrl: item.logoUrl,
+      href: item.href,
+      badges: item.badges,
+      jobs: [] as JobEntry[],
+    };
+  }
+  acc[item.company].jobs.push({
+    title:       item.title,
+    subtitle:    item.location,
+    period:      `${item.start} - ${item.end ?? "Present"}`,
+    description: item.description,
+  });
+  return acc;
+}, {} as Record<string, Omit<GroupedCompany, "period">>);
+
+const groupedWork: GroupedCompany[] = Object.values(groupedRaw).map(group => {
+  const latestJob = group.jobs.reduce((prev, curr) => {
+    const getEndTime = (p: string) => {
+      const end = p.split(" - ")[1];
+      return end === "Present"
+        ? Infinity
+        : new Date(end).getTime();
+    };
+    return getEndTime(curr.period) >= getEndTime(prev.period)
+      ? curr
+      : prev;
+  }, group.jobs[0]);
+
+  return {
+    ...group,
+    period: latestJob.period,
+  };
+});
+
 export default function Page() {
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10">
