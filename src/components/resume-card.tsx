@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -6,70 +6,50 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ChevronRightIcon } from "lucide-react";
-import Link from "next/link";
 import React from "react";
+
+interface Job {
+  title: string;
+  subtitle?: string;
+  period: string;
+  description?: string;
+}
 
 interface ResumeCardProps {
   logoUrl: string;
   altText: string;
-  title: string;
-  subtitle?: string;
+  title: string; // company or school
   href?: string;
   badges?: readonly string[];
-  period: string;
-  description?: string;
+  period?: string; // overall period for header
+  jobs: Job[]; // each dropdown entry
 }
-export const ResumeCard = ({
-  logoUrl,
-  altText,
-  title,
-  subtitle,
-  href,
-  badges,
-  period,
-  description,
-}: ResumeCardProps) => {
-  const [isExpanded, setIsExpanded] = React.useState(false);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    if (description) {
-      e.preventDefault();
-      setIsExpanded(!isExpanded);
-    }
+export const ResumeCard: React.FC<ResumeCardProps> = ({ logoUrl, altText, title, href, badges, period, jobs }) => {
+  const [isExpanded, setIsExpanded] = React.useState(false);
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    setIsExpanded(prev => !prev);
   };
 
   return (
-    <Link
-      href={href || "#"}
-      className="block cursor-pointer"
-      onClick={handleClick}
-    >
+    <a href={href || '#'} className="block cursor-pointer" onClick={handleClick}>
       <Card className="flex">
         <div className="flex-none">
           <Avatar className="border size-12 m-auto bg-muted-background dark:bg-foreground">
-            <AvatarImage
-              src={logoUrl}
-              alt={altText}
-              className="object-contain"
-            />
+            <AvatarImage src={logoUrl} alt={altText} className="object-contain" />
             <AvatarFallback>{altText[0]}</AvatarFallback>
           </Avatar>
         </div>
-        <div className="flex-grow ml-4 items-center flex-col group">
+        <div className="flex-grow ml-4 flex flex-col group">
           <CardHeader>
-            <div className="flex items-center justify-between gap-x-2 text-base">
-              <h3 className="inline-flex items-center justify-center font-semibold leading-none text-xs sm:text-sm">
+            <div className="flex items-center justify-between gap-x-2">
+              <h3 className="flex items-center gap-x-1 font-semibold text-sm">
                 {title}
                 {badges && (
                   <span className="inline-flex gap-x-1">
-                    {badges.map((badge, index) => (
-                      <Badge
-                        variant="secondary"
-                        className="align-middle text-xs"
-                        key={index}
-                      >
-                        {badge}
-                      </Badge>
+                    {badges.map((b, i) => (
+                      <Badge key={i} variant="secondary" className="text-xs">{b}</Badge>
                     ))}
                   </span>
                 )}
@@ -80,31 +60,33 @@ export const ResumeCard = ({
                   )}
                 />
               </h3>
-              <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right">
-                {period}
-              </div>
+              {period && (
+                <div className="text-xs sm:text-sm tabular-nums text-muted-foreground">
+                  {period}
+                </div>
+              )}
             </div>
-            {subtitle && <div className="font-sans text-xs">{subtitle}</div>}
           </CardHeader>
-          {description && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{
-                opacity: isExpanded ? 1 : 0,
-
-                height: isExpanded ? "auto" : 0,
-              }}
-              transition={{
-                duration: 0.7,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="mt-2 text-xs sm:text-sm"
-            >
-              {description}
-            </motion.div>
-          )}
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: isExpanded ? 1 : 0, height: isExpanded ? 'auto' : 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full mt-2 overflow-hidden"
+          >
+            {jobs.map((job, idx) => (
+              <div key={idx} className="mb-4">
+                <div className="flex items-center gap-x-2">
+                  <span className="h-5 w-0.5 bg-primary block" />
+                  <h4 className="font-medium text-sm">{job.title}</h4>
+                </div>
+                {job.subtitle && <div className="text-xs text-muted-foreground ml-2">{job.subtitle}</div>}
+                <div className="text-xs tabular-nums ml-2 mt-1">{job.period}</div>
+                {job.description && <p className="text-xs ml-2 mt-1">{job.description}</p>}
+              </div>
+            ))}
+          </motion.div>
         </div>
       </Card>
-    </Link>
+    </a>
   );
 };
