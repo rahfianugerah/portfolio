@@ -1,5 +1,5 @@
 import BlurFade from "@/components/magicui/blur-fade";
-import BlurFadeText from "@/components/magicui/blur-fade-text";
+import { HyperText } from "@/components/magicui/hyper-text";
 import { HackathonCard } from "@/components/hackathon-card";
 import { ResumeCard } from "@/components/resume-card";
 import { Badge } from "@/components/ui/badge";
@@ -74,8 +74,10 @@ export default function Page() {
                 <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
                   Welcome to Rahfi's Space
                 </div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Hello, World! I&apos;m Rahfi
+                <h2 className="text-3xl font-bold tracking-tighter">
+                  <HyperText>
+                    Hello, World! I&apos;m Rahfi
+                  </HyperText>
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   {DATA.description}
@@ -87,7 +89,9 @@ export default function Page() {
       </section>
       <section id="about">
         <BlurFade delay={BLUR_FADE_DELAY * 3}>
-          <h2 className="text-xl font-bold">About Rahfi.</h2>
+          <h2 className="text-xl font-bold">
+            <HyperText>About Rahfi.</HyperText>
+          </h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
           <Markdown className="prose max-w-full text-pretty text-justify font-sans text-sm text-muted-foreground dark:prose-invert">
@@ -98,7 +102,9 @@ export default function Page() {
       <section id="work">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
-            <h2 className="text-xl font-bold">Rahfi's Experiences.</h2>
+            <h2 className="text-xl font-bold">
+              <HyperText>Rahfi's Experiences.</HyperText>
+            </h2>
           </BlurFade>
           {groupedWork.map((company, id) => (
             <BlurFade key={company.company} delay={BLUR_FADE_DELAY * 6 + id * 0.05}>
@@ -117,7 +123,9 @@ export default function Page() {
       <section id="education">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 7}>
-            <h2 className="text-xl font-bold">Rahfi's Education.</h2>
+            <h2 className="text-xl font-bold">
+              <HyperText>Rahfi's Education.</HyperText>
+            </h2>
           </BlurFade>
           {DATA.education.map((edu, id) => {
             const job: JobEntry = {
@@ -144,7 +152,9 @@ export default function Page() {
       <section id="skills">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h2 className="text-xl font-bold">Rahfi's Specialties.</h2>
+            <h2 className="text-xl font-bold">
+              <HyperText>Rahfi's Specialties.</HyperText>
+            </h2>
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
             <h4 className="font-bold text-muted-foreground">Programming Languages.</h4>
@@ -196,8 +206,8 @@ export default function Page() {
                 <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
                   Hardwork
                 </div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Achievements
+                <h2 className="text-3xl font-bold tracking-tighter">
+                  <HyperText>Achievements</HyperText>
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   I have participated in various events, where I have
@@ -236,8 +246,10 @@ export default function Page() {
               <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
                 Contact
               </div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                Let&apos;s Connect
+              <h2 className="text-3xl font-bold tracking-tighter">
+                <HyperText>
+                  Let&apos;s Connect
+                </HyperText>
               </h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Want to chat? Just shoot me a dm

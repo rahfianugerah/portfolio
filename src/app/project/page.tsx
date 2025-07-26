@@ -1,4 +1,5 @@
 import { ProjectCard } from "@/components/project-card";
+import { HyperText } from "@/components/magicui/hyper-text";
 import BlurFade from "@/components/magicui/blur-fade";
 import { DATA } from "@/data/resume";
 
@@ -18,7 +19,7 @@ export default function ProjectPage() {
                         <div className="flex flex-col items-center justify-center space-y-4 text-center">
                             <div className="space-y-2">
                                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                                    Rahfi's Projects
+                                    <HyperText>Rahfi's Projects</HyperText>
                                 </h2>
                                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                                     I have worked on various projects, both personal and collaborative,
@@ -56,7 +57,7 @@ export default function ProjectPage() {
                         <div className="flex flex-col items-center justify-center space-y-4 text-center">
                             <div className="space-y-2">
                                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                                    Rahfi's Certifications
+                                    <HyperText>Rahfi's Certifications</HyperText>
                                 </h2>
                                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                                     I have obtained various certifications that demonstrate my expertise
