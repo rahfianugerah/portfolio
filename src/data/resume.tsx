@@ -1,5 +1,12 @@
 import { Icons } from "@/components/icons";
 import { HomeIcon, NotebookIcon, TerminalIcon } from "lucide-react";
+import fs from 'fs';
+import path from 'path';
+
+function readTxt(filename: string) {
+  const filePath = path.join(process.cwd(), 'src','data', filename);
+  return fs.readFileSync(filePath, 'utf-8').trim();
+}
 
 export const DATA = {
   name: "Rahfi",
@@ -17,6 +24,7 @@ export const DATA = {
     "JavaScript",
     "TypeScript",
     "C++",
+    "C"
   ],
   frameworks: [
     "TensorFlow",
@@ -76,120 +84,167 @@ export const DATA = {
 
   work: [
     {
-      company: "Atomic Finance",
-      href: "https://atomic.finance",
-      badges: [],
-      location: "Remote",
-      title: "Bitcoin Protocol Engineer",
-      logoUrl: "/atomic.png",
-      start: "May 2021",
-      end: "Oct 2022",
+      company: "Dicoding Indonesia",
+      href: "#",
+      badges: ["Remote", "Freelance", "Code Review", "Mentor", "Machine Learning", "Google Cloud"],
+      location: "Jakarta, Indonesia",
+      title: "External Academy Code Reviewer",
+      logoUrl: "/dicoding.jpeg",
+      start: "Mar 2025",
+      end: "Present",
       description:
-        "Implemented the Bitcoin discreet log contract (DLC) protocol specifications as an open source Typescript SDK. Dockerized all microservices and setup production kubernetes cluster. Architected a data lake using AWS S3 and Athena for historical backtesting of bitcoin trading strategies. Built a mobile app using react native and typescript.",
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
     },
     {
-      company: "Shopify",
-      badges: [],
-      href: "https://shopify.com",
-      location: "Remote",
-      title: "Software Engineer",
-      logoUrl: "/shopify.svg",
-      start: "January 2021",
-      end: "April 2021",
+      company: "Dicoding Indonesia",
+      href: "#",
+      badges: ["Remote", "Freelance", "Code Review", "Mentor", "Machine Learning", "Google Cloud"],
+      location: "Jakarta, Indonesia",
+      title: "Machine Learning Student",
+      logoUrl: "/dicoding.jpeg",
+      start: "Mar 2025",
+      end: "Present",
       description:
-        "Implemented a custom Kubernetes controller in Go to automate the deployment of MySQL and ProxySQL custom resources in order to enable 2,000+ internal developers to instantly deploy their app databases to production. Wrote several scripts in Go to automate MySQL database failovers while maintaining master-slave replication topologies and keeping Zookeeper nodes consistent with changes.",
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
     },
     {
-      company: "Nvidia",
-      href: "https://nvidia.com/",
-      badges: [],
-      location: "Santa Clara, CA",
-      title: "Software Engineer",
-      logoUrl: "/nvidia.png",
-      start: "January 2020",
-      end: "April 2020",
+      company: "Samsung Innovation Campus",
+      badges: ["Remote"],
+      href: "#",
+      location: "Jakarta, Indonesia",
+      title: "Artificial Intelligence & IoT Development Trainee",
+      logoUrl: "/sic.jpg",
+      start: "Jan 2025",
+      end: "Feb 2025",
       description:
-        "Architected and wrote the entire MVP of the GeForce Now Cloud Gaming internal admin and A/B testing dashboard using React, Redux, TypeScript, and Python.",
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
     },
     {
-      company: "Splunk",
-      href: "https://splunk.com",
-      badges: [],
-      location: "San Jose, CA",
-      title: "Software Engineer",
-      logoUrl: "/splunk.svg",
-      start: "January 2019",
-      end: "April 2019",
+      company: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
+      href: "#",
+      badges: ["Remote", "Full-Time", "Cloud Computing", "Cohort"],
+      location: "Jakarta, Indonesia",
+      title: "Capstone Project Lead - Cloud Computing Cohort",
+      logoUrl: "/bangkit.jpg",
+      start: "Nov 2024",
+      end: "Dec 2024",
       description:
-        "Co-developed a prototype iOS app with another intern in Swift for the new Splunk Phantom security orchestration product (later publicly demoed and launched at .conf annual conference in Las Vegas). Implemented a realtime service for the iOS app in Django (Python) and C++; serialized data using protobufs transmitted over gRPC resulting in an approximate 500% increase in data throughput.",
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
     },
     {
-      company: "Lime",
-      href: "https://li.me/",
-      badges: [],
-      location: "San Francisco, CA",
-      title: "Software Engineer",
-      logoUrl: "/lime.svg",
-      start: "January 2018",
-      end: "April 2018",
+      company: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
+      href: "#",
+      badges: ["Remote", "Full-Time", "Cloud Computing", "Cohort"],
+      location: "Jakarta, Indonesia",
+      title: "Cloud Computing Cohort",
+      logoUrl: "/bangkit.jpg",
+      start: "Aug 2024",
+      end: "Jan 2025",
       description:
-        "Proposed and implemented an internal ruby API for sending/receiving commands to scooters over LTE networks. Developed a fully automated bike firmware update system to handle asynchronous firmware updates of over 100,000+ scooters worldwide, and provide progress reports in real-time using React, Ruby on Rails, PostgreSQL and AWS EC2 saving hundreds of developer hours.",
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
     },
     {
-      company: "Mitre Media",
-      href: "https://mitremedia.com/",
-      badges: [],
-      location: "Toronto, ON",
-      title: "Software Engineer",
-      logoUrl: "/mitremedia.png",
-      start: "May 2017",
-      end: "August 2017",
+      company: "Computer Laboratory Assistant Faculty of Computer Science, Mercu Buana University",
+      href: "#",
+      badges: ["Part-Time", "On-Site", "Back-End Development", "Mentor", "RESTful API Development"],
+      location: "Jakarta, Indonesia",
+      title: "Back-End Research and Development",
+      logoUrl: "/aslab.jpg",
+      start: "Jan 2024",
+      end: "Feb 2025",
       description:
-        "Designed and implemented a robust password encryption and browser cookie storage system in Ruby on Rails. Leveraged the Yahoo finance API to develop the dividend.com equity screener",
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+    },
+    {
+      company: "Computer Laboratory Assistant Faculty of Computer Science, Mercu Buana University",
+      href: "#",
+      badges: ["Part-Time", "On-Site"],
+      location: "Jakarta, Indonesia",
+      title: "Senior Computer Laboratory Assistant",
+      logoUrl: "",
+      start: "Jan 2024",
+      end: "Feb 2025",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+    },
+    {
+      company: "Computer Laboratory Assistant Faculty of Computer Science, Mercu Buana University",
+      href: "#",
+      badges: ["Part-Time", "On-Site"],
+      location: "Jakarta, Indonesia",
+      title: "Junior Computer Laboratory Assistant",
+      logoUrl: "",
+      start: "Apr 2023",
+      end: "Jan 2024",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+    },
+    {
+      company: "Google Developer Student Club, Mercu Buana University",
+      href: "#",
+      badges: ["Hybrid", "Community"],
+      location: "Jakarta, Indonesia",
+      title: "GDSC Member",
+      logoUrl: "/gdsc.jpg",
+      start: "Dec 2023",
+      end: "Oct 2024",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+    },
+    {
+      company: "Digital Talent Scholarship",
+      href: "#",
+      badges: ["Remote", "AWS"],
+      location: "Jakarta, Indonesia",
+      title: "AWS Engineer Trainee",
+      logoUrl: "/dts.jpg",
+      start: "Feb 2024",
+      end: "Mar 2024",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
     },
   ],
   education: [
     {
-      school: "Buildspace",
-      href: "https://buildspace.so",
-      degree: "s3, s4, sf1, s5",
-      logoUrl: "/buildspace.jpg",
-      start: "2023",
-      end: "2024",
+      school: "Mercu Buana University",
+      href: "https://mercubuana.ac.id",
+      degree: "Bachelor's Degree of Computer Science",
+      logoUrl: "/umb.jpg",
+      start: "2022",
+      end: "2026 (Expected)",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
     },
     {
-      school: "University of Waterloo",
-      href: "https://uwaterloo.ca",
-      degree: "Bachelor's Degree of Computer Science (BCS)",
-      logoUrl: "/waterloo.png",
-      start: "2016",
-      end: "2021",
+      school: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
+      href: "https://grow.google/intl/id_id/bangkit/?tab=cloud-computing",
+      degree: "Non-Degree Program in Cloud Computing",
+      logoUrl: "/bangkit.jpg",
+      start: "Aug 2024",
+      end: "Jan 2025",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
     },
     {
-      school: "Wilfrid Laurier University",
-      href: "https://wlu.ca",
-      degree: "Bachelor's Degree of Business Administration (BBA)",
-      logoUrl: "/laurier.png",
-      start: "2016",
-      end: "2021",
-    },
-    {
-      school: "International Baccalaureate",
-      href: "https://ibo.org",
-      degree: "IB Diploma",
-      logoUrl: "/ib.png",
-      start: "2012",
-      end: "2016",
+      school: "Dicoding Indonesia",
+      href: "https://www.dicoding.com",
+      degree: "Non-Degree Program in Machine Learning",
+      logoUrl: "/dicoding.jpeg",
+      start: "Mar 2024",
+      end: "Aug 2024",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
     },
   ],
   projects: [
+    // This is a sample project, replace with actual projects
     {
       title: "Chat Collect",
       href: "https://chatcollect.com",
       dates: "Jan 2024 - Feb 2024",
       active: true,
       description:
-        "With the release of the [OpenAI GPT Store](https://openai.com/blog/introducing-the-gpt-store), I decided to build a SaaS which allows users to collect email addresses from their GPT users. This is a great way to build an audience and monetize your GPT API usage.",
+        "lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
       technologies: [
         "Next.js",
         "Typescript",
@@ -217,7 +272,7 @@ export const DATA = {
       dates: "June 2023 - Present",
       active: true,
       description:
-        "Designed, developed and sold animated UI components for developers.",
+        "lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
       technologies: [
         "Next.js",
         "Typescript",
@@ -249,7 +304,7 @@ export const DATA = {
       dates: "April 2023 - September 2023",
       active: true,
       description:
-        "Developed an open-source logging and analytics platform for OpenAI: Log your ChatGPT API requests, analyze costs, and improve your prompts.",
+        "lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
       technologies: [
         "Next.js",
         "Typescript",
@@ -282,7 +337,7 @@ export const DATA = {
       dates: "April 2023 - March 2024",
       active: true,
       description:
-        "Developed an AI Customer Support Chatbot which automatically responds to customer support tickets using the latest GPT models.",
+        "lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
       technologies: [
         "Next.js",
         "Typescript",
@@ -313,17 +368,17 @@ export const DATA = {
       location: "Jakarta, Indonesia",
       issued: "INNOPA, Mercu Buana University",
       description:
-        "Developed a mobile application which delivered bedtime stories to children using augmented reality.",
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
       image:"",
       links: [],
     },
     {
-      title: "Cloud Computing Distinction Graduate 2024 Batch 2 H2 - Bangkit Academy led by Google, Goto and Traveloka",
-      dates: "January 2025",
+      title: "Cloud Computing Distinction Graduate 2024 Batch 2 - Bangkit Academy led by Google, Goto and Traveloka",
+      dates: "Jan 2025",
       location: "Jakarta, Indonesia",
       issued: "Bangkit led by Google, Goto, and Traveloka",
       description:
-        "Developed a mobile application which delivered bedtime stories to children using augmented reality.",
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
       image:"",
       links: [],
     },
@@ -333,7 +388,7 @@ export const DATA = {
       location: "Jakarta, Indonesia",
       issued: "ai4impact, TerraAI, MobileFaculty",
       description:
-        "Developed a mobile application which delivered bedtime stories to children using augmented reality.",
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
       image:"",
       links: [],
     },
