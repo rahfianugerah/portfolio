@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
+import { IconCloudSpecialties } from "@/components/specialties-icon";
 
 const BLUR_FADE_DELAY = 0.04;
 type JobEntry = {
@@ -155,6 +156,7 @@ export default function Page() {
             <h2 className="text-xl font-bold">
               <HyperText>Rahfi's Specialties.</HyperText>
             </h2>
+            <IconCloudSpecialties/>
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
             <h4 className="font-bold text-muted-foreground">Programming Languages.</h4>
