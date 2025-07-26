@@ -4,12 +4,22 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google";
+import { Inter as FontSans, Source_Code_Pro, Poppins} from "next/font/google";
 import "./globals.css";
 
-const fontSans = FontSans({
+export const inter = FontSans({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-sans", // make sure this matches Tailwind config
+  display: "swap",
+});
+
+export const sourceCodePro = Source_Code_Pro({
+  subsets: ["latin"],
+  variable: "--font-sans", // make sure this matches Tailwind config
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  fallback: ["monospace"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -58,7 +68,7 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6",
-          fontSans.variable
+          sourceCodePro.variable
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="light">
