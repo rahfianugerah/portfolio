@@ -4,6 +4,11 @@ import { DATA } from "@/data/resume";
 
 const BLUR_FADE_DELAY = 0.04;
 
+export const metadata = {
+  title: "Projects",
+  description: "A showcase of my work and collaborations.",
+};
+
 export default function ProjectPage() {
     return (
         <section id="projects">
