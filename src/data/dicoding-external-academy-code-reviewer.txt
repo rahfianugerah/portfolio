@@ -1,0 +1,3 @@
+Reviewing student-led projects, assessing implementation quality, adherence to best practices, and providing detailed feedback to enhance their practical skills.
+Reviewing student submissions across Machine Learning learning path & Google Cloud Professional learning path, providing constructive feedback to enhance learners’ understanding.
+Supporting learners' skill development in leveraging Machine Learning models and Google Cloud platform

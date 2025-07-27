@@ -1,0 +1,4 @@
+Provide guidance and support to members of the Back-End learning path, ensuring they understand core concepts and good practices.
+Conduct regular one-on-one and group mentoring sessions to address specific challenges and foster a collaborative learning environment.
+Create and manage a structured curriculum to facilitate progressive learning and skill acquisition.
+Coordinate activities and projects among members to promote teamwork and practical application of back-end development skills.

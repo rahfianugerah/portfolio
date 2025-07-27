@@ -3,9 +3,10 @@ import { HomeIcon, NotebookIcon, TerminalIcon } from "lucide-react";
 import fs from 'fs';
 import path from 'path';
 
-function readTxt(filename: string) {
-  const filePath = path.join(process.cwd(), 'src','data', filename);
-  return fs.readFileSync(filePath, 'utf-8').trim();
+function readTxtAsList(filename: string): string[] {
+  const filePath = path.join(process.cwd(), 'src', 'data', filename);
+  const content = fs.readFileSync(filePath, 'utf-8').trim();
+  return content.split('\n').map(line => line.trim()).filter(Boolean);
 }
 
 export const DATA = {
@@ -32,8 +33,6 @@ export const DATA = {
     "PyTorch",
     "Pandas",
     "NumPy",
-    "Scikit-learn",
-    "Matplotlib",
     "Seaborn",
     "Flask",
     "FastAPI",
@@ -92,44 +91,40 @@ export const DATA = {
       logoUrl: "/dicoding.jpeg",
       start: "Mar 2025",
       end: "Present",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('dicoding-external-academy-code-reviewer.txt'),
     },
     {
       company: "Dicoding Indonesia",
       href: "#",
-      badges: ["Remote", "Freelance", "Code Review", "Mentor", "Machine Learning", "Google Cloud"],
+      badges: ["Student", "Machine Learning"],
       location: "Jakarta, Indonesia",
       title: "Machine Learning Student",
       logoUrl: "/dicoding.jpeg",
       start: "Mar 2025",
       end: "Present",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description:readTxtAsList('dicoding-ml-student.txt'),
     },
     {
-      company: "Samsung Innovation Campus",
-      badges: ["Remote"],
+      company: "Samsung Innovation Campus Batch 6",
+      badges: ["Remote", "Trainee", "Artificial Intelligence", "IoT"],
       href: "#",
       location: "Jakarta, Indonesia",
       title: "Artificial Intelligence & IoT Development Trainee",
       logoUrl: "/sic.jpg",
       start: "Jan 2025",
       end: "Feb 2025",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('sic6-trainee.txt'),
     },
     {
       company: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
       href: "#",
-      badges: ["Remote", "Full-Time", "Cloud Computing", "Cohort"],
+      badges: ["Remote", "Full-Time", "Cloud Computing", "Cohort", "Project Lead", "Back-End Engineering", "Cloud Engineering"],
       location: "Jakarta, Indonesia",
       title: "Capstone Project Lead - Cloud Computing Cohort",
       logoUrl: "/bangkit.jpg",
       start: "Nov 2024",
       end: "Dec 2024",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('cc-bangkit-cpl.txt'),
     },
     {
       company: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
@@ -140,20 +135,18 @@ export const DATA = {
       logoUrl: "/bangkit.jpg",
       start: "Aug 2024",
       end: "Jan 2025",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('cc-bangkit.txt'),
     },
     {
       company: "Computer Laboratory Assistant Faculty of Computer Science, Mercu Buana University",
       href: "#",
       badges: ["Part-Time", "On-Site", "Back-End Development", "Mentor", "RESTful API Development"],
       location: "Jakarta, Indonesia",
-      title: "Back-End Research and Development",
+      title: "Back-End Research and Development Associate",
       logoUrl: "/aslab.jpg",
       start: "Jan 2024",
       end: "Feb 2025",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('clab-be-rnd.txt'),
     },
     {
       company: "Computer Laboratory Assistant Faculty of Computer Science, Mercu Buana University",
@@ -164,8 +157,7 @@ export const DATA = {
       logoUrl: "",
       start: "Jan 2024",
       end: "Feb 2025",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('clab-senior.txt'),
     },
     {
       company: "Computer Laboratory Assistant Faculty of Computer Science, Mercu Buana University",
@@ -176,8 +168,7 @@ export const DATA = {
       logoUrl: "",
       start: "Apr 2023",
       end: "Jan 2024",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('clab-junior.txt'),
     },
     {
       company: "Google Developer Student Club, Mercu Buana University",
@@ -188,20 +179,18 @@ export const DATA = {
       logoUrl: "/gdsc.jpg",
       start: "Dec 2023",
       end: "Oct 2024",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('gdsc-member.txt'),
     },
     {
       company: "Digital Talent Scholarship",
       href: "#",
-      badges: ["Remote", "AWS"],
+      badges: ["Remote", "AWS", "Trainee"],
       location: "Jakarta, Indonesia",
       title: "AWS Engineer Trainee",
       logoUrl: "/dts.jpg",
       start: "Feb 2024",
       end: "Mar 2024",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('dts-aws.txt'),
     },
   ],
   education: [

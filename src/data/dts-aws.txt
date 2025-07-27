@@ -1,0 +1,4 @@
+Mastering the effective use of AWS services for various needs.
+Creating and designing cloud architecture on the AWS platform according to best practices.
+Understanding the basics of AWS clearly and deeply.
+Successfully achieving the international AWS Certified Cloud Practitioner certification.
