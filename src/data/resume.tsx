@@ -1,7 +1,9 @@
 import { Icons } from "@/components/icons";
+import { TbCertificate } from "react-icons/tb";
 import { HomeIcon, NotebookIcon, TerminalIcon } from "lucide-react";
 import fs from 'fs';
 import path from 'path';
+import { title } from "process";
 
 function readTxtAsList(filename: string): string[] {
   const filePath = path.join(process.cwd(), 'src', 'data', filename);
@@ -102,7 +104,7 @@ export const DATA = {
       logoUrl: "/dicoding.jpeg",
       start: "Mar 2025",
       end: "Present",
-      description:readTxtAsList('dicoding-ml-student.txt'),
+      description: readTxtAsList('dicoding-ml-student.txt'),
     },
     {
       company: "Samsung Innovation Campus Batch 6",
@@ -201,8 +203,7 @@ export const DATA = {
       logoUrl: "/umb.jpg",
       start: "2022",
       end: "2026 (Expected)",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('umb.txt'),
     },
     {
       school: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
@@ -211,8 +212,7 @@ export const DATA = {
       logoUrl: "/bangkit.jpg",
       start: "Aug 2024",
       end: "Jan 2025",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('bangkit-cc-edu.txt'),
     },
     {
       school: "Dicoding Indonesia",
@@ -221,8 +221,7 @@ export const DATA = {
       logoUrl: "/dicoding.jpeg",
       start: "Mar 2024",
       end: "Aug 2024",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('dicoding-edu.txt'),
     },
   ],
   projects: [
@@ -356,10 +355,15 @@ export const DATA = {
       dates: "July 2025",
       location: "Jakarta, Indonesia",
       issued: "INNOPA, Mercu Buana University",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
-      image:"",
-      links: [],
+      description: readTxtAsList('achievements-pin2025.txt'),
+      image: "",
+      links: [
+        {
+          title: "Certificate",
+          href: "https://drive.google.com/file/d/13CCi694fva01Y5JTz_8fdwAegFgLJ2KE/view?usp=sharing",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
     },
     {
       title: "Cloud Computing Distinction Graduate 2024 Batch 2 - Bangkit Academy led by Google, Goto and Traveloka",
@@ -368,8 +372,14 @@ export const DATA = {
       issued: "Bangkit led by Google, Goto, and Traveloka",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
-      image:"",
-      links: [],
+      image: "",
+      links: [
+        {
+          title: "Certificate",
+          href: "https://drive.google.com/file/d/1dFG1HTHIrias6pO1ipwk5j6mUXnBpvcZ/view?usp=sharing",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
     },
     {
       title: "4th Place Best Chatbot & Top 10 Finalist - Indonesia Chatbot Championship Challenge (IC3) 2024, Theme: Generative AI",
@@ -378,8 +388,86 @@ export const DATA = {
       issued: "ai4impact, TerraAI, MobileFaculty",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
-      image:"",
-      links: [],
+      image: "",
+      links: [
+        {
+          title: "Certificate",
+          href: "https://drive.google.com/file/d/1oS97X_V6Uplko-88QHaTDK-xgEkGoVJz/view?usp=sharing",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+  ],
+  certifications: [
+    {
+      title: "AWS Certified Cloud Practitioner",
+      href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
+      issued: "Amazon Web Services (AWS)",
+      description: "Earned the AWS Certified Cloud Practitioner certification, demonstrating foundational knowledge of AWS Cloud concepts, services, and best practices.",
+      image: "/aws.png",
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+        {
+      title: "AWS Certified Cloud Practitioner",
+      href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
+      issued: "Amazon Web Services (AWS)",
+      description: "Earned the AWS Certified Cloud Practitioner certification, demonstrating foundational knowledge of AWS Cloud concepts, services, and best practices.",
+      image: "/aws.png",
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+        {
+      title: "AWS Certified Cloud Practitioner",
+      href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
+      issued: "Amazon Web Services (AWS)",
+      description: "Earned the AWS Certified Cloud Practitioner certification, demonstrating foundational knowledge of AWS Cloud concepts, services, and best practices.",
+      image: "/aws.png",
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+        {
+      title: "AWS Certified Cloud Practitioner",
+      href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
+      issued: "Amazon Web Services (AWS)",
+      description: "Earned the AWS Certified Cloud Practitioner certification, demonstrating foundational knowledge of AWS Cloud concepts, services, and best practices.",
+      image: "/aws.png",
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+        {
+      title: "AWS Certified Cloud Practitioner",
+      href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
+      issued: "Amazon Web Services (AWS)",
+      description: "Earned the AWS Certified Cloud Practitioner certification, demonstrating foundational knowledge of AWS Cloud concepts, services, and best practices.",
+      image: "/aws.png",
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
     },
   ],
 } as const;
