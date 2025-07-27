@@ -116,9 +116,17 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({
                 <div className="text-xs tabular-nums ml-2 mt-1">
                   {job.period}
                 </div>
-                {job.description && (
-                  <p className="text-xs ml-2 mt-1">{job.description}</p>
-                )}
+                {job.description && Array.isArray(job.description) ? (
+                  <ul className="text-xs ml-2 mt-1 list-disc list-outside pl-4 space-y-1">
+                    {job.description.map((line, i) => (
+                      <li key={i} className="text-pretty leading-relaxed text-wrap">
+                        {line}
+                      </li>
+                    ))}
+                  </ul>
+                ) : job.description ? (
+                  <p className="text-justify text-xs ml-2 mt-1 whitespace-pre-line">{job.description}</p>
+                ) : null}
               </div>
             ))}
           </motion.div>
