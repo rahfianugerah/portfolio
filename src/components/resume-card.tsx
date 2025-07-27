@@ -117,15 +117,21 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({
                   {job.period}
                 </div>
                 {job.description && Array.isArray(job.description) ? (
-                  <ul className="text-xs ml-2 mt-1 list-disc list-outside pl-4 space-y-1">
-                    {job.description.map((line, i) => (
-                      <li key={i} className="text-pretty leading-relaxed text-wrap">
-                        {line}
-                      </li>
-                    ))}
-                  </ul>
+                  job.description.length === 1 ? (
+                    <p className="text-xs text-justify ml-2 mt-1 whitespace-pre-line">
+                      {job.description[0]}
+                    </p>
+                  ) : (
+                    <ul className="text-xs text-justify ml-2 mt-1 list-disc list-outside pl-4 space-y-1">
+                      {job.description.map((line, i) => (
+                        <li key={i} className="text-pretty leading-relaxed text-wrap">
+                          {line}
+                        </li>
+                      ))}
+                    </ul>
+                  )
                 ) : job.description ? (
-                  <p className="text-justify text-xs ml-2 mt-1 whitespace-pre-line">{job.description}</p>
+                  <p className="text-xs text-justify ml-2 mt-1 whitespace-pre-line">{job.description}</p>
                 ) : null}
               </div>
             ))}
