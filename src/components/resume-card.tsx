@@ -12,7 +12,7 @@ interface Job {
   title: string;
   subtitle?: string;
   period: string;
-  description?: string;
+  description: string | string[];
   badges?: readonly string[];
 }
 
@@ -24,7 +24,7 @@ interface ResumeCardProps {
   period: string;
   badges?: readonly string[];
   jobs: Job[];
-  description?: string;
+  description: string | string[];
 }
 
 export const ResumeCard: React.FC<ResumeCardProps> = ({
@@ -34,6 +34,7 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({
   href,
   period,
   jobs,
+  description, 
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
 

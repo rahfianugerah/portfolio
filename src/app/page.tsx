@@ -13,7 +13,7 @@ type JobEntry = {
   title: string;
   subtitle?: string;
   period: string;        // e.g. "Jan 2022 - Mar 2023" or "Feb 2023 - Present"
-  description?: string;
+  description: string | string[];
   badges?: readonly string[];     // include badges here
 };
 
@@ -116,6 +116,7 @@ export default function Page() {
                 href={company.href}
                 period={company.period}
                 jobs={company.jobs}
+                description={company.jobs[0]?.description}
               />
             </BlurFade>
           ))}
