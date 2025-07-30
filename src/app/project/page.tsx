@@ -2,6 +2,7 @@ import { ProjectCard } from "@/components/project-card";
 import { HyperText } from "@/components/magicui/hyper-text";
 import BlurFade from "@/components/magicui/blur-fade";
 import { DATA } from "@/data/resume";
+import { CertificateCard } from "@/components/certificate-card";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -67,6 +68,26 @@ export default function ProjectPage() {
                             </div>
                         </div>
                     </BlurFade>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
+                        {DATA.certifications.map((cert, id) => (
+                            <BlurFade
+                                key={cert.title}
+                                delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+                            >
+                                <CertificateCard
+                                    title={cert.title}
+                                    issued={cert.issued}
+                                    description={cert.description}
+                                    image={cert.image}
+                                    links={cert.links?.map(link => ({
+                                        icon: link.icon,
+                                        href: link.href,
+                                        type: link.title ?? "Certificate"
+                                    }))}
+                                />
+                            </BlurFade>
+                        ))}
+                    </div>
                 </div>
             </section>
         </>
