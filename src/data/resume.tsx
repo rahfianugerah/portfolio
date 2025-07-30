@@ -6,7 +6,7 @@ import path from 'path';
 import { title } from "process";
 
 function readTxtAsList(filename: string): string[] {
-  const filePath = path.join(process.cwd(), 'src', 'data', filename);
+  const filePath = path.join(process.cwd(), 'src', 'data', 'desc', filename);
   const content = fs.readFileSync(filePath, 'utf-8').trim();
   return content.split('\n').map(line => line.trim()).filter(Boolean);
 }
@@ -413,12 +413,12 @@ export const DATA = {
         },
       ],
     },
-        {
-      title: "AWS Certified Cloud Practitioner",
+    {
+      title: "Alibaba Cloud Certified Big Data Associate",
       href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
-      issued: "Amazon Web Services (AWS)",
-      description: "Earned the AWS Certified Cloud Practitioner certification, demonstrating foundational knowledge of AWS Cloud concepts, services, and best practices.",
-      image: "/aws.png",
+      issued: "Alibaba Cloud",
+      description: "Earned the Alibaba Cloud Certified Big Data Associate certification, demonstrating foundational knowledge of Alibaba Cloud big data concepts, services, and best practices.",
+      image: "/alibaba.png",
       links: [
         {
           title: "Certificate",
@@ -427,35 +427,7 @@ export const DATA = {
         },
       ],
     },
-        {
-      title: "AWS Certified Cloud Practitioner",
-      href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
-      issued: "Amazon Web Services (AWS)",
-      description: "Earned the AWS Certified Cloud Practitioner certification, demonstrating foundational knowledge of AWS Cloud concepts, services, and best practices.",
-      image: "/aws.png",
-      links: [
-        {
-          title: "Certificate",
-          href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
-          icon: <TbCertificate className="size-3" />,
-        },
-      ],
-    },
-        {
-      title: "AWS Certified Cloud Practitioner",
-      href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
-      issued: "Amazon Web Services (AWS)",
-      description: "Earned the AWS Certified Cloud Practitioner certification, demonstrating foundational knowledge of AWS Cloud concepts, services, and best practices.",
-      image: "/aws.png",
-      links: [
-        {
-          title: "Certificate",
-          href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
-          icon: <TbCertificate className="size-3" />,
-        },
-      ],
-    },
-        {
+    {
       title: "AWS Certified Cloud Practitioner",
       href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
       issued: "Amazon Web Services (AWS)",
