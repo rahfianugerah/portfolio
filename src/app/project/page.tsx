@@ -41,7 +41,7 @@ export default function ProjectPage() {
                                     key={project.title}
                                     title={project.title}
                                     description={project.description}
-                                    dates={project.dates}
+                                    status={project.status}
                                     tags={project.technologies}
                                     image={project.image}
                                     video={project.video}
@@ -49,6 +49,11 @@ export default function ProjectPage() {
                                 />
                             </BlurFade>
                         ))}
+                    </div>
+                    <div className="space-y-2">
+                        <p className="text-justify text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                            If you want to see more of my projects check out my GitHub or press the button on the navbar.
+                        </p>
                     </div>
                 </div>
             </section>
@@ -89,6 +94,7 @@ export default function ProjectPage() {
                             </BlurFade>
                         ))}
                     </div>
+
                     <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                         <HyperText>Learning Certificates</HyperText>
                     </h2>
@@ -109,6 +115,11 @@ export default function ProjectPage() {
                                 />
                             </BlurFade>
                         ))}
+                    </div>
+                    <div className="space-y-2">
+                        <p className="text-justify text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                            If you want to see more of my certificates check out my LinkedIn or press the button on the navbar.
+                        </p>
                     </div>
                 </div>
             </section>
