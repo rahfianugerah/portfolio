@@ -1,6 +1,6 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { HyperText } from "@/components/magicui/hyper-text";
-import { HackathonCard } from "@/components/hackathon-card";
+import { HackathonCard } from "@/components/hardwordk-card";
 import { ResumeCard } from "@/components/resume-card";
 import { Badge } from "@/components/ui/badge";
 import { DATA } from "@/data/resume";
