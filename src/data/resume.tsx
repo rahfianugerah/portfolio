@@ -228,8 +228,7 @@ export const DATA = {
     {
       title: "rahfi.pro",
       href: "https://rahfi.pro",
-      dates: "July 2025 - Present",
-      active: true,
+      status: "In Progress",
       description:
         "A personal portfolio website showcasing my skills, projects, and achievements. Built with Next.js and Tailwind CSS.",
       technologies: [
@@ -259,8 +258,7 @@ export const DATA = {
     {
       title: "Commit Wave",
       href: "",
-      dates: "Archived",
-      active: false,
+      status: "Archived",
       description:
         "Commit Wave is an automation tool designed to help developers keep their GitHub contribution history consistently active and engaging. By utilizing GitHub Actions or JavaScript based, this bot automates the process of generating and pushing commits at random intervals (GitHub Action & JavaScript) within a user-defined date range (JavaScript).",
       technologies: [
