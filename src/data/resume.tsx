@@ -225,133 +225,62 @@ export const DATA = {
     },
   ],
   projects: [
-    // This is a sample project, replace with actual projects
     {
-      title: "Chat Collect",
-      href: "https://chatcollect.com",
-      dates: "Jan 2024 - Feb 2024",
+      title: "rahfi.pro",
+      href: "https://rahfi.pro",
+      dates: "July 2025 - Present",
       active: true,
       description:
-        "lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+        "A personal portfolio website showcasing my skills, projects, and achievements. Built with Next.js and Tailwind CSS.",
       technologies: [
         "Next.js",
         "Typescript",
-        "PostgreSQL",
-        "Prisma",
         "TailwindCSS",
         "Stripe",
         "Shadcn UI",
         "Magic UI",
+        "Radix UI",
       ],
       links: [
         {
           type: "Website",
-          href: "https://chatcollect.com",
-          icon: <Icons.globe className="size-3" />,
-        },
-      ],
-      image: "",
-      video:
-        "https://pub-83c5db439b40468498f97946200806f7.r2.dev/chat-collect.mp4",
-    },
-    {
-      title: "Magic UI",
-      href: "https://magicui.design",
-      dates: "June 2023 - Present",
-      active: true,
-      description:
-        "lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
-      technologies: [
-        "Next.js",
-        "Typescript",
-        "PostgreSQL",
-        "Prisma",
-        "TailwindCSS",
-        "Stripe",
-        "Shadcn UI",
-        "Magic UI",
-      ],
-      links: [
-        {
-          type: "Website",
-          href: "https://magicui.design",
+          href: "https://rahfi.pro",
           icon: <Icons.globe className="size-3" />,
         },
         {
-          type: "Source",
-          href: "https://github.com/magicuidesign/magicui",
+          type: "Source Code",
+          href: "https://github.com/rahfianugerah/portfolio",
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: "",
-      video: "https://cdn.magicui.design/bento-grid.mp4",
+      image: "/rahfipro.png",
+      video: "",
     },
     {
-      title: "llm.report",
-      href: "https://llm.report",
-      dates: "April 2023 - September 2023",
-      active: true,
+      title: "Commit Wave",
+      href: "",
+      dates: "Archived",
+      active: false,
       description:
-        "lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+        "Commit Wave is an automation tool designed to help developers keep their GitHub contribution history consistently active and engaging. By utilizing GitHub Actions or JavaScript based, this bot automates the process of generating and pushing commits at random intervals (GitHub Action & JavaScript) within a user-defined date range (JavaScript).",
       technologies: [
-        "Next.js",
-        "Typescript",
-        "PostgreSQL",
-        "Prisma",
-        "TailwindCSS",
-        "Shadcn UI",
-        "Magic UI",
-        "Stripe",
-        "Cloudflare Workers",
+        "JavaScript",
+        "Node.js",
       ],
       links: [
         {
-          type: "Website",
-          href: "https://llm.report",
-          icon: <Icons.globe className="size-3" />,
-        },
-        {
-          type: "Source",
-          href: "https://github.com/dillionverma/llm.report",
+          type: "Source Code",
+          href: "https://github.com/rahfianugerah/commitwave",
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: "",
-      video: "https://cdn.llm.report/openai-demo.mp4",
-    },
-    {
-      title: "Automatic Chat",
-      href: "https://automatic.chat",
-      dates: "April 2023 - March 2024",
-      active: true,
-      description:
-        "lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
-      technologies: [
-        "Next.js",
-        "Typescript",
-        "PostgreSQL",
-        "Prisma",
-        "TailwindCSS",
-        "Shadcn UI",
-        "Magic UI",
-        "Stripe",
-        "Cloudflare Workers",
-      ],
-      links: [
-        {
-          type: "Website",
-          href: "https://automatic.chat",
-          icon: <Icons.globe className="size-3" />,
-        },
-      ],
-      image: "",
-      video:
-        "https://pub-83c5db439b40468498f97946200806f7.r2.dev/automatic-chat.mp4",
+      image: "/commitwave.png",
+      video: "",
     },
   ],
   hardwork: [
     {
-      title: "Gold Medalist - National Innovation Exhibition",
+      title: "Gold Medalist - National Innovation Exhibition (Pekan Inovasi Nasional) 2025",
       dates: "July 2025",
       location: "Jakarta, Indonesia",
       issued: "INNOPA, Mercu Buana University",
@@ -401,42 +330,79 @@ export const DATA = {
   certifications: [
     {
       title: "AWS Certified Cloud Practitioner",
-      href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
       issued: "Amazon Web Services (AWS)",
-      description: "Earned the AWS Certified Cloud Practitioner certification, demonstrating foundational knowledge of AWS Cloud concepts, services, and best practices.",
-      image: "/aws.png",
       links: [
         {
           title: "Certificate",
-          href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
+          href: "https://www.credly.com/badges/373c0502-683a-4d79-a758-d7e7979c8f3b/public_url",
           icon: <TbCertificate className="size-3" />,
         },
       ],
     },
     {
       title: "Alibaba Cloud Certified Big Data Associate",
-      href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
       issued: "Alibaba Cloud",
-      description: "Earned the Alibaba Cloud Certified Big Data Associate certification, demonstrating foundational knowledge of Alibaba Cloud big data concepts, services, and best practices.",
-      image: "/alibaba.png",
       links: [
         {
           title: "Certificate",
-          href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
+          href: "https://drive.google.com/file/d/1quS-1G7Ru8i4eZvQ5rYoA74NI4lQG6se/view?usp=sharing",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+  ],
+  learning_certificate: [
+    {
+      title: "MLOps (Machine Learning Operations)",
+      issued: "Dicoding Indonesia",
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/KEXL1J89MXG2",
           icon: <TbCertificate className="size-3" />,
         },
       ],
     },
     {
-      title: "AWS Certified Cloud Practitioner",
-      href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
-      issued: "Amazon Web Services (AWS)",
-      description: "Earned the AWS Certified Cloud Practitioner certification, demonstrating foundational knowledge of AWS Cloud concepts, services, and best practices.",
-      image: "/aws.png",
+      title: " Applied Machine Learning (Machine Learning Terapan)",
+      issued: "Dicoding Indonesia",
       links: [
         {
           title: "Certificate",
-          href: "https://www.credly.com/badges/3b1f8c0d-2e4a-4d5c-9f6b-7e8c1f3a2b1f/public_url",
+          href: "https://www.dicoding.com/certificates/QLZ97OR7EP5D",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Learn Applied Machine Learning with Google Cloud (Belajar Penerapan Machine Learning dengan Google Cloud)",
+      issued: "Dicoding Indonesia",
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/N9ZOYN8J8PG5",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Architecting on AWS (Membangun Arsitektur Cloud di AWS)",
+      issued: "Dicoding Indonesia",
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/98XWLYWN4ZM3",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Google Cybersecurity Specialization",
+      issued: "Coursera",
+      links: [
+        {
+          title: "Certificate",
+          href: "https://coursera.org/share/47330bd478ce3b2a217bb808007c944e",
           icon: <TbCertificate className="size-3" />,
         },
       ],
