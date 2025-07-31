@@ -160,7 +160,7 @@ export default function Page() {
             <IconCloudSpecialties/>
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h4 className="font-bold text-muted-foreground">Programming Languages.</h4>
+            <h3 className="font-bold text-muted-foreground">Programming Languages.</h3>
           </BlurFade>
           <div className="flex flex-wrap gap-1">
             {DATA.programmingLanguages.map((skill, id) => (
@@ -170,7 +170,7 @@ export default function Page() {
             ))}
           </div>
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h4 className="font-bold text-muted-foreground">Frameworks.</h4>
+            <h3 className="font-bold text-muted-foreground">Frameworks.</h3>
           </BlurFade>
           <div className="flex flex-wrap gap-1">
             {DATA.frameworks.map((skill, id) => (
@@ -180,7 +180,7 @@ export default function Page() {
             ))}
           </div>
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h4 className="font-bold text-muted-foreground">Databases.</h4>
+            <h3 className="font-bold text-muted-foreground">Databases.</h3>
           </BlurFade>
           <div className="flex flex-wrap gap-1">
             {DATA.databases.map((skill, id) => (
@@ -190,7 +190,7 @@ export default function Page() {
             ))}
           </div>
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h4 className="font-bold text-muted-foreground">Tools.</h4>
+            <h3 className="font-bold text-muted-foreground">Tools.</h3>
           </BlurFade>
           <div className="flex flex-wrap gap-1">
             {DATA.tools.map((skill, id) => (
