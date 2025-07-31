@@ -68,6 +68,9 @@ export default function ProjectPage() {
                             </div>
                         </div>
                     </BlurFade>
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                        <HyperText>Certified Certificates</HyperText>
+                    </h2>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
                         {DATA.certifications.map((cert, id) => (
                             <BlurFade
@@ -77,8 +80,27 @@ export default function ProjectPage() {
                                 <CertificateCard
                                     title={cert.title}
                                     issued={cert.issued}
-                                    description={cert.description}
-                                    image={cert.image}
+                                    links={cert.links?.map(link => ({
+                                        icon: link.icon,
+                                        href: link.href,
+                                        type: link.title ?? "Certificate"
+                                    }))}
+                                />
+                            </BlurFade>
+                        ))}
+                    </div>
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                        <HyperText>Learning Certificates</HyperText>
+                    </h2>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
+                        {DATA.learning_certificate.map((cert, id) => (
+                            <BlurFade
+                                key={cert.title}
+                                delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+                            >
+                                <CertificateCard
+                                    title={cert.title}
+                                    issued={cert.issued}
                                     links={cert.links?.map(link => ({
                                         icon: link.icon,
                                         href: link.href,
