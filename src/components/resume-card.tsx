@@ -1,16 +1,15 @@
 'use client';
 
+import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ChevronRightIcon } from "lucide-react";
-import React from "react";
 
 interface Job {
   title: string;
-  subtitle?: string;
   period: string;
   description: string | string[];
   badges?: readonly string[];
@@ -33,32 +32,50 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({
   title,
   href,
   period,
+  badges,
   jobs,
-  description, 
+  description,
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
+  const [expandedJobs, setExpandedJobs] = React.useState<boolean[]>(
+    jobs.map(() => false)
+  );
 
+  // Sort jobs by start date descending
   const jobsSorted = [...jobs].sort((a, b) => {
     const dateA = new Date(a.period.split(' - ')[0]).getTime();
     const dateB = new Date(b.period.split(' - ')[0]).getTime();
     return dateB - dateA;
   });
-  const latestJob = jobsSorted[0];
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    setIsExpanded(prev => !prev);
+  // Find job with longest duration
+  const getDuration = (job: Job) => {
+    const [startStr, endStr] = job.period.split(' - ');
+    const start = new Date(startStr).getTime();
+    const end = /present/i.test(endStr) ? Date.now() : new Date(endStr).getTime();
+    return end - start;
   };
+  const longestJob = jobsSorted.reduce((prev, curr) =>
+    getDuration(curr) > getDuration(prev) ? curr : prev
+  );
+
+  const handleCompanyClick = () => {
+    setIsExpanded((prev) => !prev);
+  };
+
+  const toggleJob = (e: React.MouseEvent, index: number) => {
+    e.stopPropagation();
+    setExpandedJobs((prev) =>
+      prev.map((val, i) => (i === index ? !val : val))
+    );
+  };
+
   return (
-    <a href={href || '#'} className="block cursor-pointer" onClick={handleClick}>
+    <div className="block cursor-pointer" onClick={handleCompanyClick}>
       <Card className="flex">
         <div className="flex-none">
           <Avatar className="border size-12 m-auto bg-muted-background dark:bg-foreground">
-            <AvatarImage
-              src={logoUrl}
-              alt={altText}
-              className="object-contain"
-            />
+            <AvatarImage src={logoUrl} alt={altText} className="object-contain" />
             <AvatarFallback>{altText[0]}</AvatarFallback>
           </Avatar>
         </div>
@@ -77,7 +94,7 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({
                   />
                 </h3>
                 <div className="text-xs text-muted-foreground">
-                  {latestJob.title}
+                  {longestJob.title}
                 </div>
               </div>
               <div className="text-xs sm:text-sm tabular-nums text-muted-foreground">
@@ -96,49 +113,59 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({
           >
             {jobsSorted.map((job, idx) => (
               <div key={idx} className="mb-4">
-                <div className="flex items-center gap-x-2">
-                  <span className="h-5 w-0.5 bg-primary block" />
-                  <h4 className="font-medium text-sm">{job.title}</h4>
-                </div>
-                {job.subtitle && (
-                  <div className="text-xs text-muted-foreground ml-2">
-                    {job.subtitle}
+                <div
+                  className="flex items-center justify-between cursor-pointer"
+                  onClick={(e) => toggleJob(e, idx)}
+                >
+                  <div className="flex items-center gap-x-2">
+                    <span className="h-5 w-0.5 bg-primary block" />
+                    <h4 className="font-medium text-sm">{job.title}</h4>
                   </div>
-                )}
-                {job.badges && job.badges.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mt-1 justify-start ml-2">
-                    {job.badges.map((b, i) => (
-                      <Badge key={i} variant="secondary" className="text-xs">
-                        {b}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-                <div className="text-xs tabular-nums ml-2 mt-1">
-                  {job.period}
+                  <ChevronRightIcon
+                    className={cn(
+                      "size-4 transform transition-transform",
+                      expandedJobs[idx] ? "rotate-90" : "rotate-0"
+                    )}
+                  />
                 </div>
-                {job.description && Array.isArray(job.description) ? (
-                  job.description.length === 1 ? (
-                    <p className="text-xs text-justify ml-2 mt-1 whitespace-pre-line">
-                      {job.description[0]}
-                    </p>
-                  ) : (
-                    <ul className="text-xs text-justify ml-2 mt-1 list-disc list-outside pl-4 space-y-1">
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{
+                    opacity: expandedJobs[idx] ? 1 : 0,
+                    height: expandedJobs[idx] ? 'auto' : 0,
+                  }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  className="overflow-hidden ml-4 mt-2"
+                >
+                  {job.badges && job.badges.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-1">
+                      {job.badges.map((b, i) => (
+                        <Badge key={i} variant="secondary" className="text-xs">
+                          {b}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                  <div className="text-xs tabular-nums mb-1">
+                    {job.period}
+                  </div>
+                  {Array.isArray(job.description) ? (
+                    <ul className="text-xs list-disc pl-4 space-y-1">
                       {job.description.map((line, i) => (
-                        <li key={i} className="text-pretty leading-relaxed text-wrap">
-                          {line}
-                        </li>
+                        <li key={i}>{line}</li>
                       ))}
                     </ul>
-                  )
-                ) : job.description ? (
-                  <p className="text-xs text-justify ml-2 mt-1 whitespace-pre-line">{job.description}</p>
-                ) : null}
+                  ) : (
+                    <p className="text-xs whitespace-pre-line">
+                      {job.description}
+                    </p>
+                  )}
+                </motion.div>
               </div>
             ))}
           </motion.div>
         </div>
       </Card>
-    </a>
+    </div>
   );
 };
