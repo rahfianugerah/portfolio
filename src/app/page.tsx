@@ -38,8 +38,11 @@ const groupedRaw = DATA.work.reduce((acc, item) => {
     title:       item.title,
     subtitle:    item.location,
     period:      `${item.start} - ${item.end ?? "Present"}`,
-    description: item.description,
-    badges:      item.badges,        // ← carry per‑item badges here
+    // Ensure mutable array by cloning readonly arrays
+    description: typeof item.description === 'string'
+      ? item.description
+      : [...item.description],
+    badges:      item.badges,
   });
   return acc;
 }, {} as Record<string, Omit<GroupedCompany, "period">>);
@@ -62,7 +65,6 @@ const groupedWork: GroupedCompany[] = Object.values(groupedRaw).map(group => {
     period: latestJob.period,
   };
 });
-
 
 export default function Page() {
   return (
@@ -133,7 +135,9 @@ export default function Page() {
             const job: JobEntry = {
               title:   edu.degree,
               period:  `${edu.start} - ${edu.end}`,
-              description: edu.description,
+              description: typeof edu.description === 'string'
+                ? edu.description
+                : [...edu.description],
             };
             return (
               <BlurFade key={edu.school} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
@@ -144,7 +148,7 @@ export default function Page() {
                   href={edu.href}
                   period={`${edu.start} - ${edu.end}`}
                   jobs={[job]}
-                  description={edu.description}
+                  description={job.description}
                 />
               </BlurFade>
             );
