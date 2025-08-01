@@ -1,3 +1,4 @@
+import React from "react";
 import { ProjectCard } from "@/components/project-card";
 import { HyperText } from "@/components/magicui/hyper-text";
 import BlurFade from "@/components/magicui/blur-fade";
@@ -12,11 +13,18 @@ export const metadata = {
 };
 
 export default function ProjectPage() {
+    // sequential counter for delay
+    let seq = 0;
+    const nextDelay = () => {
+        seq += 1;
+        return seq * BLUR_FADE_DELAY;
+    };
+
     return (
         <>
             <section id="projects">
                 <div className="space-y-12 w-full py-12">
-                    <BlurFade delay={BLUR_FADE_DELAY * 11}>
+                    <BlurFade delay={nextDelay()}>
                         <div className="flex flex-col items-center justify-center space-y-4 text-center">
                             <div className="space-y-2">
                                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
@@ -31,14 +39,13 @@ export default function ProjectPage() {
                         </div>
                     </BlurFade>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
-                        {DATA.projects.map((project, id) => (
+                        {DATA.projects.map((project) => (
                             <BlurFade
                                 key={project.title}
-                                delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+                                delay={nextDelay()}
                             >
                                 <ProjectCard
                                     href={project.href}
-                                    key={project.title}
                                     title={project.title}
                                     description={project.description}
                                     status={project.status}
@@ -51,15 +58,17 @@ export default function ProjectPage() {
                         ))}
                     </div>
                     <div className="space-y-2">
-                        <p className="text-justify text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                            If you want to see more of my projects check out my GitHub or press the button on the navbar.
-                        </p>
+                        <BlurFade delay={nextDelay()}>
+                            <p className="text-justify text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                                If you want to see more of my projects check out my GitHub or press the button on the navbar.
+                            </p>
+                        </BlurFade>
                     </div>
                 </div>
             </section>
             <section id="certifications">
                 <div className="space-y-12 w-full py-12">
-                    <BlurFade delay={BLUR_FADE_DELAY * 11}>
+                    <BlurFade delay={nextDelay()}>
                         <div className="flex flex-col items-center justify-center space-y-4 text-center">
                             <div className="space-y-2">
                                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
@@ -73,14 +82,16 @@ export default function ProjectPage() {
                             </div>
                         </div>
                     </BlurFade>
-                    <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                        <HyperText>Certified Certificates</HyperText>
-                    </h2>
+                    <BlurFade delay={nextDelay()}>
+                        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                            <HyperText>Certified Certificates</HyperText>
+                        </h2>
+                    </BlurFade>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
-                        {DATA.certifications.map((cert, id) => (
+                        {DATA.certifications.map((cert) => (
                             <BlurFade
                                 key={cert.title}
-                                delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+                                delay={nextDelay()}
                             >
                                 <CertificateCard
                                     title={cert.title}
@@ -94,15 +105,16 @@ export default function ProjectPage() {
                             </BlurFade>
                         ))}
                     </div>
-
-                    <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                        <HyperText>Learning Certificates</HyperText>
-                    </h2>
+                    <BlurFade delay={nextDelay()}>
+                        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                            <HyperText>Learning Certificates</HyperText>
+                        </h2>
+                    </BlurFade>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
-                        {DATA.learning_certificate.map((cert, id) => (
+                        {DATA.learning_certificate.map((cert) => (
                             <BlurFade
                                 key={cert.title}
-                                delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+                                delay={nextDelay()}
                             >
                                 <CertificateCard
                                     title={cert.title}
@@ -117,12 +129,14 @@ export default function ProjectPage() {
                         ))}
                     </div>
                     <div className="space-y-2">
-                        <p className="text-justify text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                            If you want to see more of my certificates check out my LinkedIn or press the button on the navbar.
-                        </p>
+                        <BlurFade delay={nextDelay()}>
+                            <p className="text-justify text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                                If you want to see more of my certificates check out my LinkedIn or press the button on the navbar.
+                            </p>
+                        </BlurFade>
                     </div>
                 </div>
             </section>
         </>
     );
-};
+}
