@@ -1,7 +1,7 @@
 import { Icons } from "@/components/icons";
 import { TbCertificate } from "react-icons/tb";
 import { HomeIcon, NotebookIcon, TerminalIcon } from "lucide-react";
-import fs from 'fs';
+import fs, { read } from 'fs';
 import path from 'path';
 import { title } from "process";
 
@@ -102,8 +102,8 @@ export const DATA = {
       location: "Jakarta, Indonesia",
       title: "Machine Learning Student",
       logoUrl: "/dicoding.jpeg",
-      start: "Mar 2025",
-      end: "Present",
+      start: "April 2024",
+      end: "Aug 2024",
       description: readTxtAsList('dicoding-ml-student.txt'),
     },
     {
@@ -297,8 +297,7 @@ export const DATA = {
       dates: "Jan 2025",
       location: "Jakarta, Indonesia",
       issued: "Bangkit led by Google, Goto, and Traveloka",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('achievements-bangkit.txt'),
       image: "",
       links: [
         {
@@ -313,8 +312,7 @@ export const DATA = {
       dates: "December 2024",
       location: "Jakarta, Indonesia",
       issued: "ai4impact, TerraAI, MobileFaculty",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat inventore minus quam ad accusantium corrupti impedit at voluptates molestiae. Dolorum quae voluptates nisi voluptatibus harum recusandae quasi deleniti vitae?",
+      description: readTxtAsList('achievements-ic3.txt'),
       image: "",
       links: [
         {
