@@ -1,7 +1,0 @@
-Gaining hands-on experience in creating fully functional websites, focusing on both front-end and back-end technologies.
-Learning how to design and plan scalable cloud infrastructures for application development, ensuring high availability and security.
-Mastering the process of deploying ML models to the cloud for integration into applications, enhancing performance and reliability.
-Building web servers to handle REST API requests and efficiently host machine learning models.
-Developing expertise in utilizing GCP tools for cloud deployments, security, and model hosting, while applying best practices in real-world scenarios.
-Successfully led a team to complete application projects on schedule.
-Achieved Distinction Graduate status, recognized within the top 10% of each learning path cohort.

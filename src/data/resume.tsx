@@ -93,7 +93,11 @@ export const DATA = {
       logoUrl: "/dicoding.jpeg",
       start: "Mar 2025",
       end: "Present",
-      description: readTxtAsList('dicoding-external-academy-code-reviewer.txt'),
+      description: [
+        "Reviewing student-led projects, assessing implementation quality, adherence to best practices, and providing detailed feedback to enhance their practical skills.",
+        "Reviewing student submissions across Machine Learning learning path & Google Cloud Professional learning path, providing constructive feedback to enhance learners’ understanding.",
+        "Supporting learners' skill development in leveraging Machine Learning models and Google Cloud platform."
+      ],
     },
     {
       company: "Dicoding Indonesia",
@@ -104,7 +108,15 @@ export const DATA = {
       logoUrl: "/dicoding.jpeg",
       start: "April 2024",
       end: "Aug 2024",
-      description: readTxtAsList('dicoding-ml-student.txt'),
+      description: [
+        "Committed to self-learning and skill development in machine learning for 6 consecutive months.",
+        "Studied and implemented key machine learning fundamentals, including supervised and unsupervised learning.",
+        "Developed deep learning expertise through practical application of neural networks, CNN, RNN, and LSTM.",
+        "Built and deployed multiple end-to-end projects in domains such as Time series forecasting, Image classification, Text classification and Natural Language Processing (NLP), Regression analysis, Clustering and pattern recognition, Predictive modeling and business intelligence.",
+        "Continuously improved coding practices and model performance through experimentation and iteration.",
+        "Completed the Expert MLOps class and successfully passed the final evaluation.",
+        "Gained hands-on experience with model deployment, monitoring, and ML pipeline automation."
+      ],
     },
     {
       company: "Samsung Innovation Campus Batch 6",
@@ -115,7 +127,12 @@ export const DATA = {
       logoUrl: "/sic.jpg",
       start: "Jan 2025",
       end: "Feb 2025",
-      description: readTxtAsList('sic6-trainee.txt'),
+      description: [
+        "Gaining hands-on experience in AI and IoT development by working on real-world projects.",
+        "Exploring various microcontrollers, including ESP32, to understand their capabilities and applications.",
+        "Designing and building IoT kit devices to develop practical and innovative solutions.",
+        "Applying design thinking principles to create user-centric IoT solutions that address real-world challenges."
+      ],
     },
     {
       company: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
@@ -126,7 +143,13 @@ export const DATA = {
       logoUrl: "/bangkit.jpg",
       start: "Nov 2024",
       end: "Dec 2024",
-      description: readTxtAsList('cc-bangkit-cpl.txt'),
+      description: [
+        "Successfully led a team to complete application projects on schedule.",
+        "Efficiently guided team members to align with project timelines and deliverables.",
+        "Provided continuous support to team members to ensure smooth project execution.",
+        "Effectively managed and directed the overall progress of projects.",
+        "Demonstrated strong leadership in driving project success and fostering team collaboration."
+      ],
     },
     {
       company: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
@@ -137,7 +160,15 @@ export const DATA = {
       logoUrl: "/bangkit.jpg",
       start: "Aug 2024",
       end: "Jan 2025",
-      description: readTxtAsList('cc-bangkit.txt'),
+      description: [
+        "Gaining hands-on experience in creating fully functional websites, focusing on both front-end and back-end technologies.",
+        "Learning how to design and plan scalable cloud infrastructures for application development, ensuring high availability and security.",
+        "Mastering the process of deploying ML models to the cloud for integration into applications, enhancing performance and reliability.",
+        "Building web servers to handle REST API requests and efficiently host machine learning models.",
+        "Developing expertise in utilizing GCP tools for cloud deployments, security, and model hosting, while applying best practices in real-world scenarios.",
+        "Successfully led a team to complete application projects on schedule.",
+        "Achieved Distinction Graduate status, recognized within the top 10% of each learning path cohort."
+      ],
     },
     {
       company: "Computer Laboratory Assistant Faculty of Computer Science, Mercu Buana University",
@@ -148,7 +179,12 @@ export const DATA = {
       logoUrl: "/aslab.jpg",
       start: "Jan 2024",
       end: "Feb 2025",
-      description: readTxtAsList('clab-be-rnd.txt'),
+      description: [
+        "Provide guidance and support to members of the Back-End learning path, ensuring they understand core concepts and good practices.",
+        "Conduct regular one-on-one and group mentoring sessions to address specific challenges and foster a collaborative learning environment.",
+        "Create and manage a structured curriculum to facilitate progressive learning and skill acquisition.",
+        "Coordinate activities and projects among members to promote teamwork and practical application of back-end development skills."
+      ],
     },
     {
       company: "Computer Laboratory Assistant Faculty of Computer Science, Mercu Buana University",
@@ -159,7 +195,13 @@ export const DATA = {
       logoUrl: "",
       start: "Jan 2024",
       end: "Feb 2025",
-      description: readTxtAsList('clab-senior.txt'),
+      description: [
+        "Provided on-the-spot technical support to students and faculty for any computer-related issues during class time.",
+        "Assisted in troubleshooting software and hardware problems, ensuring smooth operation of classes.",
+        "Supported lecturers during lab sessions by preparing necessary equipment, setting up software, and providing technical assistance.",
+        "Trained and mentored new laboratory assistants, guiding them through their roles and responsibilities to ensure high performance.",
+        "Helped new laboratory assistants to understand technical procedures, lab protocols, and best practices, fostering a collaborative and efficient lab environment."
+      ],
     },
     {
       company: "Computer Laboratory Assistant Faculty of Computer Science, Mercu Buana University",
@@ -170,7 +212,15 @@ export const DATA = {
       logoUrl: "",
       start: "Apr 2023",
       end: "Jan 2024",
-      description: readTxtAsList('clab-junior.txt'),
+      description: [
+        "Ensured the proper functioning and upkeep of all computer hardware and peripherals within the laboratory.",
+        "Performed regular maintenance tasks, including software updates, system backups, and hardware troubleshooting.",
+        "Provided on-the-spot technical support to students and faculty for any computer-related issues during class time.",
+        "Diagnosed and resolved network issues promptly to minimize downtime and disruption.",
+        "Assisted in troubleshooting software and hardware problems, ensuring smooth operation of classes.",
+        "Supported lecturers during lab sessions by preparing necessary equipment, setting up software, and providing technical assistance.",
+        "Facilitated the teaching process by addressing any technical challenges that occurred during lectures."
+      ],
     },
     {
       company: "Google Developer Student Club, Mercu Buana University",
@@ -181,7 +231,12 @@ export const DATA = {
       logoUrl: "/gdsc.jpg",
       start: "Dec 2023",
       end: "Oct 2024",
-      description: readTxtAsList('gdsc-member.txt'),
+      description: [
+        "Participated in a community of student developers focused on learning and promoting technology, particularly Google Developer technologies.",
+        "Bridged the gap between practical and theoretical knowledge through various hands-on activities.",
+        "Creating networking opportunities with other members to foster collaboration and knowledge sharing.",
+        "Following workshops to continuously develop and update new tech skills."
+      ],
     },
     {
       company: "Digital Talent Scholarship",
@@ -192,7 +247,12 @@ export const DATA = {
       logoUrl: "/dts.jpg",
       start: "Feb 2024",
       end: "Mar 2024",
-      description: readTxtAsList('dts-aws.txt'),
+      description: [
+        "Mastering the effective use of AWS services for various needs.",
+        "Creating and designing cloud architecture on the AWS platform according to best practices.",
+        "Understanding the basics of AWS clearly and deeply.",
+        "Successfully achieving the international AWS Certified Cloud Practitioner certification.",
+      ],
     },
   ],
   education: [
@@ -203,7 +263,11 @@ export const DATA = {
       logoUrl: "/umb.jpg",
       start: "2022",
       end: "2026 (Expected)",
-      description: readTxtAsList('umb.txt'),
+      description: [
+        "GPA: 3.87/4",
+        "Pursuing a Bachelor's degree in Computer Science majoring in Information Systems, with a strong focus on the intersection of technology, data, and business processes. The program emphasizes system analysis and design, database management, enterprise systems, and IT project management — equipping me with both technical and managerial competencies to build, manage, and optimize digital solutions in modern organizations.",
+        "Relevant Course Work: Mathematics, Linear Algebra, Statistics and Probability, Advanced Statistic, Algorithm and Programming, Algorithm and Data Structure, Database Systems, Database Implementation, Object Oriented Analysis, Advanced Programming, Software Engineering, Data Warehouse & Big Data, PL/SQL Programming, Data Visualization, Process Mining, Data Simulation, Data Analytic I, Data Analytic II, Web Programming, Web Enterprise Programming, Project Management Information System, Information System Development Project"
+      ],
     },
     {
       school: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
@@ -212,7 +276,10 @@ export const DATA = {
       logoUrl: "/bangkit.jpg",
       start: "Aug 2024",
       end: "Jan 2025",
-      description: readTxtAsList('bangkit-cc-edu.txt'),
+      description: [
+        "Selected among 4,636 candidates out of 45,841 applicants for the Google GoTo & Traveloka–led program, where I deepened my technical expertise through hands‑on workshops in cloud platforms, software engineering best practices, and emerging technologies.",
+        "Achieved Distinction Graduate status, recognized within the top 10% of each learning path cohort."
+      ],
     },
     {
       school: "Dicoding Indonesia",
@@ -221,7 +288,11 @@ export const DATA = {
       logoUrl: "/dicoding.jpeg",
       start: "Mar 2024",
       end: "Aug 2024",
-      description: readTxtAsList('dicoding-edu.txt'),
+      description: [
+        "Dedicated six‑month self‑directed learning journey focused on the Machine Learning Engineer career path, mastering core concepts of machine learning and hands‑on implementation of the models.",
+        "Studied and implemented key machine learning fundamentals, including supervised and unsupervised learning.",
+        "Developed deep learning expertise."
+      ],
     },
   ],
   projects: [
@@ -282,7 +353,7 @@ export const DATA = {
       dates: "July 2025",
       location: "Jakarta, Indonesia",
       issued: "INNOPA, Mercu Buana University",
-      description: readTxtAsList('achievements-pin2025.txt'),
+      description: "Awarded the Gold Medal at the 2025 National Innovation Exhibition (Pekan Inovasi Nasional) for excellence in product innovation, recognizing outstanding creativity and technical achievement.",
       image: "",
       links: [
         {
@@ -297,7 +368,7 @@ export const DATA = {
       dates: "Jan 2025",
       location: "Jakarta, Indonesia",
       issued: "Bangkit led by Google, Goto, and Traveloka",
-      description: readTxtAsList('achievements-bangkit.txt'),
+      description: "Graduated with Distinction by ranking in the top 10% of participants across every learning-path cohort, demonstrating exceptional academic performance and dedication.",
       image: "",
       links: [
         {
@@ -312,7 +383,7 @@ export const DATA = {
       dates: "December 2024",
       location: "Jakarta, Indonesia",
       issued: "ai4impact, TerraAI, MobileFaculty",
-      description: readTxtAsList('achievements-ic3.txt'),
+      description: "Successfully achieve 4th place out of 150+ participants in the Indonesian Chatbot Championship Challenge (IC3) 2024, focusing on Generative AI.I developed an innovative chatbot leveraging Smojo.AI and OpenAI API to simplify and enhance coding education.The chatbot empowers users to learn programming effortlessly through interactive and concise guidance, bridging the gap in educational accessibility.",
       image: "",
       links: [
         {

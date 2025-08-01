@@ -1,4 +1,0 @@
-Gaining hands-on experience in AI and IoT development by working on real-world projects.
-Exploring various microcontrollers, including ESP32, to understand their capabilities and applications.
-Designing and building IoT kit devices to develop practical and innovative solutions.
-Applying design thinking principles to create user-centric IoT solutions that address real-world challenges.

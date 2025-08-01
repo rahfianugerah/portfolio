@@ -1,7 +1,0 @@
-Committed to self-learning and skill development in machine learning for 6 consecutive months.
-Studied and implemented key machine learning fundamentals, including supervised and unsupervised learning.
-Developed deep learning expertise through practical application of neural networks, CNN, RNN, and LSTM.
-Built and deployed multiple end-to-end projects in domains such as Time series forecasting, Image classification, Text classification and Natural Language Processing (NLP), Regression analysis, Clustering and pattern recognition, Predictive modeling and business intelligence.
-Continuously improved coding practices and model performance through experimentation and iteration.
-Completed the Expert MLOps class and successfully passed the final evaluation.
-Gained hands-on experience with model deployment, monitoring, and ML pipeline automation.
