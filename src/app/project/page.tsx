@@ -1,6 +1,5 @@
 import React from "react";
 import { ProjectCard } from "@/components/project-card";
-import { HyperText } from "@/components/magicui/hyper-text";
 import BlurFade from "@/components/magicui/blur-fade";
 import { DATA } from "@/data/resume";
 import { CertificateCard } from "@/components/certificate-card";
@@ -28,7 +27,7 @@ export default function ProjectPage() {
                         <div className="flex flex-col items-center justify-center space-y-4 text-center">
                             <div className="space-y-2">
                                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                                    <HyperText>Rahfi's Projects</HyperText>
+                                    Rahfi's Projects
                                 </h2>
                                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                                     I have worked on various projects, both personal and collaborative,
@@ -72,7 +71,7 @@ export default function ProjectPage() {
                         <div className="flex flex-col items-center justify-center space-y-4 text-center">
                             <div className="space-y-2">
                                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                                    <HyperText>Rahfi's Certifications</HyperText>
+                                    Rahfi's Certifications
                                 </h2>
                                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                                     I have obtained various certifications that demonstrate my expertise
@@ -83,9 +82,9 @@ export default function ProjectPage() {
                         </div>
                     </BlurFade>
                     <BlurFade delay={nextDelay()}>
-                        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                            <HyperText>Certified Certificates</HyperText>
-                        </h2>
+                        <h3 className="text-xl font-bold tracking-tighter">
+                            Certified Certificates
+                        </h3>
                     </BlurFade>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
                         {DATA.certifications.map((cert) => (
@@ -106,9 +105,9 @@ export default function ProjectPage() {
                         ))}
                     </div>
                     <BlurFade delay={nextDelay()}>
-                        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                            <HyperText>Learning Certificates</HyperText>
-                        </h2>
+                        <h3 className="text-xl font-bold tracking-tighter">
+                            Learning Certificates
+                        </h3>
                     </BlurFade>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
                         {DATA.learning_certificate.map((cert) => (

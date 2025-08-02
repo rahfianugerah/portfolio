@@ -1,5 +1,4 @@
 import BlurFade from "@/components/magicui/blur-fade";
-import { HyperText } from "@/components/magicui/hyper-text";
 import { HackathonCard } from "@/components/hardwordk-card";
 import { ResumeCard } from "@/components/resume-card";
 import { Badge } from "@/components/ui/badge";
@@ -78,9 +77,7 @@ export default function Page() {
                   Welcome to Rahfi's Space
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter">
-                  <HyperText>
                     Hello, World! I&apos;m Rahfi
-                  </HyperText>
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   {DATA.description}
@@ -93,7 +90,7 @@ export default function Page() {
       <section id="about">
         <BlurFade delay={BLUR_FADE_DELAY * 3}>
           <h2 className="text-xl font-bold">
-            <HyperText>About Rahfi.</HyperText>
+            About Rahfi.
           </h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
@@ -106,7 +103,7 @@ export default function Page() {
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
             <h2 className="text-xl font-bold">
-              <HyperText>Rahfi's Experiences.</HyperText>
+              Rahfi's Experiences.
             </h2>
           </BlurFade>
           {groupedWork.map((company, id) => (
@@ -128,7 +125,7 @@ export default function Page() {
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 7}>
             <h2 className="text-xl font-bold">
-              <HyperText>Rahfi's Education.</HyperText>
+              Rahfi's Education.
             </h2>
           </BlurFade>
           {DATA.education.map((edu, id) => {
@@ -159,7 +156,7 @@ export default function Page() {
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
             <h2 className="text-xl font-bold">
-              <HyperText>Rahfi's Specialties.</HyperText>
+              Rahfi's Specialties.
             </h2>
             <IconCloudSpecialties/>
           </BlurFade>
@@ -214,7 +211,7 @@ export default function Page() {
                   Hardwork
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter">
-                  <HyperText>Achievements</HyperText>
+                  Achievements
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   I have participated in various events, where I have
@@ -254,9 +251,7 @@ export default function Page() {
                 Contact
               </div>
               <h2 className="text-3xl font-bold tracking-tighter">
-                <HyperText>
-                  Let&apos;s Connect
-                </HyperText>
+                Let&apos;s Connect
               </h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Want to chat? Just shoot me a dm
