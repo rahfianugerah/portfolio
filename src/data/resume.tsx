@@ -1,20 +1,11 @@
 import { Icons } from "@/components/icons";
 import { TbCertificate } from "react-icons/tb";
 import { HomeIcon, NotebookIcon, TerminalIcon } from "lucide-react";
-import fs, { read } from 'fs';
-import path from 'path';
-import { title } from "process";
-
-function readTxtAsList(filename: string): string[] {
-  const filePath = path.join(process.cwd(), 'src', 'data', 'desc', filename);
-  const content = fs.readFileSync(filePath, 'utf-8').trim();
-  return content.split('\n').map(line => line.trim()).filter(Boolean);
-}
 
 export const DATA = {
   name: "Rahfi",
   initials: "R",
-  url: "https://rahfi.space",
+  url: "https://rahfi.pro",
   location: "Jakarta, Indonesia",
   locationLink: "https://www.google.com/maps/place/jakarta",
   description:
@@ -398,6 +389,7 @@ export const DATA = {
     {
       title: "AWS Certified Cloud Practitioner",
       issued: "Amazon Web Services (AWS)",
+      category: ["Cloud Computing"],
       links: [
         {
           title: "Certificate",
@@ -409,6 +401,7 @@ export const DATA = {
     {
       title: "Alibaba Cloud Certified Big Data Associate",
       issued: "Alibaba Cloud",
+      category: ["Cloud Computing", "Big Data"],
       links: [
         {
           title: "Certificate",
@@ -422,6 +415,7 @@ export const DATA = {
     {
       title: "MLOps (Machine Learning Operations)",
       issued: "Dicoding Indonesia",
+      category: ["Machine Learning"],
       links: [
         {
           title: "Certificate",
@@ -433,6 +427,7 @@ export const DATA = {
     {
       title: " Applied Machine Learning (Machine Learning Terapan)",
       issued: "Dicoding Indonesia",
+      category: ["Machine Learning"],
       links: [
         {
           title: "Certificate",
@@ -444,6 +439,7 @@ export const DATA = {
     {
       title: "Learn Applied Machine Learning with Google Cloud (Belajar Penerapan Machine Learning dengan Google Cloud)",
       issued: "Dicoding Indonesia",
+      category: ["Machine Learning", "Cloud Computing"],
       links: [
         {
           title: "Certificate",
@@ -455,6 +451,7 @@ export const DATA = {
     {
       title: "Architecting on AWS (Membangun Arsitektur Cloud di AWS)",
       issued: "Dicoding Indonesia",
+      category: ["Cloud Computing"],
       links: [
         {
           title: "Certificate",
@@ -466,6 +463,7 @@ export const DATA = {
     {
       title: "Google Cybersecurity Specialization",
       issued: "Coursera",
+      category: ["Cybersecurity"],
       links: [
         {
           title: "Certificate",
