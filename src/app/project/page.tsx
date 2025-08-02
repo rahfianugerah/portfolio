@@ -2,7 +2,7 @@ import React from "react";
 import { ProjectCard } from "@/components/project-card";
 import BlurFade from "@/components/magicui/blur-fade";
 import { DATA } from "@/data/resume";
-import { CertificateCard } from "@/components/certificate-card";
+import { CertificateSection } from "@/components/certificate-card";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -39,10 +39,7 @@ export default function ProjectPage() {
                     </BlurFade>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
                         {DATA.projects.map((project) => (
-                            <BlurFade
-                                key={project.title}
-                                delay={nextDelay()}
-                            >
+                            <BlurFade key={project.title} delay={nextDelay()}>
                                 <ProjectCard
                                     href={project.href}
                                     title={project.title}
@@ -65,6 +62,7 @@ export default function ProjectPage() {
                     </div>
                 </div>
             </section>
+
             <section id="certifications">
                 <div className="space-y-12 w-full py-12">
                     <BlurFade delay={nextDelay()}>
@@ -81,59 +79,13 @@ export default function ProjectPage() {
                             </div>
                         </div>
                     </BlurFade>
+
                     <BlurFade delay={nextDelay()}>
-                        <h3 className="text-xl font-bold tracking-tighter">
-                            Certified Certificates
-                        </h3>
+                        <CertificateSection
+                            certifications={DATA.certifications}
+                            learningCertificates={DATA.learning_certificate}
+                        />
                     </BlurFade>
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
-                        {DATA.certifications.map((cert) => (
-                            <BlurFade
-                                key={cert.title}
-                                delay={nextDelay()}
-                            >
-                                <CertificateCard
-                                    title={cert.title}
-                                    issued={cert.issued}
-                                    links={cert.links?.map(link => ({
-                                        icon: link.icon,
-                                        href: link.href,
-                                        type: link.title ?? "Certificate"
-                                    }))}
-                                />
-                            </BlurFade>
-                        ))}
-                    </div>
-                    <BlurFade delay={nextDelay()}>
-                        <h3 className="text-xl font-bold tracking-tighter">
-                            Learning Certificates
-                        </h3>
-                    </BlurFade>
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
-                        {DATA.learning_certificate.map((cert) => (
-                            <BlurFade
-                                key={cert.title}
-                                delay={nextDelay()}
-                            >
-                                <CertificateCard
-                                    title={cert.title}
-                                    issued={cert.issued}
-                                    links={cert.links?.map(link => ({
-                                        icon: link.icon,
-                                        href: link.href,
-                                        type: link.title ?? "Certificate"
-                                    }))}
-                                />
-                            </BlurFade>
-                        ))}
-                    </div>
-                    <div className="space-y-2">
-                        <BlurFade delay={nextDelay()}>
-                            <p className="text-justify text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                If you want to see more of my certificates check out my LinkedIn or press the button on the navbar.
-                            </p>
-                        </BlurFade>
-                    </div>
                 </div>
             </section>
         </>
