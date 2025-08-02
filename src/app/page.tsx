@@ -1,5 +1,5 @@
 import BlurFade from "@/components/magicui/blur-fade";
-import { HackathonCard } from "@/components/hardwordk-card";
+import { HackathonCard } from "@/components/hardwork-card";
 import { ResumeCard } from "@/components/resume-card";
 import { Badge } from "@/components/ui/badge";
 import { DATA } from "@/data/resume";
