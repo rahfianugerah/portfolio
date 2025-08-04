@@ -1,10 +1,14 @@
 import Navbar from "@/components/navbar";
+import BlurFade from "@/components/magicui/blur-fade";
 import { ThemeProvider } from "@/components/theme-provider";
+import Clock from "@/components/clock";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
+
 import type { Metadata } from "next";
-import { Inter as FontSans, Source_Code_Pro, Poppins} from "next/font/google";
+
+import { Inter as FontSans, Source_Code_Pro, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 
 export const inter = FontSans({
@@ -22,11 +26,18 @@ export const sourceCodePro = Source_Code_Pro({
   display: "swap",
 });
 
+export const bebasNeue = Bebas_Neue({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-bebas",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
   title: {
     default: DATA.name,
-    template: `%s | ${DATA.name}`,
+    template: `%s - ${DATA.name}`,
   },
   description: DATA.description,
   openGraph: {
@@ -64,20 +75,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={cn(inter.variable, bebasNeue.variable)} suppressHydrationWarning>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6",
-          inter.variable
+
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="dark">
+          <BlurFade>
+          <div className="flex items-center justify-between">
+            <a
+              href="https://rahfi.pro"
+              className="font-bebas inline-block text-2xl"
+            >
+              rahfi<span className="text-[#FF0000]">.</span>pro
+            </a>
+            <Clock />
+          </div>
+          </BlurFade>
           <TooltipProvider delayDuration={0}>
             {children}
             <Navbar />
           </TooltipProvider>
         </ThemeProvider>
-        <footer className="mt-12 text-center text-sm text-muted-foreground">
+        <footer className="mt-12 text-center text-sm font-bebas text-muted-foreground">
           <p>
             © {new Date().getFullYear()} Naufal Rahfi Anugerah | All rights reserved.
           </p>
