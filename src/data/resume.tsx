@@ -54,21 +54,23 @@ export const DATA = {
     { href: "/blog", icon: NotebookIcon, label: "Blog" },
   ],
   contact: {
-    email: "hello@example.com",
-    tel: "+123456789",
     social: {
       GitHub: {
         name: "GitHub",
         url: "https://github.com/rahfianugerah",
         icon: Icons.github,
-
+        navbar: true,
+      },
+      CV: {
+        name: "CV",
+        url: "https://drive.google.com/file/d/1aDMypG0tqlbVuBAMR_Fc2ZQ5Bxz34LSe/view?usp=sharing",
+        icon: Icons.file,
         navbar: true,
       },
       LinkedIn: {
         name: "LinkedIn",
         url: "https://www.linkedin.com/in/rahfianugerah/",
         icon: Icons.linkedin,
-
         navbar: true,
       },
     },
