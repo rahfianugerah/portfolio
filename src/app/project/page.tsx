@@ -7,7 +7,7 @@ import { CertificateSection } from "@/components/certificate-card";
 const BLUR_FADE_DELAY = 0.04;
 
 export const metadata = {
-    title: "Projects",
+    title: "Project",
     description: "A showcase of my work and collaborations.",
 };
 
