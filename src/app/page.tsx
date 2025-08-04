@@ -74,7 +74,7 @@ export default function Page() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                  Welcome to Rahfi&apos;s Space
+                  Welcome to My Website
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter">
                     Hello, World! I&apos;m Rahfi

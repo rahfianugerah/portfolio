@@ -8,10 +8,8 @@ export const DATA = {
   url: "https://rahfi.pro",
   location: "Jakarta, Indonesia",
   locationLink: "https://www.google.com/maps/place/jakarta",
-  description:
-    "A versatile and highly adaptable #Software/AI Engineer with a rapid learning curve, specializing in AI, Machine Learning, Cloud Computing, and Website Development.",
-  summary:
-    "I'm a versatile and highly adaptable #Software/AI Engineer with a rapid learning curve, specializing in AI, Machine Learning, Cloud Computing, and Website Development. With a strong foundation in cutting-edge technologies, I am passionate about leveraging my expertise to design and implement innovative, scalable solutions.",
+  description: "A versatile and highly adaptable #Software/AI Engineer with a rapid learning curve, specializing in AI, Machine Learning, Cloud Computing, and Website Development.",
+  summary: "Final-year Computer Science student at Mercu Buana University, majoring in Information Systems and Back-End focused Software/AI Engineer, I architect and implement robust APIs and services with Flask and FastAPI, deploy containerized, serverless solutions on Google Cloud, AWS and Azure, also design predictive models such as regression, classification, clustering, and neural networks using TensorFlow and Scikit-learn. I also leverage Next.js for lightweight frontend interfaces when required. Known for solving complex challenges and delivering scalable, high-impact machine-learning and backend systems.",
   avatarUrl: "",
   programmingLanguages: [
     "Python",
@@ -22,11 +20,9 @@ export const DATA = {
   ],
   frameworks: [
     "TensorFlow",
-    "Keras",
-    "PyTorch",
+    "Scikit-learn",
     "Pandas",
     "NumPy",
-    "Seaborn",
     "Flask",
     "FastAPI",
     "Next.js",

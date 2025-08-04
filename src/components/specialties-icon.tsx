@@ -11,8 +11,6 @@ import {
   SiCplusplus,
   SiC,
   SiTensorflow,
-  SiKeras,
-  SiPytorch,
   SiPandas,
   SiNumpy,
   SiScikitlearn,
@@ -34,7 +32,7 @@ import {
   SiGnubash,
 } from "react-icons/si";
 import { FaAws, FaHtml5, FaCss3Alt } from "react-icons/fa";
-import { VscAzure } from "react-icons/vsc";
+import { VscAzure, VscVscode } from "react-icons/vsc";
 
 const ICON_SIZE = 75;
 
@@ -50,8 +48,6 @@ const ICON_DEFINITIONS: Array<{
   { key: "html", Component: FaHtml5 },
   { key: "css", Component: FaCss3Alt },
   { key: "tensorflow", Component: SiTensorflow },
-  { key: "keras", Component: SiKeras },
-  { key: "pytorch", Component: SiPytorch },
   { key: "pandas", Component: SiPandas },
   { key: "numpy", Component: SiNumpy },
   { key: "scikitlearn", Component: SiScikitlearn },
@@ -73,6 +69,7 @@ const ICON_DEFINITIONS: Array<{
   { key: "postman", Component: SiPostman },
   { key: "linux", Component: SiLinux },
   { key: "bash", Component: SiGnubash },
+  { key: "vscode", Component: VscVscode },
 ];
 
 export function IconCloudSpecialties() {
