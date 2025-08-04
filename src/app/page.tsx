@@ -74,7 +74,7 @@ export default function Page() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                  Welcome to Rahfi's Space
+                  Welcome to Rahfi&apos;s Space
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter">
                     Hello, World! I&apos;m Rahfi
@@ -103,7 +103,7 @@ export default function Page() {
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
             <h2 className="text-xl font-bold">
-              Rahfi's Experiences.
+              Rahfi&apos;s Experiences.
             </h2>
           </BlurFade>
           {groupedWork.map((company, id) => (
@@ -125,7 +125,7 @@ export default function Page() {
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 7}>
             <h2 className="text-xl font-bold">
-              Rahfi's Education.
+              Rahfi&apos;s Education.
             </h2>
           </BlurFade>
           {DATA.education.map((edu, id) => {
@@ -156,7 +156,7 @@ export default function Page() {
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
             <h2 className="text-xl font-bold">
-              Rahfi's Specialties.
+              Rahfi&apos;s Specialties.
             </h2>
             <IconCloudSpecialties/>
           </BlurFade>
