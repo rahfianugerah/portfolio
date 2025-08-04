@@ -21,6 +21,8 @@ const config = {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+        bebas: ["var(--font-bebas)", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
