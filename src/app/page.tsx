@@ -205,7 +205,7 @@ export default function Page() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bebas">
-                  Rahfi<span className="text-[#FF0000]">'</span>s <span className="text-[#FF0000]">|</span> Achievements<span className="text-[#FF0000]">.</span>
+                  Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Achievements<span className="text-[#FF0000]">.</span>
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   I have participated in various events, where I have
