@@ -73,11 +73,8 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 2}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                  Welcome to My Website
-                </div>
-                <h2 className="text-3xl font-bold tracking-tighter">
-                    Hello, World! I&apos;m Rahfi
+                <h2 className="text-3xl font-bebas">
+                    Hello<span className="text-[#FF0000]">,</span> World<span className="text-[#FF0000]">.</span> I<span className="text-[#FF0000]">&apos;</span>m Rahfi<span className="text-[#FF0000]">.</span>
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   {DATA.description}
@@ -89,12 +86,12 @@ export default function Page() {
       </section>
       <section id="about">
         <BlurFade delay={BLUR_FADE_DELAY * 3}>
-          <h2 className="text-xl font-bold">
-            About Rahfi.
+          <h2 className="text-2xl font-bebas">
+            About <span className="text-[#FF0000]">|</span> Rahfi<span className="text-[#FF0000]">.</span>
           </h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
-          <Markdown className="prose max-w-full text-pretty text-justify font-sans text-sm text-muted-foreground dark:prose-invert">
+          <Markdown className="font-garamond prose max-w-full text-pretty text-justify font-sans text-sm text-muted-foreground dark:prose-invert">
             {DATA.summary}
           </Markdown>
         </BlurFade>
@@ -102,8 +99,8 @@ export default function Page() {
       <section id="work">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
-            <h2 className="text-xl font-bold">
-              Rahfi&apos;s Experiences.
+            <h2 className="text-2xl font-bebas">
+              Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Experiences<span className="text-[#FF0000]">.</span>
             </h2>
           </BlurFade>
           {groupedWork.map((company, id) => (
@@ -124,8 +121,8 @@ export default function Page() {
       <section id="education">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 7}>
-            <h2 className="text-xl font-bold">
-              Rahfi&apos;s Education.
+            <h2 className="text-2xl font-bebas">
+              Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Education<span className="text-[#FF0000]">.</span>
             </h2>
           </BlurFade>
           {DATA.education.map((edu, id) => {
@@ -155,8 +152,8 @@ export default function Page() {
       <section id="skills">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h2 className="text-xl font-bold">
-              Rahfi&apos;s Specialties.
+            <h2 className="text-2xl font-bebas">
+              Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Specialties<span className="text-[#FF0000]">.</span>
             </h2>
             <IconCloudSpecialties/>
           </BlurFade>
@@ -207,11 +204,8 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 13}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                  Hardwork
-                </div>
-                <h2 className="text-3xl font-bold tracking-tighter">
-                  Achievements
+                <h2 className="text-3xl font-bebas">
+                  Rahfi<span className="text-[#FF0000]">'</span>s <span className="text-[#FF0000]">|</span> Achievements<span className="text-[#FF0000]">.</span>
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   I have participated in various events, where I have
@@ -247,18 +241,15 @@ export default function Page() {
         <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
           <BlurFade delay={BLUR_FADE_DELAY * 16}>
             <div className="space-y-3">
-              <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                Contact
-              </div>
-              <h2 className="text-3xl font-bold tracking-tighter">
-                Let&apos;s Connect
+              <h2 className="text-3xl font-bebas">
+                Let<span className="text-[#FF0000]">&apos;</span>s Connect<span className="text-[#FF0000]">.</span>
               </h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Want to chat? Just shoot me a dm
                 with a direct question on {" "}
                 <Link
                   href={DATA.contact.social.LinkedIn.url}
-                  className="text-blue-500 hover:underline"
+                  className="text-primary"
                 >
                   LinkedIn
                 </Link>{" "}
