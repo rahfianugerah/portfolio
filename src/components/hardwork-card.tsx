@@ -1,5 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+// Removed incorrect import of image component
 
 interface Props {
   title: string;
@@ -20,12 +22,19 @@ export function HackathonCard({
   description,
   dates,
   location,
+  image,
   issued,
   links,
 }: Props) {
   return (
     <li className="relative ml-10 py-4">
       <div className="flex flex-1 flex-col justify-start gap-1">
+      <div className="absolute -left-16 top-2 flex items-center justify-center bg-white rounded-full">
+        <Avatar className="border size-12 m-auto">
+          <AvatarImage src={image} alt={title} className="object-contain" />
+          <AvatarFallback>{title[0]}</AvatarFallback>
+        </Avatar>
+      </div>
         {dates && (
           <time className="text-xs text-muted-foreground">{dates}</time>
         )}
