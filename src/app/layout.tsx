@@ -36,7 +36,7 @@ export const bebasNeue = Bebas_Neue({
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
   title: {
-    default: "Rahi's Portfolio",
+    default: "Rahfi's Portfolio",
     template: `%s - Rahfi's Portfolio`,
   },
   description: DATA.description,
