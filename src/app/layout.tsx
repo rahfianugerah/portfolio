@@ -36,8 +36,8 @@ export const bebasNeue = Bebas_Neue({
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
   title: {
-    default: DATA.name,
-    template: `%s - ${DATA.name}`,
+    default: "Rahi's Portfolio",
+    template: `%s - Rahfi's Portfolio`,
   },
   description: DATA.description,
   openGraph: {
@@ -59,14 +59,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  twitter: {
-    title: `${DATA.name}`,
-    card: "summary_large_image",
-  },
-  verification: {
-    google: "",
-    yandex: "",
-  },
 };
 
 export default function RootLayout({
@@ -75,7 +67,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(inter.variable, bebasNeue.variable)} suppressHydrationWarning>
+    <html lang="en" className={cn(inter.variable, bebasNeue.variable )} suppressHydrationWarning>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6",
