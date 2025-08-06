@@ -8,7 +8,7 @@ export const DATA = {
   url: "https://rahfi.pro",
   location: "Jakarta, Indonesia",
   locationLink: "https://www.google.com/maps/place/jakarta",
-  description: "A versatile and highly adaptable #Software/AI Engineer with a rapid learning curve, specializing in AI, Machine Learning, Cloud Computing, and Website Development.",
+  description: "A versatile and highly adaptable Software/AI Engineer with a rapid learning curve, specializing in AI, Machine Learning, Cloud Computing, and Website Development.",
   summary: "Final-year Computer Science student at Mercu Buana University, majoring in Information Systems and Back-End focused Software/AI Engineer, I architect and implement robust APIs and services with Flask and FastAPI, deploy containerized, serverless solutions on Google Cloud, AWS and Azure, also design predictive models such as regression, classification, clustering, and neural networks using TensorFlow and Scikit-learn. I also leverage Next.js for lightweight frontend interfaces when required. Known for solving complex challenges and delivering scalable, high-impact machine-learning and backend systems.",
   avatarUrl: "",
   programmingLanguages: [
@@ -343,7 +343,7 @@ export const DATA = {
       location: "Jakarta, Indonesia",
       issued: "INNOPA, Mercu Buana University",
       description: "Awarded the Gold Medal at the 2025 National Innovation Exhibition (Pekan Inovasi Nasional) for excellence in product innovation, recognizing outstanding creativity and technical achievement.",
-      image: "",
+      image: "/pin2025.jpg",
       links: [
         {
           title: "Certificate",
@@ -358,7 +358,7 @@ export const DATA = {
       location: "Jakarta, Indonesia",
       issued: "Bangkit led by Google, Goto, and Traveloka",
       description: "Graduated with Distinction by ranking in the top 10% of participants across every learning-path cohort, demonstrating exceptional academic performance and dedication.",
-      image: "",
+      image: "/bangkit.jpg",
       links: [
         {
           title: "Certificate",
@@ -373,7 +373,7 @@ export const DATA = {
       location: "Jakarta, Indonesia",
       issued: "ai4impact, TerraAI, MobileFaculty",
       description: "Successfully achieve 4th place out of 150+ participants in the Indonesian Chatbot Championship Challenge (IC3) 2024, focusing on Generative AI.I developed an innovative chatbot leveraging Smojo.AI and OpenAI API to simplify and enhance coding education.The chatbot empowers users to learn programming effortlessly through interactive and concise guidance, bridging the gap in educational accessibility.",
-      image: "",
+      image: "/ic32024.png",
       links: [
         {
           title: "Certificate",
