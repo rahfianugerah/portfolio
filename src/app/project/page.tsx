@@ -27,7 +27,7 @@ export default function ProjectPage() {
                         <div className="flex flex-col items-center justify-center space-y-4 text-center">
                             <div className="space-y-2">
                                 <h2 className="text-3xl font-bebas">
-                                    Rahfi<span className="text-[#FF0000]">&apos;</span>s Projects<span className="text-[#FF0000]">.</span>
+                                    Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Projects<span className="text-[#FF0000]">.</span>
                                 </h2>
                                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                                     I have worked on various projects, both personal and collaborative,
@@ -69,7 +69,7 @@ export default function ProjectPage() {
                         <div className="flex flex-col items-center justify-center space-y-4 text-center">
                             <div className="space-y-2">
                                 <h2 className="text-3xl font-bebas">
-                                    Rahfi<span className="text-[#FF0000]">&apos;</span>s Certifications<span className="text-[#FF0000]">.</span>
+                                    Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Certifications<span className="text-[#FF0000]">.</span>
                                 </h2>
                                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                                     I have obtained various certifications that demonstrate my expertise
