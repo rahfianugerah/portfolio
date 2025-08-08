@@ -17,7 +17,7 @@ interface Props {
   }[];
 }
 
-export function HackathonCard({
+export function HardworkCard({
   title,
   description,
   dates,
@@ -27,13 +27,13 @@ export function HackathonCard({
   links,
 }: Props) {
   return (
-    <li className="relative ml-10 py-4">
+    <li className="relative py-4">
       <div className="flex flex-1 flex-col justify-start gap-1">
-      <div className="absolute -left-16 top-2 flex items-center justify-center bg-white rounded-full">
-        <Avatar className="border size-12 m-auto">
+      <div className="absolute -left-16 top-2 flex items-center justify-center rounded-full">
+        {/* <Avatar className="border size-12 m-auto">
           <AvatarImage src={image} alt={title} className="object-contain" />
           <AvatarFallback>{title[0]}</AvatarFallback>
-        </Avatar>
+        </Avatar> */}
       </div>
         {dates && (
           <time className="text-xs text-muted-foreground">{dates}</time>
@@ -46,17 +46,17 @@ export function HackathonCard({
           <p className="text-sm">Issued by {issued}</p>
         )}
         {description && (
-          <span className="prose dark:prose-invert text-sm text-muted-foreground">
+          <span className="prose dark:prose-invert text-muted-foreground">
             {description}
           </span>
         )}
         
       </div>
       {links && links.length > 0 && (
-        <div className="mt-2 flex flex-row flex-wrap items-start gap-2">
+        <div className="mt-2 flex flex-row flex-wrap items-start gap-2 ">
           {links?.map((link, idx) => (
             <Link href={link.href} key={idx}>
-              <Badge key={idx} title={link.title} className="flex gap-2">
+              <Badge key={idx} title={link.title} className="flex gap-2 inline-flex items-center rounded-sm bg-white/5 px-2 py-2 text-sm text-foreground/90 shadow-sm backdrop-blur transition hover:bg-white/10">
                 {link.icon}
                 {link.title}
               </Badge>
