@@ -6,6 +6,7 @@ import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
 import { IconCloudSpecialties } from "@/components/specialties-icon";
+import TechStack from "@/components/techstack";
 
 const BLUR_FADE_DELAY = 0.04;
 type JobEntry = {
@@ -69,7 +70,7 @@ export default function Page() {
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10">
       <section id="hero">
-        <div className="flex-col flex flex-1 space-y-1.5">
+        <div className="flex-col flex flex-1 space-y-1.5 pt-12">
           <BlurFade delay={BLUR_FADE_DELAY * 2}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -158,45 +159,8 @@ export default function Page() {
             <IconCloudSpecialties/>
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h3 className="font-bold text-muted-foreground">Programming Languages.</h3>
+            <TechStack />
           </BlurFade>
-          <div className="flex flex-wrap gap-1">
-            {DATA.programmingLanguages.map((skill, id) => (
-              <BlurFade key={skill} delay={BLUR_FADE_DELAY * 10 + id * 0.05}>
-                <Badge key={skill}>{skill}</Badge>
-              </BlurFade>
-            ))}
-          </div>
-          <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h3 className="font-bold text-muted-foreground">Frameworks.</h3>
-          </BlurFade>
-          <div className="flex flex-wrap gap-1">
-            {DATA.frameworks.map((skill, id) => (
-              <BlurFade key={skill} delay={BLUR_FADE_DELAY * 10 + id * 0.05}>
-                <Badge key={skill}>{skill}</Badge>
-              </BlurFade>
-            ))}
-          </div>
-          <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h3 className="font-bold text-muted-foreground">Databases.</h3>
-          </BlurFade>
-          <div className="flex flex-wrap gap-1">
-            {DATA.databases.map((skill, id) => (
-              <BlurFade key={skill} delay={BLUR_FADE_DELAY * 10 + id * 0.05}>
-                <Badge key={skill}>{skill}</Badge>
-              </BlurFade>
-            ))}
-          </div>
-          <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h3 className="font-bold text-muted-foreground">Tools.</h3>
-          </BlurFade>
-          <div className="flex flex-wrap gap-1">
-            {DATA.tools.map((skill, id) => (
-              <BlurFade key={skill} delay={BLUR_FADE_DELAY * 10 + id * 0.05}>
-                <Badge key={skill}>{skill}</Badge>
-              </BlurFade>
-            ))}
-          </div>
         </div>
       </section>
       <section id="hardwork">
@@ -216,7 +180,7 @@ export default function Page() {
             </div>
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 14}>
-            <ul className="mb-4 ml-4 text-justify divide-y divide-dashed border-l">
+            <ul className="mb-4 ml-4 text-justify divide-y border-l">
               {DATA.hardwork.map((project, id) => (
                 <BlurFade
                   key={project.title + project.dates}
