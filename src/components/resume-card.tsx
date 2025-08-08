@@ -7,6 +7,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ChevronRightIcon } from "lucide-react";
+import { AnimatedShinyText } from "./magicui/animated-shiny-text";
 
 interface Job {
   title: string;
@@ -74,12 +75,12 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({
     <div className="block cursor-pointer" onClick={handleCompanyClick}>
       <Card className="flex">
         <div className="flex-none">
-          <Avatar className="border size-12 m-auto bg-muted-background dark:bg-foreground">
+          {/* <Avatar className="border size-12 m-auto bg-muted-background dark:bg-foreground">
             <AvatarImage src={logoUrl} alt={altText} className="object-contain" />
             <AvatarFallback>{altText[0]}</AvatarFallback>
-          </Avatar>
+          </Avatar> */}
         </div>
-        <div className="flex-grow ml-4 flex flex-col group">
+        <div className="flex-grow flex flex-col group">
           <CardHeader>
             <div className="flex items-center justify-between gap-x-4">
               <div>
@@ -93,8 +94,10 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({
                     )}
                   />
                 </h3>
-                <div className="text-xs text-muted-foreground">
-                  {longestJob.title}
+                <div className="text-xs">
+                  <AnimatedShinyText>
+                    {longestJob.title}
+                  </AnimatedShinyText>
                 </div>
               </div>
               <div className="text-xs sm:text-sm tabular-nums text-muted-foreground">
