@@ -35,19 +35,37 @@ export const bebasNeue = Bebas_Neue({
 
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
+
   title: {
     default: "Rahfi's Portfolio",
-    template: `%s - Rahfi's Portfolio`,
+    template: "%s - Rahfi's Portfolio",
   },
   description: DATA.description,
+  keywords: [
+    "Software Engineer",
+    "Back-End Engineer",
+    "Machine Learning",
+    "AI Engineer",
+    "Full-Stack Developer"
+  ],
+  applicationName: "Rahfi's Portfolio",
+  authors: [{ name: DATA.name }],
+  creator: DATA.name,
+  publisher: DATA.name,
+  category: "technology",
+
+  alternates: {
+    canonical: DATA.url,
+  },
+
   openGraph: {
-    title: `${DATA.name}`,
+    title: DATA.name,
     description: DATA.description,
     url: DATA.url,
-    siteName: `${DATA.name}`,
     locale: "en_US",
     type: "website",
   },
+
   robots: {
     index: true,
     follow: true,
@@ -58,6 +76,10 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
+  },
+
+  verification: {
+    google: "",
   },
 };
 
