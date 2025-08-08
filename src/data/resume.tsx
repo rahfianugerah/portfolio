@@ -3,13 +3,13 @@ import { TbCertificate } from "react-icons/tb";
 import { HomeIcon, NotebookIcon, TerminalIcon } from "lucide-react";
 
 export const DATA = {
-  name: "Rahfi",
+  name: "Naufal Rahfi Anugerah",
   initials: "R",
   url: "https://rahfi.pro",
   location: "Jakarta, Indonesia",
   locationLink: "https://www.google.com/maps/place/jakarta",
-  description: "A versatile and highly adaptable Software/AI Engineer with a rapid learning curve, specializing in AI, Machine Learning, Cloud Computing, and Website Development.",
-  summary: "Final-year Computer Science student at Mercu Buana University, majoring in Information Systems and Back-End focused Software/AI Engineer, I architect and implement robust APIs and services with Flask and FastAPI, deploy containerized, serverless solutions on Google Cloud, AWS and Azure, also design predictive models such as regression, classification, clustering, and neural networks using TensorFlow and Scikit-learn. I also leverage Next.js for lightweight frontend interfaces when required. Known for solving complex challenges and delivering scalable, high-impact machine-learning and backend systems.",
+  description: "Artificial Intelligence Engineer",
+  summary: "Final-year Computer Science student at Mercu Buana University, specializing in Information Systems and back-end–focused Software/AI Engineering. Experienced in building robust APIs with Flask and FastAPI, deploying containerized and serverless solutions on Google Cloud, AWS, and Azure, and developing predictive models using TensorFlow and Scikit-learn. Skilled in delivering scalable, high-impact machine learning and backend systems, with additional capability in lightweight frontend development using Next.js.",
   avatarUrl: "",
   programmingLanguages: [
     "Python",
@@ -313,26 +313,6 @@ export const DATA = {
         },
       ],
       image: "/rahfipro.png",
-      video: "",
-    },
-    {
-      title: "Commit Wave",
-      href: "",
-      status: "Archived",
-      description:
-        "Commit Wave is an automation tool designed to help developers keep their GitHub contribution history consistently active and engaging. By utilizing GitHub Actions or JavaScript based, this bot automates the process of generating and pushing commits at random intervals (GitHub Action & JavaScript) within a user-defined date range (JavaScript).",
-      technologies: [
-        "JavaScript",
-        "Node.js",
-      ],
-      links: [
-        {
-          type: "Source Code",
-          href: "https://github.com/rahfianugerah/commitwave",
-          icon: <Icons.github className="size-3" />,
-        },
-      ],
-      image: "/commitwave.png",
       video: "",
     },
   ],
