@@ -1,5 +1,5 @@
 import BlurFade from "@/components/magicui/blur-fade";
-import { HackathonCard } from "@/components/hardwork-card";
+import { HardworkCard } from "@/components/hardwork-card";
 import { ResumeCard } from "@/components/resume-card";
 import { Badge } from "@/components/ui/badge";
 import { DATA } from "@/data/resume";
@@ -7,6 +7,7 @@ import Link from "next/link";
 import Markdown from "react-markdown";
 import { IconCloudSpecialties } from "@/components/specialties-icon";
 import TechStack from "@/components/techstack";
+import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
 
 const BLUR_FADE_DELAY = 0.04;
 type JobEntry = {
@@ -75,10 +76,11 @@ export default function Page() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bebas">
-                    Hello<span className="text-[#FF0000]">,</span> World<span className="text-[#FF0000]">.</span> I<span className="text-[#FF0000]">&apos;</span>m Rahfi<span className="text-[#FF0000]">.</span>
+                    {DATA.name}
+                    {/* Hello<span className="text-[#FF0000]">,</span> World<span className="text-[#FF0000]">.</span> I<span className="text-[#FF0000]">&apos;</span>m Rahfi<span className="text-[#FF0000]">.</span> */}
                 </h2>
-                <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  {DATA.description}
+                <p className="md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  <AnimatedShinyText>{DATA.description}</AnimatedShinyText>
                 </p>
               </div>
             </div>
@@ -180,13 +182,13 @@ export default function Page() {
             </div>
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 14}>
-            <ul className="mb-4 ml-4 text-justify divide-y border-l">
+            <ul className="mb-4 text-justify divide-y">
               {DATA.hardwork.map((project, id) => (
                 <BlurFade
                   key={project.title + project.dates}
                   delay={BLUR_FADE_DELAY * 15 + id * 0.05}
                 >
-                  <HackathonCard
+                  <HardworkCard
                     title={project.title}
                     description={project.description}
                     location={project.location}
