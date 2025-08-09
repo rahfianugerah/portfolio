@@ -19,7 +19,7 @@ export const inter = FontSans({
 
 export const sourceCodePro = Source_Code_Pro({
   subsets: ["latin"],
-  variable: "--font-sans", // make sure this matches Tailwind config
+  variable: "--font-mono", // make sure this matches Tailwind config
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   fallback: ["monospace"],
@@ -89,7 +89,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(inter.variable, bebasNeue.variable )} suppressHydrationWarning>
+    <html lang="en" className={cn(sourceCodePro.variable, inter.variable, bebasNeue.variable)} suppressHydrationWarning>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6",

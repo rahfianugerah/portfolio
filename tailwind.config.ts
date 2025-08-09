@@ -1,3 +1,4 @@
+import { sourceCodePro } from "@/app/layout";
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
@@ -23,6 +24,7 @@ const config = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
         bebas: ["var(--font-bebas)", "system-ui", "sans-serif"],
+        sourceCodePro: ["var(--font-source-code-pro)", ],
       },
       colors: {
         border: "hsl(var(--border))",
