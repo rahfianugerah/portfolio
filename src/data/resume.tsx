@@ -343,6 +343,97 @@ export const DATA = {
       image: "/rahfipro.png",
       video: "",
     },
+    {
+      title: "Asah -  Course Submissions, Code Resources, and Docs",
+      href: "https://rahfi.pro",
+      status: "Maintained",
+      description:
+        "Repository showcasing all work from the Asah - Machine Learning, including course submissions, code resources, and documentation.",
+      technologies: [
+        "Python",
+        "TensorFlow",
+        "Keras",
+        "Scikit-Learn",
+        "Numpy",
+        "Pandas",
+        "Matplotlib",
+        "Seaborn",
+        "Mlflow",
+        "Prometheus",
+        "Grafana",
+      ],
+      links: [
+        {
+          type: "Source Code",
+          href: "https://github.com/rahfianugerah/portfolio",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/asah-project.png",
+      video: "",
+    },
+    {
+      title: "Bangkit Academy 2024 Batch 2 -  Course Submissions, Code Resources, and Docs",
+      href: "https://github.com/rahfianugerah/bangkit-cc-2024-b2",
+      status: "Maintained",
+      description:
+        "Repository showcasing all work from the Bangkit Academy 2024 Batch 2 -  Cloud Computing Cohort, including course submissions, code resources, and documentation.",
+      technologies: [
+        "Python",
+        "TensorFlow",
+        "Keras",
+        "Scikit-Learn",
+        "Numpy",
+        "Pandas",
+        "Matplotlib",
+        "Seaborn",
+        "Flask",
+        "Google Cloud",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Docker"
+      ],
+      links: [
+        {
+          type: "Source Code",
+          href: "https://github.com/rahfianugerah/bangkit-cc-2024-b2",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/bangkit-project.png",
+      video: "",
+    },
+    {
+      title: "Dicoding ML-Engineer Path- Course Submissions, Code Resources, and Docs",
+      href: "https://github.com/rahfianugerah/dicoding-ml-engineer",
+      status: "Maintained",
+      description:
+        "Repository showcasing all work from the Dicoding ML Engineer Path self-learning subscription, including course submissions, code resources, and documentation.",
+      technologies: [
+        "Python",
+        "TensorFlow",
+        "Keras",
+        "Scikit-Learn",
+        "Numpy",
+        "Pandas",
+        "Matplotlib",
+        "Seaborn",
+        "TFX",
+        "Prometheus",
+        "Grafana",
+      ],
+      links: [
+        {
+          type: "Source Code",
+          href: "https://github.com/rahfianugerah/dicoding-ml-engineer",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/dicoding-project.png",
+      video: "",
+    },
+
   ],
   hardwork: [
     {
@@ -417,475 +508,475 @@ export const DATA = {
       ],
     },
   ],
-learning_certificate: [
-  // Dicoding Indonesia Provider
-  {
-    title: "Belajar Prinsip Pemrograman SOLID",
-    issued: "Dicoding Indonesia",
-    category: ["Software Engineering", "SOLID Principles"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/N9ZO2DM2RPG5",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Dasar Cloud dan Gen AI di AWS",
-    issued: "Dicoding Indonesia",
-    category: ["Cloud Computing", "Generative AI"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/RVZKWDRNQZD5",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Penggunaan Generative AI",
-    issued: "Dicoding Indonesia",
-    category: ["Generative AI"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/2VX3K8YG3XYQ",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "AI Praktis untuk Produktivitas",
-    issued: "Dicoding Indonesia",
-    category: ["Artificial Intelligence", "Productivity"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/53XEDVJ8VPRN",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Memulai Pemrograman Dengan C",
-    issued: "Dicoding Indonesia",
-    category: ["C Programming"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/RVZKWYL3MZD5",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Back-End Pemula dengan JavaScript",
-    issued: "Dicoding Indonesia",
-    category: ["Back-End Development", "JavaScript"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/98XWEG5NLXM3",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Penerapan Machine Learning dengan Google Cloud",
-    issued: "Dicoding Indonesia",
-    category: ["Machine Learning", "Cloud Computing"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/N9ZOYN8J8PG5",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Menjadi Google Cloud Engineer",
-    issued: "Dicoding Indonesia",
-    category: ["Cloud Computing", "Google Cloud"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/L4PQ51RDOZO1",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Membuat Aplikasi Back-End untuk Pemula dengan Google Cloud",
-    issued: "Dicoding Indonesia",
-    category: ["Back-End Development", "Cloud Computing"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/L4PQ5484VZO1",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Dasar Pemrograman JavaScript",
-    issued: "Dicoding Indonesia",
-    category: ["JavaScript", "Programming Fundamentals"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/KEXL154JMXG2",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Dasar AI",
-    issued: "Dicoding Indonesia",
-    category: ["Artificial Intelligence"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/2VX3RGQDNZYQ",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Dasar Pemrograman Web",
-    issued: "Dicoding Indonesia",
-    category: ["Web Development"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/KEXL1KQO0XG2",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Memulai Dasar Pemrograman untuk Menjadi Pengembang Software",
-    issued: "Dicoding Indonesia",
-    category: ["Programming Fundamentals", "Software Engineering"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/4EXGQL559ZRL",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Dasar Git dengan GitHub",
-    issued: "Dicoding Indonesia",
-    category: ["Version Control", "Git", "GitHub"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/2VX3R9N8QZYQ",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Pengenalan ke Logika Pemrograman (Programming Logic 101)",
-    issued: "Dicoding Indonesia",
-    category: ["Programming Logic", "Problem Solving"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/L4PQ1VRN2XO1",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Machine Learning Operations (MLOps)",
-    issued: "Dicoding Indonesia",
-    category: ["Machine Learning", "MLOps"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/KEXL1J89MXG2",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Architecting on AWS (Membangun Arsitektur Cloud di AWS)",
-    issued: "Dicoding Indonesia",
-    category: ["Cloud Computing", "AWS"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/98XWLYWN4ZM3",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Machine Learning Terapan",
-    issued: "Dicoding Indonesia",
-    category: ["Machine Learning"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/QLZ97OR7EP5D",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Dasar Manajemen Proyek",
-    issued: "Dicoding Indonesia",
-    category: ["Project Management"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/MRZMERK50PYQ",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Analisis Data dengan Python",
-    issued: "Dicoding Indonesia",
-    category: ["Data Analysis", "Python"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/MEPJNN96JX3V",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Fundamental Deep Learning",
-    issued: "Dicoding Indonesia",
-    category: ["Deep Learning", "Artificial Intelligence"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/72ZDVEK09ZYW",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Machine Learning untuk Pemula",
-    issued: "Dicoding Indonesia",
-    category: ["Machine Learning"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/QLZ97DJ47P5D",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Dasar Google Cloud",
-    issued: "Dicoding Indonesia",
-    category: ["Cloud Computing", "Google Cloud"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/QLZ97DM27P5D",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Dasar Structured Query Language (SQL)",
-    issued: "Dicoding Indonesia",
-    category: ["SQL", "Databases"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/98XWLW9G4ZM3",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Dasar Data Science",
-    issued: "Dicoding Indonesia",
-    category: ["Data Science"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/2VX3O8DVQZYQ",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Memulai Pemrograman dengan Python",
-    issued: "Dicoding Indonesia",
-    category: ["Python", "Programming Fundamentals"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/JMZV3QR1QPN9",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Dasar Visualisasi Data",
-    issued: "Dicoding Indonesia",
-    category: ["Data Visualization"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/53XEOL8NRZRN",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Belajar Dasar-Dasar DevOps",
-    issued: "Dicoding Indonesia",
-    category: ["DevOps"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://www.dicoding.com/certificates/L4PQ8G5GOZO1",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
+  learning_certificate: [
+    // Dicoding Indonesia Provider
+    {
+      title: "Belajar Prinsip Pemrograman SOLID",
+      issued: "Dicoding Indonesia",
+      category: ["Software Engineering", "SOLID Principles"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/N9ZO2DM2RPG5",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Dasar Cloud dan Gen AI di AWS",
+      issued: "Dicoding Indonesia",
+      category: ["Cloud Computing", "Generative AI"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/RVZKWDRNQZD5",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Penggunaan Generative AI",
+      issued: "Dicoding Indonesia",
+      category: ["Generative AI"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/2VX3K8YG3XYQ",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "AI Praktis untuk Produktivitas",
+      issued: "Dicoding Indonesia",
+      category: ["Artificial Intelligence", "Productivity"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/53XEDVJ8VPRN",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Memulai Pemrograman Dengan C",
+      issued: "Dicoding Indonesia",
+      category: ["C Programming"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/RVZKWYL3MZD5",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Back-End Pemula dengan JavaScript",
+      issued: "Dicoding Indonesia",
+      category: ["Back-End Development", "JavaScript"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/98XWEG5NLXM3",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Penerapan Machine Learning dengan Google Cloud",
+      issued: "Dicoding Indonesia",
+      category: ["Machine Learning", "Cloud Computing"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/N9ZOYN8J8PG5",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Menjadi Google Cloud Engineer",
+      issued: "Dicoding Indonesia",
+      category: ["Cloud Computing", "Google Cloud"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/L4PQ51RDOZO1",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Membuat Aplikasi Back-End untuk Pemula dengan Google Cloud",
+      issued: "Dicoding Indonesia",
+      category: ["Back-End Development", "Cloud Computing"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/L4PQ5484VZO1",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Dasar Pemrograman JavaScript",
+      issued: "Dicoding Indonesia",
+      category: ["JavaScript", "Programming Fundamentals"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/KEXL154JMXG2",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Dasar AI",
+      issued: "Dicoding Indonesia",
+      category: ["Artificial Intelligence"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/2VX3RGQDNZYQ",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Dasar Pemrograman Web",
+      issued: "Dicoding Indonesia",
+      category: ["Web Development"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/KEXL1KQO0XG2",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Memulai Dasar Pemrograman untuk Menjadi Pengembang Software",
+      issued: "Dicoding Indonesia",
+      category: ["Programming Fundamentals", "Software Engineering"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/4EXGQL559ZRL",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Dasar Git dengan GitHub",
+      issued: "Dicoding Indonesia",
+      category: ["Version Control", "Git", "GitHub"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/2VX3R9N8QZYQ",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Pengenalan ke Logika Pemrograman (Programming Logic 101)",
+      issued: "Dicoding Indonesia",
+      category: ["Programming Logic", "Problem Solving"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/L4PQ1VRN2XO1",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Machine Learning Operations (MLOps)",
+      issued: "Dicoding Indonesia",
+      category: ["Machine Learning", "MLOps"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/KEXL1J89MXG2",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Architecting on AWS (Membangun Arsitektur Cloud di AWS)",
+      issued: "Dicoding Indonesia",
+      category: ["Cloud Computing", "AWS"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/98XWLYWN4ZM3",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Machine Learning Terapan",
+      issued: "Dicoding Indonesia",
+      category: ["Machine Learning"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/QLZ97OR7EP5D",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Dasar Manajemen Proyek",
+      issued: "Dicoding Indonesia",
+      category: ["Project Management"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/MRZMERK50PYQ",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Analisis Data dengan Python",
+      issued: "Dicoding Indonesia",
+      category: ["Data Analysis", "Python"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/MEPJNN96JX3V",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Fundamental Deep Learning",
+      issued: "Dicoding Indonesia",
+      category: ["Deep Learning", "Artificial Intelligence"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/72ZDVEK09ZYW",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Machine Learning untuk Pemula",
+      issued: "Dicoding Indonesia",
+      category: ["Machine Learning"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/QLZ97DJ47P5D",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Dasar Google Cloud",
+      issued: "Dicoding Indonesia",
+      category: ["Cloud Computing", "Google Cloud"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/QLZ97DM27P5D",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Dasar Structured Query Language (SQL)",
+      issued: "Dicoding Indonesia",
+      category: ["SQL", "Databases"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/98XWLW9G4ZM3",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Dasar Data Science",
+      issued: "Dicoding Indonesia",
+      category: ["Data Science"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/2VX3O8DVQZYQ",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Memulai Pemrograman dengan Python",
+      issued: "Dicoding Indonesia",
+      category: ["Python", "Programming Fundamentals"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/JMZV3QR1QPN9",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Dasar Visualisasi Data",
+      issued: "Dicoding Indonesia",
+      category: ["Data Visualization"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/53XEOL8NRZRN",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Dasar-Dasar DevOps",
+      issued: "Dicoding Indonesia",
+      category: ["DevOps"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/L4PQ8G5GOZO1",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
 
-  // Coursera Provider
-  {
-    title: "Google Cybersecurity Specialization",
-    issued: "Coursera",
-    category: [
-      "Network Security",
-      "Python Programming",
-      "Linux",
-      "Cloud Computing",
-      "Computer Programming",
-      "Audit",
-      "Risk Management",
-      "Cryptography",
-      "Leadership and Management",
-      "Network Architecture",
-    ],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://coursera.org/share/47330bd478ce3b2a217bb808007c944e",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Put It to Work: Prepare for Cybersecurity Jobs",
-    issued: "Coursera",
-    category: [
-      "Storytelling",
-      "Computer Programming",
-      "SQL",
-      "Leadership and Management",
-      "Python Programming",
-    ],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://coursera.org/share/cf88f231c21172e2fb1a33090d1c0565",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Automate Cybersecurity Tasks with Python",
-    issued: "Coursera",
-    category: ["Python Programming"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://coursera.org/share/a00dcfd5292ba0ab7f4dafacd4c3ea77",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Sound the Alarm: Detection and Response",
-    issued: "Coursera",
-    category: ["Network Security", "Linux", "Cryptography"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://coursera.org/share/a0896c869045af167e288243c652039d",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Assets, Threats, and Vulnerabilities",
-    issued: "Coursera",
-    category: ["Cryptography", "Linux", "Network Security"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://coursera.org/share/4d23bb51355118aaefda0b6b6a7623fa",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Tools of the Trade: Linux and SQL",
-    issued: "Coursera",
-    category: ["Linux", "SQL"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://coursera.org/share/861e1fd25f42d962bea5e63aa8dde725",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Connect and Protect: Networks and Network Security",
-    issued: "Coursera",
-    category: ["Network Security", "Cloud Computing", "Networking Hardware"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://coursera.org/share/83e3ecb2b75e3d15ac5102619172f21c",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Foundations of Cybersecurity",
-    issued: "Coursera",
-    category: ["Network Security", "Python Programming", "Linux"],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://coursera.org/share/a4d6df8db694a9f2f312ad2155e69a73",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-  {
-    title: "Play It Safe: Manage Security Risks",
-    issued: "Coursera",
-    category: [
-      "Leadership and Management",
-      "Audit",
-      "Computer Security Incident Management",
-      "Risk Management",
-    ],
-    links: [
-      {
-        title: "Certificate",
-        href: "https://coursera.org/share/f0cdd2f3964822ffb860db4213c7eddf",
-        icon: <TbCertificate className="size-3" />,
-      },
-    ],
-  },
-]
+    // Coursera Provider
+    {
+      title: "Google Cybersecurity Specialization",
+      issued: "Coursera",
+      category: [
+        "Network Security",
+        "Python Programming",
+        "Linux",
+        "Cloud Computing",
+        "Computer Programming",
+        "Audit",
+        "Risk Management",
+        "Cryptography",
+        "Leadership and Management",
+        "Network Architecture",
+      ],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://coursera.org/share/47330bd478ce3b2a217bb808007c944e",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Put It to Work: Prepare for Cybersecurity Jobs",
+      issued: "Coursera",
+      category: [
+        "Storytelling",
+        "Computer Programming",
+        "SQL",
+        "Leadership and Management",
+        "Python Programming",
+      ],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://coursera.org/share/cf88f231c21172e2fb1a33090d1c0565",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Automate Cybersecurity Tasks with Python",
+      issued: "Coursera",
+      category: ["Python Programming"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://coursera.org/share/a00dcfd5292ba0ab7f4dafacd4c3ea77",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Sound the Alarm: Detection and Response",
+      issued: "Coursera",
+      category: ["Network Security", "Linux", "Cryptography"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://coursera.org/share/a0896c869045af167e288243c652039d",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Assets, Threats, and Vulnerabilities",
+      issued: "Coursera",
+      category: ["Cryptography", "Linux", "Network Security"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://coursera.org/share/4d23bb51355118aaefda0b6b6a7623fa",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Tools of the Trade: Linux and SQL",
+      issued: "Coursera",
+      category: ["Linux", "SQL"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://coursera.org/share/861e1fd25f42d962bea5e63aa8dde725",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Connect and Protect: Networks and Network Security",
+      issued: "Coursera",
+      category: ["Network Security", "Cloud Computing", "Networking Hardware"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://coursera.org/share/83e3ecb2b75e3d15ac5102619172f21c",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Foundations of Cybersecurity",
+      issued: "Coursera",
+      category: ["Network Security", "Python Programming", "Linux"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://coursera.org/share/a4d6df8db694a9f2f312ad2155e69a73",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Play It Safe: Manage Security Risks",
+      issued: "Coursera",
+      category: [
+        "Leadership and Management",
+        "Audit",
+        "Computer Security Incident Management",
+        "Risk Management",
+      ],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://coursera.org/share/f0cdd2f3964822ffb860db4213c7eddf",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+  ]
 } as const;
