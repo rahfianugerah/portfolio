@@ -1,7 +1,6 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { HardworkCard } from "@/components/hardwork-card";
 import { ResumeCard } from "@/components/resume-card";
-import { Badge } from "@/components/ui/badge";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
@@ -10,12 +9,13 @@ import TechStack from "@/components/techstack";
 import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
 
 const BLUR_FADE_DELAY = 0.04;
+
 type JobEntry = {
   title: string;
   subtitle?: string;
-  period: string;        // e.g. "Jan 2022 - Mar 2023" or "Feb 2023 - Present"
+  period: string; // e.g. "Jan 2022 - Mar 2023" or "Feb 2023 - Present"
   description: string | string[];
-  badges?: readonly string[];     // include badges here
+  badges?: readonly string[];
 };
 
 type GroupedCompany = {
@@ -23,9 +23,10 @@ type GroupedCompany = {
   logoUrl: string;
   href?: string;
   jobs: JobEntry[];
-  period: string;        // taken from the latest job below
+  period: string; // taken from the latest job below
 };
 
+// ---- group work by company ----
 const groupedRaw = DATA.work.reduce((acc, item) => {
   if (!acc[item.company]) {
     acc[item.company] = {
@@ -36,29 +37,23 @@ const groupedRaw = DATA.work.reduce((acc, item) => {
     };
   }
   acc[item.company].jobs.push({
-    title:       item.title,
-    subtitle:    item.location,
-    period:      `${item.start} - ${item.end ?? "Present"}`,
-    // Ensure mutable array by cloning readonly arrays
-    description: typeof item.description === 'string'
-      ? item.description
-      : [...item.description],
-    badges:      item.badges,
+    title: item.title,
+    subtitle: item.location,
+    period: `${item.start} - ${item.end ?? "Present"}`,
+    description:
+      typeof item.description === "string" ? item.description : [...item.description],
+    badges: item.badges,
   });
   return acc;
 }, {} as Record<string, Omit<GroupedCompany, "period">>);
 
-const groupedWork: GroupedCompany[] = Object.values(groupedRaw).map(group => {
+const groupedWorkAll: GroupedCompany[] = Object.values(groupedRaw).map((group) => {
   const latestJob = group.jobs.reduce((prev, curr) => {
     const getEndTime = (p: string) => {
       const end = p.split(" - ")[1];
-      return end === "Present"
-        ? Infinity
-        : new Date(end).getTime();
+      return end === "Present" ? Infinity : new Date(end).getTime();
     };
-    return getEndTime(curr.period) >= getEndTime(prev.period)
-      ? curr
-      : prev;
+    return getEndTime(curr.period) >= getEndTime(prev.period) ? curr : prev;
   }, group.jobs[0]);
 
   return {
@@ -66,6 +61,8 @@ const groupedWork: GroupedCompany[] = Object.values(groupedRaw).map(group => {
     period: latestJob.period,
   };
 });
+
+const groupedWorkLimited = groupedWorkAll.slice(0, 8);
 
 export default function Page() {
   return (
@@ -75,10 +72,7 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 2}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bebas">
-                    {DATA.name}
-                    {/* Hello<span className="text-[#FF0000]">,</span> World<span className="text-[#FF0000]">.</span> I<span className="text-[#FF0000]">&apos;</span>m Rahfi<span className="text-[#FF0000]">.</span> */}
-                </h2>
+                <h2 className="text-3xl font-bebas">{DATA.name}</h2>
                 <p className="md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   <AnimatedShinyText>{DATA.description}</AnimatedShinyText>
                 </p>
@@ -87,6 +81,7 @@ export default function Page() {
           </BlurFade>
         </div>
       </section>
+
       <section id="about">
         <BlurFade delay={BLUR_FADE_DELAY * 3}>
           <h2 className="text-2xl font-bebas">
@@ -99,6 +94,7 @@ export default function Page() {
           </Markdown>
         </BlurFade>
       </section>
+
       <section id="work">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
@@ -106,7 +102,8 @@ export default function Page() {
               Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Experiences<span className="text-[#FF0000]">.</span>
             </h2>
           </BlurFade>
-          {groupedWork.map((company, id) => (
+
+          {groupedWorkLimited.map((company, id) => (
             <BlurFade key={company.company} delay={BLUR_FADE_DELAY * 6 + id * 0.05}>
               <ResumeCard
                 logoUrl={company.logoUrl}
@@ -119,8 +116,20 @@ export default function Page() {
               />
             </BlurFade>
           ))}
+
+          {/* Link to the full experiences page if there are more than 8 */}
+          {groupedWorkAll.length > 8 && (
+            <BlurFade delay={BLUR_FADE_DELAY * 6 + groupedWorkLimited.length * 0.05}>
+              <div className="text-center pt-2">
+                <Link href="/experience" className="underline underline-offset-4">
+                  View All Experiences &gt;
+                </Link>
+              </div>
+            </BlurFade>
+          )}
         </div>
       </section>
+
       <section id="education">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 7}>
@@ -128,13 +137,13 @@ export default function Page() {
               Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Education<span className="text-[#FF0000]">.</span>
             </h2>
           </BlurFade>
-          {DATA.education.map((edu, id) => {
+
+          {DATA.education.slice(0, 4).map((edu, id) => {
             const job: JobEntry = {
-              title:   edu.degree,
-              period:  `${edu.start} - ${edu.end}`,
-              description: typeof edu.description === 'string'
-                ? edu.description
-                : [...edu.description],
+              title: edu.degree,
+              period: `${edu.start} - ${edu.end}`,
+              description:
+                typeof edu.description === "string" ? edu.description : [...edu.description],
             };
             return (
               <BlurFade key={edu.school} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
@@ -150,8 +159,20 @@ export default function Page() {
               </BlurFade>
             );
           })}
+
+          {/* Link to view all education (full list in /experience#education) */}
+          {Array.isArray(DATA.education) && DATA.education.length > 4 && (
+            <BlurFade delay={BLUR_FADE_DELAY * 8 + 4 * 0.05}>
+              <div className="text-center pt-2">
+                <Link href="/experience" className="underline underline-offset-4">
+                  View All Educations &gt;
+                </Link>
+              </div>
+            </BlurFade>
+          )}
         </div>
       </section>
+
       <section id="skills">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 9}>
@@ -165,6 +186,7 @@ export default function Page() {
           </BlurFade>
         </div>
       </section>
+
       <section id="hardwork">
         <div className="space-y-12 w-full py-12">
           <BlurFade delay={BLUR_FADE_DELAY * 13}>
@@ -203,6 +225,7 @@ export default function Page() {
           </BlurFade>
         </div>
       </section>
+
       <section id="contact">
         <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
           <BlurFade delay={BLUR_FADE_DELAY * 16}>
