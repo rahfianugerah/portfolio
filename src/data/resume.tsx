@@ -74,6 +74,23 @@ export const DATA = {
 
   work: [
     {
+      company: "Asah led by Dicoding in association with Accenture",
+      href: "#",
+      badges: ["Cohort", "Machine Learning"],
+      location: "Jakarta, Indonesia",
+      title: "Machine Learning Cohort",
+      logoUrl: "/dicoding.jpeg",
+      start: "Aug 2025",
+      end: "Present",
+      description: [
+        "Gained a solid foundation in core machine learning principles, covering both supervised and unsupervised learning techniques.",
+        "Applied deep learning methods in practice, developing expertise with neural networks.",
+        "Enhanced coding practices and optimized model performance through continuous experimentation and iterative improvement.",
+        "Built and automated machine learning systems and pipelines for efficient workflows.",
+        "Acquired hands-on experience in model deployment, monitoring, and ML pipeline automation to ensure scalability and reliability."
+      ],
+    },
+    {
       company: "Dicoding Indonesia",
       href: "#",
       badges: ["Remote", "Freelance", "Code Review", "Mentor", "Machine Learning", "Google Cloud"],
@@ -259,6 +276,17 @@ export const DATA = {
       ],
     },
     {
+      school: "Asah led by Dicoding in association with Accenture",
+      href: "https://www.dicoding.com",
+      degree: "Non-Degree Program in Machine Learning - Machine Learning Cohort",
+      logoUrl: "/dicoding.jpeg",
+      start: "Aug 2025",
+      end: "Present",
+      description: [
+        "Gained a strong foundation in supervised and unsupervised machine learning, with practical expertise in deep learning and neural networks. Improved coding practices and model performance through iterative experimentation, while building and automating ML systems, pipelines, and deployment workflows with monitoring and scalability in mind. Acquired through a highly selective scholarship program awarded to only 2,000 candidates worldwide following a rigorous testing process."
+      ],
+    },
+    {
       school: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
       href: "https://grow.google/intl/id_id/bangkit/?tab=cloud-computing",
       degree: "Non-Degree Program in Cloud Computing - Cloud Computing Cohort",
@@ -273,7 +301,7 @@ export const DATA = {
     {
       school: "Dicoding Indonesia",
       href: "https://www.dicoding.com",
-      degree: "Non-Degree Program in Machine Learning - Machine Learning Student",
+      degree: "Courses - Machine Learning Student",
       logoUrl: "/dicoding.jpeg",
       start: "Mar 2024",
       end: "Aug 2024",
