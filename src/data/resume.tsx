@@ -79,7 +79,7 @@ export const DATA = {
       badges: ["Cohort", "Machine Learning"],
       location: "Jakarta, Indonesia",
       title: "Machine Learning Cohort",
-      logoUrl: "/dicoding.jpeg",
+      logoUrl: "/asah-exp.png",
       start: "Aug 2025",
       end: "Present",
       description: [
@@ -96,7 +96,7 @@ export const DATA = {
       badges: ["Remote", "Freelance", "Code Review", "Mentor", "Machine Learning", "Google Cloud"],
       location: "Jakarta, Indonesia",
       title: "External Academy Code Reviewer",
-      logoUrl: "/dicoding.jpeg",
+      logoUrl: "/dicoding-exp.jpeg",
       start: "Mar 2025",
       end: "Present",
       description: [
@@ -111,7 +111,7 @@ export const DATA = {
       badges: ["Student", "Machine Learning"],
       location: "Jakarta, Indonesia",
       title: "Machine Learning Student",
-      logoUrl: "/dicoding.jpeg",
+      logoUrl: "/dicoding-exp.jpeg",
       start: "April 2024",
       end: "Aug 2024",
       description: [
@@ -130,7 +130,7 @@ export const DATA = {
       href: "#",
       location: "Jakarta, Indonesia",
       title: "Artificial Intelligence & IoT Development Trainee",
-      logoUrl: "/sic.jpg",
+      logoUrl: "/sic-exp.jpg",
       start: "Jan 2025",
       end: "Feb 2025",
       description: [
@@ -143,27 +143,10 @@ export const DATA = {
     {
       company: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
       href: "#",
-      badges: ["Remote", "Full-Time", "Cloud Computing", "Cohort", "Project Lead", "Back-End Engineering", "Cloud Engineering"],
-      location: "Jakarta, Indonesia",
-      title: "Capstone Project Lead - Cloud Computing Cohort",
-      logoUrl: "/bangkit.jpg",
-      start: "Nov 2024",
-      end: "Dec 2024",
-      description: [
-        "Successfully led a team to complete application projects on schedule.",
-        "Efficiently guided team members to align with project timelines and deliverables.",
-        "Provided continuous support to team members to ensure smooth project execution.",
-        "Effectively managed and directed the overall progress of projects.",
-        "Demonstrated strong leadership in driving project success and fostering team collaboration."
-      ],
-    },
-    {
-      company: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
-      href: "#",
       badges: ["Remote", "Full-Time", "Cloud Computing", "Cohort"],
       location: "Jakarta, Indonesia",
       title: "Cloud Computing Cohort",
-      logoUrl: "/bangkit.jpg",
+      logoUrl: "/bangkit-exp.jpg",
       start: "Aug 2024",
       end: "Jan 2025",
       description: [
@@ -182,7 +165,7 @@ export const DATA = {
       badges: ["Part-Time", "On-Site", "Back-End Development", "Mentor", "RESTful API Development"],
       location: "Jakarta, Indonesia",
       title: "Back-End Research and Development Associate",
-      logoUrl: "/aslab.jpg",
+      logoUrl: "/aslab-exp.jpg",
       start: "Jan 2024",
       end: "Feb 2025",
       description: [
@@ -234,7 +217,7 @@ export const DATA = {
       badges: ["Hybrid", "Community"],
       location: "Jakarta, Indonesia",
       title: "Google Developer Student Club Member",
-      logoUrl: "/gdsc.jpg",
+      logoUrl: "/gdsc-exp.jpg",
       start: "Dec 2023",
       end: "Oct 2024",
       description: [
@@ -250,7 +233,7 @@ export const DATA = {
       badges: ["Remote", "AWS", "Trainee"],
       location: "Jakarta, Indonesia",
       title: "DTS AWS Engineer Trainee",
-      logoUrl: "/dts.jpg",
+      logoUrl: "/dts-exp.jpg",
       start: "Feb 2024",
       end: "Mar 2024",
       description: [
@@ -266,7 +249,7 @@ export const DATA = {
       school: "Mercu Buana University",
       href: "https://mercubuana.ac.id",
       degree: "Bachelor's Degree of Computer Science",
-      logoUrl: "/umb.jpg",
+      logoUrl: "/umb-edu.jpg",
       start: "2022",
       end: "2026 (Expected)",
       description: [
@@ -279,7 +262,7 @@ export const DATA = {
       school: "Asah led by Dicoding in association with Accenture",
       href: "https://www.dicoding.com",
       degree: "Non-Degree Program in Machine Learning - Machine Learning Cohort",
-      logoUrl: "/dicoding.jpeg",
+      logoUrl: "/asah-exp.png",
       start: "Aug 2025",
       end: "Present",
       description: [
@@ -290,7 +273,7 @@ export const DATA = {
       school: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
       href: "https://grow.google/intl/id_id/bangkit/?tab=cloud-computing",
       degree: "Non-Degree Program in Cloud Computing - Cloud Computing Cohort",
-      logoUrl: "/bangkit.jpg",
+      logoUrl: "/bangkit-exp.jpg",
       start: "Aug 2024",
       end: "Jan 2025",
       description: [
@@ -298,19 +281,60 @@ export const DATA = {
         "Achieved Distinction Graduate status, recognized within the top 10% of each learning path cohort."
       ],
     },
+  ],
+  leadership: [
     {
-      school: "Dicoding Indonesia",
-      href: "https://www.dicoding.com",
-      degree: "Courses - Machine Learning Student",
-      logoUrl: "/dicoding.jpeg",
-      start: "Mar 2024",
-      end: "Aug 2024",
+      company: "Mercu Buana University",
+      href: "#",
+      badges: ["Project Lead"],
+      location: "Jakarta, Indonesia",
+      title: "Project Manager - Team Lead",
+      logoUrl: "/umb-edu.jpg",
+      start: "Mar 2025",
+      end: "Jul 2025",
       description: [
-        "Dedicated six‑month self‑directed learning journey focused on the Machine Learning Engineer career path, mastering core concepts of machine learning and hands‑on implementation of the models.",
-        "Studied and implemented key machine learning fundamentals, including supervised and unsupervised learning.",
-        "Developed deep learning expertise."
+        "Successfully created an AI-powered HR interview mobile application integrating both voice and chat features to enhance candidate evaluation.",
+        "Designed and implemented interactive modules to simulate real interview scenarios with AI-driven responses.",
+        "Collaborated with team members to ensure smooth functionality, user-friendly design, and reliable system performance.",
+        "Applied strong leadership and technical expertise in managing development phases and overcoming project challenges.",
+        "Successfully won the National Innovation Exhibition Gold Medal, showcasing innovation and practical impact of the solution."
       ],
     },
+    {
+      company: "Samsung Innovation Campus Batch 6",
+      href: "#",
+      badges: ["Project Lead"],
+      location: "Jakarta, Indonesia",
+      title: "Project Lead - Team Lead",
+      logoUrl: "/sic-exp.jpg",
+      start: "Jan 2025",
+      end: "Feb 2025",
+      description: [
+        "Led a team in the Samsung Innovation Campus program to develop an IoT-based application project using Ubidots and Flask.",
+        "Guided team members in aligning tasks with project goals and timelines, ensuring collaborative progress.",
+        "Provided technical and organizational support to maintain smooth project execution and integration of IoT devices.",
+        "Managed and directed overall project development, fostering teamwork and effective problem-solving.",
+        "Achieved Stage 2 out of 4 in the program, demonstrating strong leadership and practical application of IoT solutions despite challenges."
+      ],
+    },
+    {
+      company: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
+      href: "#",
+      badges: ["Remote", "Full-Time", "Cloud Computing", "Cohort", "Project Lead", "Back-End Engineering", "Cloud Engineering", "Project Lead"],
+      location: "Jakarta, Indonesia",
+      title: "Capstone Project Lead - Project Manager - Team Lead",
+      logoUrl: "/bangkit-exp.jpg",
+      start: "Nov 2024",
+      end: "Dec 2024",
+      description: [
+        "Successfully led a team to complete application projects on schedule.",
+        "Efficiently guided team members to align with project timelines and deliverables.",
+        "Provided continuous support to team members to ensure smooth project execution.",
+        "Effectively managed and directed the overall progress of projects.",
+        "Demonstrated strong leadership in driving project success and fostering team collaboration."
+      ],
+    },
+
   ],
   projects: [
     {
@@ -405,7 +429,7 @@ export const DATA = {
       video: "",
     },
     {
-      title: "Dicoding ML-Engineer Path- Course Submissions, Code Resources, and Docs",
+      title: "Dicoding ML Engineer Path - Course Submissions, Code Resources, and Docs",
       href: "https://github.com/rahfianugerah/dicoding-ml-engineer",
       status: "Maintained",
       description:
