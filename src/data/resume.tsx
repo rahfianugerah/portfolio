@@ -1,4 +1,5 @@
 import { Icons } from "@/components/icons";
+import { FaBusinessTime } from "react-icons/fa";
 import { TbCertificate } from "react-icons/tb";
 import { HomeIcon, NotebookIcon, TerminalIcon } from "lucide-react";
 
@@ -46,8 +47,10 @@ export const DATA = {
   ],
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
+    { href: "/experience", icon: FaBusinessTime, label: "Experience" },
     { href: "/project", icon: TerminalIcon, label: "Project" },
     { href: "/blog", icon: NotebookIcon, label: "Blog" },
+
   ],
   contact: {
     social: {
