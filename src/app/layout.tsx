@@ -40,6 +40,7 @@ export const metadata: Metadata = {
     default: "Rahfi's Portfolio",
     template: "%s - Rahfi's Portfolio",
   },
+
   description: DATA.description,
   keywords: [
     "Software Engineer",
@@ -49,9 +50,9 @@ export const metadata: Metadata = {
     "Full-Stack Developer"
   ],
   applicationName: "Rahfi's Portfolio",
-  authors: [{ name: DATA.name }],
-  creator: DATA.name,
-  publisher: DATA.name,
+  authors: [{ name: "Naufal Rahfi Anugerah" }],
+  creator: "Naufal Rahfi Anugerah",
+  publisher: "Naufal Rahfi Anugerah",
   category: "technology",
 
   alternates: {
@@ -59,7 +60,8 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: DATA.name,
+    title: "Rahfi's Portfolio",
+    siteName: "Rahfi's Portfolio",
     description: DATA.description,
     url: DATA.url,
     locale: "en_US",
