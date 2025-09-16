@@ -77,6 +77,28 @@ export const DATA = {
 
   work: [
     {
+      company: "PT Arsa Muda Nawasena",
+      href: "#",
+      badges: [],
+      location: "Tangerang Selatan, Indonesia",
+      title: "Software Engineer",
+      logoUrl: "",
+      start: "Sep 2025",
+      end: "Present",
+      description: [],
+    },
+    {
+      company: "PT Arsa Muda Nawasena",
+      href: "#",
+      badges: [],
+      location: "Tangerang Selatan, Indonesia",
+      title: "Co-Founder",
+      logoUrl: "",
+      start: "Sep 2025",
+      end: "Present",
+      description: [],
+    },
+    {
       company: "Asah led by Dicoding in association with Accenture",
       href: "#",
       badges: ["Cohort", "Machine Learning"],
@@ -370,6 +392,27 @@ export const DATA = {
       image: "/rahfipro.png",
       video: "",
     },
+        {
+      title: "GitHub - rahfianugerah",
+      href: "https://github.com/rahfianugerah",
+      status: "GitHub Profile",
+      description:
+        "My GitHub profile, showcasing all projects, contributions, and collaborations across various domains.",
+      technologies: [        
+        "GitHub",
+        "Git",
+        "GitHub Profile"
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/rahfianugerah",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/github.png",
+      video: "",
+    },
     {
       title: "Asah -  Course Submissions, Code Resources, and Docs",
       href: "https://rahfi.pro",
@@ -498,7 +541,7 @@ export const DATA = {
       dates: "December 2024",
       location: "Jakarta, Indonesia",
       issued: "ai4impact, TerraAI, MobileFaculty",
-      description: "Successfully achieve 4th place out of 150+ participants in the Indonesian Chatbot Championship Challenge (IC3) 2024, focusing on Generative AI.I developed an innovative chatbot leveraging Smojo.AI and OpenAI API to simplify and enhance coding education.The chatbot empowers users to learn programming effortlessly through interactive and concise guidance, bridging the gap in educational accessibility.",
+      description: "Successfully achieve 4th place out of 150+ participants in the Indonesian Chatbot Championship Challenge (IC3) 2024, focusing on Generative AI. Developed an innovative chatbot leveraging Smojo.AI and OpenAI API to simplify and enhance coding education. The chatbot empowers users to learn programming effortlessly through interactive and concise guidance, bridging the gap in educational accessibility.",
       image: "/ic32024.png",
       links: [
         {
@@ -537,6 +580,18 @@ export const DATA = {
   ],
   learning_certificate: [
     // Dicoding Indonesia Provider
+    {
+      title: "Membangun Sistem Machine Learning",
+      issued: "Dicoding Indonesia",
+      category: ["Python", "Machine Learning", "MLOps", "Model Deployment", "ML Pipeline", "Grafana", "Prometheus"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/81P2532QNPOY",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
     {
       title: "Belajar Prinsip Pemrograman SOLID",
       issued: "Dicoding Indonesia",
@@ -664,7 +719,7 @@ export const DATA = {
       links: [
         {
           title: "Certificate",
-          href: "https://www.dicoding.com/certificates/2VX3RGQDNZYQ",
+          href: "https://www.dicoding.com/certificates/KEXL23W50ZG2",
           icon: <TbCertificate className="size-3" />,
         },
       ],
@@ -688,7 +743,7 @@ export const DATA = {
       links: [
         {
           title: "Certificate",
-          href: "https://www.dicoding.com/certificates/4EXGQL559ZRL",
+          href: "https://www.dicoding.com/certificates/GRX5JKYNYX0M",
           icon: <TbCertificate className="size-3" />,
         },
       ],
@@ -700,7 +755,7 @@ export const DATA = {
       links: [
         {
           title: "Certificate",
-          href: "https://www.dicoding.com/certificates/2VX3R9N8QZYQ",
+          href: "https://www.dicoding.com/certificates/2VX352LJ3PYQ",
           icon: <TbCertificate className="size-3" />,
         },
       ],
@@ -712,7 +767,7 @@ export const DATA = {
       links: [
         {
           title: "Certificate",
-          href: "https://www.dicoding.com/certificates/L4PQ1VRN2XO1",
+          href: "https://www.dicoding.com/certificates/GRX5JKYGYX0M",
           icon: <TbCertificate className="size-3" />,
         },
       ],
@@ -784,7 +839,7 @@ export const DATA = {
       links: [
         {
           title: "Certificate",
-          href: "https://www.dicoding.com/certificates/72ZDVEK09ZYW",
+          href: "https://www.dicoding.com/certificates/JLX15LK65Z72",
           icon: <TbCertificate className="size-3" />,
         },
       ],
@@ -796,7 +851,7 @@ export const DATA = {
       links: [
         {
           title: "Certificate",
-          href: "https://www.dicoding.com/certificates/QLZ97DJ47P5D",
+          href: "https://www.dicoding.com/certificates/NVP7J1MRVXR0",
           icon: <TbCertificate className="size-3" />,
         },
       ],
@@ -844,7 +899,7 @@ export const DATA = {
       links: [
         {
           title: "Certificate",
-          href: "https://www.dicoding.com/certificates/JMZV3QR1QPN9",
+          href: "https://www.dicoding.com/certificates/1OP8JL39LPQK",
           icon: <TbCertificate className="size-3" />,
         },
       ],
