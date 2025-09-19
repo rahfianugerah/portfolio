@@ -9,7 +9,7 @@ export const DATA = {
   url: "https://rahfi.pro",
   location: "Jakarta, Indonesia",
   locationLink: "https://www.google.com/maps/place/jakarta",
-  description: "Artificial Intelligence Engineer",
+  description: "Software Engineer",
   summary: "Final-year Computer Science student at Mercu Buana University, specializing in Information Systems and back-end–focused Software/AI Engineering. Experienced in building robust APIs with Flask and FastAPI, deploying containerized and serverless solutions on Google Cloud, AWS, and Azure, and developing predictive models using TensorFlow and Scikit-learn. Skilled in delivering scalable, high-impact machine learning and backend systems, with additional capability in lightweight frontend development using Next.js.",
   avatarUrl: "",
   programmingLanguages: [
