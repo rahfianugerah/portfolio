@@ -82,7 +82,7 @@ export const DATA = {
       badges: [],
       location: "Tangerang Selatan, Indonesia",
       title: "Software Engineer",
-      logoUrl: "",
+      logoUrl: "/amn-exp.png",
       start: "Sep 2025",
       end: "Present",
       description: [],
@@ -93,7 +93,7 @@ export const DATA = {
       badges: [],
       location: "Tangerang Selatan, Indonesia",
       title: "Co-Founder",
-      logoUrl: "",
+      logoUrl: "/amn-exp.png",
       start: "Sep 2025",
       end: "Present",
       description: [],
@@ -392,13 +392,13 @@ export const DATA = {
       image: "/rahfipro.png",
       video: "",
     },
-        {
+    {
       title: "GitHub - rahfianugerah",
       href: "https://github.com/rahfianugerah",
       status: "GitHub Profile",
       description:
         "My GitHub profile, showcasing all projects, contributions, and collaborations across various domains.",
-      technologies: [        
+      technologies: [
         "GitHub",
         "Git",
         "GitHub Profile"
@@ -411,6 +411,61 @@ export const DATA = {
         },
       ],
       image: "/github.png",
+      video: "",
+    },
+    {
+      title: "An MLOps Approach for Heart Failure Prediction Using MLP and Bayesian Optimization via Tree-Parzen Estimator (TPE)",
+      href: "https://github.com/rahfianugerah/mlops-heart-failure",
+      status: "Maintained",
+      description:
+        "The goal of this MLOps project is to build and deploy a robust heart failure prediction system using machine learning model. The project will use an MLOps lifecycle to automate the training, optimization, and deployment of the model.",
+      technologies: [
+        "Python",
+        "TensorFlow",
+        "Keras",
+        "Scikit-Learn",
+        "Numpy",
+        "Pandas",
+        "Matplotlib",
+        "Seaborn",
+        "MLflow",
+        "Prometheus",
+        "Grafana",
+      ],
+      links: [
+        {
+          type: "Source Code",
+          href: "https://github.com/rahfianugerah/mlops-heart-failure",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/mlops-heart-failure-project.png",
+      video: "",
+    },
+    {
+      title: "Optimizing Stroke Risk Prediction Using Artificial Neural Networks with Feature Selection Based on Binary Particle Swarm Optimization",
+      href: "https://github.com/rahfianugerah/research-model",
+      status: "Maintained - Research",
+      description:
+        "This project aims to develop an optimized stroke risk prediction model using Artificial Neural Networks (ANN) combined with feature selection based on Binary Particle Swarm Optimization (BPSO). The goal is to enhance the accuracy and efficiency of stroke risk assessment by identifying the most relevant features and fine-tuning the ANN model.",
+      technologies: [
+        "Python",
+        "TensorFlow",
+        "Keras",
+        "Scikit-Learn",
+        "Numpy",
+        "Pandas",
+        "Matplotlib",
+        "Seaborn",
+      ],
+      links: [
+        {
+          type: "Source Code",
+          href: "https://github.com/rahfianugerah/research-model",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/research-model-project.png",
       video: "",
     },
     {
@@ -503,7 +558,26 @@ export const DATA = {
       image: "/dicoding-project.png",
       video: "",
     },
-
+    {
+      title: "Commit Wave",
+      href: "https://github.com/rahfianugerah/commitwave",
+      status: "Maintained",
+      description:
+        "Automated GitHub Commits Bot: This bot will maintain your github commit history using datetime range and will commit randomly based on your input",
+      technologies: [
+        "JavaScript",
+        "Node.js",
+      ],
+      links: [
+        {
+          type: "Source Code",
+          href: "https://github.com/rahfianugerah/commitwave",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/commitwave.png",
+      video: "",
+    },
   ],
   hardwork: [
     {
