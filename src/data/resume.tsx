@@ -414,7 +414,7 @@ export const DATA = {
       video: "",
     },
     {
-      title: "An MLOps Approach for Heart Failure Prediction Using MLP and Bayesian Optimization via Tree-Parzen Estimator (TPE)",
+      title: "An MLOps Approach for Heart Failure Prediction Using MLP and Bayesian Optimization via Tree-Structured Parzen Estimator (TPE)",
       href: "https://github.com/rahfianugerah/mlops-heart-failure",
       status: "Maintained",
       description:
