@@ -404,29 +404,32 @@ export const DATA = {
       video: "",
     },
     {
-      title: "GitHub - rahfianugerah",
-      href: "https://github.com/rahfianugerah",
-      status: "GitHub Profile",
+      title: "Codepilot",
+      href: "https://github.com/codepilot",
+      status: "Maintained",
       description:
-        "My GitHub profile, showcasing all projects, contributions, and collaborations across various domains.",
+        "Codepilot is an Qwen 2.5-Coder:7B Powered coding assistant designed to help developers write code faster and more efficiently. It provides for code generation, fixing code, refactoring and explaining code, making it easier for developers to focus on their work and improve productivity.",
       technologies: [
-        "GitHub",
-        "Git",
-        "GitHub Profile"
+        "Next.js",
+        "Python",
+        "FastAPI",
+        "Ollama",
+        "Qwen 2.5-Coder:7B",
+        "LLMs",
       ],
       links: [
         {
           type: "Source",
-          href: "https://github.com/rahfianugerah",
+          href: "https://github.com/codepilot",
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: "/github.png",
+      image: "/codepilot-project.png",
       video: "",
     },
     {
       title: "An MLOps Approach for Heart Failure Prediction Using MLP and Bayesian Optimization via Tree-Structured Parzen Estimator (TPE)",
-      href: "https://github.com/rahfianugerah/mlops-heart-failure",
+      href: "https://github.com/rahfianugerah/codepilot",
       status: "Maintained",
       description:
         "The goal of this MLOps project is to build and deploy a robust heart failure prediction system using machine learning model. The project will use an MLOps lifecycle to automate the training, optimization, and deployment of the model.",
