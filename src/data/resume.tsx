@@ -101,7 +101,7 @@ export const DATA = {
     {
       company: "Asah led by Dicoding in association with Accenture",
       href: "#",
-      badges: ["Cohort", "Machine Learning"],
+      badges: ["Remote", "Full-Time", "Machine Learning", "Cohort"],
       location: "Jakarta, Indonesia",
       title: "Machine Learning Cohort",
       logoUrl: "/asah-exp.png",
@@ -309,11 +309,22 @@ export const DATA = {
   ],
   leadership: [
     {
+      company: "Asah led by Dicoding in association with Accenture",
+      href: "#",
+      badges: ["Remote", "Full-Time", "Machine Learning", "Cohort", "Project Lead", "Modeling", "AI Engineering"],
+      location: "Jakarta, Indonesia",
+      title: "Capstone Project Lead - Project Manager - Team Lead",
+      logoUrl: "/asah-exp.png",
+      start: "Oct 2025",
+      end: "Present",
+      description: [],
+    },
+    {
       company: "Mercu Buana University",
       href: "#",
-      badges: ["Project Lead"],
+      badges: ["Full-Time", "Project Lead", "Back-End Engineering", "Cloud Engineering", "AI Engineering"],
       location: "Jakarta, Indonesia",
-      title: "Project Manager - Team Lead",
+      title: "Project Manager - Team Lead - Information Systems Development Project",
       logoUrl: "/umb-edu.jpg",
       start: "Mar 2025",
       end: "Jul 2025",
@@ -345,7 +356,7 @@ export const DATA = {
     {
       company: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
       href: "#",
-      badges: ["Remote", "Full-Time", "Cloud Computing", "Cohort", "Project Lead", "Back-End Engineering", "Cloud Engineering", "Project Lead"],
+      badges: ["Remote", "Full-Time", "Cloud Computing", "Cohort", "Project Lead", "Back-End Engineering", "Cloud Engineering"],
       location: "Jakarta, Indonesia",
       title: "Capstone Project Lead - Project Manager - Team Lead",
       logoUrl: "/bangkit-exp.jpg",
