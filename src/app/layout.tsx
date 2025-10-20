@@ -12,22 +12,23 @@ import { Inter as FontSans, Source_Code_Pro, Bebas_Neue } from "next/font/google
 import "./globals.css";
 
 export const inter = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans", // make sure this matches Tailwind config
+  subsets: ["latin", "latin-ext"],
+  weight: ["300","400","500","600","700","800"],
+  variable: "--font-sans",
   display: "swap",
 });
 
 export const sourceCodePro = Source_Code_Pro({
-  subsets: ["latin"],
-  variable: "--font-mono", // make sure this matches Tailwind config
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  subsets: ["latin", "latin-ext"],
+  weight: ["400","500","600","700"],
+  style: ["normal","italic"],
+  variable: "--font-mono",
   fallback: ["monospace"],
   display: "swap",
 });
 
 export const bebasNeue = Bebas_Neue({
-  subsets: ["latin"],
+  subsets: ["latin","latin-ext"],
   weight: ["400"],
   variable: "--font-bebas",
   display: "swap",

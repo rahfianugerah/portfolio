@@ -21,9 +21,9 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
-        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
-        bebas: ["var(--font-bebas)", "system-ui", "sans-serif"],
+        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "Segoe UI", "Roboto", "Helvetica", "Arial"],
+        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
+        bebas: ["var(--font-bebas)", "Inter", "sans-serif"],
         sourceCodePro: ["var(--font-source-code-pro)", ],
       },
       colors: {
