@@ -85,7 +85,12 @@ export const DATA = {
       logoUrl: "/amn-exp.png",
       start: "Sep 2025",
       end: "Present",
-      description: [],
+      description: [
+        "Develop and maintain scalable web applications, handling both front-end and back-end implementation.",
+        "Design and integrate APIs, manage databases, and ensure seamless deployment across environments.",
+        "Identify requirements, deliver features, and enhance system performance.",
+        "Optimize website speed, and ensure mobile-friendly and responsive interfaces."
+      ],
     },
     {
       company: "PT Arsa Muda Nawasena",
@@ -96,7 +101,10 @@ export const DATA = {
       logoUrl: "/amn-exp.png",
       start: "Sep 2025",
       end: "Present",
-      description: [],
+      description: [
+        "Establish and build the property agency (PT), including legal setup and early business operations for real estate agency.",
+        "Define and oversee the company’s strategic direction in information technology and digital transformation."
+      ],
     },
     {
       company: "Asah led by Dicoding in association with Accenture",
@@ -108,11 +116,10 @@ export const DATA = {
       start: "Aug 2025",
       end: "Present",
       description: [
-        "Gained a solid foundation in core machine learning principles, covering both supervised and unsupervised learning techniques.",
-        "Applied deep learning methods in practice, developing expertise with neural networks.",
-        "Enhanced coding practices and optimized model performance through continuous experimentation and iterative improvement.",
-        "Built and automated machine learning systems and pipelines for efficient workflows.",
-        "Acquired hands-on experience in model deployment, monitoring, and ML pipeline automation to ensure scalability and reliability."
+        "Participated in an intensive machine learning training program focusing on end-to-end ML development.",
+        "Built and deployed machine learning models for classification, regression, and computer vision tasks using Python.",
+        "Conducted dataset preparation, feature engineering, model training, evaluation, and optimization.",
+        "Collaborated with mentors and peers on hands-on projects and industry-aligned learning modules.l deployment, monitoring, and ML pipeline automation to ensure scalability and reliability."
       ],
     },
     {
@@ -125,9 +132,10 @@ export const DATA = {
       start: "Mar 2025",
       end: "Present",
       description: [
-        "Reviewing student-led projects, assessing implementation quality, adherence to best practices, and providing detailed feedback to enhance their practical skills.",
-        "Reviewing student submissions across Machine Learning learning path & Google Cloud Professional learning path, providing constructive feedback to enhance learners’ understanding.",
-        "Supporting learners' skill development in leveraging Machine Learning models and Google Cloud platform."
+        "Reviewed student project submissions to ensure code quality, correctness, and alignment with best practices in machine learning and cloud-based development.",
+        "Assessed implementation logic, performance, and documentation, and provided clear, structured, and constructive feedback to improve student solutions.",
+        "Evaluated submissions across Machine Learning and Google Cloud Professional learning paths, ensuring technical accuracy and consistent application of core concepts.",
+        "Contributed to learners’ practical skill development by identifying issues, suggesting improvements, and reinforcing proper coding standards and model implementation techniques."
       ],
     },
     {
@@ -402,13 +410,114 @@ export const DATA = {
       ],
       image: "/rahfipro.png",
       video: "",
+
+    },
+    {
+      title: "Stacked Pretrained Models Pipeline for Javanese Scripts (Aksara Jawa) Handwritten Character Recognition and OCR",
+      href: "https://github.com/rahfianugerah/hanacaraka-ajisaka-writings",
+      status: "Maintained",
+      description:
+        "A stacked pretrained models pipeline combining 3 pretraned models (MobileNetV2, EfficientNetB0, ResNet50) with ANN as meta learner improved with Tree-structured Parzen Estimator (TPE) for hyperparameter optimization to enhance handwritten character recognition and OCR accuracy on Javanese Scripts (Aksara Jawa) dataset.",
+      technologies: [
+        "Python",
+        "Pytorch",
+        "ResNet50",
+        "EfficientNetB0",
+        "MobileNetV2",
+        "CNN",
+        "ANN",
+        "Tree-structured Parzen Estimator (TPE)",
+        "Pretrained Models",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/rahfianugerah/hanacaraka-ajisaka-writings",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/hanacaraka-project.png",
+      video: "",
+    },
+    {
+      title: "Hybrid CNN Vision Transformer (ViT) Model for Enhanced Image Classification",
+      href: "https://github.com/rahfianugerah/hybrid-cnn-vit",
+      status: "Maintained",
+      description:
+        "A hybrid model combining Convolutional Neural Networks (CNN) and Vision Transformer (ViT) architectures to improve image classification performance by leveraging the strengths of both approaches with embedding patch.",
+      technologies: [
+        "Python",
+        "Pytorch",
+        "Vision Transformer (ViT)",
+        "CNN",
+        "Pretrained Models",
+      ],
+      links: [
+        {
+          type: "Original Source",
+          href: "https://github.com/clavinorach/hybrid-cnn-vit",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Forked Source",
+          href: "https://github.com/rahfianugerah/hybrid-cnn-vit",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/hybrid-cnn-vit-project.png",
+      video: "",
+    },
+    {
+      title: "Unified ConvNeXt Pipeline for Image Classification, Object Detection, and OCR",
+      href: "https://github.com/rahfianugerah/unified-convnext-pipeline",
+      status: "Maintained",
+      description:
+        "A unified pipeline for ConvNeXt models to perform image classification, object detection, and OCR tasks efficiently.",
+      technologies: [
+        "Python",
+        "Pytorch",
+        "ConvNeXT",
+        "Pretrained Models",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/rahfianugerah/unified-convnext-pipeline",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/unified-convnext-pipeline-project.png",
+      video: "",
+    },
+    {
+      title: "The Assistant - Gemma 3: 4B Powered Chatbot Assistant",
+      href: "https://github.com/rahfianugerah/the-assistant-gemma3-4b",
+      status: "Maintained",
+      description:
+        "The Assistant is a Gemma 3: 4B Powered chatbot assistant designed to help you explain and generate knowledege faster and more efficiently. Provide the things you and he's ready to help you.",
+      technologies: [
+        "Next.js",
+        "Python",
+        "Ollama",
+        "gemma3:4b",
+        "LLMs",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/rahfianugerah/the-assistant-gemma3-4b",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/the-assistant-project.png",
+      video: "",
     },
     {
       title: "Codepilot",
-      href: "https://github.com/codepilot",
+      href: "https://github.com/rahfianugerah/codepilot-qwen2.5-7b-instruct",
       status: "Maintained",
       description:
-        "Codepilot is an Qwen 2.5-Coder:7B Powered coding assistant designed to help developers write code faster and more efficiently. It provides for code generation, fixing code, refactoring and explaining code, making it easier for developers to focus on their work and improve productivity.",
+        "Codepilot is an Qwen 2.5-Coder: 7B Powered coding assistant designed to help developers write code faster and more efficiently. It provides for code generation, fixing code, refactoring and explaining code, making it easier for developers to focus on their work and improve productivity.",
       technologies: [
         "Next.js",
         "Python",
@@ -429,7 +538,7 @@ export const DATA = {
     },
     {
       title: "An MLOps Approach for Heart Failure Prediction Using MLP and Bayesian Optimization via Tree-Structured Parzen Estimator (TPE)",
-      href: "https://github.com/rahfianugerah/codepilot",
+      href: "https://github.com/rahfianugerah/mlops-heart-failure",
       status: "Maintained",
       description:
         "The goal of this MLOps project is to build and deploy a robust heart failure prediction system using machine learning model. The project will use an MLOps lifecycle to automate the training, optimization, and deployment of the model.",
@@ -484,7 +593,7 @@ export const DATA = {
     },
     {
       title: "Asah -  Course Submissions, Code Resources, and Docs",
-      href: "https://rahfi.pro",
+      href: "https://github.com/rahfianugerah/asah-machine-learning",
       status: "Maintained",
       description:
         "Repository showcasing all work from the Asah - Machine Learning, including course submissions, code resources, and documentation.",
@@ -504,7 +613,7 @@ export const DATA = {
       links: [
         {
           type: "Source Code",
-          href: "https://github.com/rahfianugerah/portfolio",
+          href: "https://github.com/rahfianugerah/asah-machine-learning",
           icon: <Icons.github className="size-3" />,
         },
       ],
@@ -573,6 +682,31 @@ export const DATA = {
       video: "",
     },
     {
+      title: "dotfiles",
+      href: "https://github.com/rahfianugerah/dotfiles",
+      status: "Maintained",
+      description:
+        "Personalized dotfiles repository to streamline and enhance my development environment across multiple systems. It includes configurations for shell, editor, and various tools to ensure a consistent and efficient workflow.",
+      technologies: [
+        "Arch Linux",
+        "WSL2",
+        "Zsh",
+        "OhMyPosh",
+        "Git",
+        "Bash",
+        "Shell Scripting",
+      ],
+      links: [
+        {
+          type: "Source Code",
+          href: "https://github.com/rahfianugerah/dotfiles",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/dotfiles.png",
+      video: "",
+    },
+    {
       title: "Commit Wave",
       href: "https://github.com/rahfianugerah/commitwave",
       status: "Maintained",
@@ -595,8 +729,23 @@ export const DATA = {
   ],
   hardwork: [
     {
+      title: "GEMASTIK XVIII (Pagelaran Mahasiswa Nasional Bidang Teknologi Informasi dan Komunikasi) 2025 Data Mining - Finalist",
+      dates: "Oct 2025",
+      location: "Jakarta, Indonesia",
+      issued: "Direktorat Pembelajaran dan Kemahasiswaan (Dit. Belmawa), Direktorat Jenderal Pendidikan Tinggi (Ditjen Dikti), Kementerian Pendidikan Tinggi, Sains, dan Teknologi (Kemendiktisaintek)",
+      description: "Recognized as a national finalist in the Data Mining category for delivering a high-leverage analytical solution that showcased robust modeling strategy, scalable data engineering, and actionable insights.",
+      image: "/gemastik18.jpg",
+      links: [
+        {
+          title: "Certificate (N/A)",
+          href: "",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
       title: "Gold Medalist - National Innovation Exhibition (Pekan Inovasi Nasional) 2025",
-      dates: "July 2025",
+      dates: "Jul 2025",
       location: "Jakarta, Indonesia",
       issued: "INNOPA, Mercu Buana University",
       description: "Awarded the Gold Medal at the 2025 National Innovation Exhibition (Pekan Inovasi Nasional) for excellence in product innovation, recognizing outstanding creativity and technical achievement.",
@@ -626,7 +775,7 @@ export const DATA = {
     },
     {
       title: "4th Place Best Chatbot & Top 10 Finalist - Indonesia Chatbot Championship Challenge (IC3) 2024, Theme: Generative AI",
-      dates: "December 2024",
+      dates: "Dec 2024",
       location: "Jakarta, Indonesia",
       issued: "ai4impact, TerraAI, MobileFaculty",
       description: "Successfully achieve 4th place out of 150+ participants in the Indonesian Chatbot Championship Challenge (IC3) 2024, focusing on Generative AI. Developed an innovative chatbot leveraging Smojo.AI and OpenAI API to simplify and enhance coding education. The chatbot empowers users to learn programming effortlessly through interactive and concise guidance, bridging the gap in educational accessibility.",
