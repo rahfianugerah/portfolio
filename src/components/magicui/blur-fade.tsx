@@ -33,8 +33,11 @@ const BlurFade = ({
   const isInView = !inView || inViewResult;
 
   const defaultVariants: Variants = {
+    // Start slightly down (positive y)
     hidden: { y: yOffset, opacity: 0, filter: `blur(${blur})` },
-    visible: { y: -yOffset, opacity: 1, filter: `blur(0px)` },
+    
+    // FIX IS HERE: End at 'y: 0' (Natural position), NOT '-yOffset'
+    visible: { y: 0, opacity: 1, filter: `blur(0px)` },
   };
 
   const combinedVariants = variant ?? defaultVariants;
