@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 type ImageCarouselProps = {
   images?: string[];
@@ -30,18 +31,20 @@ export default function ImageCarousel({ images, intervalMs = 3000 }: ImageCarous
   return (
     // FIX 1: Added 'shrink-0' so it never gets squeezed by the sidebar height
     <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm">
-      <div className="relative aspect-[16/10] w-full group">
+      <div className="relative aspect-square w-full group">
         
         {items.map((src, i) => (
-           // FIX 2: 'object-cover' prevents image distortion (squeezing)
-           <img
+           <Image
             key={i}
             src={src}
             alt={`Slide ${i + 1}`}
+            fill
+            sizes="(max-width: 768px) 100vw, 300px"
             className={cn(
-              "absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out",
+              "object-cover transition-opacity duration-700 ease-in-out",
               index === i ? "opacity-100 z-10" : "opacity-0 z-0"
             )}
+            priority={i === 0}
           />
         ))}
 
