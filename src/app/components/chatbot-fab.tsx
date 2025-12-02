@@ -1,10 +1,11 @@
+// src/app/components/chatbot-fab.tsx
 "use client";
 import { useState, useRef } from "react";
 import Chatbot from "./chatbot";
 
 export default function ChatbotFab() {
   const [open, setOpen] = useState(false);
-  const apiKey = process.env.NEXT_PUBLIC_AI_API_KEY;
+  // REMOVED: const apiKey = process.env.GEMINI_API_KEY; (Not needed here!)
 
   // Dragging logic
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -64,8 +65,8 @@ export default function ChatbotFab() {
           </div>
           
           <div className="flex-1 overflow-hidden">
-            {/* FIX: Pass minimal={true} to disable the internal header/border */}
-            <Chatbot apiKey={apiKey} minimal={true} />
+            {/* UPDATED: No apiKey prop needed anymore */}
+            <Chatbot minimal={true} />
           </div>
         </div>
       )}
