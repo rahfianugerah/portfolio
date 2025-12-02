@@ -5,30 +5,35 @@ import Clock from "@/components/clock";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
+import ChatbotFab from "./components/chatbot-fab";
+import LeftRail from "@/app/components/left-rail";
+import HeadHome from "@/components/header-home.";
 
 import type { Metadata } from "next";
 
 import { Inter as FontSans, Source_Code_Pro, Bebas_Neue } from "next/font/google";
 import "./globals.css";
+import Chatbot from "./components/chatbot";
+import QuoteCarousel from "./components/quote-carousel";
 
 export const inter = FontSans({
   subsets: ["latin", "latin-ext"],
-  weight: ["300","400","500","600","700","800"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   variable: "--font-sans",
   display: "swap",
 });
 
 export const sourceCodePro = Source_Code_Pro({
   subsets: ["latin", "latin-ext"],
-  weight: ["400","500","600","700"],
-  style: ["normal","italic"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   variable: "--font-mono",
   fallback: ["monospace"],
   display: "swap",
 });
 
 export const bebasNeue = Bebas_Neue({
-  subsets: ["latin","latin-ext"],
+  subsets: ["latin", "latin-ext"],
   weight: ["400"],
   variable: "--font-bebas",
   display: "swap",
@@ -93,34 +98,60 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn(sourceCodePro.variable, inter.variable, bebasNeue.variable)} suppressHydrationWarning>
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6",
+      <body className={inter.className}>
 
-        )}
-      >
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          <BlurFade>
-          <div className="flex items-center justify-between">
-            <a
-              href="https://rahfi.pro"
-              className="font-bebas inline-block text-2xl"
-            >
-              rahfi<span className="text-[#FF0000]">.</span>pro
-            </a>
-            <Clock />
-          </div>
-          </BlurFade>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <TooltipProvider delayDuration={0}>
-            {children}
             <Navbar />
+
+            <div className="mx-auto max-w-7xl px-4 py-6 min-h-screen">
+
+              <div className="flex flex-col gap-6 lg:grid lg:grid-cols-12 lg:items-start">
+                {/* 1. LEFT RAIL */}
+                <div className="order-2 flex flex-col gap-4 lg:col-span-3 lg:order-1 lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto no-scrollbar">
+                  <LeftRail />
+                </div>
+
+                {/* 2. MAIN CONTENT (Scrolls normally) */}
+                <main className="order-1 flex flex-col gap-4 min-w-0 w-full lg:col-span-6 lg:order-2">
+                  <HeadHome />
+
+                  {/* Mobile Clock */}
+                  <div className="lg:hidden">
+                    <Clock />
+                  </div>
+
+                  {children}
+
+                  <div className="lg:hidden">
+                    <QuoteCarousel />
+                    <footer className="mt-12 text-center text-sm font-bebas text-muted-foreground pb-24 lg:pb-6">
+                      <p>© {new Date().getFullYear()} Naufal Rahfi Anugerah | All rights reserved.</p>
+                    </footer>
+                  </div>
+                </main>
+
+                {/* 3. RIGHT RAIL 
+                    FIX: Same 'sticky' + 'scrollable' fix as Left Rail.
+                */}
+                <div className="hidden lg:flex lg:col-span-3 lg:order-3 flex-col gap-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto no-scrollbar">
+                  <Clock />
+                  {/* Added shrink-0 to protect height */}
+                  <div className="h-[500px] w-full shrink-0">
+                    <Chatbot apiKey={process.env.NEXT_PUBLIC_AI_API_KEY} />
+                  </div>
+                  <QuoteCarousel />
+                  <footer className="mt-12 text-center text-sm font-bebas text-muted-foreground pb-24 lg:pb-6">
+                    <p>© {new Date().getFullYear()} Naufal Rahfi Anugerah | All rights reserved.</p>
+                  </footer>
+                </div>
+
+              </div>
+            </div>
           </TooltipProvider>
         </ThemeProvider>
-        <footer className="mt-12 text-center text-sm font-bebas text-muted-foreground">
-          <p>
-            © {new Date().getFullYear()} Naufal Rahfi Anugerah | All rights reserved.
-          </p>
-        </footer>
+
+        <ChatbotFab />
       </body>
     </html>
   );
