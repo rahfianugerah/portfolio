@@ -52,7 +52,7 @@ export default function ChatbotFab() {
           <div className="flex items-center justify-between border-b bg-muted/40 px-3 py-3 cursor-default shrink-0">
             <div className="flex items-center gap-2 text-sm font-medium">
               <div className="h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse" />
-              <span>Rahfi Assistant</span>
+              <span>AI Chatbot</span>
             </div>
             <button
               aria-label="Close chatbot"
