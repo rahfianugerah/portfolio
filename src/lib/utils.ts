@@ -5,16 +5,30 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatDate(date: string) {
-  let currentDate = new Date().getTime();
-  if (!date.includes("T")) {
-    date = `${date}T00:00:00`;
+export function formatDate(date: string | Date) {
+  // 1. Safety Check: If no date is provided, return a placeholder
+  if (!date) {
+    return "No Date";
   }
-  let targetDate = new Date(date).getTime();
+
+  // 2. Convert string to ensure it parses correctly
+  let dateStr = date;
+  if (typeof date === "string" && !date.includes("T")) {
+    dateStr = `${date}T00:00:00`;
+  }
+
+  let targetDate = new Date(dateStr).getTime();
+  let currentDate = new Date().getTime();
+  
+  // 3. Check if the date is valid
+  if (isNaN(targetDate)) {
+    return "Invalid Date";
+  }
+
   let timeDifference = Math.abs(currentDate - targetDate);
   let daysAgo = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-  let fullDate = new Date(date).toLocaleString("en-us", {
+  let fullDate = new Date(dateStr).toLocaleString("en-us", {
     month: "long",
     day: "numeric",
     year: "numeric",
