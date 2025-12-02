@@ -25,7 +25,6 @@ export async function markdownToHTML(markdown: string) {
     .use(remarkGfm)
     .use(remarkRehype)
     .use(rehypePrettyCode, {
-      // https://rehype-pretty.pages.dev/#usage
       theme: {
         light: "min-light",
         dark: "min-dark",
@@ -40,12 +39,27 @@ export async function markdownToHTML(markdown: string) {
 
 export async function getPost(slug: string) {
   const filePath = path.join("content", `${slug}.mdx`);
+  
+  // 1. Safety Check: return null if file doesn't exist (prevents 500 crashes)
+  if (!fs.existsSync(filePath)) {
+    return null;
+  }
+
   let source = fs.readFileSync(filePath, "utf-8");
   const { content: rawContent, data: metadata } = matter(source);
   const content = await markdownToHTML(rawContent);
+
   return {
     source: content,
-    metadata,
+    metadata: {
+      ...metadata,
+      // 2. FORCE DATE TO STRING
+      // gray-matter returns a Date object, but we need a string.
+      // We convert it to ISO string (YYYY-MM-DD) to fix the error.
+      publishedAt: metadata.publishedAt instanceof Date 
+        ? metadata.publishedAt.toISOString().split("T")[0] 
+        : metadata.publishedAt,
+    } as Metadata,
     slug,
   };
 }
@@ -55,14 +69,17 @@ async function getAllPosts(dir: string) {
   return Promise.all(
     mdxFiles.map(async (file) => {
       let slug = path.basename(file, path.extname(file));
-      let { metadata, source } = await getPost(slug);
+      // This now handles nulls safely
+      let post = await getPost(slug);
+      if (!post) return null; 
+
       return {
-        metadata,
-        slug,
-        source,
+        metadata: post.metadata,
+        slug: post.slug,
+        source: post.source,
       };
-    }),
-  );
+    })
+  ).then((posts) => posts.filter((post) => post !== null)); // Filter out any nulls
 }
 
 export async function getBlogPosts() {
