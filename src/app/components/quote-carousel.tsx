@@ -1,5 +1,7 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
+// 1. Import Next.js Image
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const quotes = [
@@ -7,19 +9,19 @@ const quotes = [
     author: "Jensen Huang",
     role: "CEO, NVIDIA",
     text: "Software is eating the world, but AI is going to eat software.",
-    image: "./jensen-huang.jpg"
+    image: "/jensen-huang.jpg" // Ensure these paths start with / if in public folder
   },
   {
     author: "Steve Jobs",
     role: "Co-founder, Apple",
     text: "Being the richest man in the cemetery doesn't matter to me. Going to bed at night saying we've done something wonderful... that's what matters to me",
-    image: "./steve-jobs.jpg"
+    image: "/steve-jobs.jpg"
   },
   {
     author: "Linus Torvalds",
     role: "Creator, Linux",
     text: "Talk is cheap. Show me the code.",
-    image: "./torvalds.jpg"
+    image: "/torvalds.jpg"
   }
 ];
 
@@ -29,7 +31,7 @@ export default function QuoteCarousel() {
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % quotes.length);
-    }, 5000); // Change every 5 seconds
+    }, 5000); 
     return () => clearInterval(timer);
   }, []);
 
@@ -43,15 +45,17 @@ export default function QuoteCarousel() {
             index === i ? "opacity-100 z-10" : "opacity-0 z-0"
           )}
         >
-          {/* Background Image */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          {/* 2. Use <Image /> with fill prop */}
+          <Image
             src={item.image}
             alt={item.author}
-            className="h-full w-full object-cover"
+            fill
+            sizes="(max-width: 768px) 100vw, 300px"
+            className="object-cover"
+            priority={i === 0} // Load the first image immediately
           />
           
-          {/* Dark Gradient Overlay for Readability */}
+          {/* Dark Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
           {/* Text Content */}
@@ -64,7 +68,7 @@ export default function QuoteCarousel() {
             </svg>
             
             <p className="mb-3 text-lg font-bold leading-tight font-bebas tracking-wide">
-              "{item.text}"
+              &quot;{item.text}&quot;
             </p>
             
             <div className="flex items-center gap-2 border-t border-white/20 pt-2">
@@ -77,10 +81,10 @@ export default function QuoteCarousel() {
         </div>
       ))}
 
-      {/* Progress Bar (Top) */}
+      {/* Progress Bar */}
       <div className="absolute top-0 left-0 h-1 w-full bg-white/20 z-20">
         <div 
-          key={index} // Key forces reset on change
+          key={index} 
           className="h-full bg-primary animate-progress origin-left"
           style={{ 
             animationDuration: "5000ms",
