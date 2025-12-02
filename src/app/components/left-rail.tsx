@@ -3,6 +3,7 @@ import { useEffect, useState, useMemo } from "react";
 import ImageCarousel from "./image-carousel";
 import ExperienceGraph from "./experience-graph";
 import { cn } from "@/lib/utils";
+import BlurFade from "@/components/magicui/blur-fade";
 
 // Types for GitHub API Data
 type GitHubUser = {
@@ -87,11 +88,16 @@ export default function LeftRail() {
 
   return (
     <aside className="flex h-auto w-full flex-col gap-4">
-      <ImageCarousel />
-      <ExperienceGraph />
+      <BlurFade delay={0.1}>
+        <ImageCarousel />
+      </BlurFade>
+      <BlurFade delay={0.15}>
+        <ExperienceGraph />
+      </BlurFade>
       
       {/* GITHUB CARD */}
-      <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
+      <BlurFade delay={0.2}>
+        <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
         
         {/* HEADER: Profile Picture & Info */}
         <div className="flex items-center gap-3 mb-4">
@@ -196,7 +202,8 @@ export default function LeftRail() {
           )}
         </div>
 
-      </div>
+        </div>
+      </BlurFade>
     </aside>
   );
 }
