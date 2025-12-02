@@ -45,15 +45,17 @@ export default async function BlogPage() {
                 href={`/blog/${post.slug}`}
               >
                 <div className="w-full flex flex-col">
+                  <p className="h-6 text-xs text-muted-foreground">{post.metadata.publishedAt}</p>
                   <p className="tracking-tight">{post.metadata.title}</p>
-                  <p className="h-6 text-xs text-muted-foreground">
-                    {post.metadata.publishedAt}
-                  </p>
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">{post.metadata.summary}</p>
                 </div>
               </Link>
             </BlurFade>
           ))}
       </div>
+      <footer className="mt-12 text-center text-sm font-bebas text-muted-foreground pb-24 lg:pb-6">
+        <p>© 2025 Naufal Rahfi Anugerah | All rights reserved.</p>
+      </footer>
     </section>
   );
 }
