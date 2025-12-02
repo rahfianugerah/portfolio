@@ -86,7 +86,7 @@ export default function ExperienceGraph() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
           </span>
-          Exp Velocity
+          Experiences Velocity
         </div>
       </div>
 
@@ -144,9 +144,11 @@ export default function ExperienceGraph() {
       </div>
 
       <div className="rounded bg-muted/50 p-2 text-[10px] text-muted-foreground leading-tight border border-muted mt-2">
-        <span className="font-semibold text-foreground">Graph Logic:</span> Height = Duration.
+        <span className="font-semibold text-foreground">Graph Logic:</span>
         <br/>
-        Higher peaks = Longer tenure.
+        Height = Duration of Role
+        <br/>
+        Higher Peaks = Longer Tenure
       </div>
     </div>
   );
