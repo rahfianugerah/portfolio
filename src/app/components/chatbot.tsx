@@ -4,8 +4,7 @@ import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { generateChatResponse } from "@/app/actions";
-// 1. Import Framer Motion
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 type ChatbotProps = {
   minimal?: boolean;
@@ -21,9 +20,27 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // 1. Load Chat History from Session Storage on Mount
+  useEffect(() => {
+    const saved = sessionStorage.getItem("chat_history");
+    if (saved) {
+      try {
+        setMessages(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to load chat history", e);
+      }
+    }
+  }, []);
+
+  // 2. Save Chat History whenever messages change
+  useEffect(() => {
+    if (messages.length > 0) {
+      sessionStorage.setItem("chat_history", JSON.stringify(messages));
+    }
+  }, [messages]);
+
   useEffect(() => {
     if (scrollRef.current) {
-      // Small timeout allows animation to start before scrolling
       setTimeout(() => {
         scrollRef.current!.scrollTop = scrollRef.current!.scrollHeight;
       }, 100);
@@ -84,10 +101,14 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
             {messages.map((m, i) => (
               <motion.div
                 key={i}
-                layout // 2. This makes the list slide smoothly when new items are added
-                initial={{ opacity: 0, scale: 0.9, y: 10 }} // Start small, lower, and invisible
-                animate={{ opacity: 1, scale: 1, y: 0 }}    // Animate to full size and position
-                transition={{ duration: 0.3 }}              // Duration of animation
+                layout
+                initial={
+                  i === 0 
+                  ? { opacity: 1, scale: 1, y: 0 } 
+                  : { opacity: 0, scale: 0.9, y: 10 } 
+                }
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
                 className={m.role === "user" ? "text-right" : "text-left"}
               >
                 <div className={`inline-block text-left max-w-[85%] rounded-lg px-3 py-2 text-sm shadow-sm ${
@@ -113,7 +134,6 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
               </motion.div>
             ))}
             
-            {/* 3. Animate the "Thinking" bubble too */}
             {busy && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9, y: 10 }}
