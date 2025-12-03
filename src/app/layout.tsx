@@ -1,13 +1,8 @@
-import Navbar from "@/components/navbar";
-import BlurFade from "@/components/magicui/blur-fade";
+import React from "react";
 import { ThemeProvider } from "@/components/theme-provider";
-import Clock from "@/components/clock";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
-import ChatbotFab from "./components/chatbot-fab";
-import LeftRail from "@/app/components/left-rail";
-import HeadHome from "@/components/header-home.";
 import { BlogReadingProvider } from "./context/blog-reading-context";
 import LayoutContent from "@/app/components/layout-content";
 
@@ -15,8 +10,6 @@ import type { Metadata } from "next";
 
 import { Inter as FontSans, Source_Code_Pro, Bebas_Neue } from "next/font/google";
 import "./globals.css";
-import Chatbot from "./components/chatbot";
-import QuoteCarousel from "./components/quote-carousel";
 
 export const inter = FontSans({
   subsets: ["latin", "latin-ext"],
@@ -104,7 +97,9 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <TooltipProvider delayDuration={0}>
             <BlogReadingProvider>
-              <LayoutContent>{children}</LayoutContent>
+              <LayoutContent>
+                {children}
+              </LayoutContent>
             </BlogReadingProvider>
           </TooltipProvider>
         </ThemeProvider>
