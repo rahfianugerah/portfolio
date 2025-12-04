@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import ImageCarousel from "./image-carousel";
 import ExperienceGraph from "./experience-graph";
 import { cn } from "@/lib/utils";
@@ -58,9 +58,17 @@ export default function LeftRail() {
   }, []);
 
   // 2. Simulated Contribution Graph (Visual Only)
-  // Real GitHub graph requires GraphQL/Token which is unsafe on client-side
-  const contributionGrid = useMemo(() => {
-    return Array.from({ length: 52 }).map(() => Math.floor(Math.random() * 5));
+  // Use a fixed seed pattern to avoid hydration mismatch (server vs client random)
+  const [contributionGrid, setContributionGrid] = useState<number[]>(
+    // Initial deterministic values for SSR
+    Array.from({ length: 52 }).map((_, i) => (i * 7 + 3) % 5)
+  );
+
+  // Generate random values only on client after mount
+  useEffect(() => {
+    setContributionGrid(
+      Array.from({ length: 52 }).map(() => Math.floor(Math.random() * 5))
+    );
   }, []);
 
   const getLevelColor = (level: number) => {

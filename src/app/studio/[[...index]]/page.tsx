@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { NextStudio } from "next-sanity/studio";
 import config from "../../../../sanity.config";
-import { initStudioThemeSync } from "@/lib/studio-theme-sync";
+import { initStudioThemeSync, cleanupStudioThemeSync } from "@/lib/studio-theme-sync";
 
 export default function StudioPage() {
   const [scheme, setScheme] = useState<"light" | "dark">("light");
@@ -44,9 +44,11 @@ export default function StudioPage() {
     };
     window.addEventListener("storage", handleStorage);
 
+    // Cleanup when leaving Studio page
     return () => {
       document.removeEventListener("themechange", handleThemeChange);
       window.removeEventListener("storage", handleStorage);
+      cleanupStudioThemeSync();
     };
   }, []);
 

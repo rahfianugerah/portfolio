@@ -1,7 +1,6 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { getBlogPosts } from "@/data/blog";
 import Link from "next/link";
-// 1. Import formatDate
 import { formatDate } from "@/lib/utils";
 
 export const metadata = {
@@ -9,11 +8,20 @@ export const metadata = {
   description: "My thoughts on software development, life, and more.",
 };
 
-// 2. CRITICAL: Enable Incremental Static Regeneration (ISR)
-// This allows the blog to update every 60 seconds without redeploying
 export const revalidate = 60;
 
 const BLUR_FADE_DELAY = 0.04;
+
+// 1. DEFINE THE TYPE HERE so TypeScript stops complaining
+type Post = {
+  slug: string;
+  metadata: {
+    title: string;
+    publishedAt: string;
+    summary: string;
+    image?: string | null;
+  };
+};
 
 export default async function BlogPage() {
   const posts = await getBlogPosts();
@@ -36,7 +44,8 @@ export default async function BlogPage() {
           </div>
         </BlurFade>
         {posts
-          .sort((a, b) => {
+          // 2. Now 'Post' is a valid type
+          .sort((a: Post, b: Post) => {
             if (
               new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
             ) {
@@ -44,14 +53,13 @@ export default async function BlogPage() {
             }
             return 1;
           })
-          .map((post, id) => (
+          .map((post: Post, id: number) => (
             <BlurFade delay={BLUR_FADE_DELAY * 2 + id * 0.05} key={post.slug}>
               <Link
                 className="flex flex-col space-y-1 mb-4"
                 href={`/blog/${post.slug}`}
               >
                 <div className="w-full flex flex-col">
-                  {/* 3. Use formatDate here for cleaner display */}
                   <p className="h-6 text-xs text-muted-foreground">
                     {formatDate(post.metadata.publishedAt)}
                   </p>

@@ -134,6 +134,7 @@ export default function ExperiencePage() {
                       src={company.logoUrl}
                       alt={`${company.company} logo`}
                       fill
+                      sizes="48px"
                       className="object-contain bg-muted"
                     />
                   </div>
@@ -185,7 +186,7 @@ export default function ExperiencePage() {
                 <div className="flex items-start gap-4">
                   {org.logoUrl ? (
                     <div className="relative w-12 h-12 rounded-lg overflow-hidden border">
-                      <Image src={org.logoUrl} alt={`${org.company} logo`} fill className="object-contain bg-muted" />
+                      <Image src={org.logoUrl} alt={`${org.company} logo`} fill sizes="48px" className="object-contain bg-muted" />
                     </div>
                   ) : (
                     <div className="w-12 h-12 rounded-lg border bg-muted/40 grid place-items-center text-xs text-muted-foreground">
@@ -244,7 +245,7 @@ export default function ExperiencePage() {
                   <div className="flex items-start gap-4">
                     {edu.logoUrl ? (
                       <div className="relative w-12 h-12 rounded-lg overflow-hidden border">
-                        <Image src={edu.logoUrl} alt={`${edu.school} logo`} fill className="object-contain bg-muted" />
+                        <Image src={edu.logoUrl} alt={`${edu.school} logo`} fill sizes="48px" className="object-contain bg-muted" />
                       </div>
                     ) : (
                       <div className="w-12 h-12 rounded-lg border bg-muted/40 grid place-items-center text-xs text-muted-foreground">
