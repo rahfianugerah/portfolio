@@ -1,11 +1,17 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { getBlogPosts } from "@/data/blog";
 import Link from "next/link";
+// 1. Import formatDate
+import { formatDate } from "@/lib/utils";
 
 export const metadata = {
   title: "Blog",
   description: "My thoughts on software development, life, and more.",
 };
+
+// 2. CRITICAL: Enable Incremental Static Regeneration (ISR)
+// This allows the blog to update every 60 seconds without redeploying
+export const revalidate = 60;
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -45,7 +51,10 @@ export default async function BlogPage() {
                 href={`/blog/${post.slug}`}
               >
                 <div className="w-full flex flex-col">
-                  <p className="h-6 text-xs text-muted-foreground">{post.metadata.publishedAt}</p>
+                  {/* 3. Use formatDate here for cleaner display */}
+                  <p className="h-6 text-xs text-muted-foreground">
+                    {formatDate(post.metadata.publishedAt)}
+                  </p>
                   <p className="tracking-tight">{post.metadata.title}</p>
                   <p className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">{post.metadata.summary}</p>
                 </div>
