@@ -16,4 +16,8 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
   },
+  // Theme configuration - auto respects system/localStorage preference
+  theme: {
+    // Let Studio follow system preference which syncs with main app via initStudioThemeSync
+  },
 })
