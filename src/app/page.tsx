@@ -4,8 +4,6 @@ import { ResumeCard } from "@/components/resume-card";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
-import { IconCloudSpecialties } from "@/components/specialties-icon";
-import TechStack from "@/components/techstack";
 import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
 
 const BLUR_FADE_DELAY = 0.04;
@@ -173,19 +171,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section id="skills">
-        <div className="flex min-h-0 flex-col gap-y-3">
-          <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h2 className="text-2xl font-bebas">
-              Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Specialties<span className="text-[#FF0000]">.</span>
-            </h2>
-            <IconCloudSpecialties/>
-          </BlurFade>
-          <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <TechStack />
-          </BlurFade>
-        </div>
-      </section>
+      {/* Skills/Specialties section moved to Left Rail */}
 
       <section id="hardwork">
         <div className="space-y-12 w-full py-12">

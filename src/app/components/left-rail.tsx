@@ -58,13 +58,10 @@ export default function LeftRail() {
   }, []);
 
   // 2. Simulated Contribution Graph (Visual Only)
-  // Use a fixed seed pattern to avoid hydration mismatch (server vs client random)
   const [contributionGrid, setContributionGrid] = useState<number[]>(
-    // Initial deterministic values for SSR
     Array.from({ length: 52 }).map((_, i) => (i * 7 + 3) % 5)
   );
 
-  // Generate random values only on client after mount
   useEffect(() => {
     setContributionGrid(
       Array.from({ length: 52 }).map(() => Math.floor(Math.random() * 5))
@@ -96,9 +93,12 @@ export default function LeftRail() {
 
   return (
     <aside className="flex h-auto w-full flex-col gap-4">
+      {/* IMAGE CAROUSEL */}
       <BlurFade delay={0.1}>
         <ImageCarousel />
       </BlurFade>
+
+      {/* EXPERIENCE GRAPH */}
       <BlurFade delay={0.15}>
         <ExperienceGraph />
       </BlurFade>
