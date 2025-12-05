@@ -115,10 +115,13 @@ export default async function Blog({
         <article className="prose dark:prose-invert">
           {/* 2. Use the wrapper here. It safely handles the component mapping on the client. */}
           <CustomPortableText value={post.content} />
+          <hr/><br/>
+          Created by 🧠 & ❤️<br/>
+          Authored by Naufal Rahfi Anugerah
         </article>
       </section>
       
-      <footer className="mt-12 text-center text-sm font-bebas text-muted-foreground pb-24 lg:pb-6">
+      <footer className="mt-12 text-center text-sm font-bebas text-muted-foreground pb-24">
         <p>© 2025 Naufal Rahfi Anugerah | All rights reserved.</p>
       </footer>
     </BlogPostWrapper>
