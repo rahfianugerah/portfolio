@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { WidgetFallback } from "@/components/widget-error-boundary";
 import { FolderGit2, Eye } from "lucide-react";
 
@@ -13,10 +13,16 @@ export default function ProjectsCounter() {
   const [stats, setStats] = useState<ProjectStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const hasFetched = useRef(false);
 
   useEffect(() => {
+    // Prevent double fetch in React Strict Mode
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+
     async function fetchStats() {
       try {
+        // Just fetch data, don't increment anything
         const res = await fetch("/api/analytics");
         const json = await res.json();
         
@@ -29,8 +35,8 @@ export default function ProjectsCounter() {
         const userData = await repoRes.json();
         
         setStats({
-          totalProjects: userData.public_repos || 12,
-          totalViews: json.data?.projects || 892,
+          totalProjects: userData.public_repos || 0,
+          totalViews: json.data?.projects || 0,
         });
       } catch (err) {
         console.error("Failed to fetch project stats:", err);

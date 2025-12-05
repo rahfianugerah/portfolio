@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { WidgetFallback } from "@/components/widget-error-boundary";
 import { cn } from "@/lib/utils";
 
@@ -12,20 +12,64 @@ type AnalyticsData = {
   sparkline: number[];
 };
 
+// Track visitor with localStorage backup
+const VISITOR_TRACKING_KEY = "portfolio_visitor_tracked";
+const TRACKING_EXPIRY = 60 * 60 * 1000; // 1 hour in ms
+
+function hasVisitedRecently(): boolean {
+  if (typeof window === "undefined") return false;
+  
+  try {
+    const stored = localStorage.getItem(VISITOR_TRACKING_KEY);
+    if (!stored) return false;
+    
+    const timestamp = parseInt(stored, 10);
+    const now = Date.now();
+    
+    return now - timestamp < TRACKING_EXPIRY;
+  } catch {
+    return false;
+  }
+}
+
+function markAsVisited(): void {
+  if (typeof window === "undefined") return;
+  
+  try {
+    localStorage.setItem(VISITOR_TRACKING_KEY, Date.now().toString());
+  } catch {
+    // localStorage not available
+  }
+}
+
 export default function AnalyticsWidget() {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const hasFetched = useRef(false);
 
   useEffect(() => {
+    // Prevent double fetch in React Strict Mode
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+
     async function fetchAnalytics() {
       try {
-        // Increment visitor count
-        const res = await fetch("/api/analytics?action=visit");
+        // Check if we already visited recently - don't increment again
+        const alreadyVisited = hasVisitedRecently();
+        
+        // If already visited, just fetch data without incrementing
+        const url = alreadyVisited ? "/api/analytics" : "/api/analytics?action=visit";
+        const res = await fetch(url);
         const json = await res.json();
         
         if (!json.success) {
           throw new Error(json.error);
+        }
+        
+        // Mark as visited after successful track
+        if (!alreadyVisited) {
+          markAsVisited();
         }
         
         setData(json.data);
