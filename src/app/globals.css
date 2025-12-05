@@ -112,7 +112,7 @@
     }
   }
 
-  code[data-line-numbers] {
+  /* code[data-line-numbers] {
     counter-reset: line;
   }
 
@@ -130,7 +130,6 @@
   counter-increment: line;
   content: counter(line);
 
-  /* Other styling */
   display: inline-block;
   width: 1rem;
   margin-right: 2rem;
@@ -144,7 +143,7 @@ code[data-line-numbers-max-digits="2"] > [data-line]::before {
 
 code[data-line-numbers-max-digits="3"] > [data-line]::before {
   width: 3rem;
-}
+} */
 
 * {
   scrollbar-width: none;            /* Firefox */
