@@ -248,6 +248,7 @@ export async function getLast7DaysVisits(): Promise<number[]> {
     const { data } = await supabase
       .from("daily_stats")
       .select("date, visits")
+      .eq("counter_type", "visits")
       .in("date", last7Days);
     
     const dailyMap = (data || []).reduce((acc, d) => {

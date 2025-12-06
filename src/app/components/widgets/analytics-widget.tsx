@@ -115,17 +115,23 @@ export default function AnalyticsWidget() {
           Activity Trend
         </div>
         <div className="flex items-end gap-1 h-10">
-          {data.sparkline.map((value, i) => (
-            <div
-              key={i}
-              className={cn(
-                "flex-1 bg-primary/60 rounded-t transition-all hover:bg-primary",
-                "min-h-[2px]"
-              )}
-              style={{ height: `${(value / maxSparkline) * 100}%` }}
-              title={`${value} visits`}
-            />
-          ))}
+          {data.sparkline.map((value, i) => {
+            // Calculate height: minimum 10% for visibility, max based on actual value
+            const heightPercent = maxSparkline > 0 
+              ? Math.max(10, (value / maxSparkline) * 100)
+              : 10;
+            return (
+              <div
+                key={i}
+                className={cn(
+                  "flex-1 bg-primary/60 rounded-t transition-all hover:bg-primary",
+                  "min-h-[4px]"
+                )}
+                style={{ height: `${heightPercent}%` }}
+                title={`${value} visits`}
+              />
+            );
+          })}
         </div>
       </div>
     </div>
