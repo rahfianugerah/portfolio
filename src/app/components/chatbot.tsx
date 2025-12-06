@@ -155,7 +155,7 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             disabled={busy}
-            className="flex-1 rounded-md border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+            className="flex-1 rounded-md border bg-background px-2 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
             placeholder="Type a message..."
           />
           <button
