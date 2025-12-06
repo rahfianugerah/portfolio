@@ -1,5 +1,6 @@
 import React from "react";
 import { ProjectCard } from "@/components/project-card";
+import { ProjectCardWrapper } from "@/components/project-card-wrapper";
 import BlurFade from "@/components/magicui/blur-fade";
 import { DATA } from "@/data/resume";
 import { CertificateSection } from "@/components/certificate-card";
@@ -40,16 +41,18 @@ export default function ProjectPage() {
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
                         {DATA.projects.map((project) => (
                             <BlurFade key={project.title} delay={nextDelay()}>
-                                <ProjectCard
-                                    href={project.href}
-                                    title={project.title}
-                                    description={project.description}
-                                    status={project.status}
-                                    tags={project.technologies}
-                                    image={project.image}
-                                    video={project.video}
-                                    links={project.links}
-                                />
+                                <ProjectCardWrapper>
+                                    <ProjectCard
+                                        href={project.href}
+                                        title={project.title}
+                                        description={project.description}
+                                        status={project.status}
+                                        tags={project.technologies}
+                                        image={project.image}
+                                        video={project.video}
+                                        links={project.links}
+                                    />
+                                </ProjectCardWrapper>
                             </BlurFade>
                         ))}
                     </div>

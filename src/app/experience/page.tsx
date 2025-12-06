@@ -102,7 +102,7 @@ export default function ExperiencePage() {
   };
 
   return (
-    <main className="flex flex-col min-h-[100dvh] space-y-12">
+    <div className="flex flex-col space-y-10">
       {/* Hero */}
       <section id="hero" className="pt-12">
         <div className="flex flex-col items-center justify-center text-center">
@@ -269,6 +269,6 @@ export default function ExperiencePage() {
             })}
         </div>
       </section>
-    </main>
+    </div>
   );
 }

@@ -64,7 +64,7 @@ const groupedWorkLimited = groupedWorkAll.slice(0, 8);
 
 export default function Page() {
   return (
-    <main className="flex flex-col min-h-[100dvh] space-y-10">
+    <div className="flex flex-col space-y-10">
       <section id="hero">
         <div className="flex-col flex flex-1 space-y-1.5 pt-12">
           <BlurFade delay={BLUR_FADE_DELAY * 2}>
@@ -235,6 +235,6 @@ export default function Page() {
           </BlurFade>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
