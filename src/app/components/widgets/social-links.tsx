@@ -19,19 +19,19 @@ type SocialLink = {
 const SOCIAL_LINKS: SocialLink[] = [
   {
     name: "Instagram",
-    url: "https://instagram.com/rahfianugerah", // Replace with your username
+    url: "https://instagram.com/nrhfx", // Replace with your username
     icon: SiInstagram,
     color: "hover:bg-pink-500/20 hover:text-pink-500",
   },
   {
     name: "Threads",
-    url: "https://threads.net/@rahfianugerah", // Replace with your username
+    url: "https://threads.net/@nrhfx", // Replace with your username
     icon: SiThreads,
     color: "hover:bg-foreground/20 hover:text-foreground",
   },
   {
     name: "Discord",
-    url: "https://discord.com/users/rahfianugerah", // Replace with your username or server invite
+    url: "https://discord.com/users/rhfx", // Replace with your username or server invite
     icon: SiDiscord,
     color: "hover:bg-indigo-500/20 hover:text-indigo-500",
   },
