@@ -12,34 +12,16 @@ type AnalyticsData = {
   sparkline: number[];
 };
 
-// Track visitor with localStorage backup
-const VISITOR_TRACKING_KEY = "portfolio_visitor_tracked";
-const TRACKING_EXPIRY = 60 * 60 * 1000; // 1 hour in ms
-
-function hasVisitedRecently(): boolean {
-  if (typeof window === "undefined") return false;
+// Generate a unique session ID for this browser tab
+function getSessionId(): string {
+  if (typeof window === "undefined") return "";
   
-  try {
-    const stored = localStorage.getItem(VISITOR_TRACKING_KEY);
-    if (!stored) return false;
-    
-    const timestamp = parseInt(stored, 10);
-    const now = Date.now();
-    
-    return now - timestamp < TRACKING_EXPIRY;
-  } catch {
-    return false;
+  let sessionId = sessionStorage.getItem("portfolio_session_id");
+  if (!sessionId) {
+    sessionId = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    sessionStorage.setItem("portfolio_session_id", sessionId);
   }
-}
-
-function markAsVisited(): void {
-  if (typeof window === "undefined") return;
-  
-  try {
-    localStorage.setItem(VISITOR_TRACKING_KEY, Date.now().toString());
-  } catch {
-    // localStorage not available
-  }
+  return sessionId;
 }
 
 export default function AnalyticsWidget() {
@@ -49,27 +31,19 @@ export default function AnalyticsWidget() {
   const hasFetched = useRef(false);
 
   useEffect(() => {
-    // Prevent double fetch in React Strict Mode
+    // Prevent double-fetching in React Strict Mode
     if (hasFetched.current) return;
     hasFetched.current = true;
 
     async function fetchAnalytics() {
       try {
-        // Check if we already visited recently - don't increment again
-        const alreadyVisited = hasVisitedRecently();
-        
-        // If already visited, just fetch data without incrementing
-        const url = alreadyVisited ? "/api/analytics" : "/api/analytics?action=visit";
-        const res = await fetch(url);
+        const sessionId = getSessionId();
+        // Increment visitor count with session ID
+        const res = await fetch(`/api/analytics?action=visit&session=${sessionId}`);
         const json = await res.json();
         
         if (!json.success) {
           throw new Error(json.error);
-        }
-        
-        // Mark as visited after successful track
-        if (!alreadyVisited) {
-          markAsVisited();
         }
         
         setData(json.data);

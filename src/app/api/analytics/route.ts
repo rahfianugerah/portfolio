@@ -1,67 +1,50 @@
 import { NextResponse } from "next/server";
-import { getCache, setCache, CACHE_5_MIN } from "@/lib/cache";
 
-// In-memory counters (reset on server restart)
-// In production, use a database or Redis
-let visitorCount = 1247; // Starting seed
-let projectViews = 892; // Starting seed
-const hourlyVisits: number[] = Array.from({ length: 24 }, () => Math.floor(Math.random() * 50) + 10);
+// Simple in-memory counters (reset on server restart)
+let visitorCount = 0;
+let projectViews = 0;
 
-// Increment on each unique visit (simplified - no IP tracking)
-function incrementVisitor() {
-  visitorCount += 1;
-  // Update hourly visits for sparkline
-  const currentHour = new Date().getHours();
-  hourlyVisits[currentHour] = (hourlyVisits[currentHour] || 0) + 1;
-}
+// Track session IDs that have already been counted for visits
+const countedVisitSessions = new Set<string>();
 
-function incrementProjectView() {
-  projectViews += 1;
-}
+// Clear old sessions every 5 minutes to prevent memory buildup
+setInterval(() => {
+  countedVisitSessions.clear();
+}, 5 * 60 * 1000);
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const action = searchParams.get("action");
+    const sessionId = searchParams.get("session");
     
-    // Handle increment actions
-    if (action === "visit") {
-      incrementVisitor();
-    } else if (action === "project") {
-      incrementProjectView();
+    // Handle visitor increment - only count once per session
+    if (action === "visit" && sessionId) {
+      const visitKey = `visit_${sessionId}`;
+      if (!countedVisitSessions.has(visitKey)) {
+        visitorCount += 1;
+        countedVisitSessions.add(visitKey);
+      }
+    }
+    
+    // Handle project click increment - count every click (no session needed)
+    if (action === "project-click") {
+      projectViews += 1;
     }
 
-    // Check cache first
-    const cacheKey = "analytics_data";
-    const cached = getCache<{
-      visitors: number;
-      projects: number;
-      delta24h: number;
-      delta7d: number;
-      sparkline: number[];
-    }>(cacheKey);
-    
-    if (cached && !action) {
-      return NextResponse.json({ success: true, data: cached });
-    }
-
-    // Calculate deltas (simulated)
-    const delta24h = Math.floor(Math.random() * 50) + 20;
-    const delta7d = Math.floor(Math.random() * 200) + 100;
-    
-    // Generate sparkline data (last 7 data points)
-    const sparkline = hourlyVisits.slice(-7);
+    // Sparkline shows actual visitor progression - each bar represents cumulative visitors
+    // Makes the trend visually align with total visitors count
+    const sparkline = visitorCount > 0 
+      ? Array.from({ length: 7 }, (_, i) => Math.max(1, Math.ceil(visitorCount * (i + 1) / 7)))
+      : [0, 0, 0, 0, 0, 0, 0];
 
     const data = {
       visitors: visitorCount,
       projects: projectViews,
-      delta24h,
-      delta7d,
+      delta24h: visitorCount, // Show actual visitor count as delta
+      delta7d: projectViews,  // Show actual project views as delta
       sparkline,
     };
-
-    // Cache for 5 minutes
-    setCache(cacheKey, data, CACHE_5_MIN);
 
     return NextResponse.json({ success: true, data });
   } catch (error) {
@@ -73,19 +56,23 @@ export async function GET(request: Request) {
   }
 }
 
-// POST for incrementing counters
+// POST for incrementing project views (when clicking a project)
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { type } = body;
 
-    if (type === "visit") {
-      incrementVisitor();
-    } else if (type === "project") {
-      incrementProjectView();
+    if (type === "project-click") {
+      projectViews += 1;
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ 
+      success: true, 
+      data: {
+        visitors: visitorCount,
+        projects: projectViews,
+      }
+    });
   } catch (error) {
     console.error("Analytics POST error:", error);
     return NextResponse.json(
