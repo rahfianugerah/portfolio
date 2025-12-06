@@ -4,7 +4,7 @@ import BlurFade from "@/components/magicui/blur-fade";
 import AnalyticsWidget from "./widgets/analytics-widget";
 import ProjectsCounter from "./widgets/projects-counter";
 import SocialLinks from "./widgets/social-links";
-import AudioPlayer from "./widgets/audio-player";
+import LatestBlogsWidget from "./widgets/latest-blogs";
 
 export default function FarRightRail() {
   return (
@@ -19,9 +19,9 @@ export default function FarRightRail() {
         <ProjectsCounter />
       </BlurFade>
 
-      {/* Audio Music Player */}
+      {/* Latest Blog Posts */}
       <BlurFade delay={0.2}>
-        <AudioPlayer />
+        <LatestBlogsWidget />
       </BlurFade>
 
       {/* Social Links */}

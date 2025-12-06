@@ -15,7 +15,7 @@ import TechStack from "@/components/techstack";
 import ProjectsCounter from "./widgets/projects-counter";
 import ImageCarousel from "./image-carousel";
 import QuoteCarousel from "./quote-carousel";
-import AudioPlayer from "./widgets/audio-player";
+import LatestBlogsWidget from "./widgets/latest-blogs";
 import SocialLinks from "./widgets/social-links";
 import ChatbotFab from "./chatbot-fab";
 import BlurFade from "@/components/magicui/blur-fade";
@@ -92,9 +92,9 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
                 <QuoteCarousel />
               </BlurFade>
 
-              {/* 11. Music Player */}
+              {/* 11. Latest Blog Posts */}
               <BlurFade delay={0.6}>
-                <AudioPlayer />
+                <LatestBlogsWidget />
               </BlurFade>
 
               {/* 12. Social Links */}
