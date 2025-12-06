@@ -3,7 +3,6 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { IconCloudSpecialties } from "@/components/specialties-icon";
 import TechStack from "@/components/techstack";
-import ProjectsCounter from "./widgets/projects-counter";
 
 export default function FarLeftRail() {
   return (
@@ -21,11 +20,6 @@ export default function FarLeftRail() {
       {/* Tech Stack */}
       <BlurFade delay={0.15}>
         <TechStack />
-      </BlurFade>
-
-      {/* Projects Counter */}
-      <BlurFade delay={0.2}>
-        <ProjectsCounter />
       </BlurFade>
     </aside>
   );

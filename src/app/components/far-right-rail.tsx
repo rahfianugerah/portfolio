@@ -2,9 +2,9 @@
 
 import BlurFade from "@/components/magicui/blur-fade";
 import AnalyticsWidget from "./widgets/analytics-widget";
-import LinkedInCarousel from "./widgets/linkedin-carousel";
+import ProjectsCounter from "./widgets/projects-counter";
 import SocialLinks from "./widgets/social-links";
-import SpotifyWidget from "./widgets/spotify-widget";
+import AudioPlayer from "./widgets/audio-player";
 
 export default function FarRightRail() {
   return (
@@ -14,14 +14,14 @@ export default function FarRightRail() {
         <AnalyticsWidget />
       </BlurFade>
 
-      {/* LinkedIn Recommendations */}
+      {/* Projects Overview Counter */}
       <BlurFade delay={0.15}>
-        <LinkedInCarousel />
+        <ProjectsCounter />
       </BlurFade>
 
-      {/* Spotify Music Widget */}
+      {/* Audio Music Player */}
       <BlurFade delay={0.2}>
-        <SpotifyWidget />
+        <AudioPlayer />
       </BlurFade>
 
       {/* Social Links */}
