@@ -75,7 +75,7 @@ export default function LatestBlogsWidget() {
               href={`/blog/${post.slug}`}
               className="flex gap-3 group hover:bg-muted/50 rounded-md p-1.5 -m-1.5 transition-colors"
             >
-              {/* Thumbnail */}
+              {/* Thumbnail
               <div className="w-12 h-12 rounded overflow-hidden bg-muted shrink-0">
                 {post.metadata.image ? (
                   <Image
@@ -90,7 +90,7 @@ export default function LatestBlogsWidget() {
                     📝
                   </div>
                 )}
-              </div>
+              </div> */}
 
               {/* Content */}
               <div className="flex-1 min-w-0">

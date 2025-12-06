@@ -395,6 +395,10 @@ export const DATA = {
         "Shadcn UI",
         "Magic UI",
         "Radix UI",
+        "Vercel",
+        "Sanity.io CMS",
+        "Supabase",
+        "PostgreSQL",
       ],
       links: [
         {
@@ -426,7 +430,7 @@ export const DATA = {
         "MobileNetV2",
         "CNN",
         "ANN",
-        "Tree-structured Parzen Estimator (TPE)",
+        "TPE",
         "Pretrained Models",
       ],
       links: [
@@ -728,7 +732,7 @@ export const DATA = {
     },
   ],
   hardwork: [
-        {
+    {
       title: "Amartha Hackathon x GDG Jakarta - Finalist",
       dates: "Nov 2025",
       location: "Jakarta, Indonesia",
@@ -832,6 +836,18 @@ export const DATA = {
   ],
   learning_certificate: [
     // Dicoding Indonesia Provider
+    {
+      title: "Belajar Matematika untuk Data Science",
+      issued: "Dicoding Indonesia",
+      category: ["Python", "Machine Learning", "Data Science", "Mathematics", "Statistics"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/98XWO09E9ZM3",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
     {
       title: "Membangun Sistem Machine Learning",
       issued: "Dicoding Indonesia",
