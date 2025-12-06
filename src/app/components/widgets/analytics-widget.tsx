@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { createPortal } from "react-dom";
 import { WidgetFallback } from "@/components/widget-error-boundary";
 import { cn } from "@/lib/utils";
 
@@ -28,7 +29,15 @@ export default function AnalyticsWidget() {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
+  const [mounted, setMounted] = useState(false);
   const hasFetched = useRef(false);
+
+  // For portal mounting
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // Prevent double-fetching in React Strict Mode
@@ -114,26 +123,68 @@ export default function AnalyticsWidget() {
         <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">
           Activity Trend
         </div>
-        <div className="flex items-end gap-1 h-10">
+        <div className="flex items-end gap-1 h-10 relative">
           {data.sparkline.map((value, i) => {
             // Calculate height: minimum 10% for visibility, max based on actual value
             const heightPercent = maxSparkline > 0 
               ? Math.max(10, (value / maxSparkline) * 100)
               : 10;
+            
             return (
               <div
                 key={i}
                 className={cn(
-                  "flex-1 bg-primary/60 rounded-t transition-all hover:bg-primary",
-                  "min-h-[4px]"
+                  "flex-1 bg-primary/60 rounded-t transition-all cursor-pointer relative",
+                  "min-h-[4px]",
+                  hoveredIndex === i && "bg-primary"
                 )}
                 style={{ height: `${heightPercent}%` }}
-                title={`${value} visits`}
+                onMouseEnter={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  setTooltipPos({
+                    x: rect.left + rect.width / 2,
+                    y: rect.top
+                  });
+                  setHoveredIndex(i);
+                }}
+                onMouseLeave={() => {
+                  setHoveredIndex(null);
+                  setTooltipPos(null);
+                }}
               />
             );
           })}
         </div>
       </div>
+      
+      {/* Tooltip - rendered via Portal */}
+      {mounted && hoveredIndex !== null && tooltipPos && createPortal(
+        <div 
+          className="fixed pointer-events-none"
+          style={{
+            left: tooltipPos.x,
+            top: tooltipPos.y - 8,
+            transform: 'translate(-50%, -100%)',
+            zIndex: 99999
+          }}
+        >
+          <div className="rounded-md bg-popover px-2 py-1.5 shadow-xl border border-border text-popover-foreground flex flex-col items-center text-center min-w-[80px] relative">
+            <span className="font-bold text-[10px] leading-tight whitespace-nowrap">
+              {data.sparkline[hoveredIndex]} {data.sparkline[hoveredIndex] === 1 ? 'Visit' : 'Visits'}
+            </span>
+            <span className="text-muted-foreground text-[9px] font-mono mt-0.5">
+              {(() => {
+                const date = new Date();
+                date.setDate(date.getDate() - (6 - hoveredIndex));
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+              })()}
+            </span>
+            {/* Arrow */}
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 border-b border-r bg-popover border-border"></div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }

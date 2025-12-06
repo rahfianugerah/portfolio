@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { createPortal } from "react-dom";
 import ImageCarousel from "./image-carousel";
 import ExperienceGraph from "./experience-graph";
 import { cn } from "@/lib/utils";
@@ -29,6 +30,15 @@ export default function LeftRail() {
   const [user, setUser] = useState<GitHubUser | null>(null);
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hoveredSquare, setHoveredSquare] = useState<number | null>(null);
+  const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // For portal mounting
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // 1. Fetch Data from GitHub API on mount
   useEffect(() => {
@@ -133,7 +143,7 @@ export default function LeftRail() {
                   rel="noopener noreferrer"
                   className="text-[10px] text-muted-foreground hover:text-primary hover:underline"
                 >
-                  View Profile ↗
+                  Click to View Profile
                 </a>
               </>
             )}
@@ -141,24 +151,70 @@ export default function LeftRail() {
         </div>
 
         {/* COMMIT GRAPH (Visual Simulation) */}
-        <div className="mb-5">
+        <div className="mb-5" ref={containerRef}>
           <div className="mb-2 flex items-center justify-between text-[10px] text-muted-foreground uppercase tracking-wider font-bold">
             <span>Activity</span>
             <span>Last 30 Days</span>
           </div>
           <div className="flex flex-wrap gap-1 justify-between">
-            {contributionGrid.map((level, i) => (
-              <div
-                key={i}
-                title="Activity level"
-                className={cn(
-                  "h-2.5 w-2.5 rounded-[1px] transition-colors hover:opacity-80",
-                  getLevelColor(level)
-                )}
-              />
-            ))}
+            {contributionGrid.map((level, i) => {
+              return (
+                <div
+                  key={i}
+                  className={cn(
+                    "h-2.5 w-2.5 rounded-[1px] transition-all cursor-pointer",
+                    getLevelColor(level),
+                    hoveredSquare === i && "ring-1 ring-primary"
+                  )}
+                  onMouseEnter={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    setTooltipPos({
+                      x: rect.left + rect.width / 2,
+                      y: rect.top
+                    });
+                    setHoveredSquare(i);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredSquare(null);
+                    setTooltipPos(null);
+                  }}
+                />
+              );
+            })}
           </div>
         </div>
+        
+        {/* Tooltip - rendered via Portal to escape overflow:hidden */}
+        {mounted && hoveredSquare !== null && tooltipPos && createPortal(
+          <div 
+            className="fixed pointer-events-none"
+            style={{
+              left: tooltipPos.x,
+              top: tooltipPos.y - 8,
+              transform: 'translate(-50%, -100%)',
+              zIndex: 99999
+            }}
+          >
+            <div className="rounded-md bg-popover px-2 py-1.5 shadow-xl border border-border text-popover-foreground flex flex-col items-center text-center min-w-[80px] relative">
+              <span className="font-bold text-[10px] leading-tight whitespace-nowrap">
+                {contributionGrid[hoveredSquare] === 0 ? "No Activity" : 
+                 contributionGrid[hoveredSquare] === 1 ? "Low Activity" :
+                 contributionGrid[hoveredSquare] === 2 ? "Moderate Activity" :
+                 contributionGrid[hoveredSquare] === 3 ? "High Activity" : "Very High Activity"}
+              </span>
+              <span className="text-muted-foreground text-[9px] font-mono mt-0.5">
+                {(() => {
+                  const date = new Date();
+                  date.setDate(date.getDate() - (51 - hoveredSquare));
+                  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                })()}
+              </span>
+              {/* Arrow */}
+              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 border-b border-r bg-popover border-border"></div>
+            </div>
+          </div>,
+          document.body
+        )}
 
         {/* LATEST REPOS */}
         <div className="flex flex-col gap-3">
