@@ -81,7 +81,7 @@ export function IconCloudSpecialties() {
   ));
 
   return (
-    <div className="relative flex w-full h-full items-center justify-center overflow-hidden">
+    <div className="relative flex w-full h-60 items-center justify-center overflow-hidden">
       <IconCloud icons={icons} />
     </div>
   );
