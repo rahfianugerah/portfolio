@@ -1,16 +1,12 @@
 import { NextResponse } from "next/server";
-
-// Simple in-memory counters (reset on server restart)
-let visitorCount = 0;
-let projectViews = 0;
-
-// Track session IDs that have already been counted for visits
-const countedVisitSessions = new Set<string>();
-
-// Clear old sessions every 5 minutes to prevent memory buildup
-setInterval(() => {
-  countedVisitSessions.clear();
-}, 5 * 60 * 1000);
+import {
+  getAnalytics,
+  incrementVisitor,
+  incrementProjectViews,
+  getLast7DaysVisits,
+  isSessionCounted,
+  markSessionCounted,
+} from "@/lib/analytics-supabase";
 
 export async function GET(request: Request) {
   try {
@@ -18,35 +14,45 @@ export async function GET(request: Request) {
     const action = searchParams.get("action");
     const sessionId = searchParams.get("session");
     
+    let analytics = await getAnalytics();
+    
     // Handle visitor increment - only count once per session
     if (action === "visit" && sessionId) {
-      const visitKey = `visit_${sessionId}`;
-      if (!countedVisitSessions.has(visitKey)) {
-        visitorCount += 1;
-        countedVisitSessions.add(visitKey);
+      const alreadyCounted = await isSessionCounted(sessionId);
+      
+      if (!alreadyCounted) {
+        const result = await incrementVisitor();
+        analytics = {
+          ...analytics,
+          visitorCount: result.visitorCount,
+          todayVisits: result.todayVisits,
+        };
+        // Mark session as counted
+        await markSessionCounted(sessionId);
       }
     }
     
-    // Handle project click increment - count every click (no session needed)
+    // Handle project click increment - count every click
     if (action === "project-click") {
-      projectViews += 1;
+      const result = await incrementProjectViews();
+      analytics = {
+        ...analytics,
+        projectViews: result.projectViews,
+      };
     }
 
-    // Sparkline shows actual visitor progression - each bar represents cumulative visitors
-    // Makes the trend visually align with total visitors count
-    const sparkline = visitorCount > 0 
-      ? Array.from({ length: 7 }, (_, i) => Math.max(1, Math.ceil(visitorCount * (i + 1) / 7)))
-      : [0, 0, 0, 0, 0, 0, 0];
+    // Get real sparkline data from last 7 days
+    const sparkline = await getLast7DaysVisits();
 
-    const data = {
-      visitors: visitorCount,
-      projects: projectViews,
-      delta24h: visitorCount, // Show actual visitor count as delta
-      delta7d: projectViews,  // Show actual project views as delta
-      sparkline,
+    const responseData = {
+      visitors: analytics.visitorCount,
+      projects: analytics.projectViews,
+      delta24h: analytics.todayVisits,   // Today's visitors
+      delta7d: analytics.weekVisits,     // This week's visitors
+      sparkline,                          // Real daily data for last 7 days
     };
 
-    return NextResponse.json({ success: true, data });
+    return NextResponse.json({ success: true, data: responseData });
   } catch (error) {
     console.error("Analytics API error:", error);
     return NextResponse.json(
@@ -63,16 +69,17 @@ export async function POST(request: Request) {
     const { type } = body;
 
     if (type === "project-click") {
-      projectViews += 1;
+      const result = await incrementProjectViews();
+      return NextResponse.json({ 
+        success: true, 
+        data: {
+          visitors: 0, // Not fetched in POST
+          projects: result.projectViews,
+        }
+      });
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      data: {
-        visitors: visitorCount,
-        projects: projectViews,
-      }
-    });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Analytics POST error:", error);
     return NextResponse.json(
