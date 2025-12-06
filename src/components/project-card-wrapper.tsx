@@ -15,7 +15,7 @@ export function ProjectCardWrapper({ children }: ProjectCardWrapperProps) {
   };
 
   return (
-    <div onClick={handleClick} className="cursor-pointer">
+    <div onClick={handleClick} className="cursor-pointer h-full">
       {children}
     </div>
   );
