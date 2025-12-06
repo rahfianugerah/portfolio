@@ -47,9 +47,9 @@ export async function GET(request: Request) {
     const responseData = {
       visitors: analytics.visitorCount,
       projects: analytics.projectViews,
-      delta24h: analytics.todayVisits,   // Today's visitors
-      delta7d: analytics.weekVisits,     // This week's visitors
-      sparkline,                          // Real daily data for last 7 days
+      delta24h: analytics.todayVisits,        // Today's visitors
+      delta7d: analytics.weekProjectViews,    // This week's project views
+      sparkline,                               // Real daily data for last 7 days
     };
 
     return NextResponse.json({ success: true, data: responseData });

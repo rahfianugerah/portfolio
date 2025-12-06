@@ -8,15 +8,20 @@ function getTodayString(): string {
 // Check if session has already been counted
 export async function isSessionCounted(sessionId: string): Promise<boolean> {
   try {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("sessions")
       .select("id")
       .eq("session_id", sessionId)
-      .single();
+      .maybeSingle();
+    
+    if (error) {
+      console.error("Session check error:", error.message);
+      return false;
+    }
     
     return !!data;
   } catch (error) {
-    // Table might not exist yet, return false to allow first count
+    console.error("Session check exception:", error);
     return false;
   }
 }
@@ -160,21 +165,12 @@ export async function getAnalytics(): Promise<{
   projectViews: number;
   todayVisits: number;
   weekVisits: number;
+  weekProjectViews: number;
 }> {
   try {
     const today = getTodayString();
     
-    // Get total counters
-    const { data: counters } = await supabase
-      .from("counters")
-      .select("name, value");
-    
-    const countersMap = (counters || []).reduce((acc, c) => {
-      acc[c.name] = c.value;
-      return acc;
-    }, {} as Record<string, number>);
-    
-    // Get last 7 days visits
+    // Get last 7 days date strings
     const last7Days: string[] = [];
     for (let i = 0; i < 7; i++) {
       const date = new Date();
@@ -182,24 +178,48 @@ export async function getAnalytics(): Promise<{
       last7Days.push(date.toISOString().split("T")[0]);
     }
     
+    // Get all daily stats for last 7 days (both visits and project_views)
     const { data: dailyData } = await supabase
       .from("daily_stats")
-      .select("date, visits")
+      .select("date, visits, counter_type")
       .in("date", last7Days);
     
-    const dailyMap = (dailyData || []).reduce((acc, d) => {
-      acc[d.date] = d.visits;
-      return acc;
-    }, {} as Record<string, number>);
+    // Separate visits and project_views
+    const visitsMap: Record<string, number> = {};
+    const projectViewsMap: Record<string, number> = {};
     
-    const todayVisits = dailyMap[today] || 0;
-    const weekVisits = last7Days.reduce((sum, date) => sum + (dailyMap[date] || 0), 0);
+    (dailyData || []).forEach((d) => {
+      if (d.counter_type === "visits") {
+        visitsMap[d.date] = d.visits;
+      } else if (d.counter_type === "project_views") {
+        projectViewsMap[d.date] = d.visits;
+      }
+    });
+    
+    const todayVisits = visitsMap[today] || 0;
+    const weekVisits = last7Days.reduce((sum, date) => sum + (visitsMap[date] || 0), 0);
+    const weekProjectViews = last7Days.reduce((sum, date) => sum + (projectViewsMap[date] || 0), 0);
+    
+    // Calculate totals from ALL daily_stats (not just last 7 days)
+    const { data: allVisits } = await supabase
+      .from("daily_stats")
+      .select("visits")
+      .eq("counter_type", "visits");
+    
+    const { data: allProjectViews } = await supabase
+      .from("daily_stats")
+      .select("visits")
+      .eq("counter_type", "project_views");
+    
+    const totalVisitors = (allVisits || []).reduce((sum, d) => sum + (d.visits || 0), 0);
+    const totalProjectViews = (allProjectViews || []).reduce((sum, d) => sum + (d.visits || 0), 0);
     
     return {
-      visitorCount: countersMap["visitors"] || 0,
-      projectViews: countersMap["project_views"] || 0,
+      visitorCount: totalVisitors,
+      projectViews: totalProjectViews,
       todayVisits,
       weekVisits,
+      weekProjectViews,
     };
   } catch (error) {
     console.error("Error getting analytics:", error);
@@ -208,6 +228,7 @@ export async function getAnalytics(): Promise<{
       projectViews: 0,
       todayVisits: 0,
       weekVisits: 0,
+      weekProjectViews: 0,
     };
   }
 }
