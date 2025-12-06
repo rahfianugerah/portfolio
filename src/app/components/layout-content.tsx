@@ -13,10 +13,9 @@ import ExperienceGraph from "./experience-graph";
 import { IconCloudSpecialties } from "@/components/specialties-icon";
 import TechStack from "@/components/techstack";
 import ProjectsCounter from "./widgets/projects-counter";
-import LinkedInCarousel from "./widgets/linkedin-carousel";
 import ImageCarousel from "./image-carousel";
 import QuoteCarousel from "./quote-carousel";
-import SpotifyWidget from "./widgets/spotify-widget";
+import AudioPlayer from "./widgets/audio-player";
 import SocialLinks from "./widgets/social-links";
 import ChatbotFab from "./chatbot-fab";
 import BlurFade from "@/components/magicui/blur-fade";
@@ -52,7 +51,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
           )}
 
           {/* 4. Main Content */}
-          <main className="flex flex-col gap-4 min-w-0 w-full">
+          <main className="flex flex-col gap-4 min-w-0 w-full pb-32">
             {children}
           </main>
 
@@ -83,27 +82,22 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
                 <ProjectsCounter />
               </BlurFade>
 
-              {/* 9. LinkedIn Recommendations */}
+              {/* 9. Image Carousel */}
               <BlurFade delay={0.45}>
-                <LinkedInCarousel />
-              </BlurFade>
-
-              {/* 10. Image Carousel */}
-              <BlurFade delay={0.5}>
                 <ImageCarousel />
               </BlurFade>
 
-              {/* 11. Quotes */}
-              <BlurFade delay={0.55}>
+              {/* 10. Quotes */}
+              <BlurFade delay={0.5}>
                 <QuoteCarousel />
               </BlurFade>
 
-              {/* 12. Songs (Spotify) */}
+              {/* 11. Music Player */}
               <BlurFade delay={0.6}>
-                <SpotifyWidget />
+                <AudioPlayer />
               </BlurFade>
 
-              {/* 13. Social Links */}
+              {/* 12. Social Links */}
               <BlurFade delay={0.65}>
                 <SocialLinks />
               </BlurFade>
@@ -155,7 +149,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
           {/* MAIN CONTENT (top level - highest) */}
           <main
-            className={`flex flex-col gap-4 min-w-0 ${
+            className={`flex flex-col gap-4 min-w-0 pb-32 ${
               isReadingBlog ? "max-w-4xl w-full" : "w-[500px] flex-shrink-0"
             }`}
           >
@@ -211,7 +205,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
             {/* MAIN CONTENT */}
             <main
-              className={`flex flex-col gap-4 min-w-0 w-full ${
+              className={`flex flex-col gap-4 min-w-0 w-full pb-32 ${
                 isReadingBlog ? "col-span-12 max-w-4xl mx-auto" : "col-span-6"
               }`}
             >
