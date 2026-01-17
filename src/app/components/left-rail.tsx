@@ -56,7 +56,14 @@ export default function LeftRail() {
         const repoData = await repoRes.json();
 
         if (userData.login) setUser(userData);
-        if (Array.isArray(repoData)) setRepos(repoData);
+        
+        // Handle Rate Limiting & Array Check
+        if (Array.isArray(repoData)) {
+          setRepos(repoData);
+        } else if (repoRes.status === 403 || (repoData as any).message?.includes("API rate limit")) {
+           console.warn("GitHub API Rate Limit Exceeded");
+           // Keep the loading state or handle specifically if needed
+        }
       } catch (error) {
         console.error("Failed to fetch GitHub data", error);
       } finally {
