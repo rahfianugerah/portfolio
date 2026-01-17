@@ -6,6 +6,11 @@ import Image from "next/image";
 // Base delay for all staggered animations on this page
 const BLUR_FADE_DELAY = 0.04;
 
+export const metadata = {
+    title: "Full Experiences",
+    description: "A comprehensive list of my professional and leadership experiences.",
+};
+
 type JobEntry = {
   title: string;
   subtitle?: string;
