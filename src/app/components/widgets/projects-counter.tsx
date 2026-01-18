@@ -24,13 +24,14 @@ export default function ProjectsCounter() {
           throw new Error(json.error);
         }
         
-        // Get project count from GitHub repos
-        const repoRes = await fetch("https://api.github.com/users/rahfianugerah");
+        // Get project count from API (which proxies to GitHub with a token)
+        const repoRes = await fetch("/api/github/stats");
         const userData = await repoRes.json();
         
         setStats({
-          totalProjects: userData.public_repos || "N/A",
-          totalViews: json.data?.projects || "N/A",
+          // If the proxy fails (e.g. no token), default to 0. 
+          totalProjects: userData.public_repos ?? 0,
+          totalViews: json.data?.projects ?? 0, // Ensure '0' is shown, not 'N/A'
         });
       } catch (err) {
         console.error("Failed to fetch project stats:", err);
