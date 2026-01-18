@@ -40,32 +40,18 @@ export default function LeftRail() {
     setMounted(true);
   }, []);
 
-  // 1. Fetch Data from GitHub API on mount
+  // 1. Fetch Data from our internal API (authenticated with token) on mount
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
-        // Fetch Profile
-        const userRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
-        const userData = await userRes.json();
-        
-        // Fetch Latest 3 Repos (Sorted by recently updated)
-        const repoRes = await fetch(
-          `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&direction=desc&per_page=5`
-        );
-        const repoData = await repoRes.json();
+        const res = await fetch("/api/github/stats");
+        const data = await res.json();
 
-        if (userData.login) setUser(userData);
-        
-        // Handle Rate Limiting & Array Check
-        if (Array.isArray(repoData)) {
-          setRepos(repoData);
-        } else if (repoRes.status === 403 || (repoData as any).message?.includes("API rate limit")) {
-           console.warn("GitHub API Rate Limit Exceeded");
-           // Keep the loading state or handle specifically if needed
-        }
+        if (data.user) setUser(data.user);
+        if (Array.isArray(data.repos)) setRepos(data.repos);
       } catch (error) {
-        console.error("Failed to fetch GitHub data", error);
+        console.error("Failed to fetch GitHub data via proxy", error);
       } finally {
         setLoading(false);
       }
