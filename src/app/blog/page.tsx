@@ -4,7 +4,7 @@ import Link from "next/link";
 import { formatDate } from "@/lib/utils";
 
 export const metadata = {
-  title: "Blog",
+  title: "Blog Writings",
   description: "My thoughts on software development, life, and more.",
 };
 
