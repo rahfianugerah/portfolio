@@ -5,8 +5,9 @@ import {
   SiPython, SiJavascript, SiTypescript, SiCplusplus, SiC,
   SiTensorflow, SiScikitlearn, SiPandas, SiNumpy,
   SiFlask, SiFastapi, SiNextdotjs, SiReact, SiNodedotjs,
-  SiTailwindcss, SiBootstrap, SiMysql, SiSqlite,
-  SiDocker, SiAmazonwebservices, SiGooglecloud,
+  SiTailwindcss, SiBootstrap, SiMysql, SiSqlite, SiPostgresql,
+  SiDocker, SiAmazonwebservices, SiGooglecloud, SiGnubash
+,
   SiGit, SiGithub, SiPostman,
 } from "react-icons/si";
 import { VscAzure } from "react-icons/vsc";
@@ -21,6 +22,7 @@ const ICONS: Record<string, IconT> = {
   "js": SiJavascript,
   "typescript": SiTypescript,
   "ts": SiTypescript,
+  "bash": SiGnubash,
   "c++": SiCplusplus,
   "cpp": SiCplusplus,
   "c": SiC,
@@ -45,6 +47,8 @@ const ICONS: Record<string, IconT> = {
   // databases
   "mysql": SiMysql,
   "sqlite": SiSqlite,
+  "postgresql": SiPostgresql,
+  "postgres": SiPostgresql,
 
   // tools/platforms
   "docker": SiDocker,
