@@ -9,15 +9,14 @@ export const DATA = {
   url: "https://rahfi.pro",
   location: "Jakarta, Indonesia",
   locationLink: "https://www.google.com/maps/place/jakarta",
-  description: "Software Engineer",
-  summary: "Final-year Computer Science student at Mercu Buana University, specializing in Information Systems and back-end–focused Software/AI Engineering. Experienced in building robust APIs with Flask and FastAPI, deploying containerized and serverless solutions on Google Cloud, AWS, and Azure, and developing predictive models using TensorFlow and Scikit-learn. Skilled in delivering scalable, high-impact machine learning and backend systems, with additional capability in lightweight frontend development using Next.js.",
+  description: "The Product-Minded Engineer",
+  summary: "Product-Minded Software Engineer and fresh Information Systems graduate from Mercu Buana University, dedicated to bridging complex technical architectures with tangible business value. My approach combines strong academic foundations with real world execution, backed by Software Engineering experience managing the full development lifecycle. From architecting scalable backends to defining product roadmaps, I specialize in Cloud Computing, Data, and MLOps, with expertise in transitioning machine learning models from experimental notebooks to production-ready cloud environments. Additionally, my background as an External Code Reviewer has sharpened my attention to detail and ability to maintain high code quality standards, positioning me to build impactful solutions immediately.",
   avatarUrl: "",
   programmingLanguages: [
     "Python",
     "JavaScript",
     "TypeScript",
-    "C++",
-    "C"
+    "Bash"
   ],
   frameworks: [
     "TensorFlow",
@@ -35,6 +34,7 @@ export const DATA = {
   databases: [
     "MySQL",
     "SQLite",
+    "PostgreSQL",
   ],
   tools: [
     "Docker",
@@ -109,12 +109,12 @@ export const DATA = {
     {
       company: "Asah led by Dicoding in association with Accenture",
       href: "#",
-      badges: ["Remote", "Full-Time", "Machine Learning", "Cohort"],
+      badges: ["Remote", "Machine Learning", "Cohort"],
       location: "Jakarta, Indonesia",
       title: "Machine Learning Cohort",
       logoUrl: "/asah-exp.png",
       start: "Aug 2025",
-      end: "Present",
+      end: "Jan 2026",
       description: [
         "Participated in an intensive machine learning training program focusing on end-to-end ML development.",
         "Built and deployed machine learning models for classification, regression, and computer vision tasks using Python.",
@@ -176,7 +176,7 @@ export const DATA = {
     {
       company: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
       href: "#",
-      badges: ["Remote", "Full-Time", "Cloud Computing", "Cohort"],
+      badges: ["Remote", "Cloud Computing", "Cohort"],
       location: "Jakarta, Indonesia",
       title: "Cloud Computing Cohort",
       logoUrl: "/bangkit-exp.jpg",
@@ -284,9 +284,10 @@ export const DATA = {
       degree: "Bachelor's Degree of Computer Science",
       logoUrl: "/umb-edu.jpg",
       start: "2022",
-      end: "2026 (Expected)",
+      end: "2026",
       description: [
-        "GPA: 3.87/4",
+        "GPA: 3.86/4 in 6th Semester (On Going 7th Semester as Last Semester)",
+        "Study Range: 2022 - 2026 (3.5/4 Years)",
         "Pursuing a Bachelor's degree in Computer Science majoring in Information Systems, with a strong focus on the intersection of technology, data, and business processes. The program emphasizes system analysis and design, database management, enterprise systems, and IT project management — equipping me with both technical and managerial competencies to build, manage, and optimize digital solutions in modern organizations.",
         "Relevant Course Work: Mathematics, Linear Algebra, Statistics and Probability, Advanced Statistic, Algorithm and Programming, Algorithm and Data Structure, Database Systems, Database Implementation, Object Oriented Analysis, Advanced Programming, Software Engineering, Data Warehouse & Big Data, PL/SQL Programming, Data Visualization, Process Mining, Data Simulation, Data Analytic I, Data Analytic II, Web Programming, Web Enterprise Programming, Project Management Information System, Information System Development Project"
       ],
@@ -297,7 +298,7 @@ export const DATA = {
       degree: "Non-Degree Program in Machine Learning - Machine Learning Cohort",
       logoUrl: "/asah-exp.png",
       start: "Aug 2025",
-      end: "Present",
+      end: "Jan 2026",
       description: [
         "Gained a strong foundation in supervised and unsupervised machine learning, with practical expertise in deep learning and neural networks. Improved coding practices and model performance through iterative experimentation, while building and automating ML systems, pipelines, and deployment workflows with monitoring and scalability in mind. Acquired through a highly selective scholarship program awarded to only 2,000 candidates worldwide following a rigorous testing process."
       ],
@@ -319,20 +320,25 @@ export const DATA = {
     {
       company: "Asah led by Dicoding in association with Accenture",
       href: "#",
-      badges: ["Remote", "Full-Time", "Machine Learning", "Cohort", "Project Lead", "Modeling", "AI Engineering"],
+      badges: ["Remote", "Machine Learning", "Cohort", "Project Lead", "Modeling", "AI Engineering"],
       location: "Jakarta, Indonesia",
-      title: "Capstone Project Lead - Project Manager - Team Lead",
+      title: "Capstone Project Manager",
       logoUrl: "/asah-exp.png",
       start: "Oct 2025",
-      end: "Present",
-      description: [],
+      end: "Jan 2026",
+      description: [
+        "Successfully led a team to complete application projects on schedule.",
+        "Efficiently guided team members to align with project timelines and deliverables.",
+        "Provided continuous support to team members to ensure smooth project execution.",
+        "Effectively managed and directed the overall progress of projects.",
+      ],
     },
     {
       company: "Mercu Buana University",
       href: "#",
       badges: ["Full-Time", "Project Lead", "Back-End Engineering", "Cloud Engineering", "AI Engineering"],
       location: "Jakarta, Indonesia",
-      title: "Project Manager - Team Lead - Information Systems Development Project",
+      title: "Project Manager - Information Systems Development Project",
       logoUrl: "/umb-edu.jpg",
       start: "Mar 2025",
       end: "Jul 2025",
@@ -349,7 +355,7 @@ export const DATA = {
       href: "#",
       badges: ["Project Lead"],
       location: "Jakarta, Indonesia",
-      title: "Project Lead - Team Lead",
+      title: "Project Team Lead",
       logoUrl: "/sic-exp.jpg",
       start: "Jan 2025",
       end: "Feb 2025",
@@ -364,9 +370,9 @@ export const DATA = {
     {
       company: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
       href: "#",
-      badges: ["Remote", "Full-Time", "Cloud Computing", "Cohort", "Project Lead", "Back-End Engineering", "Cloud Engineering"],
+      badges: ["Remote", "Cloud Computing", "Cohort", "Project Lead", "Back-End Engineering", "Cloud Engineering"],
       location: "Jakarta, Indonesia",
-      title: "Capstone Project Lead - Project Manager - Team Lead",
+      title: "Capstone Project Manager",
       logoUrl: "/bangkit-exp.jpg",
       start: "Nov 2024",
       end: "Dec 2024",
@@ -375,7 +381,6 @@ export const DATA = {
         "Efficiently guided team members to align with project timelines and deliverables.",
         "Provided continuous support to team members to ensure smooth project execution.",
         "Effectively managed and directed the overall progress of projects.",
-        "Demonstrated strong leadership in driving project success and fostering team collaboration."
       ],
     },
 
@@ -416,6 +421,55 @@ export const DATA = {
       video: "",
 
     },
+    {
+      title: "SATRIA: System for Analyzing Total Risk of Agent & Group (Sistem Analisis Terpadu Risiko Agen & Grup)",
+      href: "https://github.com/anggara-26/satria-pika-pika",
+      status: "Maintained",
+      description:
+        "SATRIA is an AI-based early warning system designed specifically for microfinance risk operations. It integrates field agent performance analysis and borrower group health to detect potential default risks early.",
+      technologies: [
+        "Golang",
+        "Vite.js",
+        "TypeScript",
+        "Gemini LLM",
+        "TailwindCSS",
+        "GCP",
+        "Docker",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/anggara-26/satria-pika-pika",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/satria-final.png",
+      video: "",
+    },
+    {
+      title: "SATRIA: System for Analyzing Total Risk of Agent & Group (Sistem Analisis Terpadu Risiko Agen & Grup) - Prototype",
+      href: "https://github.com/anggara-26/satria",
+      status: "Maintained",
+      description:
+        "SATRIA is an AI-based early warning system designed specifically for microfinance risk operations. It integrates field agent performance analysis and borrower group health to detect potential default risks early.",
+      technologies: [
+        "Golang",
+        "Vite.js",
+        "TypeScript",
+        "Gemini LLM",
+        "TailwindCSS",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/anggara-26/satria",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/satria-prototype.png",
+      video: "",
+    },
+
     {
       title: "Stacked Pretrained Models Pipeline for Javanese Scripts (Aksara Jawa) Handwritten Character Recognition and OCR",
       href: "https://github.com/rahfianugerah/hanacaraka-ajisaka-writings",
@@ -625,6 +679,30 @@ export const DATA = {
       video: "",
     },
     {
+      title: "inTrain.ai: Mobile AI-Powered Application for Interview Preparation and Upskilling",
+      href: "https://github.com/intrain-ai",
+      status: "Maintained",
+      description:
+        "inTrain.ai is an AI-powered mobile application designed as a comprehensive solution for professional career planning and development. The platform integrates Large Language Model (LLM) technology to provide an AI HR Chatbot (Voice talk AI interview in newer version!), allowing users to engage in interactive mock interview simulations across various difficulty levels and job scenarios to receive real-time feedback and evaluation. Beyond interview practice, inTrain.ai facilitates holistic job preparation through a CV Analyzer for ATS-standard document optimization, personalized Job Roadmaps, and a curated course catalog for upskilling, as well as a Mentorship Matchmaking feature that connects users directly with industry practitioners. (Coming soon and stay tuned as full production grade apps!)",
+      technologies: [
+        "Kotlin",
+        "Python",
+        "Flask",
+        "GCP",
+        "Gemini LLM",
+        "Docker",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/intrain-ai",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/no-image.png",
+      video: "",
+    },
+    {
       title: "Bangkit Academy 2024 Batch 2 -  Course Submissions, Code Resources, and Docs",
       href: "https://github.com/rahfianugerah/bangkit-cc-2024-b2",
       status: "Maintained",
@@ -733,12 +811,27 @@ export const DATA = {
   ],
   hardwork: [
     {
+      title: "HKI (Hak Kekayaan Intelektual) - Patents - inTrain.ai: Moblile AI-Powered Application for Interview Preparation and Upskilling",
+      dates: "Jan 2026",
+      location: "Jakarta, Indonesia",
+      issued: "Direktorat Jenderal Kekayaan Intelektual, Kementerian Hukum dan Hak Asasi Manusia Republik Indonesia",
+      description: "inTrain.ai is an AI-powered mobile application designed as a comprehensive solution for professional career planning and development. The platform integrates Large Language Model (LLM) technology to provide an AI HR Chatbot (Voice talk AI interview in newer version!), allowing users to engage in interactive mock interview simulations across various difficulty levels and job scenarios to receive real-time feedback and evaluation. Beyond interview practice, inTrain.ai facilitates holistic job preparation through a CV Analyzer for ATS-standard document optimization, personalized Job Roadmaps, and a curated course catalog for upskilling, as well as a Mentorship Matchmaking feature that connects users directly with industry practitioners. (Coming soon and stay tuned as full production grade apps!)",
+      image: "",
+      links: [
+        {
+          title: "Patents",
+          href: "https://hakcipta.dgip.go.id/legal/c/YWE1MDFjNzYyY2M5Yjg0NmI3ZDQ3ODUxYzE3MDZkMTk=",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
       title: "Amartha Hackathon x GDG Jakarta - Finalist",
       dates: "Nov 2025",
       location: "Jakarta, Indonesia",
       issued: "Amartha, Google Developer Group (GDG) Jakarta",
       description: "Recognized as a finalist or Top 15 teams in the Amartha Hackathon x GDG Jakarta for developing an innovative solution that leverages technology to address real-world challenges in the financial sector.",
-      image: "/amarthaxgdgjakarta.jpg",
+      image: "",
       links: [
         {
           title: "Certificate (N/A)",
