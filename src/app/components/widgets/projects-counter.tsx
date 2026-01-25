@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { WidgetFallback } from "@/components/widget-error-boundary";
 import { FolderGit2, Eye } from "lucide-react";
+import { DATA } from "@/data/resume";
 
 type ProjectStats = {
   totalProjects: number;
@@ -24,13 +25,9 @@ export default function ProjectsCounter() {
           throw new Error(json.error);
         }
         
-        // Get project count from API (which proxies to GitHub with a token)
-        const repoRes = await fetch("/api/github/stats");
-        const userData = await repoRes.json();
-        
         setStats({
-          // If the proxy fails (e.g. no token), default to 0. 
-          totalProjects: userData.public_repos ?? 0,
+          // Get project count from local DATA instead of GitHub API to match portfolio list
+          totalProjects: DATA.projects.length,
           totalViews: json.data?.projects ?? 0, // Ensure '0' is shown, not 'N/A'
         });
       } catch (err) {
