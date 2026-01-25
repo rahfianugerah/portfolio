@@ -9,8 +9,8 @@ export const DATA = {
   url: "https://rahfi.pro",
   location: "Jakarta, Indonesia",
   locationLink: "https://www.google.com/maps/place/jakarta",
-  description: "The Product-Minded Engineer",
-  summary: "Product-Minded Software Engineer and fresh Information Systems graduate from Mercu Buana University, dedicated to bridging complex technical architectures with tangible business value. My approach combines strong academic foundations with real world execution, backed by Software Engineering experience managing the full development lifecycle. From architecting scalable backends to defining product roadmaps, I specialize in Cloud Computing, Data, and MLOps, with expertise in transitioning machine learning models from experimental notebooks to production-ready cloud environments. Additionally, my background as an External Code Reviewer has sharpened my attention to detail and ability to maintain high code quality standards, positioning me to build impactful solutions immediately.",
+  description: "AI Software Engineer",
+  summary: "I am an AI Software Engineer and recent Computer Science graduate, majoring in Information Systems from Mercu Buana University who loves bridging the gap between complex tech and real business value. My expertise lies at the intersection of AI, Deep Learning, and Cloud Computing, where I focus on taking from experimental AI models and turning them into production-ready systems. As a generalist with a product-first mindset, I care deeply about code quality and scalable architecture, and I am eager to apply my skills in AI/ML/DL to collaborate on meaningful, high-impact projects",
   avatarUrl: "",
   programmingLanguages: [
     "Python",
@@ -81,15 +81,16 @@ export const DATA = {
       href: "#",
       badges: [],
       location: "Tangerang Selatan, Indonesia",
-      title: "Software Engineer",
+      title: "AI Software Engineer",
       logoUrl: "/amn-exp.png",
       start: "Sep 2025",
       end: "Present",
       description: [
-        "Develop and maintain scalable web applications, handling both front-end and back-end implementation.",
-        "Design and integrate APIs, manage databases, and ensure seamless deployment across environments.",
-        "Identify requirements, deliver features, and enhance system performance.",
-        "Optimize website speed, and ensure mobile-friendly and responsive interfaces."
+        "Build and maintain a website from scratch for a property and maintenance agency, covering front-end and back-end development.",
+        "Implement user authentication, property listings, service requests, and admin dashboards using modern web technologies.",
+        "Develop APIs and manage databases to support property listings, service requests, and customer data.",
+        "Create and integrate an AI-powered chatbot to handle customer inquiries, basic support, and service information.",
+        "Optimize website performance and ensure responsive, mobile-friendly user interfaces."
       ],
     },
     {
@@ -422,6 +423,38 @@ export const DATA = {
 
     },
     {
+      title: "AEGIS: AI Engine for Grounded Inspection System - Accenture Use Case",
+      href: "https://github.com/A25-CS046",
+      status: "Maintained",
+      description:
+        "AEGIS (AI Engine for Grounded Inspection System) is an intelligent predictive-maintenance platform designed to transform traditional reactive maintenance into a data-driven, adaptive, and automated system. The project leverages machine learning, real-time sensor analytics, and Agentic AI to detect anomalies, predict equipment failures, and recommend optimal maintenance schedules across industrial sectors such as energy, mining, and manufacturing. By closing the gap between abundant sensor data and actionable insights, AEGIS enables industries to reduce downtime, enhance safety, and improve operational sustainability.",
+      technologies: [
+        "Python",
+        "Flask",
+        "LangChain",
+        "Gemini LLM 2.5 Pro",
+        "XgBoost",
+        "DaisyUI",
+        "Drizzle",
+        "TailwindCSS",
+        "Radix UI",
+        "PostgreSQL",
+        "Express.js",
+        "Node.js",
+        "GCP",
+        "Docker",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/A25-CS046",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/aegis-project.png",
+      video: "",
+    },
+    {
       title: "SATRIA: System for Analyzing Total Risk of Agent & Group (Sistem Analisis Terpadu Risiko Agen & Grup)",
       href: "https://github.com/anggara-26/satria-pika-pika",
       status: "Maintained",
@@ -699,7 +732,31 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: "/no-image.png",
+      image: "/intrain-ai-project.png",
+      video: "",
+    },
+    {
+      title: "EzTrip: AI-Powered Travel Compantion and Itinerary Planner",
+      href: "https://github.com/C242-PS269",
+      status: "Maintained",
+      description:
+        "By leveraging AI-powered recommendation engines, EzTrip offers personalized suggestions based on users' interests and travel goals, streamlining the process of destination discovery, booking, and expense management. With an integrated expense tracker and generated itineraries, users can monitor their travel budgets in real-time, making it easier to plan and control spending throughout their journey. Our team is focused on enhancing Indonesia’s tourism experience by making local insights accessible to global tourists and supporting sustainable tourism growth. This project seeks to solve real challenges in destination planning for foreign travelers by simplifying their access to curated travel information & budgeting.",
+      technologies: [
+        "Python",
+        "Flask",
+        "TensorFlow",
+        "Kotlin",
+        "GCP",
+        "Docker",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/C242-PS269",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/eztrip-project.png",
       video: "",
     },
     {
