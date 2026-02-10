@@ -14,6 +14,7 @@ export default function ImageCarousel({ images, intervalMs = 3000 }: ImageCarous
       "/me-google-1.jpeg",
       "/gemastik-3.jpeg",
       "/me-google-3.jpeg",
+      "/me-hackathon.jpg",
     ],
     []
   );
