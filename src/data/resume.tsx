@@ -10,7 +10,7 @@ export const DATA = {
   location: "Jakarta, Indonesia",
   locationLink: "https://www.google.com/maps/place/jakarta",
   description: "AI Software Engineer",
-  summary: "I am an AI Software Engineer and recent Computer Science graduate, majoring in Information Systems from Mercu Buana University who loves bridging the gap between complex tech and real business value. My expertise lies at the intersection of AI, Deep Learning, and Cloud Computing, where I focus on taking from experimental AI models and turning them into production-ready systems. As a generalist with a product-first mindset, I care deeply about code quality and scalable architecture, and I am eager to apply my skills in AI/ML/DL to collaborate on meaningful, high-impact projects",
+  summary: "I am an AI Software Engineer and recent Computer Science graduate, majoring in Information Systems from Mercu Buana University who loves bridging the gap between complex tech and real business value. My expertise lies at the intersection of AI and Cloud Computing, where I focus on taking from experimental AI models and turning them into production-ready systems. As a generalist with a product-first mindset, I care deeply about code quality and scalable architecture, and I am eager to apply my skills in AI and Cloud to collaborate on meaningful, high-impact projects",
   avatarUrl: "",
   programmingLanguages: [
     "Python",
@@ -86,11 +86,9 @@ export const DATA = {
       start: "Sep 2025",
       end: "Present",
       description: [
-        "Build and maintain a website from scratch for a property and maintenance agency, covering front-end and back-end development.",
-        "Implement user authentication, property listings, service requests, and admin dashboards using modern web technologies.",
-        "Develop APIs and manage databases to support property listings, service requests, and customer data.",
-        "Create and integrate an AI-powered chatbot to handle customer inquiries, basic support, and service information.",
-        "Optimize website performance and ensure responsive, mobile-friendly user interfaces."
+        "Streamlined operations by engineering a centralized full-stack platform to replace manual property tracking.",
+        "Eliminated response delays by deploying an NLP-powered chatbot to handle customer inquiries 24/7.",
+        "Modernized data management by designing robust backend architecture and RESTful APIs for internal tools."
       ],
     },
     {
@@ -104,7 +102,8 @@ export const DATA = {
       end: "Present",
       description: [
         "Establish and build the property agency (PT), including legal setup and early business operations for real estate agency.",
-        "Define and oversee the company’s strategic direction in information technology and digital transformation."
+        "Define and oversee the company’s strategic direction in information technology and digital transformation.",
+        "Lead the development and implementation of technology solutions to enhance operational efficiency and customer experience."
       ],
     },
     {
@@ -117,10 +116,9 @@ export const DATA = {
       start: "Aug 2025",
       end: "Jan 2026",
       description: [
-        "Participated in an intensive machine learning training program focusing on end-to-end ML development.",
-        "Built and deployed machine learning models for classification, regression, and computer vision tasks using Python.",
-        "Conducted dataset preparation, feature engineering, model training, evaluation, and optimization.",
-        "Collaborated with mentors and peers on hands-on projects and industry-aligned learning modules.l deployment, monitoring, and ML pipeline automation to ensure scalability and reliability."
+        "Won 'Best Capstone Project' (96/100) by leading the development of the AEGIS predictive maintenance system.",
+        "Secured a top-tier scholarship (1 of 2,000) by demonstrating strong commitment to AI innovation during screening.",
+        "Projected 20% inspection efficiency gain by integrating NLP and voice commands into the maintenance copilot."
       ],
     },
     {
@@ -133,10 +131,9 @@ export const DATA = {
       start: "Mar 2025",
       end: "Present",
       description: [
-        "Reviewed student project submissions to ensure code quality, correctness, and alignment with best practices in machine learning and cloud-based development.",
-        "Assessed implementation logic, performance, and documentation, and provided clear, structured, and constructive feedback to improve student solutions.",
-        "Evaluated submissions across Machine Learning and Google Cloud Professional learning paths, ensuring technical accuracy and consistent application of core concepts.",
-        "Contributed to learners’ practical skill development by identifying issues, suggesting improvements, and reinforcing proper coding standards and model implementation techniques."
+        "Achieved a 4.9/5 rating from 200+ students by providing detailed feedback on code logic and industry standards.",
+        "Safeguarded educational quality by evaluating complex Data Science, ML, DL, GenAI and Cloud projects against strict curriculum rubrics.",
+        "Accelerated learner proficiency by rigorously auditing project logic and documentation for deployment readiness."
       ],
     },
     {
@@ -149,12 +146,8 @@ export const DATA = {
       start: "April 2024",
       end: "Aug 2024",
       description: [
-        "Committed to self-learning and skill development in machine learning for 6 consecutive months.",
-        "Studied and implemented key machine learning fundamentals, including supervised and unsupervised learning.",
-        "Developed deep learning expertise through practical application of neural networks, CNN, RNN, and LSTM.",
+        "Studied and implemented key machine learning fundamentals, including supervised, unsupervised learning and deep learning expertise through practical application of neural networks, CNN, RNN, and LSTM.",
         "Built and deployed multiple end-to-end projects in domains such as Time series forecasting, Image classification, Text classification and Natural Language Processing (NLP), Regression analysis, Clustering and pattern recognition, Predictive modeling and business intelligence.",
-        "Continuously improved coding practices and model performance through experimentation and iteration.",
-        "Completed the Expert MLOps class and successfully passed the final evaluation.",
         "Gained hands-on experience with model deployment, monitoring, and ML pipeline automation."
       ],
     },
@@ -168,7 +161,6 @@ export const DATA = {
       start: "Jan 2025",
       end: "Feb 2025",
       description: [
-        "Gaining hands-on experience in AI and IoT development by working on real-world projects.",
         "Exploring various microcontrollers, including ESP32, to understand their capabilities and applications.",
         "Designing and building IoT kit devices to develop practical and innovative solutions.",
         "Applying design thinking principles to create user-centric IoT solutions that address real-world challenges."
@@ -184,13 +176,9 @@ export const DATA = {
       start: "Aug 2024",
       end: "Jan 2025",
       description: [
-        "Gaining hands-on experience in creating fully functional websites, focusing on both front-end and back-end technologies.",
-        "Learning how to design and plan scalable cloud infrastructures for application development, ensuring high availability and security.",
-        "Mastering the process of deploying ML models to the cloud for integration into applications, enhancing performance and reliability.",
-        "Building web servers to handle REST API requests and efficiently host machine learning models.",
-        "Developing expertise in utilizing GCP tools for cloud deployments, security, and model hosting, while applying best practices in real-world scenarios.",
-        "Successfully led a team to complete application projects on schedule.",
-        "Achieved Distinction Graduate status, recognized within the top 10% of each learning path cohort."
+        "Graduated with 'Distinction' (Top 10%) by mastering the lifecycle of scalable cloud infrastructure on GCP.",
+        "Engineered functional mobile ecosystems by integrating front-end interfaces with robust RESTful APIs.",
+        "Operationalized ML models for production by designing high-availability GCP cloud architectures"
       ],
     },
     {
@@ -203,10 +191,9 @@ export const DATA = {
       start: "Jan 2024",
       end: "Feb 2025",
       description: [
-        "Provide guidance and support to members of the Back-End learning path, ensuring they understand core concepts and good practices.",
-        "Conduct regular one-on-one and group mentoring sessions to address specific challenges and foster a collaborative learning environment.",
-        "Create and manage a structured curriculum to facilitate progressive learning and skill acquisition.",
-        "Coordinate activities and projects among members to promote teamwork and practical application of back-end development skills."
+        "Facilitated skill acquisition by orchestrating end-to-end curriculum design for the Back-End learning path.",
+        "Resolved complex technical challenges by directing regular one-on-one and group mentoring sessions.",
+        "Promoted practical engineering principles by streamlining project coordination among laboratory members"
       ],
     },
     {
@@ -219,11 +206,9 @@ export const DATA = {
       start: "Jan 2024",
       end: "Feb 2025",
       description: [
-        "Provided on-the-spot technical support to students and faculty for any computer-related issues during class time.",
-        "Assisted in troubleshooting software and hardware problems, ensuring smooth operation of classes.",
-        "Supported lecturers during lab sessions by preparing necessary equipment, setting up software, and providing technical assistance.",
-        "Trained and mentored new laboratory assistants, guiding them through their roles and responsibilities to ensure high performance.",
-        "Helped new laboratory assistants to understand technical procedures, lab protocols, and best practices, fostering a collaborative and efficient lab environment."
+        "Ensured 100% operational uptime during classes by resolving critical software and hardware issues on-site.",
+        "Maintained high performance standards by mentoring and training new laboratory assistants on protocols.",
+        "Optimized lab efficiency by implementing collaborative best practices and standardized troubleshooting workflows."
       ],
     },
     {
@@ -236,13 +221,9 @@ export const DATA = {
       start: "Apr 2023",
       end: "Jan 2024",
       description: [
-        "Ensured the proper functioning and upkeep of all computer hardware and peripherals within the laboratory.",
-        "Performed regular maintenance tasks, including software updates, system backups, and hardware troubleshooting.",
-        "Provided on-the-spot technical support to students and faculty for any computer-related issues during class time.",
-        "Diagnosed and resolved network issues promptly to minimize downtime and disruption.",
-        "Assisted in troubleshooting software and hardware problems, ensuring smooth operation of classes.",
-        "Supported lecturers during lab sessions by preparing necessary equipment, setting up software, and providing technical assistance.",
-        "Facilitated the teaching process by addressing any technical challenges that occurred during lectures."
+        "Maintained hardware readiness by executing regular software updates, backups, and preventive maintenance.",
+        "Facilitated seamless academic delivery by configuring technical environments for lecturers pre-session.",
+        "Minimized downtime during practical classes by resolving hardware and software malfunctions in real-time"
       ],
     },
     {
@@ -258,7 +239,6 @@ export const DATA = {
         "Participated in a community of student developers focused on learning and promoting technology, particularly Google Developer technologies.",
         "Bridged the gap between practical and theoretical knowledge through various hands-on activities.",
         "Creating networking opportunities with other members to foster collaboration and knowledge sharing.",
-        "Following workshops to continuously develop and update new tech skills."
       ],
     },
     {
@@ -273,7 +253,6 @@ export const DATA = {
       description: [
         "Mastering the effective use of AWS services for various needs.",
         "Creating and designing cloud architecture on the AWS platform according to best practices.",
-        "Understanding the basics of AWS clearly and deeply.",
         "Successfully achieving the international AWS Certified Cloud Practitioner certification.",
       ],
     },
@@ -287,10 +266,10 @@ export const DATA = {
       start: "2022",
       end: "2026",
       description: [
-        "GPA: 3.86/4 in 6th Semester (On Going 7th Semester as Last Semester)",
+        "GPA: 3.88/4.00",
         "Study Range: 2022 - 2026 (3.5/4 Years)",
-        "Pursuing a Bachelor's degree in Computer Science majoring in Information Systems, with a strong focus on the intersection of technology, data, and business processes. The program emphasizes system analysis and design, database management, enterprise systems, and IT project management — equipping me with both technical and managerial competencies to build, manage, and optimize digital solutions in modern organizations.",
-        "Relevant Course Work: Mathematics, Linear Algebra, Statistics and Probability, Advanced Statistic, Algorithm and Programming, Algorithm and Data Structure, Database Systems, Database Implementation, Object Oriented Analysis, Advanced Programming, Software Engineering, Data Warehouse & Big Data, PL/SQL Programming, Data Visualization, Process Mining, Data Simulation, Data Analytic I, Data Analytic II, Web Programming, Web Enterprise Programming, Project Management Information System, Information System Development Project"
+        "Completed the full undergraduate curriculum in an accelerated 3.5-year timeline, demonstrating exceptional academic discipline and time management.",
+        "Authored the thesis: Optimizing Stroke Risk Prediction Using Artificial Neural Network with Selected Feature Based on Binary Particle Swarm Optimization.",
       ],
     },
     {
@@ -301,7 +280,9 @@ export const DATA = {
       start: "Aug 2025",
       end: "Jan 2026",
       description: [
-        "Gained a strong foundation in supervised and unsupervised machine learning, with practical expertise in deep learning and neural networks. Improved coding practices and model performance through iterative experimentation, while building and automating ML systems, pipelines, and deployment workflows with monitoring and scalability in mind. Acquired through a highly selective scholarship program awarded to only 2,000 candidates worldwide following a rigorous testing process."
+        "Awarded \"Best Capstone Project\" (93/100) by leading the development of AEGIS, an AI-powered maintenance copilot.",
+        "Selected as 1 of 2,000 scholars by demonstrating high potential in the end-to-end Machine Learning lifecycle.",
+        "Developed a hands-free maintenance advisor by integrating NLP and Voice-Command features for field engineers."
       ],
     },
     {
@@ -312,8 +293,8 @@ export const DATA = {
       start: "Aug 2024",
       end: "Jan 2025",
       description: [
-        "Selected among 4,636 candidates out of 45,841 applicants for the Google GoTo & Traveloka–led program, where I deepened my technical expertise through hands‑on workshops in cloud platforms, software engineering best practices, and emerging technologies.",
-        "Achieved Distinction Graduate status, recognized within the top 10% of each learning path cohort."
+        "Secured a position in this elite career accelerator, selected from a competitive pool of over 45,000 registrants.",
+        "Graduated with Distinction (Top 10% of cohort) in the Cloud Computing learning path, mastering the deployment and security of scalable infrastructure on Google Cloud Platform (GCP)"
       ],
     },
   ],
@@ -328,10 +309,9 @@ export const DATA = {
       start: "Oct 2025",
       end: "Jan 2026",
       description: [
-        "Successfully led a team to complete application projects on schedule.",
+        "Successfully led a team to complete the AEGIS predictive maintenance application project on schedule.",
         "Efficiently guided team members to align with project timelines and deliverables.",
-        "Provided continuous support to team members to ensure smooth project execution.",
-        "Effectively managed and directed the overall progress of projects.",
+        "Won 'Best Capstone Project' validated by the owner use case (Accenture) for leading the development of the AEGIS predictive maintenance system.",
       ],
     },
     {
@@ -346,8 +326,6 @@ export const DATA = {
       description: [
         "Successfully created an AI-powered HR interview mobile application integrating both voice and chat features to enhance candidate evaluation.",
         "Designed and implemented interactive modules to simulate real interview scenarios with AI-driven responses.",
-        "Collaborated with team members to ensure smooth functionality, user-friendly design, and reliable system performance.",
-        "Applied strong leadership and technical expertise in managing development phases and overcoming project challenges.",
         "Successfully won the National Innovation Exhibition Gold Medal, showcasing innovation and practical impact of the solution."
       ],
     },
@@ -362,9 +340,7 @@ export const DATA = {
       end: "Feb 2025",
       description: [
         "Led a team in the Samsung Innovation Campus program to develop an IoT-based application project using Ubidots and Flask.",
-        "Guided team members in aligning tasks with project goals and timelines, ensuring collaborative progress.",
-        "Provided technical and organizational support to maintain smooth project execution and integration of IoT devices.",
-        "Managed and directed overall project development, fostering teamwork and effective problem-solving.",
+        "Provided technical and team support to maintain smooth project execution and integration of IoT devices.",
         "Achieved Stage 2 out of 4 in the program, demonstrating strong leadership and practical application of IoT solutions despite challenges."
       ],
     },
@@ -381,7 +357,6 @@ export const DATA = {
         "Successfully led a team to complete application projects on schedule.",
         "Efficiently guided team members to align with project timelines and deliverables.",
         "Provided continuous support to team members to ensure smooth project execution.",
-        "Effectively managed and directed the overall progress of projects.",
       ],
     },
 
@@ -868,6 +843,21 @@ export const DATA = {
   ],
   hardwork: [
     {
+      title: "Best Capstone Project - Asah led by Dicoding in association with Accenture",
+      dates: "Jan 2026",
+      location: "Jakarta, Indonesia",
+      issued: "Asah led by Dicoding in association with Accenture",
+      description: "Awarded 'Best Capstone Project' by leading the development of AEGIS, an AI-powered maintenance copilot that leverages machine learning and Agentic AI to predict equipment failures and optimize maintenance schedules, significantly reducing downtime and operational costs for industrial clients.",
+      image: "",
+      links: [
+        {
+          title: "Certificate",
+          href: "https://drive.google.com/file/d/1fuSxTxlqcnTn9x1gGAkd_G7L10E7lijO/view?usp=sharing",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
       title: "HKI (Hak Kekayaan Intelektual) - Patents - inTrain.ai: Moblile AI-Powered Application for Interview Preparation and Upskilling",
       dates: "Jan 2026",
       location: "Jakarta, Indonesia",
@@ -906,8 +896,8 @@ export const DATA = {
       image: "/gemastik18.jpg",
       links: [
         {
-          title: "Certificate (N/A)",
-          href: "",
+          title: "Certificate",
+          href: "https://drive.google.com/file/d/1Nb8oXpVJAEW09WGNNZOfhBil-xVrKHEE/view?usp=sharing",
           icon: <TbCertificate className="size-3" />,
         },
       ],
@@ -986,6 +976,18 @@ export const DATA = {
   ],
   learning_certificate: [
     // Dicoding Indonesia Provider
+    {
+      title: "Membangun Proyek Deep Learning Tingkat Mahir",
+      issued: "Dicoding Indonesia",
+      category: ["Python", "Deep Learning", "Data Science", "Mathematics", "Statistics", "TensorFlow"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/KEXL2RKY0ZG2",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
     {
       title: "Belajar Matematika untuk Data Science",
       issued: "Dicoding Indonesia",
