@@ -8,6 +8,7 @@ export default function ExperienceGraph() {
 
   const data = useMemo(() => {
     const rawWork = (DATA as any).work ?? [];
+    const now = new Date();
     
     const jobs = rawWork.map((job: any) => {
       const start = new Date(job.start || job.startDate);
@@ -17,18 +18,23 @@ export default function ExperienceGraph() {
         String(endVal).trim().toLowerCase() === "present" || 
         String(endVal).trim().toLowerCase() === "now";
 
-      const end = isPresent ? new Date() : new Date(endVal);
+      const end = isPresent ? now : new Date(endVal);
       const isValid = !isNaN(start.getTime()) && !isNaN(end.getTime());
       const diffTime = Math.abs(end.getTime() - start.getTime());
       const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30.44)); 
       const roleName = job.position || job.role || job.title || job.company || "Role";
+      const startYear = start.getFullYear();
+      const endYear = isNaN(end.getTime()) ? startYear : end.getFullYear();
+      const displayYear = isPresent ? now.getFullYear() : Math.max(startYear, endYear);
 
       return {
         role: roleName,
         company: job.company || job.name,
         months: isValid ? Math.max(diffMonths, 1) : 1,
         startVal: start.getTime(),
-        startYear: start.getFullYear(),
+        startYear,
+        endYear,
+        displayYear,
         startStr: job.start || job.startDate,
         isPresent: isPresent
       };
@@ -64,6 +70,17 @@ export default function ExperienceGraph() {
   const pathData = points.map((p: any, i: number) => (i === 0 ? `M${p.x},${p.y}` : `L${p.x},${p.y}`)).join(" ");
   const hoveredPoint = hoveredIndex !== null ? points[hoveredIndex] : null;
 
+  // Generate unique year labels for x-axis
+  const allYears = points.map((p: any) => p.displayYear ?? p.startYear);
+  const minYear = Math.min(...allYears);
+  const maxYear = Math.max(...allYears);
+  const yearLabels = [];
+  for (let year = minYear; year <= maxYear; year++) {
+    const progress = maxYear === minYear ? 0.5 : (year - minYear) / (maxYear - minYear);
+    const x = paddingLeft + progress * (width - paddingLeft - paddingRight);
+    yearLabels.push({ year, x });
+  }
+
   const getTooltipStyle = (index: number) => {
     const positionPercent = index / (points.length - 1); 
     let anchorPercent = 50;
@@ -94,11 +111,9 @@ export default function ExperienceGraph() {
         <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full overflow-visible font-mono text-[4px]">
             
             {/* X-Axis Labels */}
-            {points.map((p: any, i: number) => {
-                const showLabel = i === 0 || i === points.length - 1 || (points.length < 8) || i % 3 === 0;
-                if (!showLabel) return null;
-                const anchor = i === 0 ? "start" : i === points.length - 1 ? "end" : "middle";
-                return <text key={i} x={p.x} y={height} textAnchor={anchor} fill="currentColor" className="opacity-50">{p.startYear}</text>;
+            {yearLabels.map((label, i) => {
+                const anchor = i === 0 ? "start" : i === yearLabels.length - 1 ? "end" : "middle";
+                return <text key={label.year} x={label.x} y={height} textAnchor={anchor} fill="currentColor" className="opacity-50">{label.year}</text>;
             })}
 
             {/* Graph Area */}
