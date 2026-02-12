@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getBlogPosts } from "@/data/blog";
 
+export const revalidate = 0; // Disable caching
+
 export async function GET() {
   try {
     const posts = await getBlogPosts();

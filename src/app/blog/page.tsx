@@ -8,7 +8,7 @@ export const metadata = {
   description: "My thoughts on software development, life, and more.",
 };
 
-export const revalidate = 60;
+export const revalidate = 0; // Disable caching to show new posts immediately
 
 const BLUR_FADE_DELAY = 0.04;
 
