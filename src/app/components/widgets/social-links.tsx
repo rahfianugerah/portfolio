@@ -5,7 +5,9 @@ import {
   SiInstagram, 
   SiDiscord, 
   SiSpotify,
-  SiThreads 
+  SiThreads,
+  SiLinkedin,
+  SiGithub
 } from "react-icons/si";
 import { cn } from "@/lib/utils";
 
@@ -36,10 +38,16 @@ const SOCIAL_LINKS: SocialLink[] = [
     color: "hover:bg-indigo-500/20 hover:text-indigo-500",
   },
   {
-    name: "Spotify",
-    url: "https://open.spotify.com/user/rahfianugerah", // Replace with your profile
-    icon: SiSpotify,
-    color: "hover:bg-green-500/20 hover:text-green-500",
+    name: "LinkedIn",
+    url: "https://linkedin.com/in/naufalrahfi", // Replace with your username
+    icon: SiLinkedin,
+    color: "hover:bg-blue-500/20 hover:text-blue-500",
+  },
+  {
+    name: "GitHub",
+    url: "https://github.com/naufalrahfi", // Replace with your username
+    icon: SiGithub,
+    color: "hover:bg-gray-500/20 hover:text-gray-500 dark:hover:bg-gray-400/20 dark:hover:text-gray-400",
   },
 ];
 
