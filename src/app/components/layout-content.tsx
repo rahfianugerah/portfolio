@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/navbar";
@@ -22,7 +22,7 @@ import BlurFade from "@/components/magicui/blur-fade";
 
 export default function LayoutContent({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const isReadingBlog = pathname?.startsWith("/blog");
+  const isFullPage = pathname?.startsWith("/blog") || pathname === "/contact";
 
   return (
     <>
@@ -31,7 +31,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
       {/* MOBILE LAYOUT - Sequential order */}
       <div className="lg:hidden mx-auto max-w-7xl px-4 py-6 min-h-screen">
         <div className="flex flex-col gap-4">
-          {!isReadingBlog && (
+          {!isFullPage && (
             <>
               {/* 1. Header */}
               <BlurFade delay={0.05}>
@@ -55,7 +55,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
             {children}
           </main>
 
-          {!isReadingBlog && (
+          {!isFullPage && (
             <>
               {/* 5. Experience Graph */}
               <BlurFade delay={0.25}>
@@ -105,7 +105,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
               {/* Footer */}
               <BlurFade delay={0.7}>
                 <footer className="text-center text-sm font-bebas text-muted-foreground pb-24">
-                  <p>© {new Date().getFullYear()} Naufal Rahfi Anugerah | All rights reserved.</p>
+                  <p>Â© {new Date().getFullYear()} Naufal Rahfi Anugerah | All rights reserved.</p>
                 </footer>
               </BlurFade>
             </>
@@ -118,7 +118,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
         {/* 2xl+ screens: 5-column layout */}
         <div className="hidden 2xl:flex justify-center gap-6 px-4 items-start">
           {/* FAR LEFT RAIL - Tech Stack, Specialties, Projects (starts lower for stair effect) */}
-          {!isReadingBlog && (
+          {!isFullPage && (
             <div className="w-72 flex-shrink-0 sticky top-48 h-[calc(100vh-14rem)]">
               <div className="relative h-full">
                 <div className="h-full overflow-y-auto no-scrollbar pb-8">
@@ -133,7 +133,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
           )}
 
           {/* LEFT RAIL - Images, Graph, GitHub (middle height) */}
-          {!isReadingBlog && (
+          {!isFullPage && (
             <div className="w-72 flex-shrink-0 sticky top-36 h-[calc(100vh-11rem)]">
               <div className="relative h-full">
                 <div className="h-full overflow-y-auto no-scrollbar pb-8">
@@ -150,15 +150,15 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
           {/* MAIN CONTENT (top level - highest) */}
           <main
             className={`flex flex-col gap-4 min-w-0 pb-32 ${
-              isReadingBlog ? "max-w-4xl w-full" : "w-[500px] flex-shrink-0"
+              isFullPage ? "max-w-4xl w-full" : "w-[500px] flex-shrink-0"
             }`}
           >
-            {!isReadingBlog && <HeadHome />}
+            {!isFullPage && <HeadHome />}
             {children}
           </main>
 
           {/* RIGHT RAIL - Clock, Chatbot, Quotes (middle height) */}
-          {!isReadingBlog && (
+          {!isFullPage && (
             <div className="w-72 flex-shrink-0 sticky top-36 h-[calc(100vh-11rem)]">
               <div className="relative h-full">
                 <div className="h-full overflow-y-auto no-scrollbar pb-8">
@@ -173,7 +173,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
           )}
 
           {/* FAR RIGHT RAIL - Analytics, LinkedIn, Spotify, Social (starts lower for stair effect) */}
-          {!isReadingBlog && (
+          {!isFullPage && (
             <div className="w-72 flex-shrink-0 sticky top-48 h-[calc(100vh-14rem)]">
               <div className="relative h-full">
                 <div className="h-full overflow-y-auto no-scrollbar pb-8">
@@ -192,7 +192,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
         <div className="2xl:hidden mx-auto max-w-7xl px-4">
           <div className="grid grid-cols-12 gap-6 items-start">
             {/* LEFT RAIL - Combined far-left + left content */}
-            {!isReadingBlog && (
+            {!isFullPage && (
               <div className="col-span-3 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto no-scrollbar">
                 <BlurFade delay={0.2}>
                   <aside className="flex flex-col gap-4">
@@ -206,15 +206,15 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
             {/* MAIN CONTENT */}
             <main
               className={`flex flex-col gap-4 min-w-0 w-full pb-32 ${
-                isReadingBlog ? "col-span-12 max-w-4xl mx-auto" : "col-span-6"
+                isFullPage ? "col-span-12 max-w-4xl mx-auto" : "col-span-6"
               }`}
             >
-              {!isReadingBlog && <HeadHome />}
+              {!isFullPage && <HeadHome />}
               {children}
             </main>
 
             {/* RIGHT RAIL - Combined right + far-right content */}
-            {!isReadingBlog && (
+            {!isFullPage && (
               <div className="col-span-3 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto no-scrollbar">
                 <BlurFade delay={0.3}>
                   <aside className="flex flex-col gap-4">
@@ -229,7 +229,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
       </div>
 
       {/* FAB - Hidden when reading blog */}
-      {!isReadingBlog && <ChatbotFab />}
+      {!isFullPage && <ChatbotFab />}
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { Icons } from "@/components/icons";
 import { FaBusinessTime } from "react-icons/fa";
 import { TbCertificate } from "react-icons/tb";
-import { HomeIcon, NotebookIcon, TerminalIcon } from "lucide-react";
+import { HomeIcon, NotebookIcon, TerminalIcon, MailIcon } from "lucide-react";
 import { time } from "console";
 
 export const DATA = {
@@ -51,7 +51,7 @@ export const DATA = {
     { href: "/experience", icon: FaBusinessTime, label: "Experience" },
     { href: "/project", icon: TerminalIcon, label: "Project" },
     { href: "/blog", icon: NotebookIcon, label: "Blog" },
-
+    { href: "/contact", icon: MailIcon, label: "Contact" },
   ],
   contact: {
     social: {
@@ -237,9 +237,9 @@ export const DATA = {
       start: "Dec 2023",
       end: "Oct 2024",
       description: [
-        "Participated in a community of student developers focused on learning and promoting technology, particularly Google Developer technologies.",
-        "Bridged the gap between practical and theoretical knowledge through various hands-on activities.",
-        "Creating networking opportunities with other members to foster collaboration and knowledge sharing.",
+        "Expanded technical proficiency in Google Developer technologies including Firebase and Google Cloud by completing multiple hands-on workshops, bridging the gap between theoretical coursework and practical implementation.",
+        "Accelerated project development cycles by collaborating with a multidisciplinary team of student developers to share best practices and troubleshoot complex code during community build sessions.",
+        "Increased personal professional network by 10+ within the local tech ecosystem by actively organizing and participating in networking events to foster cross-functional collaboration."
       ],
     },
     {
@@ -252,9 +252,9 @@ export const DATA = {
       start: "Feb 2024",
       end: "Mar 2024",
       description: [
-        "Mastering the effective use of AWS services for various needs.",
-        "Creating and designing cloud architecture on the AWS platform according to best practices.",
-        "Successfully achieving the international AWS Certified Cloud Practitioner certification.",
+        "Successfully achieved the AWS Certified Cloud Practitioner (CLF-C02) certification, validating foundational knowledge of cloud fluency and AWS security/compliance by scoring 733 on the international proctored exam.",
+        "Optimized cloud infrastructure scalability and cost-efficiency for simulated enterprise workloads, by designing AWS architectures including: EC2, S3, and RDS in alignment with the AWS Well-Architected Framework.",
+        "Reduced potential system downtime in architecture simulations by implementing AWS best practices for high availability and fault tolerance across multiple Availability Zones (AZs)."
       ],
     },
   ],
