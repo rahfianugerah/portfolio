@@ -1,6 +1,7 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import ContactForm from "@/app/components/contact-form";
 import HirePlatforms from "@/app/components/hire-platforms";
+import ReCaptchaWrapper from "@/app/components/recaptcha-wrapper";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -31,7 +32,9 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
             {/* Left Column - Contact Form */}
             <div className="w-full h-full">
-              <ContactForm />
+              <ReCaptchaWrapper>
+                <ContactForm />
+              </ReCaptchaWrapper>
             </div>
 
             {/* Right Column - Hire Platforms */}

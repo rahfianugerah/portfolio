@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 // Client-side validation schema
 const formSchema = z.object({
@@ -42,7 +43,9 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export default function ContactForm() {
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
   const [submitMessage, setSubmitMessage] = useState<{
     type: "success" | "error";
     text: string;
@@ -63,7 +66,22 @@ export default function ContactForm() {
     setSubmitMessage(null);
 
     try {
-      const result = await submitContactForm(data);
+      // Get reCAPTCHA token
+      let captchaToken: string | undefined;
+      if (executeRecaptcha) {
+        try {
+          captchaToken = await executeRecaptcha("contact_form_submit");
+        } catch (error) {
+          console.error("reCAPTCHA execution failed:", error);
+        }
+      }
+
+      // Submit form with honeypot and captcha token
+      const result = await submitContactForm({
+        ...data,
+        honeypot,
+        captchaToken,
+      });
 
       if (result.error) {
         setSubmitMessage({
@@ -100,6 +118,23 @@ export default function ContactForm() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 flex-1 flex flex-col">
+          {/* Honeypot field - hidden from humans, bots will fill it */}
+          <input
+            type="text"
+            name="website"
+            autoComplete="off"
+            tabIndex={-1}
+            style={{
+              position: "absolute",
+              left: "-9999px",
+              width: "1px",
+              height: "1px",
+            }}
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            aria-hidden="true"
+          />
+
           <FormField
             control={form.control}
             name="fullName"

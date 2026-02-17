@@ -3,7 +3,7 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { DATA } from "@/data/resume";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import { z } from "zod";
 import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -27,6 +27,8 @@ const contactSchema = z.object({
     .string()
     .min(10, "Message must be at least 10 characters")
     .max(2000, "Message must be less than 2000 characters"),
+  honeypot: z.string().optional(),
+  captchaToken: z.string().optional(),
 });
 
 export async function generateChatResponse(history: any[], currentMessage: string) {
@@ -77,8 +79,44 @@ export async function submitContactForm(formData: {
   email: string;
   subject: string;
   message: string;
+  honeypot?: string;
+  captchaToken?: string;
 }) {
   try {
+    // 1. Honeypot check (catches simple bots)
+    if (formData.honeypot) {
+      console.log("Honeypot triggered - bot detected");
+      return { error: "Invalid submission" };
+    }
+
+    // 2. Verify reCAPTCHA token (catches sophisticated bots)
+    if (formData.captchaToken) {
+      const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
+      
+      if (recaptchaSecret) {
+        try {
+          const captchaResponse = await fetch(
+            `https://www.google.com/recaptcha/api/siteverify`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: `secret=${recaptchaSecret}&response=${formData.captchaToken}`,
+            }
+          );
+
+          const captchaData = await captchaResponse.json();
+          
+          if (!captchaData.success || (captchaData.score && captchaData.score < 0.5)) {
+            console.log("reCAPTCHA failed:", captchaData);
+            return { error: "Bot detection failed. Please try again." };
+          }
+        } catch (error) {
+          console.error("reCAPTCHA verification error:", error);
+          // Continue anyway if reCAPTCHA service is down
+        }
+      }
+    }
+
     // Get client IP for rate limiting
     const headersList = headers();
     const forwarded = headersList.get("x-forwarded-for");
@@ -99,30 +137,36 @@ export async function submitContactForm(formData: {
     
     if (!validation.success) {
       return {
-        error: validation.error.errors[0].message,
+        error: validation.error.issues[0].message,
       };
     }
 
     const { fullName, email, subject, message } = validation.data;
 
     // Get environment variables
-    const resendApiKey = process.env.RESEND_API_KEY;
-    const contactEmail = process.env.CONTACT_EMAIL;
+    const gmailUser = process.env.GMAIL_USER;
+    const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
 
-    if (!resendApiKey || !contactEmail) {
-      console.error("Missing RESEND_API_KEY or CONTACT_EMAIL environment variables");
+    if (!gmailUser || !gmailAppPassword) {
+      console.error("Missing GMAIL_USER or GMAIL_APP_PASSWORD environment variables");
       return {
         error: "Server configuration error. Please try again later.",
       };
     }
 
-    // Initialize Resend
-    const resend = new Resend(resendApiKey);
+    // Create Gmail SMTP transporter
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: gmailUser,
+        pass: gmailAppPassword,
+      },
+    });
 
     // Send email
-    const { data, error } = await resend.emails.send({
-      from: "Portfolio Contact Form <onboarding@resend.dev>", // Use your verified domain
-      to: [contactEmail],
+    await transporter.sendMail({
+      from: `Portfolio Contact Form <${gmailUser}>`,
+      to: gmailUser,
       replyTo: email,
       subject: `Portfolio Contact: ${subject}`,
       html: `
@@ -159,13 +203,6 @@ export async function submitContactForm(formData: {
         </div>
       `,
     });
-
-    if (error) {
-      console.error("Resend error:", error);
-      return {
-        error: "Failed to send message. Please try again later.",
-      };
-    }
 
     return {
       success: "Message sent successfully! I'll get back to you soon.",
