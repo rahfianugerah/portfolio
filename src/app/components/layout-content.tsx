@@ -115,11 +115,11 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
       {/* DESKTOP LAYOUT */}
       <div className="hidden lg:block py-6 min-h-screen">
-        {/* 2xl+ screens: 5-column layout */}
-        <div className="hidden 2xl:flex justify-center gap-6 px-4 items-start">
+        {/* 3xl+ screens (1800px+): 5-column layout — fits all 4 rails + main */}
+        <div className="hidden 3xl:flex justify-center gap-4 px-4 max-w-[1800px] mx-auto items-start">
           {/* FAR LEFT RAIL - Tech Stack, Specialties, Projects (starts lower for stair effect) */}
           {!isFullPage && (
-            <div className="w-72 flex-shrink-0 sticky top-48 h-[calc(100vh-14rem)]">
+            <div className="grow max-w-72 min-w-[200px] sticky top-48 h-[calc(100vh-14rem)]">
               <div className="relative h-full">
                 <div className="h-full overflow-y-auto no-scrollbar pb-8">
                   <BlurFade delay={0.15}>
@@ -134,7 +134,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
           {/* LEFT RAIL - Images, Graph, GitHub (middle height) */}
           {!isFullPage && (
-            <div className="w-72 flex-shrink-0 sticky top-36 h-[calc(100vh-11rem)]">
+            <div className="grow max-w-72 min-w-[200px] sticky top-36 h-[calc(100vh-11rem)]">
               <div className="relative h-full">
                 <div className="h-full overflow-y-auto no-scrollbar pb-8">
                   <BlurFade delay={0.2}>
@@ -150,7 +150,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
           {/* MAIN CONTENT (top level - highest) */}
           <main
             className={`flex flex-col gap-4 min-w-0 pb-32 ${
-              isFullPage ? "max-w-4xl w-full" : "w-[500px] flex-shrink-0"
+              isFullPage ? "max-w-4xl w-full" : "w-[440px] shrink-0"
             }`}
           >
             {!isFullPage && <HeadHome />}
@@ -159,7 +159,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
           {/* RIGHT RAIL - Clock, Chatbot, Quotes (middle height) */}
           {!isFullPage && (
-            <div className="w-72 flex-shrink-0 sticky top-36 h-[calc(100vh-11rem)]">
+            <div className="grow max-w-72 min-w-[200px] sticky top-36 h-[calc(100vh-11rem)]">
               <div className="relative h-full">
                 <div className="h-full overflow-y-auto no-scrollbar pb-8">
                   <BlurFade delay={0.25}>
@@ -174,7 +174,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
           {/* FAR RIGHT RAIL - Analytics, LinkedIn, Spotify, Social (starts lower for stair effect) */}
           {!isFullPage && (
-            <div className="w-72 flex-shrink-0 sticky top-48 h-[calc(100vh-14rem)]">
+            <div className="grow max-w-72 min-w-[200px] sticky top-48 h-[calc(100vh-14rem)]">
               <div className="relative h-full">
                 <div className="h-full overflow-y-auto no-scrollbar pb-8">
                   <BlurFade delay={0.3}>
@@ -188,8 +188,8 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
           )}
         </div>
 
-        {/* lg to 2xl screens: Standard 3-column layout (inner rails merged) */}
-        <div className="2xl:hidden mx-auto max-w-7xl px-4">
+        {/* lg to 3xl screens: Standard 3-column layout (inner rails merged) */}
+        <div className="3xl:hidden mx-auto max-w-7xl px-4">
           <div className="grid grid-cols-12 gap-6 items-start">
             {/* LEFT RAIL - Combined far-left + left content */}
             {!isFullPage && (
