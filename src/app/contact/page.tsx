@@ -29,19 +29,42 @@ export default function ContactPage() {
         </BlurFade>
 
         <BlurFade delay={BLUR_FADE_DELAY * 2}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-            {/* Left Column - Contact Form */}
-            <div className="w-full h-full">
-              <ReCaptchaWrapper>
+          <ReCaptchaWrapper>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+              {/* Left Column - Contact Form */}
+              <div className="w-full h-full">
                 <ContactForm />
-              </ReCaptchaWrapper>
+              </div>
+
+              {/* Right Column - Hire Platforms */}
+              <div className="w-full h-full">
+                <HirePlatforms />
+              </div>
             </div>
 
-            {/* Right Column - Hire Platforms */}
-            <div className="w-full h-full">
-              <HirePlatforms />
-            </div>
-          </div>
+            {/* reCAPTCHA branding (required when hiding the floating badge) */}
+            <p className="mt-6 text-center text-xs text-muted-foreground">
+              This site is protected by reCAPTCHA and the Google{" "}
+              <a
+                href="https://policies.google.com/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-foreground"
+              >
+                Privacy Policy
+              </a>{" "}
+              and{" "}
+              <a
+                href="https://policies.google.com/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-foreground"
+              >
+                Terms of Service
+              </a>{" "}
+              apply.
+            </p>
+          </ReCaptchaWrapper>
         </BlurFade>
       </div>
 

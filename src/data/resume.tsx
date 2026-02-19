@@ -117,9 +117,9 @@ export const DATA = {
       start: "Aug 2025",
       end: "Jan 2026",
       description: [
-        "Won 'Best Capstone Project' (96/100) by leading the development of the AEGIS predictive maintenance system.",
+        "Advanced project development standards by transitioning from manual Python scripting to an automated MLOps workflow for experiment tracking.",
         "Secured a top-tier scholarship (1 of 2,000) by demonstrating strong commitment to AI innovation during screening.",
-        "Designed a predictive maintenance system capable of reducing inspection times by 20% through voice-activated reporting."
+        "Designed a predictive maintenance system capable of reducing inspection times by 20% through voice-activated reporting"
       ],
     },
     {
@@ -162,9 +162,9 @@ export const DATA = {
       start: "Jan 2025",
       end: "Feb 2025",
       description: [
-        "Exploring various microcontrollers, including ESP32, to understand their capabilities and applications.",
-        "Designing and building IoT kit devices to develop practical and innovative solutions.",
-        "Applying design thinking principles to create user-centric IoT solutions that address real-world challenges."
+        "Evaluated and selected ESP32 microcontrollers to achieve high-precision sensor data accuracy, by programming low-level interfaces for a localized humidity-monitoring system.",
+        "Engineered a functional IoT sensor kit prototype with 100% data reliability during testing, by integrating DHT-series sensors with a custom Ubidots dashboard interface.",
+        "Validated the Prototyping and Connectivity phases of a user-centric humidity checker, by applying Design Thinking principles to map hardware requirements to specific user environmental needs."
       ],
     },
     {
@@ -269,8 +269,8 @@ export const DATA = {
       description: [
         "GPA: 3.88/4.00",
         "Study Range: 2022 - 2026 (3.5/4 Years)",
-        "Completed the full undergraduate curriculum in an accelerated 3.5-year timeline, demonstrating exceptional academic discipline and time management.",
-        "Authored the thesis: Optimizing Stroke Risk Prediction Using Artificial Neural Network with Selected Feature Based on Binary Particle Swarm Optimization.",
+        "Completed the full undergraduate curriculum in an accelerated 3.5-year timeline, demonstrating exceptional academic discipline and time management, majoring in information systems.",
+        "Authored the thesis \"Optimizing Stroke Risk Prediction Using Artificial Neural Network with Selected Feature Based on Binary Particle Swarm Optimization\""
       ],
     },
     {
@@ -281,9 +281,8 @@ export const DATA = {
       start: "Aug 2025",
       end: "Jan 2026",
       description: [
-        "Awarded \"Best Capstone Project\" (93/100) by leading the development of AEGIS, an AI-powered maintenance copilot.",
+        "Awarded \"Best Capstone Project\" (96/100) by leading the development of AEGIS, an AI-powered maintenance copilot by integrating NLP and Voice-Command features.",
         "Selected as 1 of 2,000 scholars by demonstrating high potential in the end-to-end Machine Learning lifecycle.",
-        "Developed a hands-free maintenance advisor by integrating NLP and Voice-Command features for field engineers."
       ],
     },
     {
@@ -295,7 +294,7 @@ export const DATA = {
       end: "Jan 2025",
       description: [
         "Secured a position in this elite career accelerator, selected from a competitive pool of over 45,000 registrants.",
-        "Graduated with Distinction (Top 10% of cohort) in the Cloud Computing learning path, mastering the deployment and security of scalable infrastructure on Google Cloud Platform (GCP)"
+        "Graduated with Distinction (Top 10% of cohort) in the Cloud Computing learning path, mastering the deployment and security of scalable infrastructure on Google Cloud Platform (GCP)."
       ],
     },
   ],
@@ -310,9 +309,9 @@ export const DATA = {
       start: "Oct 2025",
       end: "Jan 2026",
       description: [
-        "Successfully led a team to complete the AEGIS predictive maintenance application project on schedule.",
-        "Efficiently guided team members to align with project timelines and deliverables.",
-        "Won 'Best Capstone Project' validated by the owner use case (Accenture) for leading the development of the AEGIS predictive maintenance system.",
+        "Won \"Best Capstone Project\" (96/100) by leading a 5-person team to build the AEGIS predictive maintenance system.",
+        "Delivered ahead of schedule by using Agile methodologies to bridge technical gaps between stakeholders and developers.",
+        "Directed the full lifecycle from roadmap to deployment, orchestrating MLOps integration for real-time prediction."
       ],
     },
     {
@@ -327,7 +326,7 @@ export const DATA = {
       description: [
         "Successfully created an AI-powered HR interview mobile application integrating both voice and chat features to enhance candidate evaluation.",
         "Designed and implemented interactive modules to simulate real interview scenarios with AI-driven responses.",
-        "Successfully won the National Innovation Exhibition Gold Medal, showcasing innovation and practical impact of the solution."
+        "Won the National Innovation Exhibition Gold Medal, showcasing innovation and practical impact of the solution."
       ],
     },
     {
@@ -355,13 +354,13 @@ export const DATA = {
       start: "Nov 2024",
       end: "Dec 2024",
       description: [
-        "Successfully led a team to complete application projects on schedule.",
-        "Efficiently guided team members to align with project timelines and deliverables.",
-        "Provided continuous support to team members to ensure smooth project execution.",
+        "Orchestrated the on-time delivery of the \"EzTrip\" application by directing a cross-functional team through the full Agile lifecycle.",
+        "Architected scalable GCP backends to handle real-time application requests, ensuring 99.9% system availability during stress testing.",
+        "Established high availability by deploying machine learning models directly into production cloud environments using Docker and Cloud Run."
       ],
     },
-
   ],
+
   projects: [
     {
       title: "rahfi.pro",

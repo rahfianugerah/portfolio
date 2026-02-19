@@ -19,17 +19,17 @@ type Platform = {
 };
 
 const HIRE_PLATFORMS: Platform[] = [
+    {
+    name: "LinkedIn",
+    url: "https://linkedin.com/in/rahfianugerah",
+    icon: SiLinkedin,
+    color: "hover:bg-blue-600/20 hover:text-blue-600",
+  },
   {
     name: "Upwork",
     url: "https://www.upwork.com/freelancers/~01fb77087e88137072?mp_source=share", // Replace with your Upwork profile
     icon: SiUpwork,
     color: "hover:bg-green-500/20 hover:text-green-500",
-  },
-  {
-    name: "Fiverr",
-    url: "#", // Replace with your Fiverr profile
-    icon: SiFiverr,
-    color: "hover:bg-emerald-500/20 hover:text-emerald-500",
   },
   {
     name: "Freelancer",
@@ -43,23 +43,12 @@ const HIRE_PLATFORMS: Platform[] = [
     icon: SiIndeed,
     color: "hover:bg-sky-500/20 hover:text-sky-500",
   },
-  {
-    name: "LinkedIn",
-    url: "https://linkedin.com/in/rahfianugerah",
-    icon: SiLinkedin,
-    color: "hover:bg-blue-600/20 hover:text-blue-600",
-  },
+
   {
     name: "Dealls (Cannot share public URL, I will search the company name, just ask me if you want to hire me through this platform)",
     url: "dealls.com", // Replace with your Dealls profile
     imagePath: "/dealls-platform.jpg",
     color: "hover:bg-purple-500/20 hover:text-purple-500",
-  },
-  {
-    name: "Magentaku.id",
-    url: "https://magentaku.id/u/rahfianugerah", // Replace with your Magentaku profile
-    imagePath: "/magentaku-platform.png",
-    color: "hover:bg-pink-500/20 hover:text-pink-500",
   },
   {
     name: "JobStreet (Buggy platform, I will search the company name, just ask me if you want to hire me through this platform)",
@@ -68,8 +57,8 @@ const HIRE_PLATFORMS: Platform[] = [
     color: "hover:bg-orange-500/20 hover:text-orange-500",
   },
   {
-    name: "Glints",
-    url: "#", // Replace with your Glints profile
+    name: "Glints (Cannot share public URL, I will search the company name, just ask me if you want to hire me through this platform)",
+    url: "https://www.glints.com", // Replace with your Glints profile
     imagePath: "/glints-platform.jpg",
     color: "hover:bg-red-500/20 hover:text-red-500",
   },

@@ -176,3 +176,8 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
 .animate-shiny-text {
   animation: shiny-text 2s linear infinite;
 }
+
+/* Hide the default floating reCAPTCHA v3 badge (inline branding is shown instead) */
+.grecaptcha-badge {
+  visibility: hidden !important;
+}
