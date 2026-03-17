@@ -973,9 +973,45 @@ export const DATA = {
         },
       ],
     },
+    {
+      title: "Certified Software Engineer",
+      issued: "Badan Nasional Sertifikasi Profesi (BNSP)",
+      category: ["Software Engineering"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://drive.google.com/file/d/1Ej2rl8WN43f98t4Zi5Iv9dFteVU4iDww/view?usp=sharing",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
   ],
   learning_certificate: [
     // Dicoding Indonesia Provider
+    {
+      title: "Membangun Aplikasi Gen AI dengan Microsoft Azure",
+      issued: "Dicoding Indonesia",
+      category: ["Python", "Data Science", "Microsoft Fabric"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/72ZDJOD0LZYW",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
+    {
+      title: "Belajar Penerapan Data Science dengan Microsoft Fabric",
+      issued: "Dicoding Indonesia",
+      category: ["Python", "Data Science", "Microsoft Fabric"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/L4PQ94NL2PO1",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
     {
       title: "Membangun Proyek Deep Learning Tingkat Mahir",
       issued: "Dicoding Indonesia",
