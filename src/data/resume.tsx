@@ -2,7 +2,6 @@ import { Icons } from "@/components/icons";
 import { FaBusinessTime } from "react-icons/fa";
 import { TbCertificate } from "react-icons/tb";
 import { HomeIcon, NotebookIcon, TerminalIcon, MailIcon } from "lucide-react";
-import { time } from "console";
 
 export const DATA = {
   name: "Naufal Rahfi Anugerah",
@@ -117,15 +116,15 @@ export const DATA = {
       start: "Aug 2025",
       end: "Jan 2026",
       description: [
-        "Advanced project development standards by transitioning from manual Python scripting to an automated MLOps workflow for experiment tracking.",
-        "Secured a top-tier scholarship (1 of 2,000) by demonstrating strong commitment to AI innovation during screening.",
-        "Designed a predictive maintenance system capable of reducing inspection times by 20% through voice-activated reporting"
+        "Automated experiment tracking by transitioning Python scripts to an MLOps workflow.",
+        "Secured a top-tier AI scholarship (1 of 2,000) by demonstrating strong AI understanding capability.",
+        "Reduced inspection times by 20% by designing an AI voice-activated predictive system."
       ],
     },
     {
       company: "Dicoding Indonesia",
       href: "#",
-      badges: ["Remote", "Freelance", "Code Review", "Mentor", "Machine Learning", "Google Cloud"],
+      badges: ["Remote", "Freelance", "Code Review", "Mentor", "Machine Learning", "Deep Learning", "Google Cloud"],
       location: "Jakarta, Indonesia",
       title: "External Academy Code Reviewer",
       logoUrl: "/dicoding-exp.jpeg",
@@ -140,7 +139,7 @@ export const DATA = {
     {
       company: "Dicoding Indonesia",
       href: "#",
-      badges: ["Student", "Machine Learning"],
+      badges: ["Student", "Machine Learning", "Deep Learning"],
       location: "Jakarta, Indonesia",
       title: "Machine Learning Student",
       logoUrl: "/dicoding-exp.jpeg",
@@ -177,9 +176,9 @@ export const DATA = {
       start: "Aug 2024",
       end: "Jan 2025",
       description: [
-        "Attained 'Distinction' (Top 10% of cohort) by mastering the lifecycle of scalable cloud infrastructure on Google Cloud Platform (GCP).",
-        "Engineered functional mobile ecosystems by integrating front-end interfaces with robust RESTful APIs, ensuring seamless data flow.",
-        "Operationalized ML models for production by designing high-availability GCP cloud architectures capable of auto-scaling."
+        "Achieved top 10% cohort distinction by mastering scalable GCP cloud infrastructure.",
+        "Enhanced system reliability by engineering RESTful APIs for mobile ecosystems.",
+        "Deployed scalable ML systems on high-availability by auto-scaling GCP architectures."
       ],
     },
     {
@@ -192,9 +191,9 @@ export const DATA = {
       start: "Jan 2024",
       end: "Feb 2025",
       description: [
-        "Accelerated skill acquisition for 5+ laboratory assistant by orchestrating end-to-end curriculum design for the Back-End learning path.",
-        "Resolved complex technical challenges by directing regular one-on-one and group mentoring sessions, resulting in a 20% increase in project completion rates.",
-        "Promoted practical engineering principles by streamlining project coordination, reducing setup time for laboratory members by 20%."
+        "Increased project completion by 20% through structured mentoring and blocker resolution.",
+        "Accelerated assistant ramp-up by designing an end-to-end backend curriculum.",
+        "Reduced lab setup time by 20% by streamlining team coordination workflows."
       ],
     },
     {
@@ -207,9 +206,9 @@ export const DATA = {
       start: "Jan 2024",
       end: "Feb 2025",
       description: [
-        "Guaranteed 100% operational uptime during classes by proactively resolving 20+ critical software and hardware issues weekly.",
-        "Enforced high performance standards by mentoring 5+ new laboratory assistants on protocols, reducing onboarding time by 50%.",
-        "Optimized lab efficiency by implementing collaborative best practices, resulting in a zero-downtime record for the semester."
+        "Ensured 100% lab uptime by resolving 20+ weekly hardware and software issues.",
+        "Reduced onboarding time by 50% by mentoring 5+ new assistants on lab standards.",
+        "Eliminated semester downtime by implementing preventive and collaborative workflows."
       ],
     },
     {
@@ -222,9 +221,9 @@ export const DATA = {
       start: "Apr 2023",
       end: "Jan 2024",
       description: [
-        "Administered hardware readiness by executing regular software updates, backups, and preventive maintenance for 30+ workstations.",
-        "Coordinated seamless academic delivery by configuring technical environments for lecturers pre-session, resulting in zero delays for practical exams.",
-        "Minimized downtime during practical classes by resolving hardware and software malfunctions in real-time."
+        "Maintained 30+ workstations at peak readiness by performing routine system maintenance.",
+        "Ensured zero practical exam delays by configuring seamless technical environments.",
+        "Minimized lab downtime by resolving hardware and software issues in real-time."
       ],
     },
     {
@@ -267,7 +266,7 @@ export const DATA = {
       start: "2022",
       end: "2026",
       description: [
-        "GPA: 3.88/4.00",
+        "GPA: 3.87/4.00",
         "Study Range: 2022 - 2026 (3.5/4 Years)",
         "Completed the full undergraduate curriculum in an accelerated 3.5-year timeline, demonstrating exceptional academic discipline and time management, majoring in information systems.",
         "Authored the thesis \"Optimizing Stroke Risk Prediction Using Artificial Neural Network with Selected Feature Based on Binary Particle Swarm Optimization\""
@@ -354,9 +353,9 @@ export const DATA = {
       start: "Nov 2024",
       end: "Dec 2024",
       description: [
-        "Orchestrated the on-time delivery of the \"EzTrip\" application by directing a cross-functional team through the full Agile lifecycle.",
-        "Architected scalable GCP backends to handle real-time application requests, ensuring 99.9% system availability during stress testing.",
-        "Established high availability by deploying machine learning models directly into production cloud environments using Docker and Cloud Run."
+        "Delivered the \"EzTrip\" app on schedule by directing cross-functional teams.",
+        "Maintained 99.9% availability by architecting scalable GCP backend infrastructure.",
+        "Productionized ML models by deploying Docker and GCP Cloud Run pipelines."
       ],
     },
   ],
