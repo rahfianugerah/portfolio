@@ -4,11 +4,10 @@ import { WidgetFallback } from "@/components/widget-error-boundary";
 import { 
   SiInstagram, 
   SiDiscord, 
-  SiSpotify,
   SiThreads,
-  SiLinkedin,
   SiGithub
 } from "react-icons/si";
+import { FaLinkedin } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 
 type SocialLink = {
@@ -40,7 +39,7 @@ const SOCIAL_LINKS: SocialLink[] = [
   {
     name: "LinkedIn",
     url: "https://linkedin.com/in/naufalrahfi", // Replace with your username
-    icon: SiLinkedin,
+    icon: FaLinkedin,
     color: "hover:bg-blue-500/20 hover:text-blue-500",
   },
   {

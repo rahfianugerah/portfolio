@@ -397,30 +397,6 @@ export const DATA = {
 
     },
     {
-      title: "Saverz",
-      href: "https://github.com/rahfianugerah/saverz",
-      status: "Maintained",
-      description:
-        "Saverz is a lightweight mini dashboard bookmark that runs entirely in the browser. All data is persisted locally using IndexedDB through Dexie.js. There is no server, no cloud dependency, and no account required. Open-source Minimalist web-based utilities app for saving links, prompt builder, notes and more. Find it here!",
-      technologies: [
-        "Astro",
-        "Typescript",
-        "TailwindCSS",
-        "Shadcn UI",
-        "Dexie.js",
-        "React",
-      ],
-      links: [
-        {
-          type: "Source Code",
-          href: "https://github.com/rahfianugerah/saverz",
-          icon: <Icons.github className="size-3" />,
-        },
-      ],
-      image: "/saverz-project.png",
-      video: "",
-    },
-    {
       title: "AEGIS: AI Engine for Grounded Inspection System - Accenture Use Case",
       href: "https://github.com/A25-CS046",
       status: "Maintained",
@@ -1011,6 +987,18 @@ export const DATA = {
   ],
   learning_certificate: [
     // Dicoding Indonesia Provider
+    {
+      title: "Memulai Pemrograman Dengan Java",
+      issued: "Dicoding Indonesia",
+      category: ["Java", "Programming Fundamentals", "Object-Oriented Programming"],
+      links: [
+        {
+          title: "Certificate",
+          href: "https://www.dicoding.com/certificates/2VX305R2JXYQ",
+          icon: <TbCertificate className="size-3" />,
+        },
+      ],
+    },
     {
       title: "Membangun Aplikasi Gen AI dengan Microsoft Azure",
       issued: "Dicoding Indonesia",

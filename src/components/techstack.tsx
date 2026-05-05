@@ -6,11 +6,11 @@ import {
   SiTensorflow, SiScikitlearn, SiPandas, SiNumpy,
   SiFlask, SiFastapi, SiNextdotjs, SiReact, SiNodedotjs,
   SiTailwindcss, SiBootstrap, SiMysql, SiSqlite, SiPostgresql,
-  SiDocker, SiAmazonwebservices, SiGooglecloud, SiGnubash
-,
+  SiDocker, SiGooglecloud, SiGnubash,
   SiGit, SiGithub, SiPostman,
 } from "react-icons/si";
 import { VscAzure } from "react-icons/vsc";
+import { FaAws } from "react-icons/fa";
 import { RxQuestionMarkCircled } from "react-icons/rx";
 
 type IconT = ComponentType<{ className?: string }>;
@@ -52,8 +52,8 @@ const ICONS: Record<string, IconT> = {
 
   // tools/platforms
   "docker": SiDocker,
-  "aws": SiAmazonwebservices,
-  "amazon web services": SiAmazonwebservices,
+  "aws": FaAws,
+  "amazon web services": FaAws,
   "google cloud": SiGooglecloud,
   "gcp": SiGooglecloud,
   "azure": VscAzure,

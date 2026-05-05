@@ -4,11 +4,10 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import {
   SiUpwork,
-  SiFiverr,
   SiFreelancer,
   SiIndeed,
-  SiLinkedin,
 } from "react-icons/si";
+import { FaLinkedin } from "react-icons/fa";
 
 type Platform = {
   name: string;
@@ -22,7 +21,7 @@ const HIRE_PLATFORMS: Platform[] = [
     {
     name: "LinkedIn",
     url: "https://linkedin.com/in/rahfianugerah",
-    icon: SiLinkedin,
+    icon: FaLinkedin,
     color: "hover:bg-blue-600/20 hover:text-blue-600",
   },
   {
