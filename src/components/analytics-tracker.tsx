@@ -15,7 +15,7 @@ export function AnalyticsTracker({ type }: TrackerProps) {
         console.error("Failed to track visit:", err);
       });
     }
-  }, []); // Empty dependency - only run on mount
+  }, [type]);
 
   return null; // This component doesn't render anything
 }

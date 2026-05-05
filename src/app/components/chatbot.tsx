@@ -151,10 +151,13 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
       <div className="border-t bg-background/50 p-3">
         <div className="flex items-center gap-2">
           <input
+            id="chat-input"
+            name="chat-input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             disabled={busy}
+            autoComplete="off"
             className="flex-1 rounded-md border bg-background px-2 py-2 text-sm focus:outline-none"
             placeholder="Type a message..."
           />
