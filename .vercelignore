@@ -1,0 +1,7 @@
+# Images are served from GitHub raw CDN
+public/*.png
+public/*.jpg
+public/*.jpeg
+public/*.webp
+public/*.gif
+public/*.svg
