@@ -9,19 +9,19 @@ const quotes = [
     author: "Jensen Huang",
     role: "CEO, NVIDIA",
     text: "Software is eating the world, but AI is going to eat software.",
-    image: "/jensen-huang.jpg" // Ensure these paths start with / if in public folder
+    image: "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/jensen-huang.jpg"
   },
   {
     author: "Steve Jobs",
     role: "Co-founder, Apple",
     text: "Being the richest man in the cemetery doesn't matter to me. Going to bed at night saying we've done something wonderful... that's what matters to me",
-    image: "/steve-jobs.jpg"
+    image: "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/steve-jobs.jpg"
   },
   {
     author: "Linus Torvalds",
     role: "Creator, Linux",
     text: "Talk is cheap. Show me the code.",
-    image: "/torvalds.jpg"
+    image: "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/torvalds.jpg"
   }
 ];
 

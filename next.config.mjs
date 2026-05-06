@@ -8,6 +8,11 @@ const nextConfig = {
         hostname: "cdn.sanity.io",
         pathname: "/images/**",
       },
+      {
+        protocol: "https",
+        hostname: "raw.githubusercontent.com",
+        pathname: "/rahfianugerah/portfolio/main/public/**",
+      },
     ],
   },
 };

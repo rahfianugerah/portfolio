@@ -11,10 +11,10 @@ type ImageCarouselProps = {
 export default function ImageCarousel({ images, intervalMs = 3000 }: ImageCarouselProps) {
   const placeholders = useMemo(
     () => [
-      "/me-google-1.jpeg",
-      "/gemastik-3.jpeg",
-      "/me-google-3.jpeg",
-      "/me-hackathon.jpg",
+      "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/me-google-1.jpeg",
+      "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/gemastik-3.jpeg",
+      "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/me-google-3.jpeg",
+      "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/me-hackathon.jpg",
     ],
     []
   );
