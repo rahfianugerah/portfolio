@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useId } from "react";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -19,6 +19,7 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputId = useId();
 
   // 1. Load Chat History from Session Storage on Mount
   useEffect(() => {
@@ -151,7 +152,7 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
       <div className="border-t bg-background/50 p-3">
         <div className="flex items-center gap-2">
           <input
-            id="chat-input"
+            id={inputId}
             name="chat-input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
