@@ -1,3 +1,13 @@
+<h1>
+   Rahfi's Portfolio Website (<a href="https://rahfi.pro">rahfi.pro</a>)
+</h1>
+
+<img width="1584" height="396" alt="portfolio-banner" src="https://github.com/user-attachments/assets/c42336bf-9b3e-4b9d-89f2-49a35079ea14" />
+
+<br/>
+
+<div align=center>
+
 ![Maintenance](https://img.shields.io/badge/Maintenance-Yes-green)
 ![Build](https://img.shields.io/badge/Build-Passing-green)
 [![Website](https://img.shields.io/badge/Portfolio_Website-Click_here-brightgreen)](https://rahfi.pro)
@@ -23,14 +33,13 @@
 ![Remark](https://img.shields.io/badge/Remark_GFM-4.0.1-gray)
 ![Shiki](https://img.shields.io/badge/Shiki-1.29.2-pink)
 
-<h1>Rahfi's Portfolio Website (<a href="https://rahfi.pro">rahfi.pro</a>)</h1>
-<img width="1584" height="396" alt="portfolio-banner" src="https://github.com/user-attachments/assets/c42336bf-9b3e-4b9d-89f2-49a35079ea14" />
+</div>
 
 ### Project Overview
 
 <p align="justify">
    This project is a modern, high-performance personal portfolio website designed to showcase professional experience, research projects, and creative works through an elegant, responsive interface.
-   Built with Next.js 14, Tailwind CSS, Shadcn UI, and powered by Sanity CMS and Supabase, the project emphasizes performance, accessibility, and modular scalability — serving as both a digital resume and an interactive project hub.
+   Built with Next.js 14, Tailwind CSS, Shadcn UI, and powered by Sanity CMS and Supabase, the project emphasizes performance, accessibility, and modular scalability. Serving as both a digital resume and an interactive project hub.
 </p>
 
 ### Features
@@ -53,39 +62,45 @@
 ### Tech Stack
 
 #### Framework & Runtime
-- **[Next.js 14](https://nextjs.org)** (App Router) — server components, API routes, ISR
-- **React 18** — concurrent rendering, server/client component split
-- **TypeScript 5** — end-to-end type safety
+- **[Next.js 14](https://nextjs.org)** (App Router): Server components, API routes, ISR
+- **React 18**: Concurrent rendering, server/client component split
+- **TypeScript 5**: End-to-end type safety
 
 #### UI & Styling
-- **Tailwind CSS 3** — utility-first CSS
-- **Shadcn UI** — accessible component primitives built on Radix UI
-- **Framer Motion / Motion** — page and element animations
-- **MagicUI** — custom animated components (BlurFade, AnimatedShinyText, Dock, IconCloud)
-- **Lucide React** — icon set
+- **Tailwind CSS 3**: Utility-first CSS
+- **Shadcn UI**: Accessible Component primitives built on Radix UI
+- **Framer Motion / Motion**: Page and element animations
+- **MagicUI**: Custom animated components (BlurFade, AnimatedShinyText, Dock, IconCloud)
+- **Lucide React & React Icons**: Icon set
 
 #### Content Management
-- **Sanity CMS v3** — headless CMS for blog posts with Portable Text rendering
-- **MDX** — Markdown + JSX for rich content
-- **Shiki / rehype-pretty-code** — server-side syntax highlighting
+- **Sanity CMS v3**: Headless CMS for blog posts with Portable Text rendering
+- **MDX**: Markdown + JSX for rich content
+- **Shiki / rehype-pretty-code**: Server-side syntax highlighting
 
 #### Backend & Database
-- **Supabase (PostgreSQL)** — visitor analytics, session tracking
-- **Nodemailer** — contact form email delivery
+- **Supabase (PostgreSQL)**: Visitor analytics, session tracking
+- **Nodemailer**: Contact form email delivery
 
 #### AI & External APIs
-- **Google Gemini AI** — conversational AI chatbot
-- **GitHub REST API** — live repository and profile stats
-- **Google reCAPTCHA v3** — form spam protection
+- **Google Gemini AI**: Conversational AI chatbot
+- **GitHub REST API**: Live repository and profile stats
+- **Google reCAPTCHA v3**: Form spam protection
 
 #### Forms & Validation
-- **React Hook Form** + **Zod** — schema-validated forms with client/server validation
+- **React Hook Form** + **Zod**: Schema-validated forms with client/server validation
 
 ### Getting Started
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 First, install dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -103,36 +118,19 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-Copy the environment variables template and fill in your values:
-
-```bash
-cp .env.example .env.local
-```
-
 Required environment variables:
+- `NEXT_PUBLIC_SUPABASE_URL`:  Supabase project URL 
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Supabase anon public key 
+- `NEXT_PUBLIC_SANITY_PROJECT_ID`:  Sanity project ID 
+- `NEXT_PUBLIC_SANITY_DATASET`:  Sanity dataset (e.g. `production`) 
+- `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`:  Google reCAPTCHA v3 site key 
+- `RECAPTCHA_SECRET_KEY`:  Google reCAPTCHA v3 secret key 
+- `GEMINI_API_KEY`:  Google Gemini AI API key 
+- `GITHUB_TOKEN`:  GitHub personal access token (for stats API) 
+- `EMAIL_USER`:  SMTP email address for contact form 
+- `EMAIL_PASS`:  SMTP password / app password 
 
-| Variable | Description |
-|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon public key |
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID |
-| `NEXT_PUBLIC_SANITY_DATASET` | Sanity dataset (e.g. `production`) |
-| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Google reCAPTCHA v3 site key |
-| `RECAPTCHA_SECRET_KEY` | Google reCAPTCHA v3 secret key |
-| `GEMINI_API_KEY` | Google Gemini AI API key |
-| `GITHUB_TOKEN` | GitHub personal access token (for stats API) |
-| `EMAIL_USER` | SMTP email address for contact form |
-| `EMAIL_PASS` | SMTP password / app password |
-
-Then, run the development server:
-
-```bash
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to see the result.
-
----
+</div>
 
 ### Project Structure
 
@@ -171,6 +169,6 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-### Author
+### Project Author
 
 GitHub: [@rahfianugerah](https://www.github.com/rahfianugerah)
