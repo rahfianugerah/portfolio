@@ -1,6 +1,7 @@
-﻿"use client";
+"use client";
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import Navbar from "@/components/navbar";
 import FarLeftRail from "@/app/components/far-left-rail";
 import LeftRail from "@/app/components/left-rail";
@@ -62,7 +63,22 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
                 <ExperienceGraph />
               </BlurFade>
 
-              {/* 6. Specialties */}
+              {/* 6. Services Card */}
+              <BlurFade delay={0.28}>
+                <Link href="/service">
+                  <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm hover:bg-muted/50 transition-colors cursor-pointer">
+                    <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-1">
+                      Explore
+                    </div>
+                    <div className="text-sm font-semibold">Services</div>
+                    <p className="text-[11px] text-muted-foreground mt-1">
+                      Web dev, ML, APIs, Cloud &amp; more →
+                    </p>
+                  </div>
+                </Link>
+              </BlurFade>
+
+              {/* 7. Specialties */}
               <BlurFade delay={0.3}>
                 <div className="rounded-lg border border-border bg-card p-4">
                   <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-2">
