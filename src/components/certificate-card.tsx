@@ -53,7 +53,7 @@ export function CertificateCard({
     <Wrapper {...(wrapperProps as any)}>
       <Card
         className={cn(
-          "flex flex-col overflow-hidden ease-out h-full rounded-sm bg-white/5 px-2 py-2 text-sm text-foreground/90 backdrop-blur transition",
+          "flex flex-col overflow-hidden ease-out h-full border border-border rounded-sm bg-white/5 px-2 py-2 text-sm text-foreground/90 backdrop-blur transition",
           "hover:border-white",
           className
         )}

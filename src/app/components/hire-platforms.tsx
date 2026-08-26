@@ -67,7 +67,7 @@ export default function HirePlatforms() {
   return (
     <div className="rounded-lg border border-border bg-card p-6 text-card-foreground h-full flex flex-col">
       <div className="mb-6">
-        <h2 className="text-2xl font-display tracking-[-0.04em] text-foreground mb-2">
+        <h2 className="text-lg heading-display text-foreground mb-2">
           Where To Hire Me
         </h2>
         <p className="text-sm text-muted-foreground">

@@ -23,12 +23,9 @@ const config = {
         sans: ["var(--font-montserrat)", "ui-sans-serif", "system-ui", "Segoe UI", "Roboto", "Helvetica", "Arial"],
         // Code blocks only.
         mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
-        // Sparing brand accent: the hero name and the footer wordmark, nothing else.
-        // Same role Flowmery holds on the consulting site, which is what ties the two together.
-        accent: ["var(--font-flowmery)", "ui-sans-serif", "system-ui", "sans-serif"],
-        // Page and section headings: Copperplate CC, the engraved face the portfolio
-        // carries and the consulting site does not. Montserrat stays behind it as the
-        // swap fallback, so a heading is never unstyled while the face loads.
+        // Page and section headings, and the hero name: Copperplate CC, the engraved face
+        // the portfolio carries and the consulting site does not. Montserrat stays behind
+        // it as the swap fallback, so a heading is never unstyled while the face loads.
         display: ["var(--font-display)", "var(--font-montserrat)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       colors: {

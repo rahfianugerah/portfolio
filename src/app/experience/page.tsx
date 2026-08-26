@@ -112,7 +112,7 @@ export default function ExperiencePage() {
       <section id="hero" className="pt-12">
         <div className="flex flex-col items-center justify-center text-center">
           <BlurFade delay={nextDelay()}>
-            <h2 className="text-3xl font-display tracking-[-0.04em]">
+            <h2 className="text-xl heading-display">
               Full-List <span className="text-white">|</span> Experiences
               <span className="text-white">.</span>
             </h2>
@@ -172,7 +172,7 @@ export default function ExperiencePage() {
         <section id="leadership" className="py-6">
            <div className="flex flex-col items-center justify-center text-center">
           <BlurFade delay={nextDelay()}>
-            <h2 className="text-3xl font-display tracking-[-0.04em]">
+            <h2 className="text-xl heading-display">
               Leadership <span className="text-white">|</span> Experiences
               <span className="text-white">.</span>
             </h2>
@@ -220,7 +220,7 @@ export default function ExperiencePage() {
       <section id="education" className="py-6">
          <div className="flex flex-col items-center justify-center text-center">
           <BlurFade delay={nextDelay()}>
-            <h2 className="text-3xl font-display tracking-[-0.04em]">
+            <h2 className="text-xl heading-display">
               Full-List <span className="text-white">|</span> Educations
               <span className="text-white">.</span>
             </h2>

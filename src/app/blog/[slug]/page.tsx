@@ -121,7 +121,7 @@ export default async function Blog({
         </article>
       </section>
       
-      <footer className="mt-12 text-center text-sm font-accent text-muted-foreground pb-24">
+      <footer className="mt-12 text-center text-sm font-sans text-muted-foreground pb-24">
         <p>© 2025 Naufal Rahfi Anugerah | All rights reserved.</p>
       </footer>
     </BlogPostWrapper>

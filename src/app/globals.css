@@ -55,6 +55,19 @@
     }
   }
 
+  @layer components {
+    /* Copperplate Gothic is set with a full-size capital opening the word and smaller
+       capitals after it. This face ships no small-cap glyphs — its lowercase slots hold
+       full-height capitals, which is why "About" was rendering as a flat "ABOUT" — so the
+       browser is asked to synthesise them, and it scales those same forms down.
+       Wide tracking is part of the idiom rather than a flourish: the letterforms were
+       drawn to be spaced, and set tight they read as a smudge. */
+    .heading-display {
+      @apply font-display tracking-[0.08em];
+      font-variant-caps: small-caps;
+    }
+  }
+
   h3 code {
     @apply !text-lg md:!text-xl;
   }

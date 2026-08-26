@@ -28,7 +28,7 @@ export default function ServicePage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-12 flex flex-col gap-8">
       <BlurFade delay={0.05}>
-        <h1 className="text-3xl font-display tracking-[-0.04em]">
+        <h1 className="text-xl heading-display">
           Rahfi<span className="text-white">&apos;</span>s <span className="text-white">|</span> Services<span className="text-white">.</span>
         </h1>
         <p className="text-muted-foreground text-sm mt-1">

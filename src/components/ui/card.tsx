@@ -8,10 +8,10 @@ const Card = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
-      "border border-border bg-card text-card-foreground transition-colors hover:border-white",
-      className
-    )}
+    // No border here. A card that frames itself puts a box around every row of the
+    // experience and education lists, which are read as a sequence rather than as tiles.
+    // The callers that genuinely are tiles — project and certificate — ask for their own.
+    className={cn("bg-card text-card-foreground", className)}
     {...props}
   />
 ));
