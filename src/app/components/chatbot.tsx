@@ -108,7 +108,7 @@ export default function Chatbot() {
       <header className="flex shrink-0 items-center justify-between border-b border-border px-6 py-4">
         <div>
           <h1 className="heading-display text-base text-white">Rahfi&apos;s Assistant</h1>
-          <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-zinc-600">
+          <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-zinc-500">
             Answers from his resume only
           </p>
         </div>
@@ -119,7 +119,7 @@ export default function Chatbot() {
               setMessages([GREETING]);
               sessionStorage.removeItem("chat_history");
             }}
-            className="min-h-11 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            className="min-h-11 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
             New chat
           </button>
@@ -139,12 +139,12 @@ export default function Chatbot() {
                 </p>
               ) : (
                 <div>
-                  <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-600">
+                  <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
                     Assistant
                   </p>
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
-                    className="prose prose-invert max-w-none text-sm leading-7 text-zinc-300"
+                    className="prose prose-invert max-w-none text-sm leading-7 text-zinc-200"
                     components={{
                       a: ({ href, children }) => (
                         <a
@@ -166,7 +166,7 @@ export default function Chatbot() {
           ))}
 
           {busy && (
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-600">
+            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
               <span className="animate-pulse">Thinking</span>
             </p>
           )}
@@ -178,7 +178,7 @@ export default function Chatbot() {
                   key={s}
                   type="button"
                   onClick={() => send(s)}
-                  className="min-h-11 bg-black px-4 py-4 text-left text-xs leading-6 text-zinc-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+                  className="min-h-11 bg-black px-4 py-4 text-left text-xs leading-6 text-zinc-300 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
                 >
                   {s}
                 </button>
@@ -202,7 +202,7 @@ export default function Chatbot() {
             onKeyDown={onKeyDown}
             disabled={busy}
             placeholder="Ask about his experience…"
-            className="max-h-40 min-h-11 flex-1 resize-none border border-border bg-black px-4 py-3 text-sm text-white transition-colors placeholder:text-zinc-600 focus:border-white focus:outline-none disabled:opacity-50"
+            className="max-h-40 min-h-11 flex-1 resize-none border border-border bg-black px-4 py-3 text-sm text-white transition-colors placeholder:text-zinc-500 focus:border-white focus:outline-none disabled:opacity-50"
           />
           <button
             type="button"

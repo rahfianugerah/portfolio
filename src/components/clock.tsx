@@ -62,7 +62,7 @@ export default function Clock() {
       </div>
 
       {/* Date - Technical Font */}
-      <div className="mt-4 text-[11px] tabular-nums text-zinc-500">
+      <div className="mt-4 text-[11px] tabular-nums text-zinc-400">
         {dateStr}, {yearStr}
       </div>
     </Widget>

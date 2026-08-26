@@ -59,17 +59,17 @@ export function CertificateCard({
     >
       <h4 className="text-sm font-semibold text-white">{title}</h4>
       {issued && (
-        <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-zinc-600">
+        <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-zinc-500">
           {issued}
         </p>
       )}
 
       {description && (
-        <p className="mt-3 text-xs leading-6 text-zinc-400">{description}</p>
+        <p className="mt-3 text-xs leading-6 text-zinc-300">{description}</p>
       )}
 
       {category.length > 0 && (
-        <p className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] uppercase tracking-[0.14em] text-zinc-600">
+        <p className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] uppercase tracking-[0.14em] text-zinc-500">
           {category.map((c) => (
             <span key={c}>{c}</span>
           ))}
@@ -81,7 +81,7 @@ export function CertificateCard({
           {links.map((link, idx) => (
             <span
               key={`${link.title}-${link.href}-${idx}`}
-              className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400"
+              className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-300"
             >
               {link.icon}
               {link.title}

@@ -41,7 +41,7 @@ export default async function WritingPage() {
       />
 
       {sorted.length === 0 ? (
-        <p className="px-6 py-20 text-sm text-zinc-500 sm:px-10">
+        <p className="px-6 py-20 text-sm text-zinc-400 sm:px-10">
           Nothing published yet.
         </p>
       ) : (
@@ -55,14 +55,14 @@ export default async function WritingPage() {
                 >
                   <time
                     dateTime={post.metadata.publishedAt}
-                    className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-600"
+                    className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500"
                   >
                     {formatDate(post.metadata.publishedAt)}
                   </time>
-                  <h2 className="heading-display text-lg text-white transition-colors group-hover:text-zinc-300">
+                  <h2 className="heading-display text-lg text-white transition-colors group-hover:text-zinc-200">
                     {post.metadata.title}
                   </h2>
-                  <p className="max-w-3xl text-sm leading-6 text-zinc-500 line-clamp-2">
+                  <p className="max-w-3xl text-sm leading-6 text-zinc-400 line-clamp-2">
                     {post.metadata.summary}
                   </p>
                 </Link>

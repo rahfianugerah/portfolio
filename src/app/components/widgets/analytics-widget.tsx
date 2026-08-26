@@ -87,35 +87,45 @@ export default function AnalyticsWidget() {
       {/* Bars carry a baseline so an empty day is still a visible day rather than a
           gap, and the tallest is marked, because a chart with no reference number
           tells you a shape but not a size. */}
+      {/* Each bar sits in a column with a definite height (h-full against the h-24
+          track), because a percentage height resolves against nothing when the parent is
+          auto-sized — which is what an items-end row leaves it as, and why these were
+          rendering at zero and reading as an empty chart. */}
       <div className="mt-auto pt-6">
-        <div className="flex h-20 items-end gap-1.5">
+        <div className="flex h-24 items-end gap-1.5">
           {series.map((value, i) => {
-            const heightPct = peak > 0 ? Math.max((value / peak) * 100, 4) : 4;
+            const heightPct = peak > 0 ? Math.max((value / peak) * 100, 3) : 3;
             const isPeak = i === peakIndex && peak > 0;
             return (
-              <div key={i} className="flex flex-1 flex-col items-center gap-2">
+              <div key={i} className="flex h-full flex-1 flex-col justify-end">
                 <span
-                  className={
-                    isPeak ? "w-full bg-white" : "w-full bg-white/25"
-                  }
+                  className={isPeak ? "block w-full bg-white" : "block w-full bg-white/45"}
                   style={{ height: `${heightPct}%` }}
                   title={`${value} visits`}
                 />
-                <span className="text-[9px] uppercase tabular-nums text-zinc-600">
-                  {dayInitial(series.length - 1 - i)}
-                </span>
               </div>
             );
           })}
         </div>
 
-        <p className="mt-4 border-t border-border pt-3 text-[10px] leading-5 text-zinc-500">
-          <span className="text-zinc-300">{weekTotal}</span> visits this week,
-          averaging <span className="text-zinc-300">{average}</span> a day
+        <div className="mt-2 flex gap-1.5">
+          {series.map((_, i) => (
+            <span
+              key={i}
+              className="flex-1 text-center text-[9px] uppercase tabular-nums text-zinc-500"
+            >
+              {dayInitial(series.length - 1 - i)}
+            </span>
+          ))}
+        </div>
+
+        <p className="mt-4 border-t border-border pt-3 text-[10px] leading-5 text-zinc-400">
+          <span className="text-zinc-200">{weekTotal}</span> visits this week,
+          averaging <span className="text-zinc-200">{average}</span> a day
           {peak > 0 && (
             <>
               {" "}
-              &middot; peak <span className="text-zinc-300">{peak}</span>
+              &middot; peak <span className="text-zinc-200">{peak}</span>
             </>
           )}
         </p>

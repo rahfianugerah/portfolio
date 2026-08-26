@@ -59,7 +59,7 @@ export default function QuoteCarousel() {
           <div className="absolute inset-0 bg-[linear-gradient(to_top,#000_6%,rgba(0,0,0,0.55)_45%,rgba(0,0,0,0.15)_100%)]" />
 
           <div className="absolute inset-x-0 top-0 p-6">
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
+            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-300">
               Words I Keep
             </p>
           </div>

@@ -52,13 +52,13 @@ export default function Page() {
         <div className="pointer-events-none relative z-10 grid items-center gap-10 px-6 py-20 sm:px-10 lg:grid-cols-[1.2fr_0.8fr] lg:py-28">
           <BlurFade delay={DELAY * 2}>
             <div>
-              <p className="w-fit border border-border bg-white/5 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
+              <p className="w-fit border border-border bg-white/5 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-300">
                 Available for work
               </p>
               <h1 className="heading-display mt-6 text-4xl leading-[1.1] text-white sm:text-5xl">
                 {DATA.name}
               </h1>
-              <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+              <p className="mt-4 text-base text-zinc-300 sm:text-lg">
                 {DATA.description}
               </p>
 
@@ -68,7 +68,7 @@ export default function Page() {
                     key={name}
                     href={social.url}
                     target="_blank"
-                    className="inline-flex min-h-11 items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                    className="inline-flex min-h-11 items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-300 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
                   >
                     <social.icon className="size-4" />
                     {name === "CV" ? "Résumé" : name}
@@ -85,7 +85,7 @@ export default function Page() {
                 </Link>
                 <Link
                   href="/chat"
-                  className="inline-flex min-h-11 items-center justify-center border border-zinc-700 px-5 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:border-white hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                  className="inline-flex min-h-11 items-center justify-center border border-zinc-600 px-5 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:border-white hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
                 >
                   Ask my assistant
                 </Link>
@@ -110,7 +110,7 @@ export default function Page() {
 
       {/* ---------------- About ---------------- */}
       <Section id="about" eyebrow="About" title="Who I Am">
-        <Markdown className="prose prose-invert max-w-3xl text-pretty text-sm leading-7 text-zinc-400">
+        <Markdown className="prose prose-invert max-w-3xl text-pretty text-sm leading-7 text-zinc-300">
           {DATA.summary}
         </Markdown>
       </Section>
@@ -137,7 +137,7 @@ export default function Page() {
 
         {organisations.length > 0 && (
           <>
-            <h3 className="mt-16 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+            <h3 className="mt-16 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
               Leadership
             </h3>
             <div className="mt-6">
@@ -155,7 +155,7 @@ export default function Page() {
           </>
         )}
 
-        <h3 className="mt-16 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+        <h3 className="mt-16 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
           Education
         </h3>
         <div className="mt-6">
@@ -228,7 +228,7 @@ export default function Page() {
       {/* ---------------- Stats ---------------- */}
       <section id="stats" className="scroll-mt-16 border-b border-border">
         <div className="border-b border-border px-6 py-16 sm:px-10">
-          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
             Signals
           </p>
           <h2 className="heading-display mt-4 text-2xl text-white">
@@ -254,20 +254,20 @@ export default function Page() {
         <div className="grid auto-rows-auto border-l border-t border-border sm:auto-rows-[minmax(13rem,auto)] sm:grid-cols-2 lg:grid-cols-4">
           {[
             { node: <Clock key="clock" />, span: "" },
-            { node: <AnalyticsWidget key="analytics" />, span: "lg:col-span-2" },
+            { node: <AnalyticsWidget key="analytics" />, span: "lg:col-span-2 lg:row-span-2" },
             { node: <ProjectsCounter key="projects" />, span: "" },
 
+            { node: <GithubActivity key="github" />, span: "lg:row-span-2" },
             { node: <TechStack key="stack" />, span: "lg:row-span-2" },
-            { node: <IconCloudSpecialties key="specialties" />, span: "lg:col-span-2 lg:row-span-2" },
-            { node: <QuoteCarousel key="quotes" />, span: "lg:row-span-2", bleed: true },
 
-            { node: <GithubActivity key="github" />, span: "lg:col-span-2" },
-            { node: <LatestBlogsWidget key="blogs" />, span: "" },
-            { node: <SocialLinks key="social" />, span: "" },
+            { node: <ImageCarousel key="moments" />, span: "lg:col-span-2 lg:row-span-2", bleed: true },
+            { node: <QuoteCarousel key="quotes" />, span: "lg:row-span-2", bleed: true },
+            { node: <IconCloudSpecialties key="specialties" />, span: "" },
 
             { node: <ExperienceGraph key="velocity" />, span: "lg:col-span-2 lg:row-span-2" },
-            { node: <ImageCarousel key="moments" />, span: "lg:col-span-2", bleed: true },
-            { node: <Colophon key="colophon" />, span: "lg:col-span-2" },
+            { node: <LatestBlogsWidget key="blogs" />, span: "" },
+            { node: <Colophon key="colophon" />, span: "" },
+            { node: <SocialLinks key="social" />, span: "" },
           ].map(({ node, span, bleed }, i) => (
             <div
               key={i}
@@ -302,20 +302,20 @@ function Section({
     <section id={id} className="scroll-mt-16 border-b border-border px-6 py-16 sm:px-10 sm:py-20">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
             {eyebrow}
           </p>
           <h2 className="heading-display mt-4 text-2xl text-white sm:text-3xl">
             {title}
           </h2>
           {subtitle && (
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-500">{subtitle}</p>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-400">{subtitle}</p>
           )}
         </div>
         {action && (
           <Link
             href={action.href}
-            className="inline-flex min-h-11 items-center text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            className="inline-flex min-h-11 items-center text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-300 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
             {action.label}
             <VscChevronRight className="ml-1.5 h-3 w-3" />

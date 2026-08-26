@@ -74,7 +74,7 @@ export default function ImageCarousel({ intervalMs = 5000 }: { intervalMs?: numb
       ))}
 
       <div className="absolute inset-x-0 top-0 p-6">
-        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
+        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-300">
           Moments
         </p>
       </div>
@@ -83,7 +83,7 @@ export default function ImageCarousel({ intervalMs = 5000 }: { intervalMs?: numb
         <p className="heading-display text-base leading-snug text-white">
           {moments[index].caption}
         </p>
-        <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-zinc-400">
+        <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-zinc-300">
           {moments[index].meta}
         </p>
 

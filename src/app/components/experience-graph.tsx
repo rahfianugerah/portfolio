@@ -1,142 +1,187 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { DATA } from "@/data/resume";
 import { Widget } from "./widgets/widget";
 
-type Span = {
+type Point = {
   company: string;
-  role: string;
-  start: Date;
-  end: Date;
-  current: boolean;
   months: number;
+  year: number;
+  current: boolean;
+  x: number;
+  y: number;
 };
 
-const isPresent = (value: unknown) =>
-  !value || ["present", "now"].includes(String(value).trim().toLowerCase());
+const isPresent = (v: unknown) =>
+  !v || ["present", "now"].includes(String(v).trim().toLowerCase());
 
-const monthsBetween = (a: Date, b: Date) =>
-  Math.max(1, Math.round((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24 * 30.44)));
-
-const formatDuration = (months: number) => {
-  const years = Math.floor(months / 12);
-  const rest = months % 12;
-  if (!years) return `${rest}m`;
-  return rest ? `${years}y ${rest}m` : `${years}y`;
+const fmt = (months: number) => {
+  const y = Math.floor(months / 12);
+  const m = months % 12;
+  if (!y) return `${m}m`;
+  return m ? `${y}y ${m}m` : `${y}y`;
 };
+
+const W = 320;
+const H = 120;
+const PAD = { top: 12, right: 10, bottom: 20, left: 10 };
 
 /**
- * A career timeline, replacing the line chart that plotted role duration against role
- * index. That chart had a legend explaining that height meant tenure, which is the tell
- * that the shape was not carrying the meaning on its own.
+ * Role tenure over time, as a line.
  *
- * Each role is a bar placed where it actually sits in time, so overlaps, gaps, and the
- * run of concurrent work are all visible without a key.
+ * A bar per role was accurate but unreadable at this size: a few pixels of dim fill in a
+ * dim track reads as an empty row rather than as data. A line carries the same series and
+ * shows the shape of it without needing a legend to explain what height means.
  */
 export default function ExperienceGraph() {
-  const { spans, minYear, maxYear, totalMonths } = useMemo(() => {
-    const now = new Date();
+  const [hovered, setHovered] = useState<number | null>(null);
 
-    const spans: Span[] = ((DATA as any).work ?? [])
+  const { points, path, area, years, totalMonths, companies } = useMemo(() => {
+    const now = new Date();
+    const roles = ((DATA as any).work ?? [])
       .map((job: any) => {
         const start = new Date(job.start ?? job.startDate);
         const current = isPresent(job.end ?? job.endDate);
         const end = current ? now : new Date(job.end ?? job.endDate);
         if (isNaN(start.getTime()) || isNaN(end.getTime())) return null;
-        return {
-          company: job.company ?? job.name ?? "—",
-          role: job.title ?? job.position ?? job.role ?? "Role",
-          start,
-          end,
-          current,
-          months: monthsBetween(start, end),
-        };
+        const months = Math.max(
+          1,
+          Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 30.44))
+        );
+        return { company: job.company ?? "-", months, start, end, current };
       })
       .filter(Boolean)
-      .sort((a: Span, b: Span) => a.start.getTime() - b.start.getTime());
+      .sort((a: any, b: any) => a.start.getTime() - b.start.getTime());
 
-    if (!spans.length) {
-      return { spans, minYear: 0, maxYear: 0, totalMonths: 0 };
+    if (!roles.length) {
+      return { points: [], path: "", area: "", years: [], totalMonths: 0, companies: 0 };
     }
 
-    const minYear = Math.min(...spans.map((s) => s.start.getFullYear()));
-    const maxYear = Math.max(...spans.map((s) => s.end.getFullYear()));
+    const maxMonths = Math.max(...roles.map((r: any) => r.months));
+    const innerW = W - PAD.left - PAD.right;
+    const innerH = H - PAD.top - PAD.bottom;
+    const step = roles.length > 1 ? innerW / (roles.length - 1) : 0;
 
-    // Union of the spans, not the sum: two roles held at once is one stretch of time,
-    // and summing them would claim more experience than actually elapsed.
-    const sorted = [...spans].sort((a, b) => a.start.getTime() - b.start.getTime());
+    const points: Point[] = roles.map((r: any, i: number) => ({
+      company: r.company,
+      months: r.months,
+      year: r.start.getFullYear(),
+      current: r.current,
+      x: PAD.left + i * step,
+      y: PAD.top + innerH - (r.months / maxMonths) * innerH * 0.9,
+    }));
+
+    const path = points.map((p, i) => `${i ? "L" : "M"}${p.x},${p.y}`).join(" ");
+    const base = PAD.top + innerH;
+    const last = points[points.length - 1];
+    const area = `${path} L${last.x},${base} L${points[0].x},${base} Z`;
+
+    // Union of the spans, not their sum: two roles held at once is one stretch of time,
+    // and adding them would claim more experience than has actually elapsed.
     let covered = 0;
     let cursor = 0;
-    for (const s of sorted) {
-      const from = Math.max(s.start.getTime(), cursor);
-      if (s.end.getTime() > from) {
-        covered += s.end.getTime() - from;
-        cursor = s.end.getTime();
+    for (const r of roles) {
+      const from = Math.max(r.start.getTime(), cursor);
+      if (r.end.getTime() > from) {
+        covered += r.end.getTime() - from;
+        cursor = r.end.getTime();
       }
     }
-    const totalMonths = Math.round(covered / (1000 * 60 * 60 * 24 * 30.44));
 
-    return { spans, minYear, maxYear, totalMonths };
+    return {
+      points,
+      path,
+      area,
+      years: Array.from(new Set(points.map((p) => p.year))).sort(),
+      totalMonths: Math.round(covered / (1000 * 60 * 60 * 24 * 30.44)),
+      companies: new Set(roles.map((r: any) => r.company)).size,
+    };
   }, []);
 
-  if (!spans.length) return null;
-
-  const rangeStart = new Date(minYear, 0, 1).getTime();
-  const rangeEnd = new Date(maxYear + 1, 0, 1).getTime();
-  const span = rangeEnd - rangeStart;
-  const pct = (t: number) => ((t - rangeStart) / span) * 100;
-
-  const years = Array.from({ length: maxYear - minYear + 1 }, (_, i) => minYear + i);
+  if (!points.length) return null;
+  const active = hovered !== null ? points[hovered] : null;
 
   return (
-    <Widget
-      title="Career Timeline"
-      meta={`${formatDuration(totalMonths)} total`}
-    >
-      <ul className="flex flex-col gap-2.5">
-        {spans.map((s, i) => (
-          <li key={`${s.company}-${i}`} className="group">
-            <div className="flex items-baseline justify-between gap-2">
-              <span className="truncate text-[11px] text-zinc-400 group-hover:text-white">
-                {s.company}
-              </span>
-              <span className="shrink-0 text-[9px] tabular-nums text-zinc-600">
-                {formatDuration(s.months)}
-              </span>
-            </div>
-            <div className="relative mt-1 h-1.5 w-full bg-white/5">
-              <span
-                title={`${s.role} · ${s.start.getFullYear()}–${
-                  s.current ? "now" : s.end.getFullYear()
-                }`}
-                className={
-                  s.current
-                    ? "absolute inset-y-0 bg-white"
-                    : "absolute inset-y-0 bg-white/40 group-hover:bg-white/70"
-                }
-                style={{
-                  left: `${pct(s.start.getTime())}%`,
-                  width: `${Math.max(pct(s.end.getTime()) - pct(s.start.getTime()), 1.5)}%`,
-                }}
-              />
-            </div>
-          </li>
-        ))}
-      </ul>
+    <Widget title="Experience Velocity" meta={`${fmt(totalMonths)} total`}>
+      <div className="relative min-h-[7rem] flex-1">
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          className="h-full w-full"
+          preserveAspectRatio="none"
+          role="img"
+          aria-label={`Tenure across ${points.length} roles`}
+        >
+          <defs>
+            <linearGradient id="velocity-fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+            </linearGradient>
+          </defs>
 
-      <div className="mt-auto pt-5">
-        <div className="flex justify-between border-t border-border pt-2 text-[9px] tabular-nums text-zinc-600">
+          <path d={area} fill="url(#velocity-fill)" />
+          {/* non-scaling-stroke keeps the line 1.5px wide: preserveAspectRatio="none"
+              stretches the box unevenly and would otherwise squash it to a hairline. */}
+          <path
+            d={path}
+            fill="none"
+            stroke="#ffffff"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            vectorEffect="non-scaling-stroke"
+          />
+
+          {points.map((p, i) => (
+            <g key={`${p.company}-${i}`}>
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r="3"
+                fill={hovered === i || p.current ? "#ffffff" : "#000000"}
+                stroke="#ffffff"
+                strokeWidth="1.5"
+                vectorEffect="non-scaling-stroke"
+              />
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r="10"
+                fill="transparent"
+                className="cursor-pointer"
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(null)}
+              />
+            </g>
+          ))}
+        </svg>
+
+        {active && (
+          <div
+            className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full border border-border bg-black px-2 py-1.5"
+            style={{ left: `${(active.x / W) * 100}%`, top: `${(active.y / H) * 100}%` }}
+          >
+            <p className="whitespace-nowrap text-[10px] font-semibold leading-tight text-white">
+              {active.company}
+            </p>
+            <p className="mt-0.5 whitespace-nowrap text-[9px] tabular-nums text-zinc-400">
+              {fmt(active.months)}
+              {active.current ? " / current" : ""}
+            </p>
+          </div>
+        )}
+      </div>
+
+      <div className="mt-auto pt-4">
+        <div className="flex justify-between border-t border-border pt-2 text-[9px] tabular-nums text-zinc-500">
           {years.map((y) => (
             <span key={y}>{String(y).slice(2)}</span>
           ))}
         </div>
-        <p className="mt-3 text-[10px] leading-5 text-zinc-500">
-          <span className="text-zinc-300">{spans.length}</span> roles across{" "}
-          <span className="text-zinc-300">
-            {new Set(spans.map((s) => s.company)).size}
-          </span>{" "}
-          organisations. Filled bars are current.
+        <p className="mt-3 text-[10px] leading-5 text-zinc-400">
+          <span className="text-zinc-200">{points.length}</span> roles across{" "}
+          <span className="text-zinc-200">{companies}</span> organisations. Height is
+          tenure; a filled point is current.
         </p>
       </div>
     </Widget>

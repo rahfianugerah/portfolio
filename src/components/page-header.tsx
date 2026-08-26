@@ -29,14 +29,14 @@ export function PageHeader({
 
       <div className="pointer-events-none relative z-10 px-6 py-16 sm:px-10 sm:py-20">
         <BlurFade delay={0.05}>
-          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
             {eyebrow}
           </p>
           <h1 className="heading-display mt-4 text-3xl text-white sm:text-4xl">
             {title}
           </h1>
           {subtitle && (
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-zinc-400">{subtitle}</p>
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-zinc-300">{subtitle}</p>
           )}
         </BlurFade>
       </div>

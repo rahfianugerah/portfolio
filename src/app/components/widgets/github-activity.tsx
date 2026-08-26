@@ -70,10 +70,10 @@ export default function GithubActivity() {
           href={user.html_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block text-sm font-semibold text-white transition-colors hover:text-zinc-300"
+          className="inline-block text-sm font-semibold text-white transition-colors hover:text-zinc-200"
         >
           @{user.login}
-          <span className="ml-3 text-[11px] font-normal text-zinc-500">
+          <span className="ml-3 text-[11px] font-normal text-zinc-400">
             {user.public_repos} public repos
           </span>
         </a>
@@ -103,23 +103,23 @@ export default function GithubActivity() {
                   className="group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
                 >
                   <span className="flex items-baseline justify-between gap-3">
-                    <span className="truncate text-xs font-semibold text-zinc-300 transition-colors group-hover:text-white">
+                    <span className="truncate text-xs font-semibold text-zinc-200 transition-colors group-hover:text-white">
                       {repo.name}
                     </span>
                     {repo.language && (
-                      <span className="shrink-0 text-[10px] uppercase tracking-[0.14em] text-zinc-600">
+                      <span className="shrink-0 text-[10px] uppercase tracking-[0.14em] text-zinc-500">
                         {repo.language}
                       </span>
                     )}
                   </span>
-                  <span className="mt-1 line-clamp-1 block text-[11px] text-zinc-500">
+                  <span className="mt-1 line-clamp-1 block text-[11px] text-zinc-400">
                     {repo.description || "No description provided."}
                   </span>
                 </a>
               </li>
             ))}
         {!loading && repos.length === 0 && (
-          <li className="text-xs text-zinc-600">No public repositories found.</li>
+          <li className="text-xs text-zinc-500">No public repositories found.</li>
         )}
       </ul>
     </Widget>

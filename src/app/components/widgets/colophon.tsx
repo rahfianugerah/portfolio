@@ -23,10 +23,10 @@ export default function Colophon() {
             key={label}
             className="flex items-baseline justify-between gap-3 border-b border-border pb-2 last:border-b-0 last:pb-0"
           >
-            <dt className="shrink-0 text-[9px] uppercase tracking-[0.18em] text-zinc-600">
+            <dt className="shrink-0 text-[9px] uppercase tracking-[0.18em] text-zinc-500">
               {label}
             </dt>
-            <dd className="truncate text-right text-[11px] text-zinc-400">
+            <dd className="truncate text-right text-[11px] text-zinc-300">
               {value}
             </dd>
           </div>

@@ -107,11 +107,11 @@ export default function SocialLinks({ orientation = "horizontal" }: SocialLinksP
                 rel="noopener noreferrer"
                 className="group flex items-center gap-3 border-b border-border py-3 transition-colors last:border-b-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
-                <Icon className="h-4 w-4 shrink-0 text-zinc-500 transition-colors group-hover:text-white" />
-                <span className="flex-1 text-[11px] text-zinc-400 transition-colors group-hover:text-white">
+                <Icon className="h-4 w-4 shrink-0 text-zinc-400 transition-colors group-hover:text-white" />
+                <span className="flex-1 text-[11px] text-zinc-300 transition-colors group-hover:text-white">
                   {link.name}
                 </span>
-                <VscChevronRight className="h-3 w-3 shrink-0 text-zinc-700 transition-colors group-hover:text-zinc-400" />
+                <VscChevronRight className="h-3 w-3 shrink-0 text-zinc-500 transition-colors group-hover:text-zinc-300" />
               </a>
             </li>
           );
