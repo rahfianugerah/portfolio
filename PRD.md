@@ -2,7 +2,7 @@
 
 **Owner:** Naufal Rahfi Anugerah
 **Date:** 2026-08-26
-**Status:** Draft
+**Status:** Approved — built on `dev`, not yet promoted to `staging` or `main`
 
 ## Problem
 
@@ -64,8 +64,12 @@ Checkable after the change:
 - **Nothing may stop working.** The chatbot, contact form and its spam protection, visitor analytics, GitHub activity, blog and CMS, and every rail widget must behave exactly as they do today.
 - **The multi-breakpoint rail layout must survive intact**, including its sticky offsets and scroll containers at the widest breakpoint.
 - **Code blocks keep a monospace face.** The consulting site has no code on it and therefore no monospace need; the portfolio does, so a monospace family is retained for that use only. This is a recorded, deliberate deviation.
-- **Display font licensing binds the implementation.** The shared display face is licensed free for commercial use, but its terms forbid modifying the font in any way, and forbid the site distributing it or offering it as a download. Format conversion is permitted. In practice this means the font file may not be subset or altered, and may not sit at any path a visitor can browse to.
-- **Every additional font must have its license confirmed before it ships**, with the terms recorded, in the same way the shared display face was.
+- **Display font licensing binds the implementation, and the two faces bind it differently.**
+  - The face shared with the consulting site is free for commercial use, but its terms forbid modifying the font in any way and forbid the site offering it as a download. Format conversion is permitted. In practice the file may not be subset or altered, and may not sit at any path a visitor can browse to.
+  - The engraved heading face is under the SIL Open Font License 1.1, which permits modification and redistribution but requires the copyright notice and the licence to travel with every copy. A licence file therefore ships beside the font. Because the upstream package omits the copyright line from its licence file, the notice is taken from the font's own embedded metadata rather than written by hand.
+  - Neither face is subset: one forbids it outright, and subsetting the other would make it a Modified Version that may no longer use its reserved name.
+- **A font's weights are mapped from its embedded metadata, never from its filename.** The engraved face keeps its original naming, in which the upright regular weight is the one called "Heavy". Reading the filename would map it to the wrong weight and leave the browser synthesising a face that already exists.
+- **Every additional font must have its licence confirmed before it ships**, with the terms recorded, in the same way these two were.
 - **The embedded CMS studio renders its own interface** and cannot be brought into the design language.
 - **Accessibility is not a place to economize.** Contrast, focus visibility, touch target size, and reduced-motion handling are requirements, not preferences.
 - The house design standard in the standards vault is deliberately not applied to this change, at the owner's direction. The consulting site's language is the reference instead. This is a known divergence from `uix.component.md`, recorded here so it is a decision rather than a drift.
@@ -80,4 +84,7 @@ No change. Nothing about what the site reads or writes moves:
 
 ## Open Questions
 
-- **What is the license of the engraved display face, and where does its file come from?** Owner to supply the font file and its license terms before that part of the work starts. Everything else in this document is unaffected by the answer. If the terms do not permit use on this site, a substitute in the same genre is chosen and the design role it fills does not change.
+- **When is this promoted past `dev`?** The work is built and verified on `dev`. Promotion to `staging` and then to `main` is the owner's decision, one stage at a time, through a pull request with a recorded approval at each stage. Nothing has been pushed.
+- **When is the font exposure on the consulting site fixed?** That site serves its display font from a publicly browsable path, which its licence does not permit. Recorded here because it was found during this work; it is a one-file move in a different repository and needs its own change.
+
+The question this document opened with — the licence and provenance of the engraved display face — is answered, and the terms it turned out to carry are recorded under Constraints.

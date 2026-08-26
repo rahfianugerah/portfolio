@@ -26,9 +26,9 @@ const config = {
         // Sparing brand accent: the hero name and the footer wordmark, nothing else.
         // Same role Flowmery holds on the consulting site, which is what ties the two together.
         accent: ["var(--font-flowmery)", "ui-sans-serif", "system-ui", "sans-serif"],
-        // Page and section headings. --font-display is intentionally undefined until the
-        // engraved face is licensed and dropped in; until then this resolves to Montserrat,
-        // which is exactly how the consulting site sets its own headings.
+        // Page and section headings: Copperplate CC, the engraved face the portfolio
+        // carries and the consulting site does not. Montserrat stays behind it as the
+        // swap fallback, so a heading is never unstyled while the face loads.
         display: ["var(--font-display)", "var(--font-montserrat)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       colors: {

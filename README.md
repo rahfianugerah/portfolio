@@ -69,7 +69,7 @@
 
 #### UI & Styling
 - **Design language**: Shared with [Rahfi Consulting](https://consulting.rahfi.pro) — pure black ground, hairline borders in place of filled cards, zero border radius, white as the only accent. Recorded in `PRD.md`.
-- **Typography**: Montserrat for body and UI, Flowmery for the two brand moments, Source Code Pro for code. Font files live in `src/fonts/` rather than `public/`, so they are never served at a browsable path.
+- **Typography**: Copperplate CC for headings, Montserrat for body and UI, Flowmery for the two brand moments, Source Code Pro for code. Font files live in `src/fonts/` rather than `public/`, so they are never served at a browsable path — Flowmery's licence requires it, and one rule for both fonts is less to get wrong. Copperplate CC is OFL 1.1 and ships with `src/fonts/CopperplateCC-OFL.txt` as that licence requires. Neither face is subset.
 - **Tailwind CSS 3**: Utility-first CSS
 - **Shadcn UI**: Accessible Component primitives built on Radix UI
 - **Framer Motion / Motion**: Page and element animations

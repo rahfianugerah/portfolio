@@ -40,6 +40,23 @@ export const flowmery = localFont({
   display: "swap",
 });
 
+// Copperplate CC, under the SIL Open Font License 1.1. Unlike Flowmery, the OFL permits
+// modification and redistribution, but section 2 requires the copyright notice and the
+// licence to travel with every copy — both are in fonts/CopperplateCC-OFL.txt.
+//
+// The weights are mapped from the fonts' own metadata, not their filenames. This family
+// keeps Goudy's original naming, where "Heavy" is the upright regular: the Heavy file
+// reports subfamily Regular and usWeightClass 400, and Bold reports 700. Trusting the
+// filename would map Heavy to 900 and leave the browser synthesising a bold that exists.
+export const copperplate = localFont({
+  src: [
+    { path: "../fonts/CopperplateCC-Heavy.ttf", weight: "400", style: "normal" },
+    { path: "../fonts/CopperplateCC-Bold.ttf", weight: "700", style: "normal" },
+  ],
+  variable: "--font-display",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
 
@@ -98,7 +115,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(sourceCodePro.variable, montserrat.variable, flowmery.variable)} suppressHydrationWarning>
+    <html lang="en" className={cn(sourceCodePro.variable, montserrat.variable, flowmery.variable, copperplate.variable)} suppressHydrationWarning>
       <body className={`font-sans ${montserrat.className}`}>
         <ThemeProvider attribute="class" forcedTheme="dark" disableTransitionOnChange>
           <TooltipProvider delayDuration={0}>
