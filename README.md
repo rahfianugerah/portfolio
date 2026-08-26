@@ -1,189 +1,477 @@
-| **Black-Only Theme** | A single pure-black theme shared with the consulting site. Light mode is deliberately retired; see `PRD.md`. |
-<h1>
-   Rahfi's Portfolio Website (<a href="https://rahfi.pro">rahfi.pro</a>)
-</h1>
+# Rahfi's Portfolio
 
-<img width="1584" height="396" alt="portfolio-banner" src="https://github.com/user-attachments/assets/c42336bf-9b3e-4b9d-89f2-49a35079ea14" />
-
-<br/>
-
-<div align=center>
-
-![Maintenance](https://img.shields.io/badge/Maintenance-Yes-green)
-![Build](https://img.shields.io/badge/Build-Passing-green)
-[![Website](https://img.shields.io/badge/Portfolio_Website-Click_here-brightgreen)](https://rahfi.pro)
-![Next.js](https://img.shields.io/badge/Next.js-14.2.30-black?logo=next.js&logoColor=white)
+![Next](https://img.shields.io/badge/Next-14.2.30-000000?logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-%23007ACC?logo=typescript&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES2022-%23323330?logo=javascript&logoColor=%23F7DF1E)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.17-38B2AC?logo=tailwind-css&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-11.18.2-pink?logo=framer&logoColor=white)
-![Styled Components](https://img.shields.io/badge/Styled_Components-6.1.19-DB7093?logo=styled-components&logoColor=white)
-![Shadcn UI](https://img.shields.io/badge/Shadcn_UI-Latest-000000?logo=shadcnui&logoColor=white)
-![Radix UI](https://img.shields.io/badge/Radix_UI-Latest-8B5CF6?logo=radix-ui&logoColor=white)
-![Lucide React](https://img.shields.io/badge/Lucide_React-0.395.0-gray?logo=lucide&logoColor=white)
-![Sanity](https://img.shields.io/badge/Sanity_CMS-3.99.0-F03E2F?logo=sanity&logoColor=white)
-![Portable Text](https://img.shields.io/badge/Portable_Text-5.0.0-orange)
-![Supabase](https://img.shields.io/badge/Supabase-2.86.2-3ECF8E?logo=supabase&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Latest-336791?logo=postgresql&logoColor=white)
-![Gemini](https://img.shields.io/badge/Google_Gemini_AI-0.24.1-4285F4?logo=google&logoColor=white)
-![reCAPTCHA v3](https://img.shields.io/badge/reCAPTCHA_v3-1.11.0-4285F4?logo=google&logoColor=white)
-![React Hook Form](https://img.shields.io/badge/React_Hook_Form-7.71.1-EC5990?logo=reacthookform&logoColor=white)
-![Zod](https://img.shields.io/badge/Zod-3.25.76-3E67B1?logo=zod&logoColor=white)
-![MDX](https://img.shields.io/badge/MDX-Latest-1B1F24?logo=mdx&logoColor=white)
-![Remark](https://img.shields.io/badge/Remark_GFM-4.0.1-gray)
-![Shiki](https://img.shields.io/badge/Shiki-1.29.2-pink)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-3178C6?logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.17-06B6D4?logo=tailwindcss&logoColor=white)
+![Sanity](https://img.shields.io/badge/Sanity-3.99.0-F03E2F?logo=sanity&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-2.86.2-3FCF8E?logo=supabase&logoColor=white)
+![Node](https://img.shields.io/badge/Node-20-5FA04E?logo=nodedotjs&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-Managed-000000?logo=vercel&logoColor=white)
+![Testing](https://img.shields.io/badge/Testing-None_Yet-lightgrey)
+![Status](https://img.shields.io/badge/Status-Active-2EA043)
+![License](https://img.shields.io/badge/License-Private-750014)
 
-</div>
+Live at [rahfi.pro](https://rahfi.pro). Intent is in `PRD.md`; deployment is in `DEPLOY.md`.
 
-### Project Overview
+## Table of Contents
 
-<p align="justify">
-   This project is a modern, high-performance personal portfolio website designed to showcase professional experience, research projects, and creative works through an elegant, responsive interface.
-   Built with Next.js 14, Tailwind CSS, Shadcn UI, and powered by Sanity CMS and Supabase, the project emphasizes performance, accessibility, and modular scalability. Serving as both a digital resume and an interactive project hub.
-</p>
+1. Project Overview
+2. Technology Stack
+3. Frontend Architecture
+4. Project Structure
+5. Configuration
+6. Routing, Pages, and Components
+7. State and Data Management
+8. Authentication, Styling, and Accessibility
+9. Testing, Errors, and Performance
+10. Development and Deployment
 
-### Features
+## 1. Project Overview
 
-| Feature | Description |
-|---|---|
-| **AI Chatbot** | Floating chatbot powered by Google Gemini AI that answers questions about skills, projects, and experience. Chat history is persisted per browser session. |
-| **Blog** | Full blog system with Sanity CMS as the headless CMS. Posts are rendered with Portable Text and support syntax-highlighted code blocks via Shiki. |
-| **Analytics Dashboard** | Real-time visitor tracking widget backed by Supabase (PostgreSQL). Tracks unique sessions, daily/weekly deltas, and displays a sparkline chart. |
-| **GitHub Stats** | Live GitHub stats widget (public repos, latest repositories) fetched from the GitHub API with hourly caching. |
-| **Contact Form** | Validated contact form using React Hook Form + Zod with Google reCAPTCHA v3 spam protection and Nodemailer email delivery. |
-| **Experience Graph** | Visual timeline graph of professional work experience with interactive hover states. |
-| **Project Showcase** | Project cards with tech-stack badges pulled from structured resume data. |
-| **Black-Only Theme** | A single pure-black theme, shared with the consulting site. Light mode is deliberately retired; the reasoning is in `PRD.md`. |
-| **Sanity Studio** | Embedded Sanity Studio at `/studio` for content management. |
-| **Smooth Animations** | Blur-fade entrance animations and shiny text effects from the custom MagicUI component library (Framer Motion). |
-| **Rate Limiting** | API routes are protected with server-side rate limiting. |
-| **Responsive Layout** | Multi-column rail layout (far-left, left, main, right, far-right) that collapses gracefully on mobile. |
+A personal site that carries a résumé, a project catalogue, writing, and a conversational
+assistant that answers questions about the work. It is read by recruiters, prospective clients,
+and other engineers, all of whom arrive cold and scan once.
 
-### Tech Stack
+It shares a design language with the consulting practice at `consulting.rahfi.pro`, deliberately.
+The two are the same person at two levels of formality.
 
-#### Framework & Runtime
-- **[Next.js 14](https://nextjs.org)** (App Router): Server components, API routes, ISR
-- **React 18**: Concurrent rendering, server/client component split
-- **TypeScript 5**: End-to-end type safety
+## 2. Technology Stack
 
-#### UI & Styling
-- **Design language**: Shared with [Rahfi Consulting](https://consulting.rahfi.pro) — pure black ground, hairline borders in place of filled cards, zero border radius, white as the only accent. Recorded in `PRD.md`.
-- **Typography**: Copperplate CC for headings and the hero name, set in small caps with wide tracking; Montserrat for body, UI and labels; Source Code Pro for code. Copperplate CC is OFL 1.1 and ships with `src/fonts/CopperplateCC-OFL.txt` as that licence requires. It is not subset — subsetting would make it a Modified Version that may no longer use its reserved name. Font files live in `src/fonts/` rather than `public/`, so they are never served at a browsable path.
-- **Tailwind CSS 3**: Utility-first CSS
-- **Shadcn UI**: Accessible Component primitives built on Radix UI
-- **Framer Motion / Motion**: Page and element animations
-- **MagicUI**: Custom animated components (BlurFade, AnimatedShinyText, Dock, IconCloud)
-- **Lucide React & React Icons**: Icon set
+| Category | Technology | Version |
+| :- | :- | :- |
+| Runtime | Node | 20 |
+| Framework | Next | 14.2.30 |
+| Language | TypeScript | 5.8.3 |
+| Build tool | Next, webpack | 14.2.30 |
+| Router | Next App Router | 14.2.30 |
+| Data fetching | Server Components, server actions, `fetch` | 14.2.30 |
+| Styling | Tailwind CSS, shadcn token layer | 3.4.17 |
+| Icons | Lucide, React Icons | 0.395.0, 5.5.0 |
+| Content | Sanity, Portable Text | 3.99.0 |
+| Database | Supabase, PostgreSQL | 2.86.2 |
+| AI | Google Gemini | 0.24.1 |
+| Animation | Framer Motion | 11.18.2 |
+| Testing | <code style="color: red">Not Used</code> | |
+| Deployment | Vercel | Managed |
 
-#### Content Management
-- **Sanity CMS v3**: Headless CMS for blog posts with Portable Text rendering
-- **MDX**: Markdown + JSX for rich content
-- **Shiki / rehype-pretty-code**: Server-side syntax highlighting
+## 3. Frontend Architecture
 
-#### Backend & Database
-- **Supabase (PostgreSQL)**: Visitor analytics, session tracking
-- **Nodemailer**: Contact form email delivery
+### Architecture Type
 
-#### AI & External APIs
-- **Google Gemini AI**: Conversational AI chatbot
-- **GitHub REST API**: Live repository and profile stats
-- **Google reCAPTCHA v3**: Form spam protection
+Hybrid. Most routes are static React Server Components; the assistant and the widgets are client
+components, and analytics, blog, and GitHub data come from API routes.
 
-#### Forms & Validation
-- **React Hook Form** + **Zod**: Schema-validated forms with client/server validation
+### Architecture Description
 
-### Getting Started
+A single shell in `src/app/components/layout-content.tsx` supplies navigation and the footer for
+every route. Résumé content is compiled in from `src/data/resume.tsx`; blog content is fetched
+from Sanity; analytics are read from and written to Supabase; the assistant calls Gemini through a
+server action so the key never reaches the browser.
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### Main Layers
 
-First, install dependencies:
+| Layer | Responsibility |
+| :- | :- |
+| `src/app/layout.tsx` | Fonts, metadata, providers |
+| `src/app/components/layout-content.tsx` | Navigation, container, footer |
+| `src/app/*/page.tsx` | Route composition |
+| `src/app/api/` | Analytics, blog, and GitHub endpoints |
+| `src/app/actions.ts` | Server actions: assistant and contact |
+| `src/components/` | Shared components and primitives |
+| `src/lib/` | Fonts, Supabase, rate limiting, helpers |
+| `src/data/` | Résumé content and navigation |
+
+### Application Flow
+
+```text
+Route > Root Layout > Layout Content > Page > Component > Data Source
+```
+
+### User Interaction Flow
+
+```text
+User Action > Handler > Server Action or API Route > State Update > Render
+```
+
+### Rendering Strategy
+
+Static generation for the content routes, server rendering for the CMS studio and the API routes,
+client rendering for the widgets and the assistant.
+
+## 4. Project Structure
+
+```text
+src/
+├── app/
+│   ├── layout.tsx            # Fonts, metadata, providers
+│   ├── page.tsx              # Home: hero, about, experience, projects, signals
+│   ├── globals.css           # Tokens, .heading-display
+│   ├── chat/                 # Assistant, full height
+│   ├── project/              # Projects and certifications
+│   ├── service/              # Services
+│   ├── writing/              # Blog list and post
+│   ├── contact/              # Contact form
+│   ├── studio/               # Embedded Sanity Studio
+│   ├── api/                  # analytics, blog, github/stats
+│   ├── actions.ts            # Server actions
+│   └── components/           # Page-level components and widgets
+├── components/               # Shared components, magicui, ui primitives
+├── data/                     # resume.tsx, nav-items.ts, blog.ts
+├── fonts/                    # Font files, outside the served directory
+├── lib/                      # fonts, supabase, session, rate-limit, helpers
+└── sanity/                   # CMS client and schema
+```
+
+### Directory Explanation
+
+| Directory | Purpose |
+| :- | :- |
+| `src/data/` | Résumé content and navigation. Edited far more often than any component |
+| `src/fonts/` | Font files. Deliberately not `public/`, see Configuration |
+| `src/app/components/widgets/` | The signals grid cells, all on one shared frame |
+| `src/lib/` | Everything with no JSX in it |
+
+## 5. Configuration
+
+### Configuration Files
+
+| File | Purpose |
+| :- | :- |
+| `.env.example` | Environment variable reference |
+| `next.config.mjs` | Remote image hosts and redirects for moved routes |
+| `vercel.json` | Region, branch deployment, and security headers |
+| `tailwind.config.ts` | Fonts, palette bindings, and the collapsed radius scale |
+| `sanity.config.ts` | CMS studio configuration |
+| `supabase-schema.sql` | Analytics tables |
+| `supabase-rls-policies.sql` | Row-level security policies |
+
+### Environment Variables
+
+| Variable | Required | Description | Example |
+| :- | :- | :- | :- |
+| `GEMINI_API_KEY` | Yes | Assistant model key | `your_api_key_here` |
+| `GITHUB_TOKEN` | Yes | Read-only token for the stats endpoint | `your_token_here` |
+| `GMAIL_USER` | Yes | Contact form sender | `you@example.com` |
+| `GMAIL_APP_PASSWORD` | Yes | Contact form app password | `your_app_password_here` |
+| `RECAPTCHA_SECRET_KEY` | Yes | Captcha verification | `your_secret_here` |
+| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Yes | Captcha site key | `your_site_key_here` |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Yes | CMS project | `your_project_id` |
+| `NEXT_PUBLIC_SANITY_DATASET` | Yes | CMS dataset | `production` |
+| `NEXT_PUBLIC_SANITY_API_VERSION` | Yes | CMS API date | `2025-12-01` |
+| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Analytics project URL | `https://xxx.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Analytics anon key | `your_anon_key` |
+
+> [!danger]
+> Every `NEXT_PUBLIC_` variable ends up inside the bundle the browser downloads. It is public the
+> moment it ships. The six without that prefix are real secrets — an AI key, a GitHub token, a
+> mail password, a captcha secret — and must never be given it, per `secret.rules.md`.
+
+> [!note]
+> `NEXT_PUBLIC_SUPABASE_ANON_KEY` is public by design. Row-level security is what protects the
+> data behind it; the policies are in `supabase-rls-policies.sql`.
+
+### Environments
+
+| Environment | Purpose | Branch |
+| :- | :- | :- |
+| Development | Local development | `dev` |
+| Staging | Pre-production verification | `staging` |
+| Production | Live at `rahfi.pro` | `main` |
+
+## 6. Routing, Pages, and Components
+
+### Routing Method
+
+Next App Router, file-based.
+
+### Main Routes
+
+| Route | Page or layout | Access |
+| :- | :- | :- |
+| `/` | Home | Public |
+| `/project` | Projects and certifications | Public |
+| `/service` | Services | Public |
+| `/writing` | Blog list | Public |
+| `/writing/[slug]` | Blog post | Public |
+| `/contact` | Contact form | Public |
+| `/chat` | Assistant | Public |
+| `/studio` | Sanity Studio | Authenticated by Sanity |
+| `/blog`, `/blog/:slug` | Permanent redirect to `/writing` | Public |
+| `/experience` | Permanent redirect to `/#experiences` | Public |
+
+Home carries anchored sections: `#about`, `#experiences`, `#projects`, `#achievements`, `#stats`.
+
+### Main Layouts
+
+| Layout | Purpose | Used by |
+| :- | :- | :- |
+| `layout-content.tsx` | Navigation, container, footer | Every route |
+
+### Main Components
+
+| Component | Category | Responsibility |
+| :- | :- | :- |
+| `Navbar` | Layout | Fixed top bar, reads `nav-items.ts` |
+| `PageHeader` | Layout | Eyebrow, title, and the grid background |
+| `ResumeCard` | Feature | One company, expandable |
+| `ProjectCard` | Feature | One project, as a grid cell |
+| `Widget` | Shared | The frame every signals cell sits in |
+| `Chatbot` | Feature | The assistant |
+| `InteractiveGridPattern` | Shared | Grid background with a hover trail |
+
+### Important Component Details
+
+#### `Widget`
+
+Purpose: the shared frame for every cell in the signals grid — one eyebrow, one padding, one
+height, so the grid reads as a table rather than a pile.
+
+| Property | Type | Required | Description |
+| :- | :- | :- | :- |
+| `title` | `string` | Yes | The eyebrow label |
+| `meta` | `ReactNode` | No | Right-aligned secondary label |
+| `bodyClassName` | `string` | No | Applied to the body |
+
+> [!warning]
+> Do not put `min-h-0` on a widget body. It lets the cell shrink below its content, which is what
+> made two charts render at zero height. It belongs only where something actually scrolls.
+
+## 7. State and Data Management
+
+### State Management Method
+
+Local component state and React context. There is no store.
+
+### State Categories
+
+| Category | Storage method | Purpose |
+| :- | :- | :- |
+| Local UI state | `useState` | Expansion, carousels, hover |
+| Global state | Context | Theme, blog reading state |
+| Server state | `fetch` in effects | Analytics, GitHub, blog |
+| Persistent state | `sessionStorage` | Assistant history, visitor session id |
+
+### State Flow
+
+```text
+User Action > Handler > Server Action or API Route > State Update > Render
+```
+
+### Data Fetching Method
+
+Server Components for résumé and CMS content; `fetch` against internal API routes for the widgets;
+server actions for the assistant and the contact form.
+
+### Data Request Flow
+
+```text
+Component > API Route or Server Action > External Service > Response > State Update
+```
+
+### Loading, Empty, and Error States
+
+| State | Interface behaviour |
+| :- | :- |
+| Loading | A skeleton inside the widget frame, so the cell keeps its shape |
+| Empty | An explicit message; the writing list and repository list both have one |
+| Error | `WidgetFallback` replaces the cell; the page is unaffected |
+| Success | The rendered content |
+
+The three are mutually exclusive: a widget returns the fallback on error, the skeleton while
+loading, and content otherwise.
+
+### Browser Storage
+
+| Data | Storage | Purpose | Expiration |
+| :- | :- | :- | :- |
+| Assistant history | `sessionStorage` | Survive a reload within the tab | Tab close |
+| Visitor session id | `sessionStorage` | Deduplicate a visit | Tab close |
+
+Session-scoped on purpose: a conversation about someone's CV is not left behind on a shared
+machine. **No token is stored in browser storage.**
+
+## 8. Authentication, Styling, and Accessibility
+
+### Authentication Method
+
+None for visitors. The embedded Sanity Studio at `/studio` authenticates through Sanity itself.
+
+### Styling Method
+
+Tailwind CSS 3 over a shadcn HSL token layer in `src/app/globals.css`.
+
+### Design System
+
+Shared with `consulting.rahfi.pro`: pure black ground, hairline borders in place of filled cards,
+zero border radius, white as the only accent.
+
+> [!note]
+> This is a recorded deviation from `uix.component.md`, which specifies black on white with Inter.
+> The deviation is deliberate; see `PRD.md`.
+
+### Theme Structure
+
+| Item | Source |
+| :- | :- |
+| Colors | `src/app/globals.css`, `:root` and `.dark` |
+| Typography | `src/lib/fonts.ts` and `tailwind.config.ts` |
+| Spacing | Tailwind defaults |
+| Breakpoints | Tailwind defaults |
+
+### Typography
+
+| Face | Role | Licence |
+| :- | :- | :- |
+| Copperplate CC | Headings, via `.heading-display` | SIL OFL 1.1 |
+| Montserrat | Body, UI, labels, the clock | SIL OFL 1.1, Google Fonts |
+| Source Code Pro | Code blocks only | SIL OFL 1.1, Google Fonts |
+
+> [!important]
+> Copperplate CC ships `src/fonts/CopperplateCC-OFL.txt` beside it, as OFL section 2 requires, and
+> is not subset — subsetting would make it a Modified Version that may no longer use its reserved
+> name. No font file lives in `public/`, because everything there is served at the site root.
+
+### Responsive Design
+
+Tailwind's default breakpoints. The signals grid is a bento at `lg`, two uniform columns at `sm`,
+and a single column below.
+
+### Accessibility Practices
+
+- Semantic HTML, with one `h1` per page
+- Keyboard navigation, including the mobile menu as a native disclosure
+- Focus management, `focus-visible` outlines on every control
+- Form labels
+- Alternative text
+- Colour contrast against the black ground
+- `prefers-reduced-motion` honoured by the carousels
+
+### Accessibility Standard
+
+Not formally audited.
+
+## 9. Testing, Errors, and Performance
+
+### Testing Strategy
+
+<code style="color: red">Not Used</code>. There is no test suite.
+
+### Running Tests
+
+Not applicable. Verification is `npx tsc --noEmit`, `npm run lint`, and checking the routes.
+
+### Error Categories
+
+| Category | Description |
+| :- | :- |
+| Validation | Contact form input, checked by Zod on both sides |
+| Network | An external service is unreachable; the widget shows a fallback |
+| Not found | Route does not exist |
+| Application | Unexpected render failure |
+
+### Error Flow
+
+```text
+Error > Try/Catch or Boundary > Fallback Component > Console Log
+```
+
+### Performance Strategy
+
+- Static generation for content routes
+- Code splitting and tree shaking
+- Image optimization through `next/image`
+- Font optimization through `next/font`, self-hosted
+- Caching: GitHub stats revalidate hourly
+- Rate limiting on the contact form
+
+### Performance Monitoring
+
+| Metric or area | Tool or method |
+| :- | :- |
+| Visitor analytics | Supabase, first-party |
+| Deployment analytics | Vercel |
+
+## 10. Development and Deployment
+
+### Requirements
+
+- Node 20 or newer
+- npm
+- A current browser
+
+### Installation
 
 ```bash
 npm install
 ```
 
-Then, run the development server:
+### Environment Setup
+
+1. Copy `.env.example` to `.env`.
+2. Add the required values by hand.
+3. Do not commit the local environment file.
+
+```bash
+cp .env.example .env
+```
+
+### Start the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Local URL: `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-Required environment variables:
-- `NEXT_PUBLIC_SUPABASE_URL`:  Supabase project URL 
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Supabase anon public key 
-- `NEXT_PUBLIC_SANITY_PROJECT_ID`:  Sanity project ID 
-- `NEXT_PUBLIC_SANITY_DATASET`:  Sanity dataset (e.g. `production`) 
-- `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`:  Google reCAPTCHA v3 site key 
-- `RECAPTCHA_SECRET_KEY`:  Google reCAPTCHA v3 secret key 
-- `GEMINI_API_KEY`:  Google Gemini AI API key 
-- `GITHUB_TOKEN`:  GitHub personal access token (for stats API) 
-- `EMAIL_USER`:  SMTP email address for contact form 
-- `EMAIL_PASS`:  SMTP password / app password 
-
-</div>
-
-### Project Structure
-
+```bash
+npm run build
 ```
-src/
-├── app/
-│   ├── page.tsx               # Home / hero page
-│   ├── blog/                  # Blog listing & individual post pages
-│   ├── experience/            # Experience page
-│   ├── project/               # Projects page
-│   ├── contact/               # Contact page
-│   ├── studio/                # Embedded Sanity Studio
-│   ├── components/            # Page-level components (chatbot, widgets, forms)
-│   │   └── widgets/           # Analytics, GitHub stats, latest blogs widgets
-│   ├── api/                   # Next.js API routes
-│   │   ├── analytics/         # Visitor tracking endpoint
-│   │   ├── blog/              # Blog data endpoint
-│   │   └── github/stats/      # GitHub stats endpoint
-│   └── actions.ts             # Server Actions (AI chat, contact form)
-├── components/                # Shared/global UI components
-│   ├── magicui/               # Animated UI primitives (BlurFade, Dock, etc.)
-│   └── ui/                    # Shadcn UI components
-├── data/
-│   └── resume.tsx             # Structured resume data (work, projects, skills)
-├── lib/
-│   ├── analytics-supabase.ts  # Supabase analytics helpers
-│   ├── rate-limit.ts          # API rate limiting
-│   ├── supabase.ts            # Supabase client
-│   └── utils.ts               # Utility functions
-└── sanity/                    # Sanity CMS configuration & schema
-```
+
+> [!warning]
+> Never run `npm run build` while `npm run dev` is running against the same checkout. Both write
+> to `.next/`, and the production build rewrites it underneath the dev server, corrupting its
+> cache. The symptom is a 500 on `_app.js` together with `ENOENT` rename errors in
+> `.next/cache/webpack/`, which points at webpack rather than at the cause. Verify with
+> `npx tsc --noEmit` and `npm run lint`, which touch nothing.
+
+### Deployment
+
+| Item | Description |
+| :- | :- |
+| Platform | Vercel |
+| Trigger | Push to `main` for production; `staging` and `dev` build as previews |
+| Build-time config | Every `NEXT_PUBLIC_` value |
+| Health check | Vercel deployment status |
+| Rollback process | Promote a previous deployment in the Vercel dashboard |
+
+The full procedure is in `DEPLOY.md`.
+
+> [!note]
+> This project deploys to Vercel rather than Cloud Run, which is a documented deviation from
+> `deploy.rules.md`.
 
 ### Branching
 
-This project uses the **promotion** shape, because it has a real deployment that needs somewhere to be wrong before it is wrong on `rahfi.pro`.
+This project uses the promotion shape from `branch.rules.md`.
 
 | Branch | Holds | Accepts a merge from |
-|---|---|---|
+| :- | :- | :- |
 | `main` | What is deployed | `staging` only |
-| `staging` | What is being verified before release | `dev` only |
-| `dev` | Where work lands first. The default branch | A working branch, merged locally |
+| `staging` | What is being verified | `dev` only |
+| `dev` | Where work lands first; the default branch | A working branch, merged locally |
 
-A change moves one way: `local work → dev → staging → main`, through a pull request with a human approval at each stage. Never push directly to `staging` or `main`.
+A change moves one way: `local work > dev > staging > main`, through a pull request with a
+recorded human approval at each stage.
 
-### Deploy on Vercel
+### Known Limitations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-### Project Author
-
-GitHub: [@rahfianugerah](https://www.github.com/rahfianugerah)
+| Limitation | Impact | Planned resolution |
+| :- | :- | :- |
+| `src/data/resume.tsx` holds React elements in its `icon` fields | The content is not serialisable, so it cannot move to a database as-is | Replace icons with discriminator strings, then migrate; designed and deferred |
+| Fifteen unused packages removed from `package.json` but still installed | `node_modules` is larger than it needs to be | Run `npm install` |
+| Two majors behind on Next | Missing framework fixes | Upgrade 14 to 16; two call sites break on Next 15's async request APIs |
+| The GitHub activity graph is decorative | The squares are randomised, not real contribution data | Use the GitHub contributions API |
+| No test suite | Regressions are caught by review only | Add end-to-end coverage of the routes |
