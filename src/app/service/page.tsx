@@ -60,19 +60,19 @@ export default function ServicePage() {
               <article className="flex h-full flex-col border-b border-r border-border p-8 transition-colors hover:bg-white/[0.02]">
                 <div className="flex items-center justify-between">
                   <Icon className="h-6 w-6 text-white" strokeWidth={1.5} />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
                 <h2 className="heading-display mt-6 text-lg text-white">
                   {service.title}
                 </h2>
-                <p className="mt-4 text-[13px] leading-6 text-zinc-300">
+                <p className="mt-4 text-[13px] leading-6 text-zinc-200">
                   {service.description}
                 </p>
                 <Link
                   href="/contact"
-                  className="mt-auto inline-flex min-h-11 items-center pt-6 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-300 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                  className="mt-auto inline-flex min-h-11 items-center pt-6 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-200 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
                 >
                   Get in touch
                   <VscChevronRight className="ml-1.5 h-3 w-3" />
@@ -89,7 +89,7 @@ export default function ServicePage() {
       <section className="border-b border-border px-6 py-16 sm:px-10 sm:py-20">
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
+            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-300">
               For companies
             </p>
             <h2 className="heading-display mt-4 text-2xl text-white sm:text-3xl">
@@ -97,7 +97,7 @@ export default function ServicePage() {
             </h2>
           </div>
           <div>
-            <p className="text-sm leading-7 text-zinc-300">
+            <p className="text-sm leading-7 text-zinc-200">
               Audits, retainers, automation programmes, and team enablement run through
               the consulting practice, where scope, pricing, and the engagement model are
               written down before anything starts.
@@ -106,7 +106,7 @@ export default function ServicePage() {
               href="https://consulting.rahfi.pro"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex min-h-11 items-center border border-zinc-600 px-5 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:border-white hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              className="mt-6 inline-flex min-h-11 items-center border border-zinc-500 px-5 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:border-white hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
             >
               Rahfi Consulting
               <VscChevronRight className="ml-1.5 h-3 w-3" />

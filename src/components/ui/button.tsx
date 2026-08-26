@@ -18,13 +18,13 @@ const buttonVariants = cva(
         destructive:
           "border-white bg-transparent text-white hover:bg-white hover:text-black",
         outline:
-          "border-zinc-600 bg-black/50 text-white hover:border-white hover:bg-white hover:text-black",
+          "border-zinc-500 bg-black/50 text-white hover:border-white hover:bg-white hover:text-black",
         secondary:
-          "border-zinc-700 bg-zinc-900 text-white hover:border-white",
+          "border-zinc-600 bg-zinc-900 text-white hover:border-white",
         // Kept borderless: this is what the navigation dock icons use, and a hover
         // border on a 40px icon target reads as a box rather than as a highlight.
         ghost:
-          "border-transparent bg-transparent text-zinc-200 hover:bg-white/10 hover:text-white",
+          "border-transparent bg-transparent text-zinc-100 hover:bg-white/10 hover:text-white",
         link: "border-transparent bg-transparent text-white underline-offset-4 hover:underline",
       },
       size: {

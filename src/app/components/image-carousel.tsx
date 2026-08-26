@@ -67,14 +67,14 @@ export default function ImageCarousel({ intervalMs = 5000 }: { intervalMs?: numb
             alt={item.caption}
             fill
             sizes="(max-width: 640px) 100vw, 400px"
-            className="object-cover grayscale transition-transform duration-[1200ms] group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-[1200ms] group-hover:scale-[1.03]"
           />
           <div className="absolute inset-0 bg-[linear-gradient(to_top,#000_6%,rgba(0,0,0,0.55)_45%,rgba(0,0,0,0.15)_100%)]" />
         </div>
       ))}
 
       <div className="absolute inset-x-0 top-0 p-6">
-        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-300">
+        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-200">
           Moments
         </p>
       </div>
@@ -83,7 +83,7 @@ export default function ImageCarousel({ intervalMs = 5000 }: { intervalMs?: numb
         <p className="heading-display text-base leading-snug text-white">
           {moments[index].caption}
         </p>
-        <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-zinc-300">
+        <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-zinc-200">
           {moments[index].meta}
         </p>
 

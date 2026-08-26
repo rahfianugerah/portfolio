@@ -72,21 +72,21 @@ export function ProjectCard({
       )}
 
       <div className="flex flex-grow flex-col p-6">
-        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
           {status}
         </p>
         <h3 className="mt-3 heading-display text-base text-white">
           <Link
             href={href || "#"}
-            className="transition-colors hover:text-zinc-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            className="transition-colors hover:text-zinc-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
             {title}
           </Link>
         </h3>
-        <p className="mt-3 text-xs leading-6 text-zinc-300">{description}</p>
+        <p className="mt-3 text-xs leading-6 text-zinc-200">{description}</p>
 
         {tags?.length > 0 && (
-          <p className="mt-5 flex flex-wrap gap-x-3 gap-y-1 text-[10px] uppercase tracking-[0.14em] text-zinc-500">
+          <p className="mt-5 flex flex-wrap gap-x-3 gap-y-1 text-[10px] uppercase tracking-[0.14em] text-zinc-400">
             {tags.map((tag) => (
               <span key={tag}>{tag}</span>
             ))}
@@ -100,7 +100,7 @@ export function ProjectCard({
                 href={link.href}
                 key={idx}
                 target="_blank"
-                className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-300 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-200 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
               >
                 {link.icon}
                 {link.type}

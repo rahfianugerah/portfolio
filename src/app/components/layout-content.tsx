@@ -43,7 +43,7 @@ function SiteFooter() {
           <Link href="/" className="heading-display text-xl text-white">
             Naufal Rahfi Anugerah
           </Link>
-          <p className="mt-4 max-w-md text-xs leading-6 text-zinc-400">
+          <p className="mt-4 max-w-md text-xs leading-6 text-zinc-300">
             AI Software Engineer. Building at the intersection of machine learning and
             cloud, and writing about what breaks along the way.
           </p>
@@ -54,12 +54,12 @@ function SiteFooter() {
           title="Elsewhere"
           links={[
             ["GitHub", "https://github.com/rahfianugerah"],
-            ["Ask Rahfi", "/chat"],
+            ["Ask AI", "/chat"],
             ["Contact", "/contact"],
           ]}
         />
       </div>
-      <div className="flex flex-col gap-3 border-t border-border px-6 py-5 text-[10px] uppercase tracking-[0.2em] text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 border-t border-border px-6 py-5 text-[10px] uppercase tracking-[0.2em] text-zinc-400 sm:flex-row sm:items-center sm:justify-between">
         <span>&copy; {new Date().getFullYear()} Naufal Rahfi Anugerah</span>
         <span>All rights reserved</span>
       </div>
@@ -76,7 +76,7 @@ function FooterColumn({
 }) {
   return (
     <div className="border-b border-border p-6 md:border-b-0 md:border-r md:last:border-r-0">
-      <h2 className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
+      <h2 className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-300">
         {title}
       </h2>
       <ul className="mt-5 grid gap-3">
@@ -84,7 +84,7 @@ function FooterColumn({
           <li key={label}>
             <Link
               href={href}
-              className="text-xs text-zinc-300 transition-colors hover:text-white"
+              className="text-xs text-zinc-200 transition-colors hover:text-white"
             >
               {label}
             </Link>

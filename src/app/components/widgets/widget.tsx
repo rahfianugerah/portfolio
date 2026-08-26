@@ -24,11 +24,11 @@ export function Widget({
   return (
     <section className={cn("flex h-full flex-col p-6", className)}>
       <header className="flex min-h-5 shrink-0 items-baseline justify-between gap-3">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-300">
           {title}
         </h3>
         {meta && (
-          <span className="shrink-0 text-[10px] uppercase tracking-[0.14em] text-zinc-500">
+          <span className="shrink-0 text-[10px] uppercase tracking-[0.14em] text-zinc-400">
             {meta}
           </span>
         )}
@@ -55,11 +55,11 @@ export function Stat({
       <p className="text-2xl font-semibold tabular-nums leading-none text-white">
         {value}
       </p>
-      <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-zinc-500">
+      <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-zinc-400">
         {label}
       </p>
       {delta && (
-        <p className="mt-1 text-[10px] tabular-nums text-zinc-400">{delta}</p>
+        <p className="mt-1 text-[10px] tabular-nums text-zinc-300">{delta}</p>
       )}
     </div>
   );

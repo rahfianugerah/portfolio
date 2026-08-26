@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { generateChatResponse } from "@/app/actions";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type Message = { role: "user" | "assistant"; content: string };
@@ -105,32 +106,17 @@ export default function Chatbot() {
 
   return (
     <div className="flex h-full flex-col">
-      <header className="flex shrink-0 items-center justify-between border-b border-border px-6 py-4">
-        <div>
-          <h1 className="heading-display text-base text-white">Rahfi&apos;s Assistant</h1>
-          <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-zinc-500">
-            Answers from his resume only
-          </p>
-        </div>
-        {!isEmpty && (
-          <button
-            type="button"
-            onClick={() => {
-              setMessages([GREETING]);
-              sessionStorage.removeItem("chat_history");
-            }}
-            className="min-h-11 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-          >
-            New chat
-          </button>
-        )}
-      </header>
-
+      {/* No page header: the navigation already says which page this is, and a title bar
+          above a conversation only shortens the conversation. "New chat" moves in with
+          the composer, where it is reachable without scrolling back up. */}
       <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto">
         <div className="mx-auto max-w-3xl px-6 py-10">
           {messages.map((m, i) => (
-            <div
+            <motion.div
               key={i}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className={cn("mb-8 last:mb-0", m.role === "user" && "flex justify-end")}
             >
               {m.role === "user" ? (
@@ -139,12 +125,12 @@ export default function Chatbot() {
                 </p>
               ) : (
                 <div>
-                  <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+                  <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
                     Assistant
                   </p>
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
-                    className="prose prose-invert max-w-none text-sm leading-7 text-zinc-200"
+                    className="prose prose-invert max-w-none text-sm leading-7 text-zinc-100"
                     components={{
                       a: ({ href, children }) => (
                         <a
@@ -162,13 +148,17 @@ export default function Chatbot() {
                   </ReactMarkdown>
                 </div>
               )}
-            </div>
+            </motion.div>
           ))}
 
           {busy && (
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400"
+            >
               <span className="animate-pulse">Thinking</span>
-            </p>
+            </motion.p>
           )}
 
           {isEmpty && !busy && (
@@ -178,7 +168,7 @@ export default function Chatbot() {
                   key={s}
                   type="button"
                   onClick={() => send(s)}
-                  className="min-h-11 bg-black px-4 py-4 text-left text-xs leading-6 text-zinc-300 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+                  className="min-h-11 bg-black px-4 py-4 text-left text-xs leading-6 text-zinc-200 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
                 >
                   {s}
                 </button>
@@ -202,8 +192,20 @@ export default function Chatbot() {
             onKeyDown={onKeyDown}
             disabled={busy}
             placeholder="Ask about his experience…"
-            className="max-h-40 min-h-11 flex-1 resize-none border border-border bg-black px-4 py-3 text-sm text-white transition-colors placeholder:text-zinc-500 focus:border-white focus:outline-none disabled:opacity-50"
+            className="max-h-40 min-h-11 flex-1 resize-none border border-border bg-black px-4 py-3 text-sm text-white transition-colors placeholder:text-zinc-400 focus:border-white focus:outline-none disabled:opacity-50"
           />
+          {!isEmpty && (
+            <button
+              type="button"
+              onClick={() => {
+                setMessages([GREETING]);
+                sessionStorage.removeItem("chat_history");
+              }}
+              className="inline-flex min-h-11 items-center border border-border px-4 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-300 transition-colors hover:border-white hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            >
+              New
+            </button>
+          )}
           <button
             type="button"
             onClick={() => send(input)}

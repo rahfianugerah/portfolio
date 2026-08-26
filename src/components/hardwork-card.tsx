@@ -33,20 +33,20 @@ export function HardworkCard({
     <li className="py-6">
       <div className="flex flex-col gap-2">
         {dates && (
-          <time className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+          <time className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
             {dates}
           </time>
         )}
         <h3 className="heading-display text-base leading-snug text-white">{title}</h3>
 
         {(location || issued) && (
-          <p className="text-[11px] uppercase tracking-[0.14em] text-zinc-500">
+          <p className="text-[11px] uppercase tracking-[0.14em] text-zinc-400">
             {[location, issued && `Issued by ${issued}`].filter(Boolean).join(" · ")}
           </p>
         )}
 
         {description && (
-          <p className="mt-1 max-w-3xl text-[13px] leading-6 text-zinc-300">
+          <p className="mt-1 max-w-3xl text-[13px] leading-6 text-zinc-200">
             {description}
           </p>
         )}
@@ -59,7 +59,7 @@ export function HardworkCard({
               href={link.href}
               key={idx}
               target="_blank"
-              className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-300 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-200 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
             >
               {link.icon}
               {link.title}

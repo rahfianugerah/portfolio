@@ -59,13 +59,13 @@ export default function ProjectsCounter() {
       {/* Most-reached-for tools, ranked by how many projects use each. A bar beats a
           list here: the point is not which five, it is how lopsided the five are. */}
       <div className="mt-auto pt-6">
-        <p className="mb-3 text-[10px] uppercase tracking-[0.18em] text-zinc-500">
+        <p className="mb-3 text-[10px] uppercase tracking-[0.18em] text-zinc-400">
           Most used
         </p>
         <ul className="grid gap-2.5">
           {topTech.map(([tech, count]) => (
             <li key={tech} className="flex items-center gap-3">
-              <span className="w-24 shrink-0 truncate text-[11px] text-zinc-300">
+              <span className="w-24 shrink-0 truncate text-[11px] text-zinc-200">
                 {tech}
               </span>
               <span className="h-1 flex-1 bg-white/10">
@@ -74,7 +74,7 @@ export default function ProjectsCounter() {
                   style={{ width: `${(count / topTech[0][1]) * 100}%` }}
                 />
               </span>
-              <span className="w-4 shrink-0 text-right text-[10px] tabular-nums text-zinc-500">
+              <span className="w-4 shrink-0 text-right text-[10px] tabular-nums text-zinc-400">
                 {count}
               </span>
             </li>

@@ -52,16 +52,16 @@ export const ResumeCard: React.FC<ResumeRowProps> = ({ title, period, jobs }) =>
             <span className="heading-display text-base text-white">{title}</span>
             <ChevronRightIcon
               className={cn(
-                "size-4 shrink-0 text-zinc-500 transition-transform duration-300 group-hover:text-white",
+                "size-4 shrink-0 text-zinc-400 transition-transform duration-300 group-hover:text-white",
                 isExpanded && "rotate-90"
               )}
             />
           </span>
-          <span className="mt-1 block text-[13px] text-zinc-400">
+          <span className="mt-1 block text-[13px] text-zinc-300">
             {longestJob?.title}
           </span>
         </span>
-        <span className="shrink-0 text-[11px] uppercase tracking-[0.14em] tabular-nums text-zinc-400">
+        <span className="shrink-0 text-[11px] uppercase tracking-[0.14em] tabular-nums text-zinc-300">
           {period}
         </span>
       </button>
@@ -80,7 +80,7 @@ export const ResumeCard: React.FC<ResumeRowProps> = ({ title, period, jobs }) =>
             >
               <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
                 <h4 className="text-[13px] font-semibold text-white">{job.title}</h4>
-                <span className="ml-auto shrink-0 text-[11px] tabular-nums text-zinc-400">
+                <span className="ml-auto shrink-0 text-[11px] tabular-nums text-zinc-300">
                   {job.period}
                 </span>
               </div>
@@ -90,7 +90,7 @@ export const ResumeCard: React.FC<ResumeRowProps> = ({ title, period, jobs }) =>
                   {job.badges.map((badge) => (
                     <span
                       key={badge}
-                      className="text-[10px] uppercase tracking-[0.14em] text-zinc-500"
+                      className="text-[10px] uppercase tracking-[0.14em] text-zinc-400"
                     >
                       {badge}
                     </span>
@@ -99,13 +99,13 @@ export const ResumeCard: React.FC<ResumeRowProps> = ({ title, period, jobs }) =>
               )}
 
               {Array.isArray(job.description) ? (
-                <ul className="mt-3 list-disc space-y-1.5 pl-4 text-[13px] leading-6 text-zinc-300 marker:text-zinc-500">
+                <ul className="mt-3 list-disc space-y-1.5 pl-4 text-[13px] leading-6 text-zinc-200 marker:text-zinc-400">
                   {job.description.map((line, i) => (
                     <li key={i}>{line}</li>
                   ))}
                 </ul>
               ) : (
-                <p className="mt-3 whitespace-pre-line text-[13px] leading-6 text-zinc-300">
+                <p className="mt-3 whitespace-pre-line text-[13px] leading-6 text-zinc-200">
                   {job.description}
                 </p>
               )}

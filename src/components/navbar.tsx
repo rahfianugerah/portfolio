@@ -33,7 +33,7 @@ export default function Navbar() {
               aria-current={isActive(item.href) ? "page" : undefined}
               className={cn(
                 "text-[11px] font-bold uppercase tracking-[0.18em] transition-colors hover:text-white",
-                isActive(item.href) ? "text-white" : "text-zinc-300"
+                isActive(item.href) ? "text-white" : "text-zinc-200"
               )}
             >
               {item.label}
@@ -43,14 +43,14 @@ export default function Navbar() {
             href="/chat"
             className="inline-flex min-h-9 items-center border border-white bg-white px-4 text-[11px] font-bold uppercase tracking-[0.18em] text-black transition-colors hover:border-zinc-300 hover:bg-zinc-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
-            Ask Rahfi
+            Ask AI
           </Link>
         </div>
 
         {/* Native disclosure rather than a menu library: it opens without JavaScript,
             closes on Escape, and is already in the tab order. */}
         <details className="group relative md:hidden">
-          <summary className="flex min-h-11 cursor-pointer list-none items-center text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-200 [&::-webkit-details-marker]:hidden">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-100 [&::-webkit-details-marker]:hidden">
             <span className="group-open:hidden">Menu</span>
             <span className="hidden group-open:inline">Close</span>
           </summary>
@@ -59,7 +59,7 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex min-h-11 items-center border-b border-border px-4 text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-200 transition-colors hover:text-white"
+                className="flex min-h-11 items-center border-b border-border px-4 text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-100 transition-colors hover:text-white"
               >
                 {item.label}
               </Link>
@@ -68,7 +68,7 @@ export default function Navbar() {
               href="/chat"
               className="flex min-h-11 items-center bg-white px-4 text-[11px] font-bold uppercase tracking-[0.18em] text-black"
             >
-              Ask Rahfi
+              Ask AI
             </Link>
           </div>
         </details>

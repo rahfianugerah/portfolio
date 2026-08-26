@@ -37,7 +37,7 @@ const PAD = { top: 12, right: 10, bottom: 20, left: 10 };
 export default function ExperienceGraph() {
   const [hovered, setHovered] = useState<number | null>(null);
 
-  const { points, path, area, years, totalMonths, companies } = useMemo(() => {
+  const { points, path, area, base, barW, years, totalMonths, companies } = useMemo(() => {
     const now = new Date();
     const roles = ((DATA as any).work ?? [])
       .map((job: any) => {
@@ -55,7 +55,7 @@ export default function ExperienceGraph() {
       .sort((a: any, b: any) => a.start.getTime() - b.start.getTime());
 
     if (!roles.length) {
-      return { points: [], path: "", area: "", years: [], totalMonths: 0, companies: 0 };
+      return { points: [], path: "", area: "", base: 0, barW: 0, years: [], totalMonths: 0, companies: 0 };
     }
 
     const maxMonths = Math.max(...roles.map((r: any) => r.months));
@@ -76,6 +76,8 @@ export default function ExperienceGraph() {
     const base = PAD.top + innerH;
     const last = points[points.length - 1];
     const area = `${path} L${last.x},${base} L${points[0].x},${base} Z`;
+    // Bars read the value; the line over them reads the trend between values.
+    const barW = roles.length > 1 ? Math.min(step * 0.42, 14) : 14;
 
     // Union of the spans, not their sum: two roles held at once is one stretch of time,
     // and adding them would claim more experience than has actually elapsed.
@@ -93,6 +95,8 @@ export default function ExperienceGraph() {
       points,
       path,
       area,
+      base,
+      barW,
       years: Array.from(new Set(points.map((p) => p.year))).sort(),
       totalMonths: Math.round(covered / (1000 * 60 * 60 * 24 * 30.44)),
       companies: new Set(roles.map((r: any) => r.company)).size,
@@ -118,6 +122,17 @@ export default function ExperienceGraph() {
               <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
             </linearGradient>
           </defs>
+
+          {points.map((p, i) => (
+            <rect
+              key={`bar-${i}`}
+              x={p.x - barW / 2}
+              y={p.y}
+              width={barW}
+              height={Math.max(base - p.y, 1)}
+              fill={hovered === i ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.22)"}
+            />
+          ))}
 
           <path d={area} fill="url(#velocity-fill)" />
           {/* non-scaling-stroke keeps the line 1.5px wide: preserveAspectRatio="none"
@@ -164,7 +179,7 @@ export default function ExperienceGraph() {
             <p className="whitespace-nowrap text-[10px] font-semibold leading-tight text-white">
               {active.company}
             </p>
-            <p className="mt-0.5 whitespace-nowrap text-[9px] tabular-nums text-zinc-400">
+            <p className="mt-0.5 whitespace-nowrap text-[9px] tabular-nums text-zinc-300">
               {fmt(active.months)}
               {active.current ? " / current" : ""}
             </p>
@@ -173,14 +188,14 @@ export default function ExperienceGraph() {
       </div>
 
       <div className="mt-auto pt-4">
-        <div className="flex justify-between border-t border-border pt-2 text-[9px] tabular-nums text-zinc-500">
+        <div className="flex justify-between border-t border-border pt-2 text-[9px] tabular-nums text-zinc-400">
           {years.map((y) => (
             <span key={y}>{String(y).slice(2)}</span>
           ))}
         </div>
-        <p className="mt-3 text-[10px] leading-5 text-zinc-400">
-          <span className="text-zinc-200">{points.length}</span> roles across{" "}
-          <span className="text-zinc-200">{companies}</span> organisations. Height is
+        <p className="mt-3 text-[10px] leading-5 text-zinc-300">
+          <span className="text-zinc-100">{points.length}</span> roles across{" "}
+          <span className="text-zinc-100">{companies}</span> organisations. Height is
           tenure; a filled point is current.
         </p>
       </div>

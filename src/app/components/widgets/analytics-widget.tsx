@@ -91,7 +91,7 @@ export default function AnalyticsWidget() {
           track), because a percentage height resolves against nothing when the parent is
           auto-sized — which is what an items-end row leaves it as, and why these were
           rendering at zero and reading as an empty chart. */}
-      <div className="mt-auto pt-6">
+      <div className="pt-8">
         <div className="flex h-24 items-end gap-1.5">
           {series.map((value, i) => {
             const heightPct = peak > 0 ? Math.max((value / peak) * 100, 3) : 3;
@@ -112,20 +112,20 @@ export default function AnalyticsWidget() {
           {series.map((_, i) => (
             <span
               key={i}
-              className="flex-1 text-center text-[9px] uppercase tabular-nums text-zinc-500"
+              className="flex-1 text-center text-[9px] uppercase tabular-nums text-zinc-400"
             >
               {dayInitial(series.length - 1 - i)}
             </span>
           ))}
         </div>
 
-        <p className="mt-4 border-t border-border pt-3 text-[10px] leading-5 text-zinc-400">
-          <span className="text-zinc-200">{weekTotal}</span> visits this week,
-          averaging <span className="text-zinc-200">{average}</span> a day
+        <p className="mt-4 border-t border-border pt-3 text-[10px] leading-5 text-zinc-300">
+          <span className="text-zinc-100">{weekTotal}</span> visits this week,
+          averaging <span className="text-zinc-100">{average}</span> a day
           {peak > 0 && (
             <>
               {" "}
-              &middot; peak <span className="text-zinc-200">{peak}</span>
+              &middot; peak <span className="text-zinc-100">{peak}</span>
             </>
           )}
         </p>

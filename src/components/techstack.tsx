@@ -88,7 +88,7 @@ export default function TechStack() {
       <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto no-scrollbar">
         {sections.map(({ label, items }) => (
           <div key={label}>
-            <h4 className="mb-2.5 text-[9px] uppercase tracking-[0.18em] text-zinc-500">
+            <h4 className="mb-2.5 text-[9px] uppercase tracking-[0.18em] text-zinc-400">
               {label}
             </h4>
             <ul className="flex flex-wrap gap-1.5">
@@ -97,7 +97,7 @@ export default function TechStack() {
                 return (
                   <li
                     key={`${label}-${name}`}
-                    className="inline-flex items-center gap-1.5 border border-border px-2 py-1 text-[10px] text-zinc-300 transition-colors hover:border-white hover:text-white"
+                    className="inline-flex items-center gap-1.5 border border-border px-2 py-1 text-[10px] text-zinc-200 transition-colors hover:border-white hover:text-white"
                   >
                     <Icon className="h-3 w-3" />
                     <span>{name}</span>
