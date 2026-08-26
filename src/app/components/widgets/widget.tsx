@@ -33,7 +33,7 @@ export function Widget({
           </span>
         )}
       </header>
-      <div className={cn("mt-5 flex min-h-0 flex-1 flex-col", bodyClassName)}>
+      <div className={cn("mt-5 flex flex-1 flex-col", bodyClassName)}>
         {children}
       </div>
     </section>

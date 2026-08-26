@@ -57,7 +57,7 @@ export const ResumeCard: React.FC<ResumeRowProps> = ({ title, period, jobs }) =>
               )}
             />
           </span>
-          <span className="mt-1 block text-xs text-zinc-500">
+          <span className="mt-1 block text-[13px] text-zinc-500">
             {longestJob?.title}
           </span>
         </span>
@@ -78,9 +78,9 @@ export const ResumeCard: React.FC<ResumeRowProps> = ({ title, period, jobs }) =>
               key={`${job.title}-${idx}`}
               className="border-l border-border py-3 pl-5"
             >
-              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                <h4 className="text-sm font-semibold text-white">{job.title}</h4>
-                <span className="text-[11px] tabular-nums text-zinc-500">
+              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                <h4 className="text-[13px] font-semibold text-white">{job.title}</h4>
+                <span className="ml-auto shrink-0 text-[11px] tabular-nums text-zinc-500">
                   {job.period}
                 </span>
               </div>
@@ -99,13 +99,13 @@ export const ResumeCard: React.FC<ResumeRowProps> = ({ title, period, jobs }) =>
               )}
 
               {Array.isArray(job.description) ? (
-                <ul className="mt-3 list-disc space-y-1 pl-4 text-xs leading-6 text-zinc-400 marker:text-zinc-700">
+                <ul className="mt-3 list-disc space-y-1.5 pl-4 text-[13px] leading-6 text-zinc-400 marker:text-zinc-700">
                   {job.description.map((line, i) => (
                     <li key={i}>{line}</li>
                   ))}
                 </ul>
               ) : (
-                <p className="mt-3 whitespace-pre-line text-xs leading-6 text-zinc-400">
+                <p className="mt-3 whitespace-pre-line text-[13px] leading-6 text-zinc-400">
                   {job.description}
                 </p>
               )}

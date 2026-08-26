@@ -1,6 +1,7 @@
 "use client";
 
 import { Widget } from "./widget";
+import { VscChevronRight } from "react-icons/vsc";
 import { WidgetFallback } from "@/components/widget-error-boundary";
 import { 
   SiInstagram, 
@@ -110,9 +111,7 @@ export default function SocialLinks({ orientation = "horizontal" }: SocialLinksP
                 <span className="flex-1 text-[11px] text-zinc-400 transition-colors group-hover:text-white">
                   {link.name}
                 </span>
-                <span className="text-[10px] text-zinc-700 transition-colors group-hover:text-zinc-400">
-                  &rarr;
-                </span>
+                <VscChevronRight className="h-3 w-3 shrink-0 text-zinc-700 transition-colors group-hover:text-zinc-400" />
               </a>
             </li>
           );

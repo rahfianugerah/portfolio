@@ -75,7 +75,7 @@ export default async function Blog({
 
   return (
     <BlogPostWrapper>
-      <section id="blog" className="max-w-[650px] mx-auto">
+      <section id="blog" className="mx-auto max-w-[650px] px-6 py-16 sm:py-20">
         <script
           type="application/ld+json"
           suppressHydrationWarning
@@ -108,11 +108,11 @@ export default async function Blog({
           </Suspense>
         </div>
 
-        <h1 className="title font-medium text-2xl tracking-tighter mb-8">
+        <h1 className="heading-display mb-8 text-2xl text-white sm:text-3xl">
           {post.metadata.title}
         </h1>
 
-        <article className="prose dark:prose-invert">
+        <article>
           {/* 2. Use the wrapper here. It safely handles the component mapping on the client. */}
           <CustomPortableText value={post.content} />
           <hr/><br/>
