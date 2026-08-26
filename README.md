@@ -1,3 +1,4 @@
+| **Black-Only Theme** | A single pure-black theme shared with the consulting site. Light mode is deliberately retired; see `PRD.md`. |
 <h1>
    Rahfi's Portfolio Website (<a href="https://rahfi.pro">rahfi.pro</a>)
 </h1>
@@ -53,7 +54,7 @@
 | **Contact Form** | Validated contact form using React Hook Form + Zod with Google reCAPTCHA v3 spam protection and Nodemailer email delivery. |
 | **Experience Graph** | Visual timeline graph of professional work experience with interactive hover states. |
 | **Project Showcase** | Project cards with tech-stack badges pulled from structured resume data. |
-| **Dark / Light Mode** | System-aware theme toggle built with `next-themes`. |
+| **Black-Only Theme** | A single pure-black theme, shared with the consulting site. Light mode is deliberately retired; the reasoning is in `PRD.md`. |
 | **Sanity Studio** | Embedded Sanity Studio at `/studio` for content management. |
 | **Smooth Animations** | Blur-fade entrance animations and shiny text effects from the custom MagicUI component library (Framer Motion). |
 | **Rate Limiting** | API routes are protected with server-side rate limiting. |
@@ -67,6 +68,8 @@
 - **TypeScript 5**: End-to-end type safety
 
 #### UI & Styling
+- **Design language**: Shared with [Rahfi Consulting](https://consulting.rahfi.pro) — pure black ground, hairline borders in place of filled cards, zero border radius, white as the only accent. Recorded in `PRD.md`.
+- **Typography**: Montserrat for body and UI, Flowmery for the two brand moments, Source Code Pro for code. Font files live in `src/fonts/` rather than `public/`, so they are never served at a browsable path.
 - **Tailwind CSS 3**: Utility-first CSS
 - **Shadcn UI**: Accessible Component primitives built on Radix UI
 - **Framer Motion / Motion**: Page and element animations
@@ -162,6 +165,18 @@ src/
 │   └── utils.ts               # Utility functions
 └── sanity/                    # Sanity CMS configuration & schema
 ```
+
+### Branching
+
+This project uses the **promotion** shape, because it has a real deployment that needs somewhere to be wrong before it is wrong on `rahfi.pro`.
+
+| Branch | Holds | Accepts a merge from |
+|---|---|---|
+| `main` | What is deployed | `staging` only |
+| `staging` | What is being verified before release | `dev` only |
+| `dev` | Where work lands first. The default branch | A working branch, merged locally |
+
+A change moves one way: `local work → dev → staging → main`, through a pull request with a human approval at each stage. Never push directly to `staging` or `main`.
 
 ### Deploy on Vercel
 

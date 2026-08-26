@@ -90,8 +90,8 @@ export default function AnalyticsWidget() {
   const maxSparkline = Math.max(...data.sparkline, 1);
 
   return (
-    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
-      <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
+    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground">
+      <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-3">
         Website Analytics
       </div>
 
@@ -102,7 +102,7 @@ export default function AnalyticsWidget() {
           <div className="text-xs text-muted-foreground">Total Visitors</div>
           <div className="text-2xl font-bold">{data.visitors.toLocaleString()}</div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-green-500">↑ {data.delta24h}</span>
+            <span className="text-[10px] text-white">↑ {data.delta24h}</span>
             <span className="text-[10px] text-muted-foreground">24h</span>
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function AnalyticsWidget() {
           <div className="text-xs text-muted-foreground">Project Views</div>
           <div className="text-2xl font-bold">{data.projects.toLocaleString()}</div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-green-500">↑ {data.delta7d}</span>
+            <span className="text-[10px] text-white">↑ {data.delta7d}</span>
             <span className="text-[10px] text-muted-foreground">7d</span>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default function AnalyticsWidget() {
 
       {/* Mini Sparkline */}
       <div className="space-y-2">
-        <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">
+        <div className="text-[10px] text-muted-foreground uppercase tracking-[0.22em] font-bold">
           Activity Trend
         </div>
         <div className="flex items-end gap-1 h-10 relative">

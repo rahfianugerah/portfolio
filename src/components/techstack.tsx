@@ -99,7 +99,7 @@ export default function TechStack({
                 return (
                   <li
                     key={`${label}-${name}`}
-                    className="group inline-flex items-center rounded-sm bg-white/5 px-3 py-2 text-sm text-foreground/90 shadow-sm backdrop-blur transition hover:bg-white/10"
+                    className="group inline-flex items-center rounded-sm bg-white/5 px-3 py-2 text-sm text-foreground/90 backdrop-blur transition hover:bg-white/10"
                   >
                     <Icon className="mr-2 h-4 w-4 opacity-90 transition" />
                     <span>{name}</span>

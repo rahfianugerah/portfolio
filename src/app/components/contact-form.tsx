@@ -106,9 +106,9 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-6 text-card-foreground shadow-sm h-full flex flex-col">
+    <div className="rounded-lg border border-border bg-card p-6 text-card-foreground h-full flex flex-col">
       <div className="mb-6">
-        <h2 className="text-2xl font-bebas text-foreground mb-2">
+        <h2 className="text-2xl font-display tracking-[-0.04em] text-foreground mb-2">
           Get In Touch
         </h2>
         <p className="text-sm text-muted-foreground">
@@ -213,7 +213,7 @@ export default function ContactForm() {
             <div
               className={`p-4 rounded-lg text-sm ${
                 submitMessage.type === "success"
-                  ? "bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20"
+                  ? "bg-white/5 text-white border border-white/20"
                   : "bg-destructive/10 text-destructive border border-destructive/20"
               }`}
             >

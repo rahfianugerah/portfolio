@@ -27,7 +27,7 @@ export default function RightRail() {
 
       {/* Footer */}
       <BlurFade delay={0.25}>
-        <footer className="text-center text-sm font-bebas text-muted-foreground pb-6">
+        <footer className="text-center text-sm font-accent text-muted-foreground pb-6">
           <p>© {new Date().getFullYear()} Naufal Rahfi Anugerah | All rights reserved.</p>
         </footer>
       </BlurFade>

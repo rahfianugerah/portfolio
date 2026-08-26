@@ -40,8 +40,8 @@ export default function LatestBlogsWidget() {
 
   if (loading) {
     return (
-      <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
-        <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
+      <div className="rounded-lg border border-border bg-card p-4 text-card-foreground">
+        <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-3">
           Latest Blog Posts
         </div>
         <div className="space-y-3">
@@ -60,8 +60,8 @@ export default function LatestBlogsWidget() {
   }
 
   return (
-    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
-      <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
+    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground">
+      <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-3">
         Latest Blog Posts
       </div>
 

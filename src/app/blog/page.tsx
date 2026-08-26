@@ -32,8 +32,8 @@ export default async function BlogPage() {
         <BlurFade delay={BLUR_FADE_DELAY * 0.5}>
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bebas">
-                Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Writings<span className="text-[#FF0000]">.</span>
+              <h2 className="text-3xl font-display tracking-[-0.04em]">
+                Rahfi<span className="text-white">&apos;</span>s <span className="text-white">|</span> Writings<span className="text-white">.</span>
               </h2>
               <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 I enjoy sharing my thoughts and experiences through writing. Here are some of my
@@ -70,7 +70,7 @@ export default async function BlogPage() {
             </BlurFade>
           ))}
       </div>
-      <footer className="mt-12 text-center text-sm font-bebas text-muted-foreground pb-24 lg:pb-6">
+      <footer className="mt-12 text-center text-sm font-accent text-muted-foreground pb-24 lg:pb-6">
         <p>© 2025 Naufal Rahfi Anugerah | All rights reserved.</p>
       </footer>
     </section>

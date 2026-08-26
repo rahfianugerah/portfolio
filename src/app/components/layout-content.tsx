@@ -66,8 +66,8 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
               {/* 6. Services Card */}
               <BlurFade delay={0.28}>
                 <Link href="/service">
-                  <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm hover:bg-muted/50 transition-colors cursor-pointer">
-                    <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-1">
+                  <div className="rounded-lg border border-border bg-card p-4 text-card-foreground hover:bg-muted/50 transition-colors cursor-pointer">
+                    <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-1">
                       Explore
                     </div>
                     <div className="text-sm font-semibold">Services</div>
@@ -81,7 +81,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
               {/* 7. Specialties */}
               <BlurFade delay={0.3}>
                 <div className="rounded-lg border border-border bg-card p-4">
-                  <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-2">
+                  <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-2">
                     Rahfi&apos;s Specialties
                   </div>
                   <IconCloudSpecialties />
@@ -120,7 +120,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
               {/* Footer */}
               <BlurFade delay={0.7}>
-                <footer className="text-center text-sm font-bebas text-muted-foreground pb-24">
+                <footer className="text-center text-sm font-accent text-muted-foreground pb-24">
                   <p>Â© {new Date().getFullYear()} Naufal Rahfi Anugerah | All rights reserved.</p>
                 </footer>
               </BlurFade>

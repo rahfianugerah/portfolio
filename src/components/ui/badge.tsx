@@ -3,18 +3,18 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+// Square, hairline-bordered, wide-tracked: the small uppercase chip the consulting site
+// uses for tags and markers. No fill for emphasis and no shadow.
 const badgeVariants = cva(
-  "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center border px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] transition-colors focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-white",
   {
     variants: {
       variant: {
-        default:
-          "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
+        default: "border-white bg-white text-black hover:bg-zinc-300",
         secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive:
-          "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
-        outline: "text-foreground",
+          "border-zinc-800 bg-transparent text-zinc-400 hover:border-white hover:text-white",
+        destructive: "border-white bg-transparent text-white",
+        outline: "border-zinc-800 text-zinc-300",
       },
     },
     defaultVariants: {

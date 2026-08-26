@@ -52,12 +52,12 @@ export default function ChatbotFab() {
           {/* Mobile Header */}
           <div className="flex items-center justify-between border-b bg-muted/40 px-3 py-3 cursor-default shrink-0">
             <div className="flex items-center gap-2 text-sm font-medium">
-              <div className="h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse" />
+              <div className="h-2.5 w-2.5 rounded-full bg-white animate-pulse" />
               <span>AI Chatbot</span>
             </div>
             <button
               aria-label="Close chatbot"
-              className="rounded-full p-1 hover:bg-muted/80 transition-colors"
+              className="p-1 hover:bg-muted/80 transition-colors"
               onClick={() => setOpen(false)}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -75,9 +75,9 @@ export default function ChatbotFab() {
       <button
         aria-label="Open chatbot"
         onClick={() => !isDragging.current && setOpen((v) => !v)}
-        className="group h-14 w-14 rounded-full bg-primary shadow-lg ring-1 ring-primary/30 transition-transform duration-200 hover:scale-105 active:scale-95 flex items-center justify-center"
+        className="group h-14 w-14 bg-primary ring-1 ring-primary/30 transition-transform duration-200 hover:scale-105 active:scale-95 flex items-center justify-center"
       >
-        <span className="font-bebas text-xl text-primary-foreground pointer-events-none">R</span>
+        <span className="font-display text-xl text-primary-foreground pointer-events-none">R</span>
       </button>
     </div>
   );

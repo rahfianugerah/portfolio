@@ -52,7 +52,7 @@ const components: Partial<PortableTextComponents> = {
           href={href}
           target={isInternal ? "_self" : "_blank"}
           rel={isInternal ? undefined : "noopener noreferrer"}
-          className="text-blue-600 dark:text-blue-400 hover:underline underline-offset-2 transition-colors"
+          className="text-white hover:underline underline-offset-2 transition-colors"
         >
           {children}
         </a>
