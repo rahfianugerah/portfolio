@@ -31,7 +31,7 @@ export default function ImageCarousel({ images, intervalMs = 3000 }: ImageCarous
 
   return (
     // FIX 1: Added 'shrink-0' so it never gets squeezed by the sidebar height
-    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground">
+    <div className="w-full shrink-0 overflow-hidden">
       <div className="relative aspect-square w-full group">
         
         {items.map((src, i) => (

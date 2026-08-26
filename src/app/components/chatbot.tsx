@@ -1,171 +1,214 @@
 "use client";
-import { useState, useRef, useEffect, useId } from "react";
-import { cn } from "@/lib/utils";
+
+import { useState, useRef, useEffect, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { generateChatResponse } from "@/app/actions";
-import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
-type ChatbotProps = {
-  minimal?: boolean;
+type Message = { role: "user" | "assistant"; content: string };
+
+const GREETING: Message = {
+  role: "assistant",
+  content:
+    "I'm Rahfi's assistant. Ask me about his experience, the projects he has shipped, or the stack he works in.",
 };
 
-type Message = { role: "user" | "assistant" | "model"; content: string };
+const SUGGESTIONS = [
+  "What has Rahfi worked on most recently?",
+  "Summarise his machine learning experience.",
+  "Which projects use Next.js?",
+  "Is he open to new opportunities?",
+];
 
-export default function Chatbot({ minimal = false }: ChatbotProps) {
-  const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Hi! I'm Rahfi's AI assistant. Ask me anything about his skills, projects, or experience!" },
-  ]);
+export default function Chatbot() {
+  const [messages, setMessages] = useState<Message[]>([GREETING]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const inputId = useId();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // 1. Load Chat History from Session Storage on Mount
+  // Restore, then persist. Session-scoped on purpose: a conversation about someone's
+  // CV is not something to leave behind on a shared machine.
   useEffect(() => {
     const saved = sessionStorage.getItem("chat_history");
-    if (saved) {
-      try {
-        setMessages(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to load chat history", e);
-      }
+    if (!saved) return;
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length) setMessages(parsed);
+    } catch (error) {
+      console.error("Failed to load chat history", error);
     }
   }, []);
 
-  // 2. Save Chat History whenever messages change
   useEffect(() => {
-    if (messages.length > 0) {
-      sessionStorage.setItem("chat_history", JSON.stringify(messages));
-    }
+    sessionStorage.setItem("chat_history", JSON.stringify(messages));
   }, [messages]);
 
   useEffect(() => {
-    if (scrollRef.current) {
-      setTimeout(() => {
-        scrollRef.current!.scrollTop = scrollRef.current!.scrollHeight;
-      }, 100);
-    }
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
   }, [messages, busy]);
 
-  async function handleSend() {
-    const text = input.trim();
-    if (!text) return;
+  const send = useCallback(
+    async (text: string) => {
+      const trimmed = text.trim();
+      if (!trimmed || busy) return;
 
-    setInput("");
-    setMessages((m) => [...m, { role: "user", content: text }]);
-    setBusy(true);
+      setInput("");
+      setBusy(true);
 
-    try {
-      const historyForServer = messages.slice(1).map(m => ({
-        role: m.role === "assistant" ? "model" : "user",
-        parts: [{ text: m.content }]
-      }));
+      // Captured before the state update so the request carries the history the model
+      // saw, not one that already includes the message being asked about.
+      const history = messages
+        .slice(1)
+        .map((m) => ({
+          role: m.role === "assistant" ? "model" : "user",
+          parts: [{ text: m.content }],
+        }));
 
-      const result = await generateChatResponse(historyForServer, text);
+      setMessages((m) => [...m, { role: "user", content: trimmed }]);
 
-      if (result.error) {
-        throw new Error(result.error);
+      try {
+        const result = await generateChatResponse(history, trimmed);
+        if (result.error) throw new Error(result.error);
+        setMessages((m) => [
+          ...m,
+          { role: "assistant", content: result.success || "" },
+        ]);
+      } catch (error) {
+        console.error("Chat Error:", error);
+        setMessages((m) => [
+          ...m,
+          {
+            role: "assistant",
+            content: "Sorry, something went wrong. Please try again.",
+          },
+        ]);
+      } finally {
+        setBusy(false);
       }
+    },
+    [busy, messages]
+  );
 
-      setMessages((m) => [...m, { role: "assistant", content: result.success || "" }]);
-
-    } catch (error) {
-      console.error("Chat Error:", error);
-      setMessages((m) => [
-        ...m,
-        { role: "assistant", content: "Sorry, something went wrong. Please try again." },
-      ]);
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      send(input);
     }
   };
 
-  return (
-    <div className={cn(
-      "flex flex-col h-full w-full",
-      !minimal && "rounded-lg border bg-card text-card-foreground"
-    )}>
-      {!minimal && (
-        <div className="border-b p-3 text-sm font-medium">AI Chatbot</div>
-      )}
+  const isEmpty = messages.length === 1;
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-4 min-h-0">
-        <div className="flex flex-col gap-4">
-            {messages.map((m, i) => (
-              <motion.div
-                key={i}
-                layout
-                initial={
-                  i === 0 
-                  ? { opacity: 1, scale: 1, y: 0 } 
-                  : { opacity: 0, scale: 0.9, y: 10 } 
-                }
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className={m.role === "user" ? "text-right" : "text-left"}
-              >
-                <div className={`inline-block text-left max-w-[85%] rounded-lg px-3 py-2 text-sm ${
-                    m.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
-                }`}>
+  return (
+    <div className="flex h-full flex-col">
+      <header className="flex shrink-0 items-center justify-between border-b border-border px-6 py-4">
+        <div>
+          <h1 className="heading-display text-base text-white">Rahfi&apos;s Assistant</h1>
+          <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-zinc-600">
+            Answers from his resume only
+          </p>
+        </div>
+        {!isEmpty && (
+          <button
+            type="button"
+            onClick={() => {
+              setMessages([GREETING]);
+              sessionStorage.removeItem("chat_history");
+            }}
+            className="min-h-11 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+          >
+            New chat
+          </button>
+        )}
+      </header>
+
+      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-3xl px-6 py-10">
+          {messages.map((m, i) => (
+            <div
+              key={i}
+              className={cn("mb-8 last:mb-0", m.role === "user" && "flex justify-end")}
+            >
+              {m.role === "user" ? (
+                <p className="max-w-[85%] border border-border bg-white/5 px-4 py-3 text-sm leading-6 text-white">
+                  {m.content}
+                </p>
+              ) : (
+                <div>
+                  <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-600">
+                    Assistant
+                  </p>
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
-                    className={`prose break-words text-sm ${
-                      m.role === "user"
-                        ? "prose-invert text-primary-foreground"
-                        : "dark:prose-invert"
-                    }`}
+                    className="prose prose-invert max-w-none text-sm leading-7 text-zinc-300"
                     components={{
-                      ul: ({ children }) => <ul className="list-disc pl-4 mb-2 last:mb-0">{children}</ul>,
-                      ol: ({ children }) => <ol className="list-decimal pl-4 mb-2 last:mb-0">{children}</ol>,
-                      p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-                      a: ({ href, children }) => <a href={href} target="_blank" className="underline font-bold" rel="noopener noreferrer">{children}</a>
+                      a: ({ href, children }) => (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white underline underline-offset-4"
+                        >
+                          {children}
+                        </a>
+                      ),
                     }}
                   >
                     {m.content}
                   </ReactMarkdown>
                 </div>
-              </motion.div>
-            ))}
-            
-            {busy && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                className="text-left"
-              >
-                <div className="inline-block rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">
-                  <span className="animate-pulse">Thinking...</span>
-                </div>
-              </motion.div>
-            )}
+              )}
+            </div>
+          ))}
+
+          {busy && (
+            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-600">
+              <span className="animate-pulse">Thinking</span>
+            </p>
+          )}
+
+          {isEmpty && !busy && (
+            <div className="mt-10 grid gap-px border border-border bg-border sm:grid-cols-2">
+              {SUGGESTIONS.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => send(s)}
+                  className="min-h-11 bg-black px-4 py-4 text-left text-xs leading-6 text-zinc-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="border-t bg-background/50 p-3">
-        <div className="flex items-center gap-2">
-          <input
-            id={inputId}
-            name="chat-input"
+      <div className="shrink-0 border-t border-border">
+        <div className="mx-auto flex max-w-3xl items-end gap-3 px-6 py-4">
+          <label htmlFor="assistant-input" className="sr-only">
+            Message Rahfi&apos;s assistant
+          </label>
+          <textarea
+            id="assistant-input"
+            ref={textareaRef}
+            rows={1}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
+            onKeyDown={onKeyDown}
             disabled={busy}
-            autoComplete="off"
-            className="flex-1 rounded-md border bg-background px-2 py-2 text-sm focus:outline-none"
-            placeholder="Type a message..."
+            placeholder="Ask about his experience…"
+            className="max-h-40 min-h-11 flex-1 resize-none border border-border bg-black px-4 py-3 text-sm text-white transition-colors placeholder:text-zinc-600 focus:border-white focus:outline-none disabled:opacity-50"
           />
           <button
-            onClick={handleSend}
+            type="button"
+            onClick={() => send(input)}
             disabled={busy || !input.trim()}
-            className="rounded-md bg-primary px-2 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            className="inline-flex min-h-11 items-center border border-white bg-white px-5 text-[11px] font-bold uppercase tracking-[0.18em] text-black transition-colors hover:border-zinc-300 hover:bg-zinc-300 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
             Send
           </button>

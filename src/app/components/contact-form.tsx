@@ -106,7 +106,7 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-6 text-card-foreground h-full flex flex-col">
+    <div className="p-6 h-full flex flex-col">
       <div className="mb-6">
         <h2 className="text-lg heading-display text-foreground mb-2">
           Get In Touch
@@ -211,7 +211,7 @@ export default function ContactForm() {
 
           {submitMessage && (
             <div
-              className={`p-4 rounded-lg text-sm ${
+              className={`p-4 text-sm ${
                 submitMessage.type === "success"
                   ? "bg-white/5 text-white border border-white/20"
                   : "bg-destructive/10 text-destructive border border-destructive/20"

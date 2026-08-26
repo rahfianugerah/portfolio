@@ -40,7 +40,7 @@ export default function LatestBlogsWidget() {
 
   if (loading) {
     return (
-      <div className="rounded-lg border border-border bg-card p-4 text-card-foreground">
+      <div className="p-6">
         <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-3">
           Latest Blog Posts
         </div>
@@ -60,7 +60,7 @@ export default function LatestBlogsWidget() {
   }
 
   return (
-    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground">
+    <div className="p-6">
       <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-3">
         Latest Blog Posts
       </div>
@@ -72,7 +72,7 @@ export default function LatestBlogsWidget() {
           {posts.map((post) => (
             <Link
               key={post.slug}
-              href={`/blog/${post.slug}`}
+              href={`/writing/${post.slug}`}
               className="flex gap-3 group hover:bg-muted/50 rounded-md p-1.5 -m-1.5 transition-colors"
             >
               {/* Thumbnail
@@ -108,7 +108,7 @@ export default function LatestBlogsWidget() {
 
       {/* Read More Button */}
       <Link
-        href="/blog"
+        href="/writing"
         className="mt-4 flex items-center justify-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors py-2 border-t border-border"
       >
         Read More Blogs

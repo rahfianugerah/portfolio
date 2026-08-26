@@ -20,7 +20,7 @@ export default function CodeBlock({ value }: { value: any }) {
   const style = isDark ? atomDark : oneLight;
 
   return (
-    <div className="my-6 rounded-lg overflow-hidden border border-border not-prose w-full mx-auto max-w-[650px]">
+    <div className="my-6 overflow-hidden border border-border not-prose w-full mx-auto max-w-[650px]">
       {value.filename && (
         <div className="bg-muted/80 px-4 py-2 text-xs text-muted-foreground font-mono border-b border-border/50 flex items-center gap-2">
           <span className="flex gap-1.5">

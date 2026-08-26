@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
+import { getSessionId } from "@/lib/session";
 import { WidgetFallback } from "@/components/widget-error-boundary";
 import { cn } from "@/lib/utils";
 
@@ -12,18 +13,6 @@ type AnalyticsData = {
   delta7d: number;
   sparkline: number[];
 };
-
-// Generate a unique session ID for this browser tab
-function getSessionId(): string {
-  if (typeof window === "undefined") return "";
-  
-  let sessionId = sessionStorage.getItem("portfolio_session_id");
-  if (!sessionId) {
-    sessionId = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
-    sessionStorage.setItem("portfolio_session_id", sessionId);
-  }
-  return sessionId;
-}
 
 export default function AnalyticsWidget() {
   const [data, setData] = useState<AnalyticsData | null>(null);
@@ -73,7 +62,7 @@ export default function AnalyticsWidget() {
 
   if (loading) {
     return (
-      <div className="rounded-lg border border-border bg-card p-4">
+      <div className="p-6">
         <div className="animate-pulse space-y-3">
           <div className="h-4 w-24 bg-muted rounded" />
           <div className="h-8 w-16 bg-muted rounded" />
@@ -90,7 +79,7 @@ export default function AnalyticsWidget() {
   const maxSparkline = Math.max(...data.sparkline, 1);
 
   return (
-    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground">
+    <div className="p-6">
       <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-3">
         Website Analytics
       </div>

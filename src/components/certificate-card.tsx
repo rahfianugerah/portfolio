@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useMemo, useEffect, useState } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 /* ========= Types ========= */
@@ -44,64 +42,53 @@ export function CertificateCard({
   links = [],
   className,
 }: CertificateCardProps) {
-  const Wrapper: React.ElementType = href ? "a" : React.Fragment;
+  const Wrapper: React.ElementType = href ? "a" : "div";
   const wrapperProps = href
     ? { href, target: "_blank", rel: "noopener noreferrer" }
     : {};
 
+  // A cell in a shared-border grid, not a card: it draws its right and bottom edge and
+  // the grid draws the left and top, so every division is one hairline between two cells.
   return (
-    <Wrapper {...(wrapperProps as any)}>
-      <Card
-        className={cn(
-          "flex flex-col overflow-hidden ease-out h-full border border-border rounded-sm bg-white/5 px-2 py-2 text-sm text-foreground/90 backdrop-blur transition",
-          "hover:border-white",
-          className
-        )}
-      >
-        <CardHeader className="px-2 pt-2">
-          <CardTitle className="text-sm font-medium">{title}</CardTitle>
-          {issued && <p className="text-xs text-muted-foreground">{issued}</p>}
-        </CardHeader>
+    <Wrapper
+      {...(wrapperProps as any)}
+      className={cn(
+        "flex h-full flex-col border-b border-r border-border p-6 transition-colors hover:bg-white/[0.02]",
+        className
+      )}
+    >
+      <h4 className="text-sm font-semibold text-white">{title}</h4>
+      {issued && (
+        <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-zinc-600">
+          {issued}
+        </p>
+      )}
 
-        {description && (
-          <div className="px-2 text-sm text-muted-foreground">{description}</div>
-        )}
+      {description && (
+        <p className="mt-3 text-xs leading-6 text-zinc-400">{description}</p>
+      )}
 
-        {/* Category badges */}
-        {category.length > 0 && (
-          <div className="px-2 pb-2 pt-1 flex flex-row flex-wrap gap-1">
-            {category.map((c) => (
-              <Badge
-                key={c}
-                className="px-2 py-0.5 text-[10px] bg-white/5 text-foreground/80 hover:bg-white/10"
-              >
-                {c}
-              </Badge>
-            ))}
-          </div>
-        )}
+      {category.length > 0 && (
+        <p className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] uppercase tracking-[0.14em] text-zinc-600">
+          {category.map((c) => (
+            <span key={c}>{c}</span>
+          ))}
+        </p>
+      )}
 
-        {/* Links */}
-        {links.length > 0 && (
-          <CardFooter className="px-2 pb-2">
-            <div className="flex flex-row flex-wrap items-center gap-1">
-              {links.map((link, idx) => (
-                <a
-                  href={link.href}
-                  key={`${link.title}-${link.href}-${idx}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Badge className="flex items-center gap-1 px-2 py-1 text-[10px] bg-white/5 text-sm text-foreground/90 backdrop-blur transition hover:bg-white/10">
-                    {link.icon}
-                    {link.title}
-                  </Badge>
-                </a>
-              ))}
-            </div>
-          </CardFooter>
-        )}
-      </Card>
+      {links.length > 0 && (
+        <span className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-5">
+          {links.map((link, idx) => (
+            <span
+              key={`${link.title}-${link.href}-${idx}`}
+              className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400"
+            >
+              {link.icon}
+              {link.title}
+            </span>
+          ))}
+        </span>
+      )}
     </Wrapper>
   );
 }
@@ -224,12 +211,12 @@ export function CertificateSection({
     <>
       {/* Certifications */}
       <div className="mb-8">
-        <h3 className="text-xl font-bold mb-4">Certifications</h3>
+        <h3 className="heading-display mb-6 text-lg text-white">Certifications</h3>
         {pagedCerts.length > 0 ? (
           <>
             <div
               key={`certs-${pageCerts}-${certifications.length}`}
-              className="grid grid-cols-1 gap-6 sm:grid-cols-2 max-w-[800px] mx-auto"
+              className="grid border-l border-t border-border sm:grid-cols-2"
             >
               {pagedCerts.map((cert, idx) => (
                 <CertificateCard
@@ -252,12 +239,12 @@ export function CertificateSection({
 
       {/* Learning Certificates */}
       <div className="mb-8">
-        <h3 className="text-xl font-bold mb-4">Learning Certificates</h3>
+        <h3 className="heading-display mb-6 text-lg text-white">Learning Certificates</h3>
         {pagedLearn.length > 0 ? (
           <>
             <div
               key={`learn-${pageLearn}-${learningCertificates.length}`}
-              className="grid grid-cols-1 gap-6 sm:grid-cols-2 max-w-[800px] mx-auto"
+              className="grid border-l border-t border-border sm:grid-cols-2"
             >
               {pagedLearn.map((cert, idx) => (
                 <CertificateCard

@@ -47,7 +47,7 @@ export default function ProjectsCounter() {
 
   if (loading) {
     return (
-      <div className="rounded-lg border border-border bg-card p-4">
+      <div className="p-6">
         <div className="animate-pulse space-y-3">
           <div className="h-4 w-24 bg-muted rounded" />
           <div className="flex gap-4">
@@ -64,14 +64,14 @@ export default function ProjectsCounter() {
   }
 
   return (
-    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground">
+    <div className="p-6">
       <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-3">
         Projects Overview
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         {/* Total Projects */}
-        <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/30">
+        <div className="flex items-center gap-2 p-2 bg-white/5">
           <div className="p-2 rounded-md bg-white/5">
             <FolderGit2 className="h-4 w-4 text-white" />
           </div>
@@ -82,7 +82,7 @@ export default function ProjectsCounter() {
         </div>
 
         {/* Total Views */}
-        <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/30">
+        <div className="flex items-center gap-2 p-2 bg-white/5">
           <div className="p-2 rounded-md bg-white/5">
             <Eye className="h-4 w-4 text-white" />
           </div>
