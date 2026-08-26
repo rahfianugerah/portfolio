@@ -96,7 +96,7 @@ export default function ExperienceGraph() {
   const tooltipStyle = hoveredIndex !== null ? getTooltipStyle(hoveredIndex) : { transform: "", arrowLeft: "50%" };
 
   return (
-    <div className="w-full rounded-lg border bg-card p-4 text-card-foreground relative z-0">
+    <div className="w-full p-6 relative z-0">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2 text-sm font-bold uppercase text-muted-foreground">
           <span className="relative flex h-2 w-2">

@@ -88,3 +88,62 @@ No change. Nothing about what the site reads or writes moves:
 - **When is the font exposure on the consulting site fixed?** That site serves its display font from a publicly browsable path, which its licence does not permit. Recorded here because it was found during this work; it is a one-file move in a different repository and needs its own change.
 
 The question this document opened with — the licence and provenance of the engraved display face — is answered, and the terms it turned out to carry are recorded under Constraints.
+
+---
+
+# PRD Phase 2: Full-Width Layout and Top Navigation
+
+**Owner:** Naufal Rahfi Anugerah
+**Date:** 2026-08-26
+**Status:** Draft — not started
+
+## Problem
+
+Phase 1 changed how the portfolio looks but deliberately left how it is arranged alone. That arrangement is now the thing holding it back.
+
+The site is built as a narrow centre column flanked by up to four sticky rails. The main content is fixed at 440px on the widest screens, so on a 1920px monitor the writing a visitor actually came to read occupies under a quarter of the width while eight widget cards compete for the rest. Everything is a peer: analytics sit at the same visual weight as the work history.
+
+Navigation compounds it. The primary navigation is a floating dock at the bottom of the screen, which is unusual enough that visitors look for a top bar first and do not find one. The consulting site has a conventional fixed top bar, so the two sites still navigate differently even though they now look alike.
+
+The content is also split across more destinations than it needs. Experience lives on its own page holding a list the home page already shows a truncated copy of, so the same history is maintained in two places and a visitor has to leave home to see all of it.
+
+## Users
+
+The same four as Phase 1. This phase matters most to the **prospective client and the recruiter**, who arrive cold, scan once, and leave: they are the ones paying the cost of a 440px column and a navigation bar that is not where they looked.
+
+## What Is Built
+
+- The site fills the screen. Content spans a full-width container with the same bordered construction as the consulting site, instead of a fixed narrow column with rails beside it.
+- A conventional fixed top navigation bar carries the whole site: **Home, Projects, Services, Writing, Contact**, plus a distinct entry into the assistant.
+- The home page opens with the name and description on the left and an image beside it, and carries the résumé, GitHub, and LinkedIn links directly beneath that description, so the three things a recruiter wants are above the fold.
+- Home reads as one scrollable narrative with anchored sections — about, experiences, projects — reachable both from the hero and by deep link.
+- The **complete** experience list is on the home page. It is no longer truncated, and it is no longer duplicated on a separate page.
+- Every analytics and information card that exists today survives, gathered into one full-width dashboard section on the home page rather than scattered down four rails.
+- The assistant becomes its own full-height page laid out like a conversational app, reached from the top bar and from the hero, instead of a small floating panel.
+
+## What Is Not Built
+
+- **No content or copy rewriting.** Sections move and are re-arranged; their words are not rewritten. Same discipline as Phase 1.
+- **No change to the résumé data.** The structured data is untouched, and the new navigation is defined in its own module rather than driven from it.
+- **No new pages beyond the assistant.** Projects, Services, Writing, and Contact keep their existing pages; only Experience is absorbed into home.
+- **No redesign of the visual language.** Phase 1's palette, typography, geometry, and borders carry over unchanged. This phase moves boxes, it does not restyle them.
+- **No dark and light theming, no accent colour.** Still black and white.
+- **No framework or dependency upgrade**, and no change to any API route, server action, or data source.
+- **No responsive rewrite beyond what full width requires.** The layout must work at mobile, tablet, and desktop, but no new breakpoint system is introduced.
+- **No mega-menu, no mobile drawer animation library, no scroll-spy library.** Anchor navigation is anchors.
+
+## Success Measure
+
+- On a 1920px display, the main content occupies the full container width rather than a 440px column, and no sticky rail remains.
+- Every page's primary navigation is the same fixed top bar, and the floating dock is gone from the codebase.
+- The home page lists every work entry the résumé data holds, and no separate experience page remains.
+- Every card that exists before this phase still renders after it. None is dropped.
+- The hero shows the name, the description, and the résumé, GitHub, and LinkedIn links without scrolling, at desktop and at mobile.
+- Clicking a hero anchor scrolls to the matching section, and loading that anchor as a URL directly lands on it.
+- The assistant page fills the viewport height, keeps its scroll position at the latest message, and behaves the same as the panel it replaces.
+- The production build completes with no new errors, every route still serves, and keyboard focus remains visible throughout.
+
+## Open Questions
+
+- **Does the writing section keep its `/blog` URL, or move to `/writing` to match its label?** Moving is tidier but changes published URLs, so it needs redirects. Owner to decide; the recommendation is to move and redirect, so no existing link breaks.
+

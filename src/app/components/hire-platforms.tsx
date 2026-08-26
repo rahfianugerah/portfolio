@@ -65,7 +65,7 @@ const HIRE_PLATFORMS: Platform[] = [
 
 export default function HirePlatforms() {
   return (
-    <div className="rounded-lg border border-border bg-card p-6 text-card-foreground h-full flex flex-col">
+    <div className="p-6 h-full flex flex-col">
       <div className="mb-6">
         <h2 className="text-lg heading-display text-foreground mb-2">
           Where To Hire Me
@@ -86,7 +86,7 @@ export default function HirePlatforms() {
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-lg",
+                "flex items-center gap-3 px-4 py-3",
                 "border border-border bg-muted/30",
                 "text-muted-foreground",
                 "transition-all duration-200",

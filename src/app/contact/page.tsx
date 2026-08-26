@@ -1,4 +1,5 @@
 import BlurFade from "@/components/magicui/blur-fade";
+import { PageHeader } from "@/components/page-header";
 import ContactForm from "@/app/components/contact-form";
 import HirePlatforms from "@/app/components/hire-platforms";
 import ReCaptchaWrapper from "@/app/components/recaptcha-wrapper";
@@ -12,32 +13,24 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <section id="contact">
-      <div className="space-y-12 w-full py-12">
-        <BlurFade delay={BLUR_FADE_DELAY * 0.5}>
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <div className="space-y-2">
-              <h2 className="text-xl heading-display">
-                Rahfi&apos;s<span className="text-white"> | </span>Contact<span className="text-white">.</span>
-              </h2>
-              <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Have a project in mind or want to collaborate? Feel free to reach out 
-                through the contact form below or connect with me on various professional platforms.
-              </p>
-            </div>
-          </div>
-        </BlurFade>
+    <>
+      <PageHeader
+        eyebrow="Contact"
+        title="Get in Touch"
+        subtitle="A project in mind, a role to discuss, or just a question. The form reaches me directly, and the platforms below work too."
+      />
 
+      <div className="px-6 py-16 sm:px-10 sm:py-20">
         <BlurFade delay={BLUR_FADE_DELAY * 2}>
           <ReCaptchaWrapper>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+            <div className="grid border-l border-t border-border lg:grid-cols-2">
               {/* Left Column - Contact Form */}
-              <div className="w-full h-full">
+              <div className="w-full border-b border-r border-border p-8">
                 <ContactForm />
               </div>
 
               {/* Right Column - Hire Platforms */}
-              <div className="w-full h-full">
+              <div className="w-full border-b border-r border-border p-8">
                 <HirePlatforms />
               </div>
             </div>
@@ -68,9 +61,6 @@ export default function ContactPage() {
         </BlurFade>
       </div>
 
-      <footer className="mt-12 text-center text-sm font-sans text-muted-foreground pb-24 lg:pb-6">
-        <p>© 2025 Naufal Rahfi Anugerah | All rights reserved.</p>
-      </footer>
-    </section>
+    </>
   );
 }

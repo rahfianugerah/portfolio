@@ -36,7 +36,7 @@ export default function QuoteCarousel() {
   }, []);
 
   return (
-    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground relative aspect-[4/5] group">
+    <div className="w-full shrink-0 overflow-hidden relative aspect-[4/5] group">
       {quotes.map((item, i) => (
         <div
           key={i}

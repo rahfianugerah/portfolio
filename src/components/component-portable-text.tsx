@@ -21,7 +21,7 @@ const components: Partial<PortableTextComponents> = {
         const height = value?.asset?.metadata?.dimensions?.height || 600;
 
         return (
-          <figure className="my-6 overflow-hidden rounded-lg border border-border">
+          <figure className="my-6 overflow-hidden border border-border">
               <Image
                 src={imageUrl}
                 alt={alt}

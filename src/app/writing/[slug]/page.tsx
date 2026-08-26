@@ -44,7 +44,7 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime,
-      url: `${DATA.url}/blog/${post.slug}`,
+      url: `${DATA.url}/writing/${post.slug}`,
       images: [
         {
           url: ogImage,
@@ -90,7 +90,7 @@ export default async function Blog({
               image: post.metadata.image
                 ? post.metadata.image
                 : `${DATA.url}/og?title=${post.metadata.title}`,
-              url: `${DATA.url}/blog/${post.slug}`,
+              url: `${DATA.url}/writing/${post.slug}`,
               author: {
                 "@type": "Person",
                 name: DATA.name,
@@ -121,9 +121,6 @@ export default async function Blog({
         </article>
       </section>
       
-      <footer className="mt-12 text-center text-sm font-sans text-muted-foreground pb-24">
-        <p>© 2025 Naufal Rahfi Anugerah | All rights reserved.</p>
-      </footer>
     </BlogPostWrapper>
   );
 }

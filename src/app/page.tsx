@@ -1,253 +1,306 @@
-import BlurFade from "@/components/magicui/blur-fade";
-import { HardworkCard } from "@/components/hardwork-card";
-import { ResumeCard } from "@/components/resume-card";
-import { DATA } from "@/data/resume";
+import Image from "next/image";
 import Link from "next/link";
 import Markdown from "react-markdown";
-import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
+import BlurFade from "@/components/magicui/blur-fade";
 import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pattern";
+import { ResumeCard } from "@/components/resume-card";
+import { HardworkCard } from "@/components/hardwork-card";
+import { ProjectCard } from "@/components/project-card";
+import { groupByCompany } from "@/lib/group-work";
+import { DATA } from "@/data/resume";
 
-const BLUR_FADE_DELAY = 0.04;
+import AnalyticsWidget from "@/app/components/widgets/analytics-widget";
+import ProjectsCounter from "@/app/components/widgets/projects-counter";
+import LatestBlogsWidget from "@/app/components/widgets/latest-blogs";
+import SocialLinks from "@/app/components/widgets/social-links";
+import GithubActivity from "@/app/components/widgets/github-activity";
+import TechStack from "@/components/techstack";
+import { IconCloudSpecialties } from "@/components/specialties-icon";
+import QuoteCarousel from "@/app/components/quote-carousel";
+import ImageCarousel from "@/app/components/image-carousel";
+import ExperienceGraph from "@/app/components/experience-graph";
+import Clock from "@/components/clock";
 
-type JobEntry = {
-  title: string;
-  subtitle?: string;
-  period: string; // e.g. "Jan 2022 - Mar 2023" or "Feb 2023 - Present"
-  description: string | string[];
-  badges?: readonly string[];
-};
+const DELAY = 0.04;
 
-type GroupedCompany = {
-  company: string;
-  logoUrl: string;
-  href?: string;
-  jobs: JobEntry[];
-  period: string; // taken from the latest job below
-};
+// The full history, not the first eight. The separate experience page that used to hold
+// the rest is gone, so this is the only place it lives.
+const companies = groupByCompany(DATA.work);
+const organisations = groupByCompany(DATA.leadership);
 
-// ---- group work by company ----
-const groupedRaw = DATA.work.reduce((acc, item) => {
-  if (!acc[item.company]) {
-    acc[item.company] = {
-      company: item.company,
-      logoUrl: item.logoUrl,
-      href: item.href,
-      jobs: [] as JobEntry[],
-    };
-  }
-  acc[item.company].jobs.push({
-    title: item.title,
-    subtitle: item.location,
-    period: `${item.start} - ${item.end ?? "Present"}`,
-    description:
-      typeof item.description === "string" ? item.description : [...item.description],
-    badges: item.badges,
-  });
-  return acc;
-}, {} as Record<string, Omit<GroupedCompany, "period">>);
-
-const groupedWorkAll: GroupedCompany[] = Object.values(groupedRaw).map((group) => {
-  const latestJob = group.jobs.reduce((prev, curr) => {
-    const getEndTime = (p: string) => {
-      const end = p.split(" - ")[1];
-      return end === "Present" ? Infinity : new Date(end).getTime();
-    };
-    return getEndTime(curr.period) >= getEndTime(prev.period) ? curr : prev;
-  }, group.jobs[0]);
-
-  return {
-    ...group,
-    period: latestJob.period,
-  };
-});
-
-const groupedWorkLimited = groupedWorkAll.slice(0, 8);
+// Everything below is a link the site already knows about; the keys come from the resume
+// data rather than being written out again here.
+const PRIMARY_LINKS = ["CV", "GitHub", "LinkedIn"];
 
 export default function Page() {
+  const heroLinks = Object.entries(DATA.contact.social).filter(([name]) =>
+    PRIMARY_LINKS.includes(name)
+  );
+
   return (
-    <div className="flex flex-col space-y-10">
-      <section id="hero" className="relative overflow-hidden border border-border">
-        {/* The consulting hero texture. The component is copied from consulting so both sites
-            share one grid (one line differs, noted in the file); the opacity and fade are this site's,
-            because the portfolio hero sits in a 440px column rather than a full page. */}
-        {/* The grid must stay hit-testable or its hover trail never fires, so the mouse is
-            let through by making the content above it pointer-events-none instead — the
-            same arrangement the consulting hero uses. Cells are smaller here because this
-            column is a third of the width consulting's hero spans, and 40px cells across
-            440px read as a cage rather than as texture. */}
-        <div className="absolute inset-0 opacity-40">
-          <InteractiveGridPattern width={28} height={28} />
+    <>
+      {/* ---------------- Hero ---------------- */}
+      <section className="relative overflow-hidden border-b border-border">
+        <div className="absolute inset-0 opacity-50">
+          <InteractiveGridPattern />
         </div>
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.45),#000_88%)]" />
-        <div className="pointer-events-none relative z-10 flex-col flex flex-1 space-y-1.5 px-4 py-12">
-          <BlurFade delay={BLUR_FADE_DELAY * 2}>
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-2xl heading-display">{DATA.name}</h2>
-                <p className="md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  <AnimatedShinyText>{DATA.description}</AnimatedShinyText>
-                </p>
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.35),#000_92%)]" />
+
+        <div className="pointer-events-none relative z-10 grid items-center gap-10 px-6 py-20 sm:px-10 lg:grid-cols-[1.2fr_0.8fr] lg:py-28">
+          <BlurFade delay={DELAY * 2}>
+            <div>
+              <p className="w-fit border border-border bg-white/5 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
+                Available for work
+              </p>
+              <h1 className="heading-display mt-6 text-4xl leading-[1.1] text-white sm:text-5xl">
+                {DATA.name}
+              </h1>
+              <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+                {DATA.description}
+              </p>
+
+              <div className="pointer-events-auto mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+                {heroLinks.map(([name, social]: [string, any]) => (
+                  <Link
+                    key={name}
+                    href={social.url}
+                    target="_blank"
+                    className="inline-flex min-h-11 items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                  >
+                    <social.icon className="size-4" />
+                    {name === "CV" ? "Résumé" : name}
+                  </Link>
+                ))}
               </div>
+
+              <div className="pointer-events-auto mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="#experiences"
+                  className="inline-flex min-h-11 items-center justify-center border border-white bg-white px-5 text-[11px] font-bold uppercase tracking-[0.18em] text-black transition-colors hover:border-zinc-300 hover:bg-zinc-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                >
+                  View Work
+                </Link>
+                <Link
+                  href="/chat"
+                  className="inline-flex min-h-11 items-center justify-center border border-zinc-700 px-5 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:border-white hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                >
+                  Ask my assistant
+                </Link>
+              </div>
+            </div>
+          </BlurFade>
+
+          <BlurFade delay={DELAY * 4}>
+            <div className="relative aspect-[4/5] w-full max-w-sm border border-border lg:ml-auto">
+              <Image
+                src="/me-google-1.jpeg"
+                alt={`${DATA.name}, portrait`}
+                fill
+                sizes="(max-width: 1024px) 100vw, 400px"
+                className="object-cover grayscale"
+                priority
+              />
             </div>
           </BlurFade>
         </div>
       </section>
 
-      <section id="about">
-        <BlurFade delay={BLUR_FADE_DELAY * 3}>
-          <h2 className="text-lg heading-display">
-            About <span className="text-white">|</span> Rahfi<span className="text-white">.</span>
-          </h2>
-        </BlurFade>
-        <BlurFade delay={BLUR_FADE_DELAY * 4}>
-          <Markdown className="font-garamond prose max-w-full text-pretty text-justify font-sans text-sm text-muted-foreground dark:prose-invert">
-            {DATA.summary}
-          </Markdown>
-        </BlurFade>
-      </section>
+      {/* ---------------- About ---------------- */}
+      <Section id="about" eyebrow="About" title="Who I Am">
+        <Markdown className="prose prose-invert max-w-3xl text-pretty text-sm leading-7 text-zinc-400">
+          {DATA.summary}
+        </Markdown>
+      </Section>
 
-      <section id="work">
-        <div className="flex min-h-0 flex-col gap-y-3">
-          <BlurFade delay={BLUR_FADE_DELAY * 5}>
-            <h2 className="text-lg heading-display">
-              Rahfi<span className="text-white">&apos;</span>s <span className="text-white">|</span> Experiences<span className="text-white">.</span>
-            </h2>
-          </BlurFade>
-
-          {groupedWorkLimited.map((company, id) => (
-            <BlurFade key={company.company} delay={BLUR_FADE_DELAY * 6 + id * 0.05}>
+      {/* ---------------- Experience ---------------- */}
+      <Section
+        id="experiences"
+        eyebrow="Experience"
+        title="Where I Have Worked"
+        subtitle="Every role, in full. Select a company to read what each one involved."
+      >
+        <div className="max-w-4xl">
+          {companies.map((company, i) => (
+            <BlurFade key={company.company} delay={DELAY * (i + 1)}>
               <ResumeCard
-                logoUrl={company.logoUrl}
-                altText={company.company}
                 title={company.company}
                 href={company.href}
                 period={company.period}
                 jobs={company.jobs}
-                description={company.jobs[0]?.description}
               />
             </BlurFade>
           ))}
-
-          {/* Link to the full experiences page if there are more than 8 */}
-          {groupedWorkAll.length > 8 && (
-            <BlurFade delay={BLUR_FADE_DELAY * 6 + groupedWorkLimited.length * 0.05}>
-              <div className="text-center pt-2">
-                <Link href="/experience" className="underline underline-offset-4">
-                  View All Experiences &gt;
-                </Link>
-              </div>
-            </BlurFade>
-          )}
         </div>
-      </section>
 
-      <section id="education">
-        <div className="flex min-h-0 flex-col gap-y-3">
-          <BlurFade delay={BLUR_FADE_DELAY * 7}>
-            <h2 className="text-lg heading-display">
-              Rahfi<span className="text-white">&apos;</span>s <span className="text-white">|</span> Education<span className="text-white">.</span>
-            </h2>
-          </BlurFade>
-
-          {DATA.education.slice(0, 4).map((edu, id) => {
-            const job: JobEntry = {
-              title: edu.degree,
-              period: `${edu.start} - ${edu.end}`,
-              description:
-                typeof edu.description === "string" ? edu.description : [...edu.description],
-            };
-            return (
-              <BlurFade key={edu.school} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
-                <ResumeCard
-                  logoUrl={edu.logoUrl}
-                  altText={edu.school}
-                  title={edu.school}
-                  href={edu.href}
-                  period={`${edu.start} - ${edu.end}`}
-                  jobs={[job]}
-                  description={job.description}
-                />
-              </BlurFade>
-            );
-          })}
-
-          {/* Link to view all education (full list in /experience#education) */}
-          {Array.isArray(DATA.education) && DATA.education.length > 4 && (
-            <BlurFade delay={BLUR_FADE_DELAY * 8 + 4 * 0.05}>
-              <div className="text-center pt-2">
-                <Link href="/experience" className="underline underline-offset-4">
-                  View All Educations &gt;
-                </Link>
-              </div>
-            </BlurFade>
-          )}
-        </div>
-      </section>
-
-      {/* Skills/Specialties section moved to Left Rail */}
-
-      <section id="hardwork">
-        <div className="space-y-12 w-full py-12">
-          <BlurFade delay={BLUR_FADE_DELAY * 13}>
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-xl heading-display">
-                  Rahfi<span className="text-white">&apos;</span>s <span className="text-white">|</span> Achievements<span className="text-white">.</span>
-                </h2>
-                <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  I have participated in various events, where I have
-                  honed my skills and achieved significant milestones. Here are some of my
-                  notable results.
-                </p>
-              </div>
-            </div>
-          </BlurFade>
-          <BlurFade delay={BLUR_FADE_DELAY * 14}>
-            <ul className="mb-4 text-justify divide-y">
-              {DATA.hardwork.map((project, id) => (
-                <BlurFade
-                  key={project.title + project.dates}
-                  delay={BLUR_FADE_DELAY * 15 + id * 0.05}
-                >
-                  <HardworkCard
-                    title={project.title}
-                    description={project.description}
-                    location={project.location}
-                    issued={project.issued}
-                    dates={project.dates}
-                    image={project.image}
-                    links={project.links}
+        {organisations.length > 0 && (
+          <>
+            <h3 className="mt-16 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+              Leadership
+            </h3>
+            <div className="mt-6 max-w-4xl">
+              {organisations.map((org, i) => (
+                <BlurFade key={org.company} delay={DELAY * (i + 1)}>
+                  <ResumeCard
+                    title={org.company}
+                    href={org.href}
+                    period={org.period}
+                    jobs={org.jobs}
                   />
                 </BlurFade>
               ))}
-            </ul>
-          </BlurFade>
-        </div>
-      </section>
-
-      <section id="contact">
-        <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
-          <BlurFade delay={BLUR_FADE_DELAY * 16}>
-            <div className="space-y-3">
-              <h2 className="text-xl heading-display">
-                Let<span className="text-white">&apos;</span>s Connect<span className="text-white">.</span>
-              </h2>
-              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Want to chat? Just shoot me a dm
-                with a direct question on {" "}
-                <Link
-                  href={DATA.contact.social.LinkedIn.url}
-                  className="text-primary"
-                >
-                  LinkedIn
-                </Link>{" "}
-                and I&apos;ll respond whenever I can. I am always eager to
-                collaborate on innovative projects and engage in meaningful discussions.
-              </p>
             </div>
-          </BlurFade>
+          </>
+        )}
+
+        <h3 className="mt-16 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+          Education
+        </h3>
+        <div className="mt-6 max-w-4xl">
+          {DATA.education.map((edu: any, i: number) => (
+            <BlurFade key={`${edu.school}-${edu.start}`} delay={DELAY * (i + 1)}>
+              <ResumeCard
+                title={edu.school}
+                href={edu.href}
+                period={`${edu.start} - ${edu.end ?? "Present"}`}
+                jobs={[
+                  {
+                    title: edu.degree,
+                    period: `${edu.start} - ${edu.end ?? "Present"}`,
+                    description:
+                      typeof edu.description === "string"
+                        ? edu.description
+                        : [...edu.description],
+                  },
+                ]}
+              />
+            </BlurFade>
+          ))}
+        </div>
+      </Section>
+
+      {/* ---------------- Projects ---------------- */}
+      <Section
+        id="projects"
+        eyebrow="Selected Work"
+        title="Things I Have Built"
+        action={{ label: "All projects", href: "/project" }}
+      >
+        <div className="-mx-6 grid border-l border-t border-border sm:-mx-10 sm:grid-cols-2 lg:grid-cols-3">
+          {DATA.projects.slice(0, 6).map((project: any, i: number) => (
+            <BlurFade key={project.title} delay={DELAY * (i + 1)} className="flex">
+              <ProjectCard
+                href={project.href}
+                title={project.title}
+                description={project.description}
+                status={project.status}
+                tags={project.technologies}
+                image={project.image}
+                video={project.video}
+                links={project.links}
+                className="w-full"
+              />
+            </BlurFade>
+          ))}
+        </div>
+      </Section>
+
+      {/* ---------------- Achievements ---------------- */}
+      <Section id="achievements" eyebrow="Recognition" title="Achievements">
+        <ul className="max-w-4xl divide-y divide-border border-y border-border">
+          {DATA.hardwork.map((item: any, i: number) => (
+            <BlurFade key={item.title + item.dates} delay={DELAY * (i + 1)}>
+              <HardworkCard
+                title={item.title}
+                description={item.description}
+                location={item.location}
+                issued={item.issued}
+                dates={item.dates}
+                image={item.image}
+                links={item.links}
+              />
+            </BlurFade>
+          ))}
+        </ul>
+      </Section>
+
+      {/* ---------------- Stats ---------------- */}
+      <section id="stats" className="scroll-mt-16 border-b border-border">
+        <div className="border-b border-border px-6 py-16 sm:px-10">
+          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+            Signals
+          </p>
+          <h2 className="heading-display mt-4 text-2xl text-white">
+            What This Site Knows
+          </h2>
+        </div>
+
+        {/* The grid draws its own left and top edge; every cell draws its right and
+            bottom. Each division is then one hairline shared by two cells, with no gaps
+            and no last-child arithmetic. */}
+        <div className="grid border-l border-t border-border sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            <Clock key="clock" />,
+            <AnalyticsWidget key="analytics" />,
+            <ProjectsCounter key="projects" />,
+            <GithubActivity key="github" />,
+            <TechStack key="stack" />,
+            <IconCloudSpecialties key="specialties" />,
+            <ExperienceGraph key="velocity" />,
+            <LatestBlogsWidget key="blogs" />,
+            <QuoteCarousel key="quotes" />,
+            <ImageCarousel key="images" />,
+            <SocialLinks key="social" />,
+          ].map((widget, i) => (
+            <div key={i} className="border-b border-r border-border">
+              {widget}
+            </div>
+          ))}
         </div>
       </section>
-    </div>
+    </>
+  );
+}
+
+/** A page section: eyebrow, heading, optional action, then its content. */
+function Section({
+  id,
+  eyebrow,
+  title,
+  subtitle,
+  action,
+  children,
+}: {
+  id?: string;
+  eyebrow: string;
+  title: string;
+  subtitle?: string;
+  action?: { label: string; href: string };
+  children: React.ReactNode;
+}) {
+  return (
+    <section id={id} className="scroll-mt-16 border-b border-border px-6 py-16 sm:px-10 sm:py-20">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
+            {eyebrow}
+          </p>
+          <h2 className="heading-display mt-4 text-2xl text-white sm:text-3xl">
+            {title}
+          </h2>
+          {subtitle && (
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-500">{subtitle}</p>
+          )}
+        </div>
+        {action && (
+          <Link
+            href={action.href}
+            className="inline-flex min-h-11 items-center text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+          >
+            {action.label} &rarr;
+          </Link>
+        )}
+      </div>
+      <div className="mt-10">{children}</div>
+    </section>
   );
 }
