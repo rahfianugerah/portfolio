@@ -1,170 +1,144 @@
 "use client";
-import { useMemo, useState } from "react";
+
+import { useMemo } from "react";
 import { DATA } from "@/data/resume";
-import { cn } from "@/lib/utils";
+import { Widget } from "./widgets/widget";
 
+type Span = {
+  company: string;
+  role: string;
+  start: Date;
+  end: Date;
+  current: boolean;
+  months: number;
+};
+
+const isPresent = (value: unknown) =>
+  !value || ["present", "now"].includes(String(value).trim().toLowerCase());
+
+const monthsBetween = (a: Date, b: Date) =>
+  Math.max(1, Math.round((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24 * 30.44)));
+
+const formatDuration = (months: number) => {
+  const years = Math.floor(months / 12);
+  const rest = months % 12;
+  if (!years) return `${rest}m`;
+  return rest ? `${years}y ${rest}m` : `${years}y`;
+};
+
+/**
+ * A career timeline, replacing the line chart that plotted role duration against role
+ * index. That chart had a legend explaining that height meant tenure, which is the tell
+ * that the shape was not carrying the meaning on its own.
+ *
+ * Each role is a bar placed where it actually sits in time, so overlaps, gaps, and the
+ * run of concurrent work are all visible without a key.
+ */
 export default function ExperienceGraph() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  const data = useMemo(() => {
-    const rawWork = (DATA as any).work ?? [];
+  const { spans, minYear, maxYear, totalMonths } = useMemo(() => {
     const now = new Date();
-    
-    const jobs = rawWork.map((job: any) => {
-      const start = new Date(job.start || job.startDate);
-      const endVal = job.end || job.endDate;
-      const isPresent = 
-        !endVal || 
-        String(endVal).trim().toLowerCase() === "present" || 
-        String(endVal).trim().toLowerCase() === "now";
 
-      const end = isPresent ? now : new Date(endVal);
-      const isValid = !isNaN(start.getTime()) && !isNaN(end.getTime());
-      const diffTime = Math.abs(end.getTime() - start.getTime());
-      const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30.44)); 
-      const roleName = job.position || job.role || job.title || job.company || "Role";
-      const startYear = start.getFullYear();
-      const endYear = isNaN(end.getTime()) ? startYear : end.getFullYear();
-      const displayYear = isPresent ? now.getFullYear() : Math.max(startYear, endYear);
+    const spans: Span[] = ((DATA as any).work ?? [])
+      .map((job: any) => {
+        const start = new Date(job.start ?? job.startDate);
+        const current = isPresent(job.end ?? job.endDate);
+        const end = current ? now : new Date(job.end ?? job.endDate);
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) return null;
+        return {
+          company: job.company ?? job.name ?? "—",
+          role: job.title ?? job.position ?? job.role ?? "Role",
+          start,
+          end,
+          current,
+          months: monthsBetween(start, end),
+        };
+      })
+      .filter(Boolean)
+      .sort((a: Span, b: Span) => a.start.getTime() - b.start.getTime());
 
-      return {
-        role: roleName,
-        company: job.company || job.name,
-        months: isValid ? Math.max(diffMonths, 1) : 1,
-        startVal: start.getTime(),
-        startYear,
-        endYear,
-        displayYear,
-        startStr: job.start || job.startDate,
-        isPresent: isPresent
-      };
-    }).sort((a: any, b: any) => a.startVal - b.startVal);
+    if (!spans.length) {
+      return { spans, minYear: 0, maxYear: 0, totalMonths: 0 };
+    }
 
-    return jobs;
+    const minYear = Math.min(...spans.map((s) => s.start.getFullYear()));
+    const maxYear = Math.max(...spans.map((s) => s.end.getFullYear()));
+
+    // Union of the spans, not the sum: two roles held at once is one stretch of time,
+    // and summing them would claim more experience than actually elapsed.
+    const sorted = [...spans].sort((a, b) => a.start.getTime() - b.start.getTime());
+    let covered = 0;
+    let cursor = 0;
+    for (const s of sorted) {
+      const from = Math.max(s.start.getTime(), cursor);
+      if (s.end.getTime() > from) {
+        covered += s.end.getTime() - from;
+        cursor = s.end.getTime();
+      }
+    }
+    const totalMonths = Math.round(covered / (1000 * 60 * 60 * 24 * 30.44));
+
+    return { spans, minYear, maxYear, totalMonths };
   }, []);
 
-  const formatDuration = (months: number) => {
-    if (months < 12) return `${months}Mo`;
-    const years = Math.floor(months / 12);
-    const remMonths = months % 12;
-    return remMonths > 0 ? `${years}y ${remMonths}m` : `${years}y`;
-  };
+  if (!spans.length) return null;
 
-  if (data.length === 0) return null;
+  const rangeStart = new Date(minYear, 0, 1).getTime();
+  const rangeEnd = new Date(maxYear + 1, 0, 1).getTime();
+  const span = rangeEnd - rangeStart;
+  const pct = (t: number) => ((t - rangeStart) / span) * 100;
 
-  // Geometry
-  const paddingLeft = 6; 
-  const paddingRight = 6;
-  const paddingBottom = 16;
-  const width = 100; 
-  const height = 55; 
-  const maxVal = Math.max(...data.map((d: any) => d.months)) * 1.25; 
-  
-  const points = data.map((d: any, i: number) => {
-    const availableWidth = width - paddingLeft - paddingRight;
-    const x = paddingLeft + (i / (data.length - 1)) * availableWidth;
-    const y = (height - paddingBottom) - (d.months / maxVal) * (height - paddingBottom);
-    return { x, y, ...d };
-  });
-
-  const pathData = points.map((p: any, i: number) => (i === 0 ? `M${p.x},${p.y}` : `L${p.x},${p.y}`)).join(" ");
-  const hoveredPoint = hoveredIndex !== null ? points[hoveredIndex] : null;
-
-  // Generate unique year labels for x-axis
-  const allYears = points.map((p: any) => p.displayYear ?? p.startYear);
-  const minYear = Math.min(...allYears);
-  const maxYear = Math.max(...allYears);
-  const yearLabels = [];
-  for (let year = minYear; year <= maxYear; year++) {
-    const progress = maxYear === minYear ? 0.5 : (year - minYear) / (maxYear - minYear);
-    const x = paddingLeft + progress * (width - paddingLeft - paddingRight);
-    yearLabels.push({ year, x });
-  }
-
-  const getTooltipStyle = (index: number) => {
-    const positionPercent = index / (points.length - 1); 
-    let anchorPercent = 50;
-    if (positionPercent < 0.2) anchorPercent = 15; 
-    else if (positionPercent > 0.8) anchorPercent = 85; 
-
-    return {
-      transform: `translate(-${anchorPercent}%, -135%)`,
-      arrowLeft: `${anchorPercent}%`
-    };
-  };
-
-  const tooltipStyle = hoveredIndex !== null ? getTooltipStyle(hoveredIndex) : { transform: "", arrowLeft: "50%" };
+  const years = Array.from({ length: maxYear - minYear + 1 }, (_, i) => minYear + i);
 
   return (
-    <div className="w-full p-6 relative z-0">
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm font-bold uppercase text-muted-foreground">
-          <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-          </span>
-          Experiences Velocity
+    <Widget
+      title="Career Timeline"
+      meta={`${formatDuration(totalMonths)} total`}
+    >
+      <ul className="flex flex-col gap-2.5">
+        {spans.map((s, i) => (
+          <li key={`${s.company}-${i}`} className="group">
+            <div className="flex items-baseline justify-between gap-2">
+              <span className="truncate text-[11px] text-zinc-400 group-hover:text-white">
+                {s.company}
+              </span>
+              <span className="shrink-0 text-[9px] tabular-nums text-zinc-600">
+                {formatDuration(s.months)}
+              </span>
+            </div>
+            <div className="relative mt-1 h-1.5 w-full bg-white/5">
+              <span
+                title={`${s.role} · ${s.start.getFullYear()}–${
+                  s.current ? "now" : s.end.getFullYear()
+                }`}
+                className={
+                  s.current
+                    ? "absolute inset-y-0 bg-white"
+                    : "absolute inset-y-0 bg-white/40 group-hover:bg-white/70"
+                }
+                style={{
+                  left: `${pct(s.start.getTime())}%`,
+                  width: `${Math.max(pct(s.end.getTime()) - pct(s.start.getTime()), 1.5)}%`,
+                }}
+              />
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-auto pt-5">
+        <div className="flex justify-between border-t border-border pt-2 text-[9px] tabular-nums text-zinc-600">
+          {years.map((y) => (
+            <span key={y}>{String(y).slice(2)}</span>
+          ))}
         </div>
+        <p className="mt-3 text-[10px] leading-5 text-zinc-500">
+          <span className="text-zinc-300">{spans.length}</span> roles across{" "}
+          <span className="text-zinc-300">
+            {new Set(spans.map((s) => s.company)).size}
+          </span>{" "}
+          organisations. Filled bars are current.
+        </p>
       </div>
-
-      <div className="relative aspect-[2/1] w-full mb-2">
-        <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full overflow-visible font-mono text-[4px]">
-            
-            {/* X-Axis Labels */}
-            {yearLabels.map((label, i) => {
-                const anchor = i === 0 ? "start" : i === yearLabels.length - 1 ? "end" : "middle";
-                return <text key={label.year} x={label.x} y={height} textAnchor={anchor} fill="currentColor" className="opacity-50">{label.year}</text>;
-            })}
-
-            {/* Graph Area */}
-            <path d={`${pathData} L${points[points.length-1].x},${height - paddingBottom} L${points[0].x},${height - paddingBottom} Z`} className="fill-primary/20 opacity-50" />
-            <path d={pathData} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary" />
-
-            {/* Dots */}
-            {points.map((p: any, i: number) => (
-                <g key={i}>
-                    {/* FIX: Removed 'p.isPresent ? 3 : 2' logic. Now all dots are radius 2. */}
-                    <circle cx={p.x} cy={p.y} r={2} className={cn("fill-card stroke-primary stroke-[1.5px] transition-colors duration-200 pointer-events-none", hoveredIndex === i ? "fill-primary" : "")} />
-                    <circle cx={p.x} cy={p.y} r="6" className="fill-transparent cursor-pointer" onMouseEnter={() => setHoveredIndex(i)} onMouseLeave={() => setHoveredIndex(null)} />
-                </g>
-            ))}
-        </svg>
-
-        {/* TOOLTIP */}
-        {hoveredPoint && hoveredIndex !== null && (
-           <div
-             className="absolute z-50 pointer-events-none transition-transform duration-75 ease-out"
-             style={{
-               left: `${(hoveredPoint.x / width) * 100}%`, 
-               top: `${(hoveredPoint.y / height) * 100}%`,
-               transform: tooltipStyle.transform 
-             }}
-           >
-              <div className="rounded-md bg-popover px-2 py-1.5 shadow-xl border border-border text-popover-foreground flex flex-col items-center text-center min-w-[80px] max-w-[150px] relative">
-                  <span className="font-bold text-[10px] leading-tight whitespace-normal break-words">
-                    {hoveredPoint.role}
-                  </span>
-                  <span className="text-muted-foreground text-[9px] font-mono mt-0.5">
-                      {formatDuration(hoveredPoint.months)} {hoveredPoint.isPresent && "(Current)"}
-                  </span>
-                  
-                  {/* Dynamic Arrow */}
-                  <div 
-                    className="absolute -bottom-1 h-2 w-2 rotate-45 border-b border-r bg-popover border-border"
-                    style={{ left: tooltipStyle.arrowLeft, transform: "translateX(-50%) rotate(45deg)" }}
-                  ></div>
-              </div>
-           </div>
-        )}
-      </div>
-
-      <div className="rounded bg-muted/50 p-2 text-[10px] text-muted-foreground leading-tight border border-muted mt-2">
-        <span className="font-semibold text-foreground">Graph Logic:</span>
-        <br/>
-        Height = Duration of Role
-        <br/>
-        Higher Peaks = Longer Tenure
-      </div>
-    </div>
+    </Widget>
   );
 }

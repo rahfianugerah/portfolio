@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { Widget } from "./widget";
 
 type BlogPost = {
   slug: string;
@@ -40,10 +41,7 @@ export default function LatestBlogsWidget() {
 
   if (loading) {
     return (
-      <div className="p-6">
-        <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-3">
-          Latest Blog Posts
-        </div>
+      <Widget title="Latest Writing" meta="From the blog">
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="animate-pulse flex gap-3">
@@ -55,15 +53,12 @@ export default function LatestBlogsWidget() {
             </div>
           ))}
         </div>
-      </div>
+      </Widget>
     );
   }
 
   return (
-    <div className="p-6">
-      <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-3">
-        Latest Blog Posts
-      </div>
+    <Widget title="Latest Writing" meta="From the blog">
 
       {posts.length === 0 ? (
         <p className="text-xs text-muted-foreground">No blog posts yet.</p>
@@ -109,11 +104,11 @@ export default function LatestBlogsWidget() {
       {/* Read More Button */}
       <Link
         href="/writing"
-        className="mt-4 flex items-center justify-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors py-2 border-t border-border"
+        className="mt-auto flex min-h-11 items-center gap-1.5 border-t border-border pt-3 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400 transition-colors hover:text-white"
       >
-        Read More Blogs
+        Read more writing
         <ArrowRight className="w-3 h-3" />
       </Link>
-    </div>
+    </Widget>
   );
 }
