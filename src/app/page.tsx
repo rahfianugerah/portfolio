@@ -226,7 +226,7 @@ export default function Page() {
       </Section>
 
       {/* ---------------- Stats ---------------- */}
-      <section id="stats" className="scroll-mt-16 border-b border-border">
+      <section id="stats" className="scroll-mt-16">
         <div className="border-b border-border px-6 py-16 sm:px-10">
           <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-300">
             Signals
@@ -251,7 +251,7 @@ export default function Page() {
             cell paints its own right and bottom edge, and a cell covering 2x2 still has
             exactly one of each. Some grid lines become partial as a result — that is the
             bento reading, not a defect. */}
-        <div className="grid auto-rows-auto border-l border-t border-border sm:auto-rows-[minmax(13rem,auto)] sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid auto-rows-auto border-l border-border sm:auto-rows-[minmax(9rem,auto)] sm:grid-cols-2 lg:grid-cols-4">
           {[
             { node: <SocialLinks key="social" />, span: "" },
             { node: <Clock key="clock" />, span: "" },
@@ -271,7 +271,11 @@ export default function Page() {
           ].map(({ node, span, bleed }, i) => (
             <div
               key={i}
-              className={cn("border-b border-r border-border", span, bleed && "relative")}
+              className={cn(
+                "border-b border-r border-border transition-colors duration-200",
+                span,
+                bleed ? "relative" : "hover:border-zinc-400 hover:bg-white/[0.03]"
+              )}
             >
               {node}
             </div>

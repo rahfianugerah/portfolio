@@ -104,7 +104,7 @@ export default function LatestBlogsWidget() {
       {/* Read More Button */}
       <Link
         href="/writing"
-        className="mt-auto flex min-h-11 items-center gap-1.5 border-t border-border pt-3 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-200 transition-colors hover:text-white"
+        className="mt-4 flex min-h-11 items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-200 transition-colors hover:text-white"
       >
         Read more writing
         <VscChevronRight className="h-3 w-3" />

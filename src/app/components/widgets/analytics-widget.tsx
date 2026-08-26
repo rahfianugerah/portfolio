@@ -119,7 +119,7 @@ export default function AnalyticsWidget() {
           ))}
         </div>
 
-        <p className="mt-4 border-t border-border pt-3 text-[10px] leading-5 text-zinc-300">
+        <p className="mt-4 text-[10px] leading-5 text-zinc-300">
           <span className="text-zinc-100">{weekTotal}</span> visits this week,
           averaging <span className="text-zinc-100">{average}</span> a day
           {peak > 0 && (
