@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google-cloud/storage": "^7.14.0",
     "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^5.2.2",
     "@portabletext/react": "^5.0.0",
@@ -18,9 +19,11 @@
     "@radix-ui/react-tooltip": "^1.2.3",
     "@sanity/code-input": "^6.0.3",
     "@sanity/image-url": "^2.0.1",
+    "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.86.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "file-type": "^19.6.0",
     "framer-motion": "^11.18.2",
     "lucide-react": "^0.395.0",
     "next": "^14.2.30",
@@ -36,6 +39,7 @@
     "react-syntax-highlighter": "^16.1.0",
     "remark-gfm": "^4.0.1",
     "sanity": "^3.99.0",
+    "sharp": "^0.33.5",
     "styled-components": "^6.1.19",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",

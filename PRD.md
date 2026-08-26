@@ -147,3 +147,160 @@ The same four as Phase 1. This phase matters most to the **prospective client an
 
 - **Does the writing section keep its `/blog` URL, or move to `/writing` to match its label?** Moving is tidier but changes published URLs, so it needs redirects. Owner to decide; the recommendation is to move and redirect, so no existing link breaks.
 
+---
+
+# PRD Phase 3: Media CMS and Schema Migration
+
+**Owner:** Naufal Rahfi Anugerah
+**Date:** 2026-08-26
+**Status:** Approved — not yet built
+
+## Problem
+
+Two kinds of content are stuck in the repository today, and both cost a deploy to change.
+
+Photographs live in `public/` and are referenced by raw GitHub URLs baked into
+`src/data/resume.tsx`. Adding one means committing a binary, pushing, and waiting for a
+build. The résumé PDF has the same problem: it is a link in the resume data, so replacing
+it is a code change. Neither is code, and neither should require a developer to be
+available.
+
+The résumé is the sharper case. It is the single most-requested artefact on the site, it
+changes several times a year, and a stale one is worse than none — a recruiter downloading
+last year's CV gets a wrong answer with no indication it is wrong.
+
+The database has the same shape of problem in reverse. The analytics schema exists as two
+`.sql` files at the repository root that contradict each other: one disables row-level
+security, the other enables it, and which is true depends on which was pasted into the
+Supabase console last. There is no record of what has been applied.
+
+## Users
+
+- **Naufal Rahfi Anugerah**, the only person who will ever log in. There is no second
+  editor, no invitation flow, and no role model.
+- **Every visitor**, indirectly: they see the images and download the résumé, and they are
+  the reason the private half of the storage must stay private.
+
+## What Is Built
+
+- A signed-in owner can upload, replace, and delete photographs and documents from a page
+  on the site, without a commit, a build, or a deploy.
+- The résumé can be replaced in place, so the download link never changes and never goes
+  stale.
+- Every uploaded image is compressed, resized, and stripped of its metadata before it is
+  stored, so a photograph taken on a phone cannot publish its GPS coordinates.
+- Files are stored in Google Cloud Storage; their metadata lives in Supabase Postgres, so
+  the database holds facts about files and never file bytes.
+- Public images are served from a CDN-backed public path; the résumé and any document are
+  reachable only through a short-lived signed URL that the site mints on request.
+- The schema is a set of ordered migration files in the repository, applied automatically
+  on a merge to `main`, so what is deployed and what is in the database cannot drift.
+
+## What Is Not Built
+
+- **No second editor, no roles, no permissions model.** One identity, allowlisted by
+  address. A role system for a single user is a system with nothing to say.
+- **No public sign-up, no password reset, no invitation flow.** There is no account to
+  create; the one account already exists.
+- **No password at all.** Authentication is a magic link, so there is no credential to
+  store, leak, phish, or rotate.
+- **No replacement for Sanity.** Blog posts stay in Sanity. This CMS owns the media
+  library and the résumé, and nothing else.
+- **No rich text editing, no page builder, no draft or publish workflow.** Uploading a
+  file is the entire interaction.
+- **No image transformation on read.** Files are processed once on upload and served as
+  stored. A resize-on-demand service is a cache to invalidate and a bill to watch.
+- **No move of the résumé data itself.** `src/data/resume.tsx` still holds the work
+  history; only the files it points at move. That migration is designed separately and
+  remains deferred.
+- **No file bytes in any database.** Cloud SQL was considered and rejected: binaries in
+  Postgres inflate every backup, defeat CDN caching, and lose range requests.
+
+## Success Measure
+
+- A photograph can be replaced without a commit, and the site shows the new one without a
+  deploy.
+- Replacing the résumé does not change its URL, and the previous file stops being
+  reachable.
+- An uploaded photograph carries no EXIF data. Verified by reading the stored object back
+  and finding no GPS or camera tags.
+- A document URL obtained by a visitor stops working after its expiry, and no document is
+  reachable by guessing a path.
+- Every upload route rejects an unauthenticated request, a file whose magic bytes do not
+  match its claimed type, and anything over the size limit.
+- No access token is present in `localStorage` or `sessionStorage` at any point.
+- A migration applied to `main` has already been applied to `staging`, and a failed
+  migration stops the deploy rather than shipping an app against a half-applied schema.
+
+## Constraints
+
+- **One identity source and one identity key.** Supabase Auth, keyed on its stable user
+  UUID rather than the email address, which can change. No bespoke user or password table,
+  per `auth.rules.md`.
+- **The browser holds an `HttpOnly` cookie and nothing else.** No token in `localStorage`
+  or `sessionStorage`, which would expose it to any XSS on the page.
+- **Every route but the login page requires authentication.** There are no open CMS routes.
+- **Uploads are validated by magic bytes**, never by extension or `Content-Type`, both of
+  which the uploader controls. Allowlist: `pdf`, `jpg`, `jpeg`, `png`, `webp`. Size limit
+  10 MB, configurable.
+- **Stored filenames are generated by the server** from a hash. The original name is kept
+  as metadata only, because a user-supplied name is a path traversal waiting to happen.
+- **Images are re-encoded on the server**, to WebP at quality 80–85, at most 2000 px on the
+  longest side, with EXIF stripped. Re-encoding also normalizes the file and discards any
+  unexpected payload. A 300 px thumbnail is generated for list views.
+- **A compressed file is never larger than its original.** Where it would be, the original
+  is kept.
+- **Recorded for every file**: original filename, MIME type, original size, stored size,
+  SHA-256, uploader identity, and an ISO 8601 timestamp. Deduplicated by hash.
+- **The GCS service-account key is the most dangerous secret either project holds.** It
+  never carries a `NEXT_PUBLIC_` prefix, is never read outside a server route, and is
+  scoped to one bucket with object-level permissions only — no bucket administration, no
+  IAM.
+- **Migrations are forward-only and additive.** Add a column, backfill, and drop in a later
+  migration, never in the same one. A migration that fails aborts the deploy.
+
+### The one place two standards disagree
+
+`media.rules.md` requires that uploaded files be *"served only through an authenticated
+endpoint"* and that an upload folder is *"never exposed directly to the public"*. That rule
+is written for documents in a business application, and a portfolio's photographs are
+public by definition — serving them through an authenticated endpoint would mean no visitor
+could see them.
+
+The resolution splits storage by intent rather than weakening the rule:
+
+| Path | Holds | Served | Why |
+| :- | :- | :- | :- |
+| `public/` | Portfolio photographs | Public, CDN-backed | Displaying them is the point |
+| `private/` | The résumé and any document | Signed URL, minutes-long expiry | These are personal data and not for indexing |
+
+Both halves keep every other control: uniform bucket-level access so no object carries its
+own ACL, server-generated names so nothing is guessable, no directory listing on either
+path, and no execution anywhere. The intent of the rule — no open upload folder, nothing
+guessable, nothing executable — holds; only the read path differs, and it differs because
+the two kinds of file genuinely differ.
+
+## Data
+
+**New, in Supabase Postgres:** one `media` table holding file metadata only — id, storage
+path, visibility, original filename, MIME type, byte sizes, SHA-256, dimensions, alt text,
+uploader id, and timestamps. No file bytes.
+
+**New, in Google Cloud Storage:** the files themselves, under the two prefixes above.
+
+**Personal data:** the résumé contains a name, contact details, and an employment history.
+It is personal data, which is why it sits behind a signed URL rather than a public path.
+Uploaded photographs may contain identifiable people, which is why EXIF is stripped —
+location metadata on a photograph is personal data under both Indonesia's UU PDP and the
+GDPR.
+
+**Row-level security:** public read on `media` rows marked public; every write restricted to
+the authenticated owner. The two contradictory SQL files at the repository root are replaced
+by ordered migrations, so the applied state stops depending on which was pasted last.
+
+## Open Questions
+
+- **Which email address is the allowlisted owner?** Supplied through `CMS_OWNER_EMAIL`
+  rather than committed, so this is a value to fill rather than a decision to make.
+- **Should the résumé download be rate limited?** It is a public-facing signed-URL mint on
+  an unauthenticated route, which makes it the one place a visitor can cause repeated work.
