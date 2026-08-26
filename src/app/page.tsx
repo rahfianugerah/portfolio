@@ -20,7 +20,6 @@ import TechStack from "@/components/techstack";
 import { IconCloudSpecialties } from "@/components/specialties-icon";
 import QuoteCarousel from "@/app/components/quote-carousel";
 import ImageCarousel from "@/app/components/image-carousel";
-import ExperienceGraph from "@/app/components/experience-graph";
 import Colophon from "@/app/components/widgets/colophon";
 import Clock from "@/components/clock";
 
@@ -253,21 +252,21 @@ export default function Page() {
             bento reading, not a defect. */}
         <div className="grid auto-rows-auto border-l border-border sm:auto-rows-[minmax(9rem,auto)] sm:grid-cols-2 lg:grid-cols-4">
           {[
+            { node: <ImageCarousel key="moments" />, span: "lg:col-span-2 lg:row-span-2", bleed: true },
             { node: <SocialLinks key="social" />, span: "" },
+            { node: <TechStack key="stack" />, span: "lg:row-span-2" },
+
             { node: <Clock key="clock" />, span: "" },
+
+            { node: <IconCloudSpecialties key="specialties" />, span: "" },
+            { node: <LatestBlogsWidget key="blogs" />, span: "" },
+            { node: <GithubActivity key="github" />, span: "lg:row-span-2" },
+            { node: <Colophon key="colophon" />, span: "" },
+
             { node: <AnalyticsWidget key="analytics" />, span: "lg:col-span-2 lg:row-span-2" },
+            { node: <QuoteCarousel key="quotes" />, span: "lg:row-span-2", bleed: true },
 
             { node: <ProjectsCounter key="projects" />, span: "" },
-            { node: <LatestBlogsWidget key="blogs" />, span: "" },
-
-            { node: <TechStack key="stack" />, span: "lg:row-span-2" },
-            { node: <GithubActivity key="github" />, span: "lg:row-span-2" },
-            { node: <ImageCarousel key="moments" />, span: "lg:col-span-2 lg:row-span-2", bleed: true },
-
-            { node: <QuoteCarousel key="quotes" />, span: "lg:row-span-2", bleed: true },
-            { node: <ExperienceGraph key="velocity" />, span: "lg:col-span-2 lg:row-span-2" },
-            { node: <Colophon key="colophon" />, span: "" },
-            { node: <IconCloudSpecialties key="specialties" />, span: "" },
           ].map(({ node, span, bleed }, i) => (
             <div
               key={i}
