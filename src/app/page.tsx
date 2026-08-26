@@ -5,6 +5,7 @@ import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
 import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
+import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pattern";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -65,12 +66,19 @@ const groupedWorkLimited = groupedWorkAll.slice(0, 8);
 export default function Page() {
   return (
     <div className="flex flex-col space-y-10">
-      <section id="hero">
-        <div className="flex-col flex flex-1 space-y-1.5 pt-12">
+      <section id="hero" className="relative overflow-hidden border border-border">
+        {/* The consulting hero texture. The component is copied from consulting so both sites
+            share one grid (one line differs, noted in the file); the opacity and fade are this site's,
+            because the portfolio hero sits in a 440px column rather than a full page. */}
+        <div className="pointer-events-none absolute inset-0 opacity-40">
+          <InteractiveGridPattern />
+        </div>
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.45),#000_88%)]" />
+        <div className="relative z-10 flex-col flex flex-1 space-y-1.5 px-4 py-12">
           <BlurFade delay={BLUR_FADE_DELAY * 2}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bebas">{DATA.name}</h2>
+                <h2 className="text-3xl font-accent">{DATA.name}</h2>
                 <p className="md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   <AnimatedShinyText>{DATA.description}</AnimatedShinyText>
                 </p>
@@ -82,8 +90,8 @@ export default function Page() {
 
       <section id="about">
         <BlurFade delay={BLUR_FADE_DELAY * 3}>
-          <h2 className="text-2xl font-bebas">
-            About <span className="text-[#FF0000]">|</span> Rahfi<span className="text-[#FF0000]">.</span>
+          <h2 className="text-2xl font-display tracking-[-0.04em]">
+            About <span className="text-white">|</span> Rahfi<span className="text-white">.</span>
           </h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
@@ -96,8 +104,8 @@ export default function Page() {
       <section id="work">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
-            <h2 className="text-2xl font-bebas">
-              Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Experiences<span className="text-[#FF0000]">.</span>
+            <h2 className="text-2xl font-display tracking-[-0.04em]">
+              Rahfi<span className="text-white">&apos;</span>s <span className="text-white">|</span> Experiences<span className="text-white">.</span>
             </h2>
           </BlurFade>
 
@@ -131,8 +139,8 @@ export default function Page() {
       <section id="education">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 7}>
-            <h2 className="text-2xl font-bebas">
-              Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Education<span className="text-[#FF0000]">.</span>
+            <h2 className="text-2xl font-display tracking-[-0.04em]">
+              Rahfi<span className="text-white">&apos;</span>s <span className="text-white">|</span> Education<span className="text-white">.</span>
             </h2>
           </BlurFade>
 
@@ -178,8 +186,8 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 13}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bebas">
-                  Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Achievements<span className="text-[#FF0000]">.</span>
+                <h2 className="text-3xl font-display tracking-[-0.04em]">
+                  Rahfi<span className="text-white">&apos;</span>s <span className="text-white">|</span> Achievements<span className="text-white">.</span>
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   I have participated in various events, where I have
@@ -216,8 +224,8 @@ export default function Page() {
         <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
           <BlurFade delay={BLUR_FADE_DELAY * 16}>
             <div className="space-y-3">
-              <h2 className="text-3xl font-bebas">
-                Let<span className="text-[#FF0000]">&apos;</span>s Connect<span className="text-[#FF0000]">.</span>
+              <h2 className="text-3xl font-display tracking-[-0.04em]">
+                Let<span className="text-white">&apos;</span>s Connect<span className="text-white">.</span>
               </h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Want to chat? Just shoot me a dm

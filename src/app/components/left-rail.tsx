@@ -71,28 +71,22 @@ export default function LeftRail() {
     );
   }, []);
 
+  // Activity reads as a white opacity ramp rather than a green one. The palette carries
+  // no hue, and intensity is the thing the graph is actually encoding.
   const getLevelColor = (level: number) => {
     switch (level) {
-      case 0: return "bg-muted";
-      case 1: return "bg-green-900/40";
-      case 2: return "bg-green-700/60";
-      case 3: return "bg-green-500/80";
-      case 4: return "bg-green-400";
-      default: return "bg-muted";
+      case 0: return "bg-white/5";
+      case 1: return "bg-white/20";
+      case 2: return "bg-white/40";
+      case 3: return "bg-white/65";
+      case 4: return "bg-white";
+      default: return "bg-white/5";
     }
   };
 
-  const getLanguageColor = (lang: string | null) => {
-    switch (lang?.toLowerCase()) {
-      case "go": return "bg-cyan-500";
-      case "python": return "bg-blue-500";
-      case "typescript": return "bg-blue-600";
-      case "javascript": return "bg-yellow-400";
-      case "html": return "bg-orange-600";
-      case "css": return "bg-purple-500";
-      default: return "bg-gray-500";
-    }
-  };
+  // One neutral dot for every language. The language name is rendered immediately beside
+  // it, so the hue was never the thing carrying the meaning.
+  const getLanguageColor = (_lang: string | null) => "bg-zinc-500";
 
   return (
     <aside className="flex h-auto w-full flex-col gap-4">
@@ -108,11 +102,11 @@ export default function LeftRail() {
       
       {/* GITHUB CARD */}
       <BlurFade delay={0.2}>
-        <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
+        <div className="rounded-lg border bg-card p-4 text-card-foreground">
         
         {/* HEADER: Profile Picture & Info */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="relative h-12 w-12 overflow-hidden rounded-full border border-border">
+          <div className="relative h-12 w-12 overflow-hidden border border-border">
             {loading || !user ? (
               <div className="h-full w-full bg-muted animate-pulse" />
             ) : (
@@ -145,7 +139,7 @@ export default function LeftRail() {
 
         {/* COMMIT GRAPH (Visual Simulation) */}
         <div className="mb-5" ref={containerRef}>
-          <div className="mb-2 flex items-center justify-between text-[10px] text-muted-foreground uppercase tracking-wider font-bold">
+          <div className="mb-2 flex items-center justify-between text-[10px] text-muted-foreground uppercase tracking-[0.22em] font-bold">
             <span>Activity</span>
             <span>Last 30 Days</span>
           </div>
@@ -155,7 +149,7 @@ export default function LeftRail() {
                 <div
                   key={i}
                   className={cn(
-                    "h-2.5 w-2.5 rounded-[1px] transition-all cursor-pointer",
+                    "h-2.5 w-2.5 transition-all cursor-pointer",
                     getLevelColor(level),
                     hoveredSquare === i && "ring-1 ring-primary"
                   )}
@@ -211,7 +205,7 @@ export default function LeftRail() {
 
         {/* LATEST REPOS */}
         <div className="flex flex-col gap-3">
-          <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">
+          <div className="text-[10px] text-muted-foreground uppercase tracking-[0.22em] font-bold">
             Latest Repositories
           </div>
           
@@ -243,7 +237,7 @@ export default function LeftRail() {
                 <div className="flex items-center gap-2 mt-1">
                   {repo.language && (
                     <div className="flex items-center gap-1">
-                      <span className={cn("h-2 w-2 rounded-full", getLanguageColor(repo.language))} />
+                      <span className={cn("h-2 w-2", getLanguageColor(repo.language))} />
                       <span className="text-[10px] text-muted-foreground">{repo.language}</span>
                     </div>
                   )}

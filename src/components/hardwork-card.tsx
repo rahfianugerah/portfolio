@@ -29,7 +29,7 @@ export function HardworkCard({
   return (
     <li className="relative py-4">
       <div className="flex flex-1 flex-col justify-start gap-1">
-      <div className="absolute -left-16 top-2 flex items-center justify-center rounded-full">
+      <div className="absolute -left-16 top-2 flex items-center justify-center">
         {/* <Avatar className="border size-12 m-auto">
           <AvatarImage src={image} alt={title} className="object-contain" />
           <AvatarFallback>{title[0]}</AvatarFallback>
@@ -56,7 +56,7 @@ export function HardworkCard({
         <div className="mt-2 flex flex-row flex-wrap items-start gap-2 ">
           {links?.map((link, idx) => (
             <Link href={link.href} key={idx}>
-              <Badge key={idx} title={link.title} className="flex gap-2 inline-flex items-center rounded-sm bg-white/5 px-2 py-2 text-sm text-foreground/90 shadow-sm backdrop-blur transition hover:bg-white/10">
+              <Badge key={idx} title={link.title} className="flex gap-2 inline-flex items-center rounded-sm bg-white/5 px-2 py-2 text-sm text-foreground/90 backdrop-blur transition hover:bg-white/10">
                 {link.icon}
                 {link.title}
               </Badge>

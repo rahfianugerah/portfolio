@@ -14,7 +14,7 @@ export default function Clock() {
 
   if (!mounted || !date) {
     return (
-      <div className="flex h-[140px] w-full items-center justify-center rounded-lg border bg-card text-card-foreground shadow-sm animate-pulse">
+      <div className="flex h-[140px] w-full items-center justify-center rounded-lg border bg-card text-card-foreground animate-pulse">
         <div className="h-8 w-24 rounded bg-muted"></div>
       </div>
     );
@@ -39,18 +39,18 @@ export default function Clock() {
   const yearStr = date.getFullYear();
 
   return (
-    <div className="flex w-full flex-col items-center justify-center rounded-lg border bg-card py-6 text-card-foreground shadow-sm">
+    <div className="flex w-full flex-col items-center justify-center rounded-lg border bg-card py-6 text-card-foreground">
       {/* Label */}
       <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-widest">
         <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
         </span>
         Jakarta, ID
       </div>
       
       {/* Time - Big Font */}
-      <div className="text-6xl font-bold font-bebas text-primary mt-1 leading-none">
+      <div className="text-6xl font-bold font-display text-primary mt-1 leading-none">
         {timeStr}
       </div>
 

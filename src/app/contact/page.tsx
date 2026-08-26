@@ -17,8 +17,8 @@ export default function ContactPage() {
         <BlurFade delay={BLUR_FADE_DELAY * 0.5}>
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bebas">
-                Rahfi&apos;s<span className="text-[#FF0000]"> | </span>Contact<span className="text-[#FF0000]">.</span>
+              <h2 className="text-3xl font-display tracking-[-0.04em]">
+                Rahfi&apos;s<span className="text-white"> | </span>Contact<span className="text-white">.</span>
               </h2>
               <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Have a project in mind or want to collaborate? Feel free to reach out 
@@ -68,7 +68,7 @@ export default function ContactPage() {
         </BlurFade>
       </div>
 
-      <footer className="mt-12 text-center text-sm font-bebas text-muted-foreground pb-24 lg:pb-6">
+      <footer className="mt-12 text-center text-sm font-accent text-muted-foreground pb-24 lg:pb-6">
         <p>© 2025 Naufal Rahfi Anugerah | All rights reserved.</p>
       </footer>
     </section>

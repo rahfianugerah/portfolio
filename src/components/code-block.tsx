@@ -24,9 +24,9 @@ export default function CodeBlock({ value }: { value: any }) {
       {value.filename && (
         <div className="bg-muted/80 px-4 py-2 text-xs text-muted-foreground font-mono border-b border-border/50 flex items-center gap-2">
           <span className="flex gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-red-500/80"></span>
-            <span className="w-3 h-3 rounded-full bg-yellow-500/80"></span>
-            <span className="w-3 h-3 rounded-full bg-green-500/80"></span>
+            <span className="w-3 h-3 bg-zinc-700"></span>
+            <span className="w-3 h-3 bg-zinc-700"></span>
+            <span className="w-3 h-3 bg-zinc-700"></span>
           </span>
           <span>{value.filename}</span>
         </div>

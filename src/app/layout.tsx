@@ -8,16 +8,19 @@ import LayoutContent from "@/app/components/layout-content";
 
 import type { Metadata } from "next";
 
-import { Inter as FontSans, Source_Code_Pro, Bebas_Neue } from "next/font/google";
+import { Montserrat, Source_Code_Pro } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-export const inter = FontSans({
+export const montserrat = Montserrat({
   subsets: ["latin", "latin-ext"],
-  weight: ["300", "400", "500", "600", "700", "800"],
-  variable: "--font-sans",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-montserrat",
   display: "swap",
 });
 
+// Code blocks only. The consulting site carries no code and so no monospace face;
+// this is the one deliberate deviation from its two-family system.
 export const sourceCodePro = Source_Code_Pro({
   subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600", "700"],
@@ -27,10 +30,13 @@ export const sourceCodePro = Source_Code_Pro({
   display: "swap",
 });
 
-export const bebasNeue = Bebas_Neue({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400"],
-  variable: "--font-bebas",
+// Flowmery, under the 1001Fonts Free For Commercial Use license. Two clauses bind us:
+// section 3 forbids modifying the font, so it is never subset; section 6 forbids the
+// site offering it as a download, so it lives here rather than in public/, where
+// anything is served at a browsable path. next/font emits it as a hashed asset.
+export const flowmery = localFont({
+  src: "../fonts/Flowmery.ttf",
+  variable: "--font-flowmery",
   display: "swap",
 });
 
@@ -92,9 +98,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(sourceCodePro.variable, inter.variable, bebasNeue.variable)} suppressHydrationWarning>
-      <body className={`font-sans ${inter.className}`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+    <html lang="en" className={cn(sourceCodePro.variable, montserrat.variable, flowmery.variable)} suppressHydrationWarning>
+      <body className={`font-sans ${montserrat.className}`}>
+        <ThemeProvider attribute="class" forcedTheme="dark" disableTransitionOnChange>
           <TooltipProvider delayDuration={0}>
             <BlogReadingProvider>
               <LayoutContent>

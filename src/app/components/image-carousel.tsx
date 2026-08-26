@@ -31,7 +31,7 @@ export default function ImageCarousel({ images, intervalMs = 3000 }: ImageCarous
 
   return (
     // FIX 1: Added 'shrink-0' so it never gets squeezed by the sidebar height
-    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm">
+    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground">
       <div className="relative aspect-square w-full group">
         
         {items.map((src, i) => (
@@ -61,7 +61,7 @@ export default function ImageCarousel({ images, intervalMs = 3000 }: ImageCarous
             aria-label={`Go to slide ${i + 1}`}
             onClick={() => setIndex(i)}
             className={cn(
-                "h-2 rounded-full transition-all duration-300",
+                "h-2 transition-all duration-300",
                 index === i ? "bg-primary w-4" : "bg-muted w-2 hover:bg-primary/50"
             )}
           />

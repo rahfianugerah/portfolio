@@ -64,16 +64,16 @@ export default function ProjectsCounter() {
   }
 
   return (
-    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
-      <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
+    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground">
+      <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-3">
         Projects Overview
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         {/* Total Projects */}
         <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/30">
-          <div className="p-2 rounded-md bg-blue-500/10">
-            <FolderGit2 className="h-4 w-4 text-blue-500" />
+          <div className="p-2 rounded-md bg-white/5">
+            <FolderGit2 className="h-4 w-4 text-white" />
           </div>
           <div>
             <div className="text-lg font-bold">{stats.totalProjects}</div>
@@ -83,8 +83,8 @@ export default function ProjectsCounter() {
 
         {/* Total Views */}
         <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/30">
-          <div className="p-2 rounded-md bg-purple-500/10">
-            <Eye className="h-4 w-4 text-purple-500" />
+          <div className="p-2 rounded-md bg-white/5">
+            <Eye className="h-4 w-4 text-white" />
           </div>
           <div>
             <div className="text-lg font-bold">{stats.totalViews.toLocaleString()}</div>

@@ -53,8 +53,8 @@ export function CertificateCard({
     <Wrapper {...(wrapperProps as any)}>
       <Card
         className={cn(
-          "flex flex-col overflow-hidden ease-out h-full rounded-sm bg-white/5 px-2 py-2 text-sm text-foreground/90 shadow-sm backdrop-blur transition",
-          "hover:shadow-md",
+          "flex flex-col overflow-hidden ease-out h-full rounded-sm bg-white/5 px-2 py-2 text-sm text-foreground/90 backdrop-blur transition",
+          "hover:border-white",
           className
         )}
       >
@@ -92,7 +92,7 @@ export function CertificateCard({
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Badge className="flex items-center gap-1 px-2 py-1 text-[10px] bg-white/5 text-sm text-foreground/90 shadow-sm backdrop-blur transition hover:bg-white/10">
+                  <Badge className="flex items-center gap-1 px-2 py-1 text-[10px] bg-white/5 text-sm text-foreground/90 backdrop-blur transition hover:bg-white/10">
                     {link.icon}
                     {link.title}
                   </Badge>
@@ -197,7 +197,7 @@ export function CertificateSection({
                 {n}
                 <span
                   className={cn(
-                    "pointer-events-none absolute left-0 bottom-0 h-[2px] bg-[#FF0000] transition-all duration-300 ease-out",
+                    "pointer-events-none absolute left-0 bottom-0 h-[2px] bg-white transition-all duration-300 ease-out",
                     active ? "w-full" : "w-0 group-hover:w-full"
                   )}
                 />

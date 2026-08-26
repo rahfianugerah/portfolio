@@ -36,7 +36,7 @@ export default function QuoteCarousel() {
   }, []);
 
   return (
-    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm relative aspect-[4/5] group">
+    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground relative aspect-[4/5] group">
       {quotes.map((item, i) => (
         <div
           key={i}
@@ -67,14 +67,14 @@ export default function QuoteCarousel() {
               <path d="M14.017 21L14.017 18C14.017 16.896 14.913 16 16.017 16H19.017C19.569 16 20.017 15.552 20.017 15V9C20.017 8.448 19.569 8 19.017 8H15.017C14.465 8 14.017 8.448 14.017 9V11C14.017 11.552 13.569 12 13.017 12H12.017V5H22.017V15C22.017 18.314 19.331 21 16.017 21H14.017ZM5.01697 21L5.01697 18C5.01697 16.896 5.91297 16 7.01697 16H10.017C10.569 16 11.017 15.552 11.017 15V9C11.017 8.448 10.569 8 10.017 8H6.01697C5.46497 8 5.01697 8.448 5.01697 9V11C5.01697 11.552 4.56897 12 4.01697 12H3.01697V5H13.017V15C13.017 18.314 10.331 21 7.01697 21H5.01697Z" />
             </svg>
             
-            <p className="mb-3 text-lg font-bold leading-tight font-bebas tracking-wide">
+            <p className="mb-3 text-lg font-bold leading-tight font-display tracking-wide">
               &quot;{item.text}&quot;
             </p>
             
             <div className="flex items-center gap-2 border-t border-white/20 pt-2">
               <div className="flex flex-col">
                 <span className="text-xs font-semibold">{item.author}</span>
-                <span className="text-[10px] text-white/60 uppercase tracking-wider">{item.role}</span>
+                <span className="text-[10px] text-white/60 uppercase tracking-[0.22em]">{item.role}</span>
               </div>
             </div>
           </div>

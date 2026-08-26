@@ -1,6 +1,4 @@
-import { sourceCodePro } from "@/app/layout";
 import type { Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
 
 const config = {
   darkMode: ["class"],
@@ -21,10 +19,17 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "Segoe UI", "Roboto", "Helvetica", "Arial"],
+        // Body, UI, labels, eyebrows. Matches the consulting site.
+        sans: ["var(--font-montserrat)", "ui-sans-serif", "system-ui", "Segoe UI", "Roboto", "Helvetica", "Arial"],
+        // Code blocks only.
         mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
-        bebas: ["var(--font-bebas)", "Inter", "sans-serif"],
-        sourceCodePro: ["var(--font-source-code-pro)", ],
+        // Sparing brand accent: the hero name and the footer wordmark, nothing else.
+        // Same role Flowmery holds on the consulting site, which is what ties the two together.
+        accent: ["var(--font-flowmery)", "ui-sans-serif", "system-ui", "sans-serif"],
+        // Page and section headings. --font-display is intentionally undefined until the
+        // engraved face is licensed and dropped in; until then this resolves to Montserrat,
+        // which is exactly how the consulting site sets its own headings.
+        display: ["var(--font-display)", "var(--font-montserrat)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -61,10 +66,21 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      // Every step of the scale collapses to --radius, which is 0. The whole scale is
+      // overridden, not just lg/md/sm: `rounded`, `rounded-xl` and `rounded-t` read
+      // Tailwind's own defaults, so leaving them out would quietly keep corners on the
+      // 21 places that use them. `full` is deliberately left alone — the live-status
+      // pulse dots are the one shape that stays a circle.
       borderRadius: {
+        none: "0px",
+        DEFAULT: "var(--radius)",
+        sm: "var(--radius)",
+        md: "var(--radius)",
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        xl: "var(--radius)",
+        "2xl": "var(--radius)",
+        "3xl": "var(--radius)",
+        full: "9999px",
       },
       keyframes: {
         "accordion-down": {

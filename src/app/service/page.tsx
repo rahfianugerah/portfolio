@@ -28,8 +28,8 @@ export default function ServicePage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-12 flex flex-col gap-8">
       <BlurFade delay={0.05}>
-        <h1 className="text-3xl font-bebas">
-          Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Services<span className="text-[#FF0000]">.</span>
+        <h1 className="text-3xl font-display tracking-[-0.04em]">
+          Rahfi<span className="text-white">&apos;</span>s <span className="text-white">|</span> Services<span className="text-white">.</span>
         </h1>
         <p className="text-muted-foreground text-sm mt-1">
           Here&apos;s what I can help you build. Interested in any of these? Let&apos;s talk.
@@ -39,7 +39,7 @@ export default function ServicePage() {
       <div className="flex flex-col gap-4">
         {SERVICES.map((service, i) => (
           <BlurFade key={service.id} delay={0.1 + i * 0.07}>
-            <div className="rounded-lg border border-border bg-card p-5 flex flex-col gap-3 shadow-sm">
+            <div className="rounded-lg border border-border bg-card p-5 flex flex-col gap-3">
               <div>
                 <h2 className="font-semibold text-base">{service.title}</h2>
                 <p className="text-sm text-muted-foreground mt-1">{service.description}</p>

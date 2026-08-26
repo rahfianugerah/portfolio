@@ -11,8 +11,8 @@ export default function FarLeftRail() {
       {/* Services Card */}
       <BlurFade delay={0.05}>
         <Link href="/service">
-          <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm hover:bg-muted/50 transition-colors cursor-pointer">
-            <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-1">
+          <div className="rounded-lg border border-border bg-card p-4 text-card-foreground hover:bg-muted/50 transition-colors cursor-pointer">
+            <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-1">
               Explore
             </div>
             <div className="text-sm font-semibold">Services</div>
@@ -25,8 +25,8 @@ export default function FarLeftRail() {
 
       {/* Rahfi's Specialties - Icon Cloud */}
       <BlurFade delay={0.1}>
-        <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
-          <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-2">
+        <div className="rounded-lg border border-border bg-card p-4 text-card-foreground">
+          <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-2">
             Rahfi&apos;s Specialties
           </div>
           <IconCloudSpecialties />

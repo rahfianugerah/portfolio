@@ -22,7 +22,7 @@ const SOCIAL_LINKS: SocialLink[] = [
     name: "Instagram",
     url: "https://instagram.com/nrhfx", // Replace with your username
     icon: SiInstagram,
-    color: "hover:bg-pink-500/20 hover:text-pink-500",
+    color: "hover:bg-white/10 hover:text-white",
   },
   {
     name: "Threads",
@@ -34,19 +34,19 @@ const SOCIAL_LINKS: SocialLink[] = [
     name: "Discord",
     url: "https://discord.com/users/rhfx", // Replace with your username or server invite
     icon: SiDiscord,
-    color: "hover:bg-indigo-500/20 hover:text-indigo-500",
+    color: "hover:bg-white/10 hover:text-white",
   },
   {
     name: "LinkedIn",
     url: "https://linkedin.com/in/naufalrahfi", // Replace with your username
     icon: FaLinkedin,
-    color: "hover:bg-blue-500/20 hover:text-blue-500",
+    color: "hover:bg-white/10 hover:text-white",
   },
   {
     name: "GitHub",
     url: "https://github.com/naufalrahfi", // Replace with your username
     icon: SiGithub,
-    color: "hover:bg-gray-500/20 hover:text-gray-500 dark:hover:bg-gray-400/20 dark:hover:text-gray-400",
+    color: "hover:bg-white/10 hover:text-white dark:hover:bg-gray-400/20 dark:hover:text-gray-400",
   },
 ];
 
@@ -76,7 +76,7 @@ export default function SocialLinks({ orientation = "horizontal" }: SocialLinksP
               rel="noopener noreferrer"
               className={cn(
                 "flex items-center justify-center w-12 h-12 rounded-lg",
-                "border border-border bg-card/90 backdrop-blur-sm shadow-sm",
+                "border border-border bg-card/90 backdrop-blur-sm",
                 "text-muted-foreground",
                 "transition-all duration-200",
                 link.color
@@ -94,8 +94,8 @@ export default function SocialLinks({ orientation = "horizontal" }: SocialLinksP
 
   // Default horizontal card style
   return (
-    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
-      <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
+    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground">
+      <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-3">
         Connect With Me
       </div>
 

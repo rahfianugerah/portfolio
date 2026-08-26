@@ -91,7 +91,7 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
   return (
     <div className={cn(
       "flex flex-col h-full w-full",
-      !minimal && "rounded-lg border bg-card text-card-foreground shadow-sm"
+      !minimal && "rounded-lg border bg-card text-card-foreground"
     )}>
       {!minimal && (
         <div className="border-b p-3 text-sm font-medium">AI Chatbot</div>
@@ -112,7 +112,7 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
                 transition={{ duration: 0.3 }}
                 className={m.role === "user" ? "text-right" : "text-left"}
               >
-                <div className={`inline-block text-left max-w-[85%] rounded-lg px-3 py-2 text-sm shadow-sm ${
+                <div className={`inline-block text-left max-w-[85%] rounded-lg px-3 py-2 text-sm ${
                     m.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
                 }`}>
                   <ReactMarkdown
