@@ -251,7 +251,7 @@ export default function Page() {
             cell paints its own right and bottom edge, and a cell covering 2x2 still has
             exactly one of each. Some grid lines become partial as a result — that is the
             bento reading, not a defect. */}
-        <div className="grid auto-rows-auto border-l border-t border-border sm:auto-rows-fr sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid auto-rows-auto border-l border-t border-border sm:auto-rows-[minmax(13rem,auto)] sm:grid-cols-2 lg:grid-cols-4">
           {[
             { node: <Clock key="clock" />, span: "" },
             { node: <AnalyticsWidget key="analytics" />, span: "lg:col-span-2" },
