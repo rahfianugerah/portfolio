@@ -52,7 +52,7 @@ export default function ServicePage() {
         subtitle="Four things I am asked for most. If your problem sits between them, it is still worth a conversation."
       />
 
-      <div className="grid border-l border-t border-border sm:grid-cols-2">
+      <div className="-mr-px grid border-border sm:grid-cols-2">
         {SERVICES.map((service, i) => {
           const Icon = service.icon;
           return (

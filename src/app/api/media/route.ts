@@ -33,7 +33,14 @@ export async function GET() {
   return NextResponse.json({
     items: (data ?? []).map((row: any) => ({
       ...row,
-      url: row.visibility === "public" ? publicUrl(row.storage_path) : null,
+      // A link already carries its destination; a public file gets its CDN URL; a private
+      // file gets nothing here and is reached through a signed URL on request.
+      url:
+        row.kind === "link"
+          ? row.external_url
+          : row.visibility === "public"
+            ? publicUrl(row.storage_path)
+            : null,
     })),
   });
 }

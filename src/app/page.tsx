@@ -187,7 +187,7 @@ export default function Page() {
         title="Things I Have Built"
         action={{ label: "All projects", href: "/project" }}
       >
-        <div className="-mx-6 grid border-l border-t border-border sm:-mx-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="-mx-6 grid border-border sm:-mx-10 sm:grid-cols-2 lg:grid-cols-3">
           {DATA.projects.slice(0, 6).map((project: any, i: number) => (
             <BlurFade key={project.title} delay={DELAY * (i + 1)} className="flex">
               <ProjectCard
@@ -250,7 +250,7 @@ export default function Page() {
             cell paints its own right and bottom edge, and a cell covering 2x2 still has
             exactly one of each. Some grid lines become partial as a result — that is the
             bento reading, not a defect. */}
-        <div className="grid auto-rows-auto border-l border-border sm:auto-rows-[minmax(9rem,auto)] sm:grid-cols-2 lg:grid-cols-4">
+        <div className="-mr-px grid auto-rows-auto border-border sm:auto-rows-[minmax(9rem,auto)] sm:grid-cols-2 lg:grid-cols-4">
           {[
             { node: <ImageCarousel key="moments" />, span: "lg:col-span-2 lg:row-span-2", bleed: true },
             { node: <SocialLinks key="social" />, span: "" },
@@ -273,7 +273,7 @@ export default function Page() {
               className={cn(
                 "border-b border-r border-border transition-colors duration-200",
                 span,
-                bleed ? "relative" : "hover:border-zinc-400 hover:bg-white/[0.03]"
+                bleed ? "relative" : "hover:bg-white/[0.04]"
               )}
             >
               {node}

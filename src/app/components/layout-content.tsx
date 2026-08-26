@@ -37,7 +37,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
 function SiteFooter() {
   return (
-    <footer className="border-t border-border">
+    <footer className="-mt-px border-t border-border">
       <div className="grid md:grid-cols-4">
         <div className="border-b border-border p-6 md:col-span-2 md:border-b-0 md:border-r">
           <Link href="/" className="heading-display text-xl text-white">
@@ -50,12 +50,16 @@ function SiteFooter() {
         </div>
 
         <FooterColumn title="Pages" links={navItems.map((i) => [i.label, i.href])} />
+        {/* The bottom dock used to carry these, read from the resume data. The top bar
+            that replaced it holds page links only, so they live here now rather than
+            disappearing with the dock. */}
         <FooterColumn
           title="Elsewhere"
           links={[
             ["GitHub", "https://github.com/rahfianugerah"],
+            ["LinkedIn", "https://www.linkedin.com/in/rahfianugerah"],
+            ["Résumé", "/api/resume"],
             ["Ask AI", "/chat"],
-            ["Contact", "/contact"],
           ]}
         />
       </div>

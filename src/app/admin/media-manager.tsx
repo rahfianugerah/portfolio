@@ -4,12 +4,16 @@ import { useCallback, useEffect, useState } from "react";
 
 type MediaItem = {
   id: string;
+  kind: "file" | "link";
+  title: string | null;
+  external_url: string | null;
+  category: string | null;
   storage_path: string;
   visibility: "public" | "private";
   slug: string | null;
-  original_filename: string;
-  mime_type: string;
-  stored_bytes: number;
+  original_filename: string | null;
+  mime_type: string | null;
+  stored_bytes: number | null;
   width: number | null;
   height: number | null;
   alt_text: string | null;
@@ -56,6 +60,25 @@ export function MediaManager() {
       await load();
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function addLink(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    setBusy(true);
+    setMessage(null);
+    try {
+      const res = await fetch("/api/media/link", { method: "POST", body: form });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Could not save the link");
+      setMessage("Link saved.");
+      (e.target as HTMLFormElement).reset();
+      await load();
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "Could not save the link");
     } finally {
       setBusy(false);
     }
@@ -138,6 +161,73 @@ export function MediaManager() {
         {message && <p className="mt-4 text-xs text-zinc-300">{message}</p>}
       </form>
 
+      <form onSubmit={addLink} className="mt-6 border border-border p-6">
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
+          Add a link
+        </h2>
+        <p className="mt-3 text-xs leading-6 text-zinc-300">
+          For a document that lives somewhere else — a credential, a paper, a drive folder.
+          Nothing is uploaded and nothing is stored but the address.
+        </p>
+
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <label className="block text-sm">
+            <span className="mb-2 block text-[10px] uppercase tracking-[0.22em] text-zinc-400">
+              Title
+            </span>
+            <input
+              name="title"
+              required
+              placeholder="Machine Learning Certificate"
+              className="min-h-11 w-full border border-input bg-black px-4 text-sm text-white placeholder:text-zinc-500 focus:border-white focus:outline-none"
+            />
+          </label>
+
+          <label className="block text-sm">
+            <span className="mb-2 block text-[10px] uppercase tracking-[0.22em] text-zinc-400">
+              URL
+            </span>
+            <input
+              name="url"
+              type="url"
+              required
+              placeholder="https://example.com/certificate"
+              className="min-h-11 w-full border border-input bg-black px-4 text-sm text-white placeholder:text-zinc-500 focus:border-white focus:outline-none"
+            />
+          </label>
+
+          <label className="block text-sm">
+            <span className="mb-2 block text-[10px] uppercase tracking-[0.22em] text-zinc-400">
+              Category (optional)
+            </span>
+            <input
+              name="category"
+              placeholder="Certificate"
+              className="min-h-11 w-full border border-input bg-black px-4 text-sm text-white placeholder:text-zinc-500 focus:border-white focus:outline-none"
+            />
+          </label>
+
+          <label className="block text-sm">
+            <span className="mb-2 block text-[10px] uppercase tracking-[0.22em] text-zinc-400">
+              Slug (optional)
+            </span>
+            <input
+              name="slug"
+              placeholder="Replaces an entry with the same slug"
+              className="min-h-11 w-full border border-input bg-black px-4 text-sm text-white placeholder:text-zinc-500 focus:border-white focus:outline-none"
+            />
+          </label>
+        </div>
+
+        <button
+          type="submit"
+          disabled={busy}
+          className="mt-6 inline-flex min-h-11 items-center border border-white bg-white px-5 text-[11px] font-bold uppercase tracking-[0.18em] text-black transition-colors hover:bg-zinc-300 disabled:opacity-50"
+        >
+          {busy ? "Working" : "Add Link"}
+        </button>
+      </form>
+
       <h2 className="mt-12 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
         Library {items.length > 0 && `— ${items.length}`}
       </h2>
@@ -152,13 +242,22 @@ export function MediaManager() {
             <li key={item.id} className="flex flex-wrap items-center gap-4 py-4">
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm text-white">
-                  {item.original_filename}
+                  {item.kind === "link" ? item.title : item.original_filename}
                 </span>
-                <span className="mt-1 block text-[10px] uppercase tracking-[0.14em] text-zinc-400">
-                  {item.visibility}
-                  {item.slug ? ` / ${item.slug}` : ""} / {item.mime_type} /{" "}
-                  {kb(item.stored_bytes)}
-                  {item.width ? ` / ${item.width}x${item.height}` : ""}
+                <span className="mt-1 block truncate text-[10px] uppercase tracking-[0.14em] text-zinc-400">
+                  {item.kind === "link"
+                    ? [item.category, item.slug, item.external_url]
+                        .filter(Boolean)
+                        .join(" / ")
+                    : [
+                        item.visibility,
+                        item.slug,
+                        item.mime_type,
+                        item.stored_bytes ? kb(item.stored_bytes) : null,
+                        item.width ? `${item.width}x${item.height}` : null,
+                      ]
+                        .filter(Boolean)
+                        .join(" / ")}
                 </span>
               </span>
 
@@ -174,7 +273,7 @@ export function MediaManager() {
               )}
               <button
                 type="button"
-                onClick={() => remove(item.id, item.original_filename)}
+                onClick={() => remove(item.id, item.title ?? item.original_filename ?? "this item")}
                 disabled={busy}
                 className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-300 hover:text-white disabled:opacity-40"
               >

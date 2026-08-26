@@ -23,7 +23,7 @@ export default function ProjectPage() {
       />
 
       <section id="projects" className="scroll-mt-16">
-        <div className="grid border-l border-t border-border sm:grid-cols-2 lg:grid-cols-3">
+        <div className="-mr-px grid border-border sm:grid-cols-2 lg:grid-cols-3">
           {DATA.projects.map((project: any, i: number) => (
             <BlurFade key={project.title} delay={DELAY * (i + 1)} className="flex">
               <ProjectCardWrapper>
