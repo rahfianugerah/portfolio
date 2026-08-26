@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Widget } from "./widget";
 
 // Lifted out of the left rail before that rail was deleted. Same fetch, same data,
 // same activity ramp — it just no longer lives inside a layout column.
@@ -60,19 +61,16 @@ export default function GithubActivity() {
   }, []);
 
   return (
-    <section className="p-6">
-      <h3 className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
-        GitHub
-      </h3>
+    <Widget title="GitHub" meta={`Last ${WEEKS} weeks`}>
 
       {loading || !user ? (
-        <div className="mt-5 h-4 w-28 animate-pulse bg-white/10" />
+        <div className="h-4 w-28 animate-pulse bg-white/10" />
       ) : (
         <a
           href={user.html_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-5 inline-block text-sm font-semibold text-white transition-colors hover:text-zinc-300"
+          className="inline-block text-sm font-semibold text-white transition-colors hover:text-zinc-300"
         >
           @{user.login}
           <span className="ml-3 text-[11px] font-normal text-zinc-500">
@@ -90,11 +88,8 @@ export default function GithubActivity() {
           />
         ))}
       </div>
-      <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-zinc-600">
-        Activity, last {WEEKS} weeks
-      </p>
 
-      <ul className="mt-6 grid gap-4">
+      <ul className="mt-auto grid gap-4 pt-6">
         {loading
           ? [0, 1, 2].map((i) => (
               <li key={i} className="h-8 animate-pulse bg-white/5" />
@@ -127,6 +122,6 @@ export default function GithubActivity() {
           <li className="text-xs text-zinc-600">No public repositories found.</li>
         )}
       </ul>
-    </section>
+    </Widget>
   );
 }

@@ -19,6 +19,7 @@ import { IconCloudSpecialties } from "@/components/specialties-icon";
 import QuoteCarousel from "@/app/components/quote-carousel";
 import ImageCarousel from "@/app/components/image-carousel";
 import ExperienceGraph from "@/app/components/experience-graph";
+import Colophon from "@/app/components/widgets/colophon";
 import Clock from "@/components/clock";
 
 const DELAY = 0.04;
@@ -236,23 +237,38 @@ export default function Page() {
 
         {/* The grid draws its own left and top edge; every cell draws its right and
             bottom. Each division is then one hairline shared by two cells, with no gaps
-            and no last-child arithmetic. */}
-        <div className="grid border-l border-t border-border sm:grid-cols-2 lg:grid-cols-4">
+            and no last-child arithmetic. auto-rows-fr keeps every row the same height,
+            which is what the pile of mismatched cards was missing.
+
+            The two photographic cells are placed in different columns on purpose: the
+            founder quotes and my own moments share a treatment, so sitting them side by
+            side would read as one repeated card rather than two deliberate ones. */}
+        <div className="grid auto-rows-fr border-l border-t border-border sm:grid-cols-2 lg:grid-cols-4">
           {[
-            <Clock key="clock" />,
-            <AnalyticsWidget key="analytics" />,
-            <ProjectsCounter key="projects" />,
-            <GithubActivity key="github" />,
-            <TechStack key="stack" />,
-            <IconCloudSpecialties key="specialties" />,
-            <ExperienceGraph key="velocity" />,
-            <LatestBlogsWidget key="blogs" />,
-            <QuoteCarousel key="quotes" />,
-            <ImageCarousel key="images" />,
-            <SocialLinks key="social" />,
-          ].map((widget, i) => (
-            <div key={i} className="border-b border-r border-border">
-              {widget}
+            { node: <Clock key="clock" /> },
+            { node: <AnalyticsWidget key="analytics" /> },
+            { node: <ProjectsCounter key="projects" /> },
+            { node: <GithubActivity key="github" /> },
+
+            { node: <TechStack key="stack" /> },
+            { node: <IconCloudSpecialties key="specialties" /> },
+            { node: <ExperienceGraph key="velocity" /> },
+            { node: <LatestBlogsWidget key="blogs" /> },
+
+            { node: <QuoteCarousel key="quotes" />, bleed: true },
+            { node: <Colophon key="colophon" /> },
+            { node: <ImageCarousel key="moments" />, bleed: true },
+            { node: <SocialLinks key="social" /> },
+          ].map(({ node, bleed }, i) => (
+            <div
+              key={i}
+              className={
+                bleed
+                  ? "relative border-b border-r border-border"
+                  : "border-b border-r border-border"
+              }
+            >
+              {node}
             </div>
           ))}
         </div>

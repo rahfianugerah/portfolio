@@ -1,5 +1,6 @@
 "use client";
 
+import { Widget } from "./widget";
 import { WidgetFallback } from "@/components/widget-error-boundary";
 import { 
   SiInstagram, 
@@ -92,36 +93,31 @@ export default function SocialLinks({ orientation = "horizontal" }: SocialLinksP
     );
   }
 
-  // Default horizontal card style
   return (
-    <div className="p-6">
-      <div className="text-[10px] uppercase tracking-[0.22em] font-bold text-muted-foreground mb-3">
-        Connect With Me
-      </div>
-
-      <div className="flex items-center justify-center gap-2">
+    <Widget title="Connect With Me" meta={`${SOCIAL_LINKS.length} places`}>
+      <ul className="flex flex-1 flex-col justify-between">
         {SOCIAL_LINKS.map((link) => {
           const Icon = link.icon;
           return (
-            <a
-              key={link.name}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                "flex items-center justify-center p-2.5",
-                "bg-muted/50 text-muted-foreground",
-                "transition-all duration-200",
-                link.color
-              )}
-              aria-label={`Follow on ${link.name}`}
-              title={link.name}
-            >
-              <Icon className="h-5 w-5" />
-            </a>
+            <li key={link.name}>
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-3 border-b border-border py-3 transition-colors last:border-b-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                <Icon className="h-4 w-4 shrink-0 text-zinc-500 transition-colors group-hover:text-white" />
+                <span className="flex-1 text-[11px] text-zinc-400 transition-colors group-hover:text-white">
+                  {link.name}
+                </span>
+                <span className="text-[10px] text-zinc-700 transition-colors group-hover:text-zinc-400">
+                  &rarr;
+                </span>
+              </a>
+            </li>
           );
         })}
-      </div>
-    </div>
+      </ul>
+    </Widget>
   );
 }
