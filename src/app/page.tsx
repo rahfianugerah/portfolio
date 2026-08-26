@@ -43,7 +43,7 @@ export default function Page() {
     <>
       {/* ---------------- Hero ---------------- */}
       <section className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0">
+        <div className="absolute -inset-px">
           <InteractiveGridPattern />
         </div>
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.25),#000_94%)]" />

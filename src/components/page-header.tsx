@@ -22,7 +22,7 @@ export function PageHeader({
       {/* The grid stays hit-testable or its hover trail never fires; the mouse is let
           through by making the content above it pointer-events-none instead. Same
           arrangement as the home hero and the consulting site. */}
-      <div className="absolute inset-0">
+      <div className="absolute -inset-px">
         <InteractiveGridPattern />
       </div>
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.25),#000_94%)]" />
