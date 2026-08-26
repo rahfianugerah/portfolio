@@ -21,7 +21,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
     <>
       <VisitTracker />
       <Navbar />
-      <div className="mx-auto min-h-screen max-w-[1600px] border-x border-border pt-16">
+      <div className="mx-auto min-h-screen max-w-7xl border-x border-border pt-16">
         {isApp ? (
           <main className="h-[calc(100vh-4rem)]">{children}</main>
         ) : (

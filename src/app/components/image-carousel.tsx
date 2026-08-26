@@ -52,7 +52,7 @@ export default function ImageCarousel({ intervalMs = 5000 }: { intervalMs?: numb
   }, [intervalMs]);
 
   return (
-    <div className="group relative h-full min-h-[22rem] w-full overflow-hidden">
+    <div className="group relative h-full min-h-[22rem] w-full overflow-hidden lg:min-h-0">
       {moments.map((item, i) => (
         <div
           key={item.image}

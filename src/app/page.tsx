@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { VscChevronRight } from "react-icons/vsc";
 import Markdown from "react-markdown";
 import BlurFade from "@/components/magicui/blur-fade";
 import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pattern";
@@ -98,7 +100,7 @@ export default function Page() {
                 alt={`${DATA.name}, portrait`}
                 fill
                 sizes="(max-width: 1024px) 100vw, 400px"
-                className="object-cover grayscale"
+                className="object-cover"
                 priority
               />
             </div>
@@ -120,7 +122,7 @@ export default function Page() {
         title="Where I Have Worked"
         subtitle="Every role, in full. Select a company to read what each one involved."
       >
-        <div className="max-w-4xl">
+        <div>
           {companies.map((company, i) => (
             <BlurFade key={company.company} delay={DELAY * (i + 1)}>
               <ResumeCard
@@ -138,7 +140,7 @@ export default function Page() {
             <h3 className="mt-16 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
               Leadership
             </h3>
-            <div className="mt-6 max-w-4xl">
+            <div className="mt-6">
               {organisations.map((org, i) => (
                 <BlurFade key={org.company} delay={DELAY * (i + 1)}>
                   <ResumeCard
@@ -156,7 +158,7 @@ export default function Page() {
         <h3 className="mt-16 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">
           Education
         </h3>
-        <div className="mt-6 max-w-4xl">
+        <div className="mt-6">
           {DATA.education.map((edu: any, i: number) => (
             <BlurFade key={`${edu.school}-${edu.start}`} delay={DELAY * (i + 1)}>
               <ResumeCard
@@ -207,7 +209,7 @@ export default function Page() {
 
       {/* ---------------- Achievements ---------------- */}
       <Section id="achievements" eyebrow="Recognition" title="Achievements">
-        <ul className="max-w-4xl divide-y divide-border border-y border-border">
+        <ul className="divide-y divide-border border-y border-border">
           {DATA.hardwork.map((item: any, i: number) => (
             <BlurFade key={item.title + item.dates} delay={DELAY * (i + 1)}>
               <HardworkCard
@@ -216,7 +218,6 @@ export default function Page() {
                 location={item.location}
                 issued={item.issued}
                 dates={item.dates}
-                image={item.image}
                 links={item.links}
               />
             </BlurFade>
@@ -235,38 +236,42 @@ export default function Page() {
           </h2>
         </div>
 
-        {/* The grid draws its own left and top edge; every cell draws its right and
-            bottom. Each division is then one hairline shared by two cells, with no gaps
-            and no last-child arithmetic. auto-rows-fr keeps every row the same height,
-            which is what the pile of mismatched cards was missing.
+        {/* Bento. Two rules govern this array and both are load-bearing:
 
-            The two photographic cells are placed in different columns on purpose: the
-            founder quotes and my own moments share a treatment, so sitting them side by
-            side would read as one repeated card rather than two deliberate ones. */}
-        <div className="grid auto-rows-fr border-l border-t border-border sm:grid-cols-2 lg:grid-cols-4">
+            1. Every span is lg:-prefixed. An unprefixed col-span-2 inside a one-column
+               grid makes the browser ADD a column, so the mobile layout would silently
+               become two-wide with half of it empty.
+            2. The tiling must be exact. Grid auto-placement is sparse — the cursor never
+               moves backwards — so a skipped slot is never backfilled, and an empty slot
+               has no element, therefore no border, therefore a black hole with a missing
+               hairline. The spans below sum to exactly 24 across 4 columns x 6 rows, so
+               reordering this array is a layout change, not a cosmetic one.
+
+            The shared-edge scheme is unchanged and needs no adjustment for spans: each
+            cell paints its own right and bottom edge, and a cell covering 2x2 still has
+            exactly one of each. Some grid lines become partial as a result — that is the
+            bento reading, not a defect. */}
+        <div className="grid auto-rows-auto border-l border-t border-border sm:auto-rows-fr sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { node: <Clock key="clock" /> },
-            { node: <AnalyticsWidget key="analytics" /> },
-            { node: <ProjectsCounter key="projects" /> },
-            { node: <GithubActivity key="github" /> },
+            { node: <Clock key="clock" />, span: "" },
+            { node: <AnalyticsWidget key="analytics" />, span: "lg:col-span-2" },
+            { node: <ProjectsCounter key="projects" />, span: "" },
 
-            { node: <TechStack key="stack" /> },
-            { node: <IconCloudSpecialties key="specialties" /> },
-            { node: <ExperienceGraph key="velocity" /> },
-            { node: <LatestBlogsWidget key="blogs" /> },
+            { node: <TechStack key="stack" />, span: "lg:row-span-2" },
+            { node: <IconCloudSpecialties key="specialties" />, span: "lg:col-span-2 lg:row-span-2" },
+            { node: <QuoteCarousel key="quotes" />, span: "lg:row-span-2", bleed: true },
 
-            { node: <QuoteCarousel key="quotes" />, bleed: true },
-            { node: <Colophon key="colophon" /> },
-            { node: <ImageCarousel key="moments" />, bleed: true },
-            { node: <SocialLinks key="social" /> },
-          ].map(({ node, bleed }, i) => (
+            { node: <GithubActivity key="github" />, span: "lg:col-span-2" },
+            { node: <LatestBlogsWidget key="blogs" />, span: "" },
+            { node: <SocialLinks key="social" />, span: "" },
+
+            { node: <ExperienceGraph key="velocity" />, span: "lg:col-span-2 lg:row-span-2" },
+            { node: <ImageCarousel key="moments" />, span: "lg:col-span-2", bleed: true },
+            { node: <Colophon key="colophon" />, span: "lg:col-span-2" },
+          ].map(({ node, span, bleed }, i) => (
             <div
               key={i}
-              className={
-                bleed
-                  ? "relative border-b border-r border-border"
-                  : "border-b border-r border-border"
-              }
+              className={cn("border-b border-r border-border", span, bleed && "relative")}
             >
               {node}
             </div>
@@ -312,7 +317,8 @@ function Section({
             href={action.href}
             className="inline-flex min-h-11 items-center text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
-            {action.label} &rarr;
+            {action.label}
+            <VscChevronRight className="ml-1.5 h-3 w-3" />
           </Link>
         )}
       </div>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { VscChevronRight } from "react-icons/vsc";
 import { Widget } from "./widget";
 
 type BlogPost = {
@@ -107,7 +107,7 @@ export default function LatestBlogsWidget() {
         className="mt-auto flex min-h-11 items-center gap-1.5 border-t border-border pt-3 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400 transition-colors hover:text-white"
       >
         Read more writing
-        <ArrowRight className="w-3 h-3" />
+        <VscChevronRight className="h-3 w-3" />
       </Link>
     </Widget>
   );
