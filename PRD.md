@@ -23,7 +23,7 @@ The cost is credibility at the exact moment it matters most. A prospective clien
 
 Once this exists:
 
-- A visitor moving between the two sites sees one continuous visual identity: the same black ground, the same hairline-border construction, the same square geometry, the same uppercase wide-tracked section labels, and a shared typographic voice.
+- A visitor moving between the two sites sees one continuous visual identity: the same black ground, the same hairline-border construction, the same square geometry, the same uppercase wide-tracked section labels, and the same body typeface.
 - The portfolio reads as the richer, more formal of the two. It carries an engraved display face that the consulting site does not, used in one consistent role, so the two sites read as one identity at two levels of formality rather than as two designs.
 - Every portfolio page — home, experience, projects, services, contact, blog, and blog post — reads in that one language, with no page left in the old vocabulary.
 - The portfolio keeps everything it does today. Every rail, widget, animation, and interactive surface survives the change; only its appearance moves.
@@ -35,7 +35,7 @@ Explicitly out of scope, and why:
 
 - **Light mode.** Retired, at the owner's direction. A black aesthetic that also has to work on white is two designs, not one, and the consulting site has no light mode to unify with. The theme toggle leaves the navigation.
 - **Any accent color.** The palette is black and white only, at the owner's direction. The former red accent is retired entirely rather than being demoted to a status color.
-- **A fourth voice for the display faces.** Three display faces are used, and each has exactly one job. A face used for two jobs, or a fourth face added for a one-off, is the failure mode this bounds against.
+- **A third voice for the display faces.** One engraved face carries headings, one body face carries everything else, and each has exactly one job. A face used for two jobs, or a third added for a one-off, is the failure mode this bounds against. A script face was tried for a brand accent and removed: on a black, square, engraved page it read as belonging to a different site.
 - **Any content or copy change.** No heading is reworded, no project added, no description rewritten. This change is appearance only, so that anything that looks different is a design decision and not a content edit hiding inside one.
 - **Any change to the resume data.** The structured data behind the site is untouched.
 - **Any layout or information-architecture change.** The multi-rail responsive layout, the page set, the navigation targets, and the widget ordering all stay exactly as they are. The bottom floating navigation stays, restyled, at the owner's direction. Restructuring at the same time as re-skinning would make a regression impossible to attribute.
@@ -53,7 +53,7 @@ Checkable after the change:
 - Loading any portfolio page in a fresh browser produces a pure black background, with no light theme reachable by any control, setting, or system preference.
 - A search of the source for the retired red accent value returns nothing, and no color outside black, white, and the grays between them is rendered anywhere a visitor can see.
 - No rounded corner is visible on any card, badge, button, input, or panel outside the deliberate exceptions recorded in the plan.
-- Three display faces and one monospace face are served, each in one role, and no other family is requested by any page.
+- One display face, one body face and one monospace face are served, each in one role, and no other family is requested by any page.
 - No licensed font file is reachable at a browsable URL on the deployed site.
 - A person shown both sites side by side, without being told they are related, identifies them as belonging to the same owner, and identifies the portfolio as the more formal of the two.
 - The production build completes with no new errors or warnings, and every page renders correctly at mobile, tablet, and the widest desktop breakpoint.
@@ -64,12 +64,12 @@ Checkable after the change:
 - **Nothing may stop working.** The chatbot, contact form and its spam protection, visitor analytics, GitHub activity, blog and CMS, and every rail widget must behave exactly as they do today.
 - **The multi-breakpoint rail layout must survive intact**, including its sticky offsets and scroll containers at the widest breakpoint.
 - **Code blocks keep a monospace face.** The consulting site has no code on it and therefore no monospace need; the portfolio does, so a monospace family is retained for that use only. This is a recorded, deliberate deviation.
-- **Display font licensing binds the implementation, and the two faces bind it differently.**
-  - The face shared with the consulting site is free for commercial use, but its terms forbid modifying the font in any way and forbid the site offering it as a download. Format conversion is permitted. In practice the file may not be subset or altered, and may not sit at any path a visitor can browse to.
+- **Display font licensing binds the implementation.**
   - The engraved heading face is under the SIL Open Font License 1.1, which permits modification and redistribution but requires the copyright notice and the licence to travel with every copy. A licence file therefore ships beside the font. Because the upstream package omits the copyright line from its licence file, the notice is taken from the font's own embedded metadata rather than written by hand.
-  - Neither face is subset: one forbids it outright, and subsetting the other would make it a Modified Version that may no longer use its reserved name.
+  - It is not subset, because subsetting would make it a Modified Version that may no longer use its reserved name.
+  - No font sits in the publicly served directory. The licence in force no longer requires this, but one rule for every font is less to get wrong than a rule per licence.
 - **A font's weights are mapped from its embedded metadata, never from its filename.** The engraved face keeps its original naming, in which the upright regular weight is the one called "Heavy". Reading the filename would map it to the wrong weight and leave the browser synthesising a face that already exists.
-- **Every additional font must have its licence confirmed before it ships**, with the terms recorded, in the same way these two were.
+- **Every additional font must have its licence confirmed before it ships**, with the terms recorded, in the same way this one was.
 - **The embedded CMS studio renders its own interface** and cannot be brought into the design language.
 - **Accessibility is not a place to economize.** Contrast, focus visibility, touch target size, and reduced-motion handling are requirements, not preferences.
 - The house design standard in the standards vault is deliberately not applied to this change, at the owner's direction. The consulting site's language is the reference instead. This is a known divergence from `uix.component.md`, recorded here so it is a decision rather than a drift.
