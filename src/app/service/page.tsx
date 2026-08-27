@@ -106,7 +106,7 @@ export default function ServicePage() {
               href="https://consulting.rahfi.pro"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex min-h-11 items-center border border-zinc-500 px-5 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:border-white hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              className="mt-6 inline-flex min-h-11 items-center border border-zinc-600 px-5 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:border-white hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
             >
               Rahfi Consulting
               <VscChevronRight className="ml-1.5 h-3 w-3" />

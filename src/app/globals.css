@@ -24,7 +24,7 @@
       --secondary-foreground: 0 0% 100%;
 
       --muted: 240 5.9% 10%;              /* zinc-900 */
-      --muted-foreground: 240 3.8% 46.1%; /* zinc-500, the consulting meta text */
+      --muted-foreground: 240 5% 64.9%;   /* zinc-400: zinc-500 sank into a pure black ground */
 
       --accent: 240 5.9% 10%;
       --accent-foreground: 0 0% 100%;
@@ -34,8 +34,8 @@
       --destructive: 0 0% 100%;
       --destructive-foreground: 0 0% 0%;
 
-      --border: 240 3.7% 15.9%;           /* zinc-800, every hairline division */
-      --input: 240 5.2% 26.3%;            /* zinc-700, the consulting field border */
+      --border: 240 5.2% 33.9%;           /* zinc-600 (#52525B), the same hairline the consulting site uses */
+      --input: 240 5% 45%;                /* a field border reads a step above a division */
       --ring: 0 0% 100%;                  /* white focus, per the consulting outline */
 
       --radius: 0px;                      /* squares every rounded-lg/md/sm in one value */

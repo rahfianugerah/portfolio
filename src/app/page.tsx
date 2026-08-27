@@ -84,7 +84,7 @@ export default function Page() {
                 </Link>
                 <Link
                   href="/chat"
-                  className="inline-flex min-h-11 items-center justify-center border border-zinc-500 px-5 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:border-white hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                  className="inline-flex min-h-11 items-center justify-center border border-zinc-600 px-5 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:border-white hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
                 >
                   Ask AI
                 </Link>

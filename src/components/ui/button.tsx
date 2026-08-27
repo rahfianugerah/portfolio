@@ -18,7 +18,7 @@ const buttonVariants = cva(
         destructive:
           "border-white bg-transparent text-white hover:bg-white hover:text-black",
         outline:
-          "border-zinc-500 bg-black/50 text-white hover:border-white hover:bg-white hover:text-black",
+          "border-zinc-600 bg-black/50 text-white hover:border-white hover:bg-white hover:text-black",
         secondary:
           "border-zinc-600 bg-zinc-900 text-white hover:border-white",
         // Kept borderless: this is what the navigation dock icons use, and a hover
