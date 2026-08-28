@@ -20,10 +20,10 @@ export default function ContactPage() {
         subtitle="A project in mind, a role to discuss, or just a question. The form reaches me directly, and the platforms below work too."
       />
 
-      <div className="px-6 py-16 sm:px-10 sm:py-20">
+      <div className="border-b border-border px-6 py-16 sm:px-10 sm:py-20">
         <BlurFade delay={BLUR_FADE_DELAY * 2}>
           <ReCaptchaWrapper>
-            <div className="-mr-px grid border-border lg:grid-cols-2">
+            <div className="grid border-l border-t border-border lg:grid-cols-2">
               {/* Left Column - Contact Form */}
               <div className="w-full border-b border-r border-border p-8">
                 <ContactForm />

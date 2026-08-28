@@ -37,7 +37,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
 function SiteFooter() {
   return (
-    <footer className="-mt-px border-t border-border">
+    <footer>
       <div className="grid md:grid-cols-4">
         <div className="border-b border-border p-6 md:col-span-2 md:border-b-0 md:border-r">
           <Link href="/" className="heading-display text-xl text-white">
@@ -63,7 +63,7 @@ function SiteFooter() {
           ]}
         />
       </div>
-      <div className="-mt-px flex flex-col gap-3 border-t border-border px-6 py-5 text-[10px] uppercase tracking-[0.2em] text-zinc-400 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 border-t border-border px-6 py-5 text-[10px] uppercase tracking-[0.2em] text-zinc-400 sm:flex-row sm:items-center sm:justify-between">
         <span>&copy; {new Date().getFullYear()} Naufal Rahfi Anugerah</span>
         <span>All rights reserved</span>
       </div>

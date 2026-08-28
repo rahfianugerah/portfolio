@@ -44,7 +44,7 @@ export default function ProjectPage() {
         </div>
       </section>
 
-      <section id="certifications" className="scroll-mt-16 px-6 py-16 sm:px-10 sm:py-20">
+      <section id="certifications" className="scroll-mt-16 border-b border-border px-6 py-16 sm:px-10 sm:py-20">
         <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-300">
           Credentials
         </p>

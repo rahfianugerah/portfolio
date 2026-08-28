@@ -187,7 +187,7 @@ export default function Page() {
         title="Things I Have Built"
         action={{ label: "All projects", href: "/project" }}
       >
-        <div className="-mx-6 grid border-border sm:-mx-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="-mx-6 grid border-t border-border sm:-mx-10 sm:grid-cols-2 lg:grid-cols-3">
           {DATA.projects.slice(0, 6).map((project: any, i: number) => (
             <BlurFade key={project.title} delay={DELAY * (i + 1)} className="flex">
               <ProjectCard

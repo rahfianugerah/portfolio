@@ -242,7 +242,7 @@ export function CertificateSection({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="-mr-px grid border-border sm:grid-cols-2"
+              className="grid border-l border-t border-border sm:grid-cols-2"
             >
               {pagedCerts.map((cert, idx) => (
                 <CertificateCard
@@ -276,7 +276,7 @@ export function CertificateSection({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="-mr-px grid border-border sm:grid-cols-2"
+              className="grid border-l border-t border-border sm:grid-cols-2"
             >
               {pagedLearn.map((cert, idx) => (
                 <CertificateCard
