@@ -1,104 +1,82 @@
-import React from "react";
-import { ProjectCard } from "@/components/project-card";
-import { ProjectCardWrapper } from "@/components/project-card-wrapper";
 import BlurFade from "@/components/magicui/blur-fade";
-import { DATA } from "@/data/resume";
-import { CertificateSection } from "@/components/certificate-card";
+import { CertificateList } from "@/components/certificate-list";
+import { ProjectShowcase } from "@/components/project-showcase";
+import { getCertificates, getProjects } from "@/lib/content";
 
-const BLUR_FADE_DELAY = 0.04;
+const DELAY = 0.04;
 
 export const metadata = {
-    title: "Project",
-    description: "A showcase of my work and collaborations.",
+  title: "Project",
+  description: "A showcase of my work, and the certifications behind it.",
 };
 
-export default function ProjectPage() {
-    // sequential counter for delay
-    let seq = 0;
-    const nextDelay = () => {
-        seq += 1;
-        return seq * BLUR_FADE_DELAY;
-    };
+function Heading({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <h2 className="font-bebas text-3xl">
+        Rahfi<span className="text-[#FF0000]">&apos;</span>s{" "}
+        <span className="text-[#FF0000]">|</span> {title}
+        <span className="text-[#FF0000]">.</span>
+      </h2>
+      <p className="mt-1 text-sm leading-6 text-muted-foreground">{children}</p>
+    </div>
+  );
+}
 
-    return (
-        <>
-            <section id="projects">
-                <div className="space-y-12 w-full py-12">
-                    <BlurFade delay={nextDelay()}>
-                        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-                            <div className="space-y-2">
-                                <h2 className="text-3xl font-bebas">
-                                    Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Projects<span className="text-[#FF0000]">.</span>
-                                </h2>
-                                <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                    I have worked on various projects, both personal and collaborative,
-                                    that showcase my skills and creativity. Here are some of my notable
-                                    projects that I am proud to share.
-                                </p>
-                            </div>
-                        </div>
-                    </BlurFade>
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
-                        {DATA.projects.map((project) => (
-                            <BlurFade key={project.title} delay={nextDelay()}>
-                                <ProjectCardWrapper>
-                                    <ProjectCard
-                                        href={project.href}
-                                        title={project.title}
-                                        description={project.description}
-                                        status={project.status}
-                                        tags={project.technologies}
-                                        image={project.image}
-                                        video={project.video}
-                                        links={project.links}
-                                    />
-                                </ProjectCardWrapper>
-                            </BlurFade>
-                        ))}
-                    </div>
-                    <div className="space-y-2">
-                        <BlurFade delay={nextDelay()}>
-                            <p className="text-justify text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                If you want to see more of my projects check out my GitHub or press the button on the navbar.
-                            </p>
-                        </BlurFade>
-                    </div>
-                </div>
-            </section>
+export default async function ProjectPage() {
+  const [projects, certificates] = await Promise.all([getProjects(), getCertificates()]);
 
-            <section id="certifications">
-                <div className="space-y-12 w-full py-12">
-                    <BlurFade delay={nextDelay()}>
-                        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-                            <div className="space-y-2">
-                                <h2 className="text-3xl font-bebas">
-                                    Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Certifications<span className="text-[#FF0000]">.</span>
-                                </h2>
-                                <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                    I have obtained various certifications that demonstrate my expertise
-                                    and commitment to continuous learning. Here are some of the certifications
-                                    that I am proud to showcase.
-                                </p>
-                            </div>
-                        </div>
-                    </BlurFade>
+  const professional = certificates.filter((one) => one.kind === "professional");
+  const courses = certificates.filter((one) => one.kind === "learning");
 
-                    <BlurFade delay={nextDelay()}>
-                        <CertificateSection
-                            certifications={DATA.certifications}
-                            learningCertificates={DATA.learning_certificate}
-                        />
-                    </BlurFade>
+  let step = 0;
+  const next = () => (step += 1) * DELAY;
 
-                </div>
-                <div className="space-y-1">
-                        <BlurFade delay={nextDelay()}>
-                            <p className="text-justify text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                If you want to see more of my certificates check out my LinkedIn or press the button on the navbar.
-                            </p>
-                        </BlurFade>
-                    </div>
-            </section>
-        </>
-    );
+  return (
+    <div className="flex w-full flex-col gap-16 py-8">
+      <section id="projects" className="flex flex-col gap-6">
+        <BlurFade delay={next()}>
+          <Heading title="Projects">
+            Personal and collaborative work, each with its source and, where there is one, a
+            running site.
+          </Heading>
+        </BlurFade>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {projects.map((project) => (
+            <BlurFade key={project.id} delay={next()}>
+              <ProjectShowcase project={project} />
+            </BlurFade>
+          ))}
+        </div>
+      </section>
+
+      <section id="certifications" className="flex flex-col gap-6">
+        <BlurFade delay={next()}>
+          <Heading title="Certifications">
+            Professional certifications first, then the courses behind them. Any certificate
+            with an uploaded PDF opens on this page.
+          </Heading>
+        </BlurFade>
+
+        <BlurFade delay={next()}>
+          <div className="flex flex-col gap-3">
+            <h3 className="font-bebas text-xl">
+              Professional<span className="text-[#FF0000]">.</span>
+            </h3>
+            <CertificateList certificates={professional} />
+          </div>
+        </BlurFade>
+
+        <BlurFade delay={next()}>
+          <div className="flex flex-col gap-3">
+            <h3 className="font-bebas text-xl">
+              Courses<span className="text-[#FF0000]">.</span>
+            </h3>
+            <CertificateList certificates={courses} />
+          </div>
+        </BlurFade>
+      </section>
+    </div>
+  );
 }

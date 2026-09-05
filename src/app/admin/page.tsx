@@ -1,5 +1,6 @@
 import { getAuth } from "@/lib/auth";
 import { MediaManager } from "./media-manager";
+import { SeedContentButton } from "./seed-content-button";
 
 export const metadata = {
   title: "Media Library",
@@ -28,6 +29,7 @@ export default async function AdminPage() {
         download URL never changes.
       </p>
       <MediaManager />
+      <SeedContentButton />
     </div>
   );
 }

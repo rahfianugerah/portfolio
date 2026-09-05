@@ -38,8 +38,8 @@ analytics chart rendered at zero and read as an empty widget: its bars sat in a 
 `items-end` never stretched. Any chart needs a definite height somewhere above it.
 
 **`auto-rows-fr` is `minmax(0, 1fr)`, so a grid row's minimum is zero** and a row is allowed to be
-shorter than its content. Combined with cells that span two rows — which contribute half their
-height to each — it silently collapsed the signals grid. The bento uses an explicit minimum.
+shorter than its content. Combined with cells that span two rows, which contribute half their
+height to each, it silently collapsed the signals grid. The bento uses an explicit minimum.
 
 **Every bento span must be `lg:`-prefixed.** An unprefixed `col-span-2` inside a one-column grid
 makes the browser add a column, turning the mobile layout two-wide with half of it empty. The
@@ -54,9 +54,13 @@ these licences forbids the site offering the font as a download. They live in `s
 
 ## Where Things Live
 
-- **`src/data/resume.tsx` is the content source** for work, education, projects, achievements, and
-  certifications. It holds React elements in its `icon` fields, so it is not currently
-  serialisable. Moving it to Supabase is designed but deferred; see the appendix of the plan.
+- **`src/lib/content.ts` is the content source for projects and certificates.** They are Sanity
+  documents now, and that module is the only thing that queries them. It falls back to
+  `src/data/resume.tsx` when Sanity is unset, unreachable, or empty, so do not "fix" a page that
+  looks right locally by pointing it back at the resume data; check whether the fallback fired.
+- **`src/data/resume.tsx` still owns work, education, leadership, and achievements.** Those have
+  no schema yet. Its `icon` fields hold React elements, which is what kept any of this out of a
+  database until the link icons were replaced by a `type` string.
 - **`src/data/nav-items.ts` is the single source for navigation.** `DATA.navbar` still exists in
   the resume data but nothing reads it.
 - **`src/lib/fonts.ts` owns every font.** They are not defined in `app/layout.tsx`, because a

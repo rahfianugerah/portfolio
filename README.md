@@ -65,7 +65,9 @@ components, and analytics, blog, and GitHub data come from API routes.
 ### Architecture Description
 
 A single shell in `src/app/components/layout-content.tsx` supplies navigation and the footer for
-every route. Résumé content is compiled in from `src/data/resume.tsx`; blog content is fetched
+every route. Projects and certificates are read from Sanity through `src/lib/content.ts`, which
+falls back to `src/data/resume.tsx` when Sanity is empty or unreachable; the rest of the résumé is
+still compiled in from that file. Blog content is fetched
 from Sanity; analytics are read from and written to Supabase; the assistant calls Gemini through a
 server action so the key never reaches the browser.
 
@@ -106,28 +108,28 @@ src/
 ├── app/
 │   ├── layout.tsx            # Fonts, metadata, providers
 │   ├── page.tsx              # Home: hero, about, experience, projects, signals
-│   ├── globals.css           # Tokens, .heading-display
-│   ├── chat/                 # Assistant, full height
-│   ├── project/              # Projects and certifications
+│   ├── globals.css           # Tokens
+│   ├── project/              # Projects and certifications, full width
 │   ├── service/              # Services
-│   ├── writing/              # Blog list and post
+│   ├── blog/                 # Blog list and post
 │   ├── contact/              # Contact form
+│   ├── experience/           # Work history
+│   ├── admin/                # Media library and the content migration
 │   ├── studio/               # Embedded Sanity Studio
-│   ├── api/                  # analytics, blog, github/stats
+│   ├── api/                  # analytics, blog, github/stats, media, admin
 │   ├── actions.ts            # Server actions
 │   └── components/           # Page-level components and widgets
 ├── components/               # Shared components, magicui, ui primitives
-├── data/                     # resume.tsx, nav-items.ts, blog.ts
-├── fonts/                    # Font files, outside the served directory
-├── lib/                      # fonts, supabase, session, rate-limit, helpers
-└── sanity/                   # CMS client and schema
+├── data/                     # resume.tsx, blog.ts
+├── lib/                      # content, supabase, auth, gcs, media, helpers
+└── sanity/                   # CMS client, write client, schemas
 ```
 
 ### Directory Explanation
 
 | Directory | Purpose |
 | :- | :- |
-| `src/data/` | Résumé content and navigation. Edited far more often than any component |
+| `src/data/` | The résumé, and the fallback behind the Sanity content. Edited more often than any component |
 | `src/fonts/` | Font files. Deliberately not `public/`, see Configuration |
 | `src/app/components/widgets/` | The signals grid cells, all on one shared frame |
 | `src/lib/` | Everything with no JSX in it |
@@ -164,8 +166,9 @@ src/
 
 > [!danger]
 > Every `NEXT_PUBLIC_` variable ends up inside the bundle the browser downloads. It is public the
-> moment it ships. The six without that prefix are real secrets — an AI key, a GitHub token, a
-> mail password, a captcha secret — and must never be given it, per `secret.rules.md`.
+> moment it ships. The ones without that prefix are real secrets, an AI key, a GitHub token, a
+> mail password, a captcha secret, a Sanity write token, and must never be given it, per
+> `secret.rules.md`.
 
 > [!note]
 > `NEXT_PUBLIC_SUPABASE_ANON_KEY` is public by design. Row-level security is what protects the
@@ -190,15 +193,15 @@ Next App Router, file-based.
 | Route | Page or layout | Access |
 | :- | :- | :- |
 | `/` | Home | Public |
-| `/project` | Projects and certifications | Public |
+| `/project` | Projects and certifications, full width | Public |
 | `/service` | Services | Public |
-| `/writing` | Blog list | Public |
-| `/writing/[slug]` | Blog post | Public |
+| `/blog` | Blog list | Public |
+| `/blog/[slug]` | Blog post | Public |
 | `/contact` | Contact form | Public |
-| `/chat` | Assistant | Public |
+| `/experience` | Work history | Public |
 | `/studio` | Sanity Studio | Authenticated by Sanity |
-| `/blog`, `/blog/:slug` | Permanent redirect to `/writing` | Public |
-| `/experience` | Permanent redirect to `/#experiences` | Public |
+| `/admin` | Media library, content migration | Owner only |
+| `/api/admin/seed-content` | One-time resume to Sanity copy | Owner only |
 
 Home carries anchored sections: `#about`, `#experiences`, `#projects`, `#achievements`, `#stats`.
 
@@ -213,18 +216,17 @@ Home carries anchored sections: `#about`, `#experiences`, `#projects`, `#achieve
 | Component | Category | Responsibility |
 | :- | :- | :- |
 | `Navbar` | Layout | Fixed top bar, reads `nav-items.ts` |
-| `PageHeader` | Layout | Eyebrow, title, and the grid background |
 | `ResumeCard` | Feature | One company, expandable |
-| `ProjectCard` | Feature | One project, as a grid cell |
+| `ProjectShowcase` | Feature | One project: preview, tags, source and site links |
+| `CertificateList` | Feature | Certificates, with the PDF readable in place |
 | `Widget` | Shared | The frame every signals cell sits in |
 | `Chatbot` | Feature | The assistant |
-| `InteractiveGridPattern` | Shared | Grid background with a hover trail |
 
 ### Important Component Details
 
 #### `Widget`
 
-Purpose: the shared frame for every cell in the signals grid — one eyebrow, one padding, one
+Purpose: the shared frame for every cell in the signals grid: one eyebrow, one padding, one
 height, so the grid reads as a table rather than a pile.
 
 | Property | Type | Required | Description |
@@ -257,6 +259,32 @@ Local component state and React context. There is no store.
 ```text
 User Action > Handler > Server Action or API Route > State Update > Render
 ```
+
+### Content Source
+
+| Content | Lives in | Edited through |
+| :- | :- | :- |
+| Projects | Sanity, `project` documents | `/studio` |
+| Certificates | Sanity, `certificate` documents | `/studio` |
+| Blog posts | Sanity, `post` documents | `/studio` |
+| Work, education, leadership, achievements | `src/data/resume.tsx` | A commit |
+| Photographs and the résumé PDF | Google Cloud Storage, metadata in Supabase | `/admin` |
+
+`src/lib/content.ts` is the only place that reads projects and certificates. It queries Sanity and
+returns the résumé data instead when the project id is unset, when the query throws, or when it
+comes back empty, so an unconfigured or unreachable CMS shows the old content rather than an empty
+page a visitor cannot explain.
+
+> [!note]
+> The link icons that used to make this content unserialisable are gone. A link carries a `type`
+> string now, and `ProjectShowcase` decides which component that means. That single change is what
+> let the content move out of the repository at all.
+
+> [!important]
+> The one-time copy runs from a button on `/admin`, not from a script, because `resume.tsx` is TSX
+> holding React elements and plain Node cannot import it. It writes with `createIfNotExists`, so
+> pressing it twice adds nothing and never overwrites a studio edit. It needs
+> `SANITY_API_WRITE_TOKEN`; the read path never sees a token.
 
 ### Data Fetching Method
 
@@ -303,8 +331,10 @@ Tailwind CSS 3 over a shadcn HSL token layer in `src/app/globals.css`.
 
 ### Design System
 
-Shared with `consulting.rahfi.pro`: pure black ground, hairline borders in place of filled cards,
-zero border radius, white as the only accent.
+Shared with `consulting.rahfi.pro`, and defined here: a shadcn HSL token layer with a light and a
+dark theme, rounded cards on a soft shadow, and `#FF0000` used only as punctuation inside a
+heading. Section titles follow one pattern, `Rahfi's | Title.`, with the apostrophe, the pipe and
+the full stop in the accent.
 
 > [!note]
 > This is a recorded deviation from `uix.component.md`, which specifies black on white with Inter.
@@ -315,7 +345,7 @@ zero border radius, white as the only accent.
 | Item | Source |
 | :- | :- |
 | Colors | `src/app/globals.css`, `:root` and `.dark` |
-| Typography | `src/lib/fonts.ts` and `tailwind.config.ts` |
+| Typography | `src/app/layout.tsx` and `tailwind.config.ts` |
 | Spacing | Tailwind defaults |
 | Breakpoints | Tailwind defaults |
 
@@ -323,14 +353,21 @@ zero border radius, white as the only accent.
 
 | Face | Role | Licence |
 | :- | :- | :- |
-| Copperplate CC | Headings, via `.heading-display` | SIL OFL 1.1 |
-| Montserrat | Body, UI, labels, the clock | SIL OFL 1.1, Google Fonts |
+| Bebas Neue | Headings, via `font-bebas` | SIL OFL 1.1, Google Fonts |
+| Google Sans | Body, UI, labels | Google Fonts |
+| Inter | Fallback behind Google Sans | SIL OFL 1.1, Google Fonts |
 | Source Code Pro | Code blocks only | SIL OFL 1.1, Google Fonts |
 
-> [!important]
-> Copperplate CC ships `src/fonts/CopperplateCC-OFL.txt` beside it, as OFL section 2 requires, and
-> is not subset — subsetting would make it a Modified Version that may no longer use its reserved
-> name. No font file lives in `public/`, because everything there is served at the site root.
+> [!warning]
+> Google Sans is not in Next 14's font catalogue, so unlike the consulting site this one cannot
+> load it through `next/font` and takes a stylesheet link in `src/app/layout.tsx` instead, with a
+> preconnect pair in front of it. Inter is loaded through `next/font` and named behind Google Sans
+> in the family stack, so a slow font response does not shift the page. The lint rule that fires
+> on that link is a Pages Router rule and is disabled at the line.
+
+> [!note]
+> No font file lives in this repository. Every face is served by Google Fonts, which is what keeps
+> the licence obligations of a bundled font from applying here at all.
 
 ### Responsive Design
 
@@ -470,7 +507,8 @@ recorded human approval at each stage.
 
 | Limitation | Impact | Planned resolution |
 | :- | :- | :- |
-| `src/data/resume.tsx` holds React elements in its `icon` fields | The content is not serialisable, so it cannot move to a database as-is | Replace icons with discriminator strings, then migrate; designed and deferred |
+| Work, education, leadership and achievements are still in `src/data/resume.tsx` | Editing them is a commit and a deploy | The same treatment as projects: a schema, a query in `src/lib/content.ts`, and a line in the migration route |
+| `src/data/resume.tsx` still holds React elements in the `icon` fields the migrated types no longer read | Nothing breaks, but the file reads as if those icons matter | Drop them when the last consumer moves to Sanity |
 | Fifteen unused packages removed from `package.json` but still installed | `node_modules` is larger than it needs to be | Run `npm install` |
 | Two majors behind on Next | Missing framework fixes | Upgrade 14 to 16; two call sites break on Next 15's async request APIs |
 | The GitHub activity graph is decorative | The squares are randomised, not real contribution data | Use the GitHub contributions API |

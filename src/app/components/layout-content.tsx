@@ -22,7 +22,12 @@ import BlurFade from "@/components/magicui/blur-fade";
 
 export default function LayoutContent({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const isFullPage = pathname?.startsWith("/blog") || pathname === "/contact";
+  // Full page means no rails and a wider column. The project page joined it because its
+  // previews and its inline certificates need the width more than the rails need the room.
+  const isFullPage =
+    pathname?.startsWith("/blog") ||
+    pathname === "/contact" ||
+    pathname === "/project";
 
   return (
     <>
