@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { getSessionId } from "@/lib/session";
+import { useEffect, useState, useRef } from "react";
+import { createPortal } from "react-dom";
 import { WidgetFallback } from "@/components/widget-error-boundary";
-import { Widget, Stat } from "./widget";
+import { cn } from "@/lib/utils";
 
 type AnalyticsData = {
   visitors: number;
@@ -13,30 +13,48 @@ type AnalyticsData = {
   sparkline: number[];
 };
 
-// Oldest to newest, matching the order getLast7DaysVisits builds.
-const dayInitial = (offsetFromToday: number) => {
-  const d = new Date();
-  d.setDate(d.getDate() - offsetFromToday);
-  return d.toLocaleDateString("en-US", { weekday: "narrow" });
-};
+// Generate a unique session ID for this browser tab
+function getSessionId(): string {
+  if (typeof window === "undefined") return "";
+  
+  let sessionId = sessionStorage.getItem("portfolio_session_id");
+  if (!sessionId) {
+    sessionId = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    sessionStorage.setItem("portfolio_session_id", sessionId);
+  }
+  return sessionId;
+}
 
 export default function AnalyticsWidget() {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const fetched = useRef(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const hasFetched = useRef(false);
+
+  // For portal mounting
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
-    if (fetched.current) return; // React strict mode mounts twice in development
-    fetched.current = true;
+    // Prevent double-fetching in React Strict Mode
+    if (hasFetched.current) return;
+    hasFetched.current = true;
 
-    (async () => {
+    async function fetchAnalytics() {
       try {
-        const res = await fetch(
-          `/api/analytics?action=visit&session=${getSessionId()}`
-        );
+        const sessionId = getSessionId();
+        // Increment visitor count with session ID
+        const res = await fetch(`/api/analytics?action=visit&session=${sessionId}`);
         const json = await res.json();
-        if (!json.success) throw new Error(json.error);
+        
+        if (!json.success) {
+          throw new Error(json.error);
+        }
+        
         setData(json.data);
       } catch (err) {
         console.error("Failed to fetch analytics:", err);
@@ -44,92 +62,129 @@ export default function AnalyticsWidget() {
       } finally {
         setLoading(false);
       }
-    })();
+    }
+
+    fetchAnalytics();
   }, []);
 
-  if (error) return <WidgetFallback message="Analytics unavailable" />;
+  if (error) {
+    return <WidgetFallback message="Data Unavailable" />;
+  }
 
-  if (loading || !data) {
+  if (loading) {
     return (
-      <Widget title="Website Analytics" meta="Last 7 days">
-        <div className="flex flex-1 animate-pulse flex-col justify-between">
-          <div className="flex gap-8">
-            <div className="h-8 w-20 bg-white/10" />
-            <div className="h-8 w-16 bg-white/10" />
-          </div>
-          <div className="h-20 w-full bg-white/5" />
+      <div className="rounded-lg border border-border bg-card p-4">
+        <div className="animate-pulse space-y-3">
+          <div className="h-4 w-24 bg-muted rounded" />
+          <div className="h-8 w-16 bg-muted rounded" />
+          <div className="h-12 w-full bg-muted rounded" />
         </div>
-      </Widget>
+      </div>
     );
   }
 
-  const series = data.sparkline?.length ? data.sparkline : Array(7).fill(0);
-  const peak = Math.max(...series);
-  const peakIndex = series.indexOf(peak);
-  const weekTotal = series.reduce((a, b) => a + b, 0);
-  const average = Math.round(weekTotal / series.length);
+  if (!data) {
+    return <WidgetFallback message="Data Unavailable" />;
+  }
+
+  const maxSparkline = Math.max(...data.sparkline, 1);
 
   return (
-    <Widget title="Website Analytics" meta="Last 7 days">
-      <div className="flex gap-8">
-        <Stat
-          value={data.visitors.toLocaleString()}
-          label="Total visitors"
-          delta={`+${data.delta24h} today`}
-        />
-        <Stat
-          value={data.projects.toLocaleString()}
-          label="Project views"
-          delta={`+${data.delta7d} this week`}
-        />
+    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
+      <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
+        Website Analytics
       </div>
 
-      {/* Bars carry a baseline so an empty day is still a visible day rather than a
-          gap, and the tallest is marked, because a chart with no reference number
-          tells you a shape but not a size. */}
-      {/* Each bar sits in a column with a definite height (h-full against the h-24
-          track), because a percentage height resolves against nothing when the parent is
-          auto-sized — which is what an items-end row leaves it as, and why these were
-          rendering at zero and reading as an empty chart. */}
-      <div className="pt-8">
-        <div className="flex h-24 items-end gap-1.5">
-          {series.map((value, i) => {
-            const heightPct = peak > 0 ? Math.max((value / peak) * 100, 3) : 3;
-            const isPeak = i === peakIndex && peak > 0;
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        {/* Visitors */}
+        <div className="space-y-1">
+          <div className="text-xs text-muted-foreground">Total Visitors</div>
+          <div className="text-2xl font-bold">{data.visitors.toLocaleString()}</div>
+          <div className="flex items-center gap-1">
+            <span className="text-[10px] text-green-500">↑ {data.delta24h}</span>
+            <span className="text-[10px] text-muted-foreground">24h</span>
+          </div>
+        </div>
+
+        {/* Projects */}
+        <div className="space-y-1">
+          <div className="text-xs text-muted-foreground">Project Views</div>
+          <div className="text-2xl font-bold">{data.projects.toLocaleString()}</div>
+          <div className="flex items-center gap-1">
+            <span className="text-[10px] text-green-500">↑ {data.delta7d}</span>
+            <span className="text-[10px] text-muted-foreground">7d</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Mini Sparkline */}
+      <div className="space-y-2">
+        <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">
+          Activity Trend
+        </div>
+        <div className="flex items-end gap-1 h-10 relative">
+          {data.sparkline.map((value, i) => {
+            // Calculate height: minimum 10% for visibility, max based on actual value
+            const heightPercent = maxSparkline > 0 
+              ? Math.max(10, (value / maxSparkline) * 100)
+              : 10;
+            
             return (
-              <div key={i} className="flex h-full flex-1 flex-col justify-end">
-                <span
-                  className={isPeak ? "block w-full bg-white" : "block w-full bg-white/45"}
-                  style={{ height: `${heightPct}%` }}
-                  title={`${value} visits`}
-                />
-              </div>
+              <div
+                key={i}
+                className={cn(
+                  "flex-1 bg-primary/60 rounded-t transition-all cursor-pointer relative",
+                  "min-h-[4px]",
+                  hoveredIndex === i && "bg-primary"
+                )}
+                style={{ height: `${heightPercent}%` }}
+                onMouseEnter={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  setTooltipPos({
+                    x: rect.left + rect.width / 2,
+                    y: rect.top
+                  });
+                  setHoveredIndex(i);
+                }}
+                onMouseLeave={() => {
+                  setHoveredIndex(null);
+                  setTooltipPos(null);
+                }}
+              />
             );
           })}
         </div>
-
-        <div className="mt-2 flex gap-1.5">
-          {series.map((_, i) => (
-            <span
-              key={i}
-              className="flex-1 text-center text-[9px] uppercase tabular-nums text-zinc-400"
-            >
-              {dayInitial(series.length - 1 - i)}
-            </span>
-          ))}
-        </div>
-
-        <p className="mt-4 text-[10px] leading-5 text-zinc-300">
-          <span className="text-zinc-100">{weekTotal}</span> visits this week,
-          averaging <span className="text-zinc-100">{average}</span> a day
-          {peak > 0 && (
-            <>
-              {" "}
-              &middot; peak <span className="text-zinc-100">{peak}</span>
-            </>
-          )}
-        </p>
       </div>
-    </Widget>
+      
+      {/* Tooltip - rendered via Portal */}
+      {mounted && hoveredIndex !== null && tooltipPos && createPortal(
+        <div 
+          className="fixed pointer-events-none"
+          style={{
+            left: tooltipPos.x,
+            top: tooltipPos.y - 8,
+            transform: 'translate(-50%, -100%)',
+            zIndex: 99999
+          }}
+        >
+          <div className="rounded-md bg-popover px-2 py-1.5 shadow-xl border border-border text-popover-foreground flex flex-col items-center text-center min-w-[80px] relative">
+            <span className="font-bold text-[10px] leading-tight whitespace-nowrap">
+              {data.sparkline[hoveredIndex]} {data.sparkline[hoveredIndex] === 1 ? 'Visit' : 'Visits'}
+            </span>
+            <span className="text-muted-foreground text-[9px] font-mono mt-0.5">
+              {(() => {
+                const date = new Date();
+                date.setDate(date.getDate() - (6 - hoveredIndex));
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+              })()}
+            </span>
+            {/* Arrow */}
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 border-b border-r bg-popover border-border"></div>
+          </div>
+        </div>,
+        document.body
+      )}
+    </div>
   );
 }

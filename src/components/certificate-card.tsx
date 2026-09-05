@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useMemo, useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 /* ========= Types ========= */
@@ -43,74 +44,65 @@ export function CertificateCard({
   links = [],
   className,
 }: CertificateCardProps) {
-  // The card is a plain div and each link is a real anchor.
-  //
-  // It used to be an <a> when `href` was set, which forced the links inside it to become
-  // <span> elements to avoid nesting one anchor in another. But a certificate carries its
-  // URL in links[0].href and usually has no top-level `href` at all, so the wrapper was a
-  // div and the links were spans: nothing on the card was clickable.
-  const cardLinks = links.length > 0
-    ? links
-    : href
-      ? [{ title: "View Certificate", href, icon: null as React.ReactNode }]
-      : [];
+  const Wrapper: React.ElementType = href ? "a" : React.Fragment;
+  const wrapperProps = href
+    ? { href, target: "_blank", rel: "noopener noreferrer" }
+    : {};
 
   return (
-    <article
-      className={cn(
-        "flex h-full flex-col border-b border-r border-border p-6 transition-colors hover:bg-white/[0.02]",
-        className
-      )}
-    >
-      <h4 className="text-sm font-semibold text-white">{title}</h4>
-      {issued && (
-        <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-zinc-400">
-          {issued}
-        </p>
-      )}
+    <Wrapper {...(wrapperProps as any)}>
+      <Card
+        className={cn(
+          "flex flex-col overflow-hidden ease-out h-full rounded-sm bg-white/5 px-2 py-2 text-sm text-foreground/90 shadow-sm backdrop-blur transition",
+          "hover:shadow-md",
+          className
+        )}
+      >
+        <CardHeader className="px-2 pt-2">
+          <CardTitle className="text-sm font-medium">{title}</CardTitle>
+          {issued && <p className="text-xs text-muted-foreground">{issued}</p>}
+        </CardHeader>
 
-      {description && (
-        <p className="mt-3 text-xs leading-6 text-zinc-200">{description}</p>
-      )}
+        {description && (
+          <div className="px-2 text-sm text-muted-foreground">{description}</div>
+        )}
 
-      {category.length > 0 && (
-        <p className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-[10px] uppercase tracking-[0.14em] text-zinc-400">
-          {category.map((c) => (
-            <span key={c}>{c}</span>
-          ))}
-        </p>
-      )}
-
-      {cardLinks.length > 0 && (
-        <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-5">
-          {cardLinks.map((link, idx) =>
-            link.href ? (
-              <a
-                key={`${link.title}-${link.href}-${idx}`}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-200 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+        {/* Category badges */}
+        {category.length > 0 && (
+          <div className="px-2 pb-2 pt-1 flex flex-row flex-wrap gap-1">
+            {category.map((c) => (
+              <Badge
+                key={c}
+                className="px-2 py-0.5 text-[10px] bg-white/5 text-foreground/80 hover:bg-white/10"
               >
-                {link.icon}
-                {link.title}
-              </a>
-            ) : (
-              // A few entries genuinely have no certificate URL; they say so rather than
-              // rendering a link that goes nowhere.
-              <span
-                key={`${link.title}-${idx}`}
-                className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-400"
-                title="No certificate link available"
-              >
-                {link.icon}
-                {link.title}
-              </span>
-            )
-          )}
-        </div>
-      )}
-    </article>
+                {c}
+              </Badge>
+            ))}
+          </div>
+        )}
+
+        {/* Links */}
+        {links.length > 0 && (
+          <CardFooter className="px-2 pb-2">
+            <div className="flex flex-row flex-wrap items-center gap-1">
+              {links.map((link, idx) => (
+                <a
+                  href={link.href}
+                  key={`${link.title}-${link.href}-${idx}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Badge className="flex items-center gap-1 px-2 py-1 text-[10px] bg-white/5 text-sm text-foreground/90 shadow-sm backdrop-blur transition hover:bg-white/10">
+                    {link.icon}
+                    {link.title}
+                  </Badge>
+                </a>
+              ))}
+            </div>
+          </CardFooter>
+        )}
+      </Card>
+    </Wrapper>
   );
 }
 
@@ -181,7 +173,7 @@ export function CertificateSection({
           onClick={() => setPage(Math.max(1, page - 1))}
           disabled={page === 1}
           className={cn(
-            "inline-flex min-h-11 items-center px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-200 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white",
+            "px-2 py-1 text-sm text-foreground/80 hover:text-foreground transition",
             "disabled:opacity-50 disabled:cursor-not-allowed"
           )}
         >
@@ -205,7 +197,7 @@ export function CertificateSection({
                 {n}
                 <span
                   className={cn(
-                    "pointer-events-none absolute left-0 bottom-0 h-[2px] bg-white transition-all duration-300 ease-out",
+                    "pointer-events-none absolute left-0 bottom-0 h-[2px] bg-[#FF0000] transition-all duration-300 ease-out",
                     active ? "w-full" : "w-0 group-hover:w-full"
                   )}
                 />
@@ -218,7 +210,7 @@ export function CertificateSection({
           onClick={() => setPage(Math.min(total, page + 1))}
           disabled={page === total}
           className={cn(
-            "inline-flex min-h-11 items-center px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-200 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white",
+            "px-2 py-1 text-sm text-foreground/80 hover:text-foreground transition",
             "disabled:opacity-50 disabled:cursor-not-allowed"
           )}
         >
@@ -232,17 +224,12 @@ export function CertificateSection({
     <>
       {/* Certifications */}
       <div className="mb-8">
-        <h3 className="heading-display mb-6 text-lg text-white">Certifications</h3>
+        <h3 className="text-xl font-bold mb-4">Certifications</h3>
         {pagedCerts.length > 0 ? (
           <>
-            <AnimatePresence mode="wait">
-            <motion.div
+            <div
               key={`certs-${pageCerts}-${certifications.length}`}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="grid border-l border-t border-border sm:grid-cols-2"
+              className="grid grid-cols-1 gap-6 sm:grid-cols-2 max-w-[800px] mx-auto"
             >
               {pagedCerts.map((cert, idx) => (
                 <CertificateCard
@@ -255,8 +242,7 @@ export function CertificateSection({
                   category={cert.category}
                 />
               ))}
-            </motion.div>
-            </AnimatePresence>
+            </div>
             <Pagination page={pageCerts} setPage={setPageCerts} total={totalPagesCerts} />
           </>
         ) : (
@@ -266,17 +252,12 @@ export function CertificateSection({
 
       {/* Learning Certificates */}
       <div className="mb-8">
-        <h3 className="heading-display mb-6 text-lg text-white">Learning Certificates</h3>
+        <h3 className="text-xl font-bold mb-4">Learning Certificates</h3>
         {pagedLearn.length > 0 ? (
           <>
-            <AnimatePresence mode="wait">
-            <motion.div
+            <div
               key={`learn-${pageLearn}-${learningCertificates.length}`}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="grid border-l border-t border-border sm:grid-cols-2"
+              className="grid grid-cols-1 gap-6 sm:grid-cols-2 max-w-[800px] mx-auto"
             >
               {pagedLearn.map((cert, idx) => (
                 <CertificateCard
@@ -289,8 +270,7 @@ export function CertificateSection({
                   category={cert.category}
                 />
               ))}
-            </motion.div>
-            </AnimatePresence>
+            </div>
             <Pagination page={pageLearn} setPage={setPageLearn} total={totalPagesLearn} />
           </>
         ) : (

@@ -1,100 +1,235 @@
-"use client";
-
+﻿"use client";
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 import Navbar from "@/components/navbar";
-import VisitTracker from "@/app/components/visit-tracker";
-import { navItems } from "@/data/nav-items";
+import FarLeftRail from "@/app/components/far-left-rail";
+import LeftRail from "@/app/components/left-rail";
+import RightRail from "@/app/components/right-rail";
+import FarRightRail from "@/app/components/far-right-rail";
+import HeadHome from "@/components/header-home.";
+import Clock from "@/components/clock";
+import AnalyticsWidget from "./widgets/analytics-widget";
+import ExperienceGraph from "./experience-graph";
+import { IconCloudSpecialties } from "@/components/specialties-icon";
+import TechStack from "@/components/techstack";
+import ProjectsCounter from "./widgets/projects-counter";
+import ImageCarousel from "./image-carousel";
+import QuoteCarousel from "./quote-carousel";
+import LatestBlogsWidget from "./widgets/latest-blogs";
+import SocialLinks from "./widgets/social-links";
+import ChatbotFab from "./chatbot-fab";
+import BlurFade from "@/components/magicui/blur-fade";
 
-// One shell for every page. The four sticky rails and the three duplicated responsive
-// trees that used to live here are gone: content now spans the container at every size,
-// and the cards those rails carried are a section of the home page instead.
 export default function LayoutContent({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-
-  // The assistant owns the viewport: it scrolls its own message list, so the page must
-  // not scroll behind it and a footer underneath would never be reachable.
-  const isApp = pathname === "/chat";
+  const isFullPage = pathname?.startsWith("/blog") || pathname === "/contact";
 
   return (
     <>
-      <VisitTracker />
       <Navbar />
-      <div className="mx-auto min-h-screen max-w-7xl border-x border-border pt-16">
-        {isApp ? (
-          <main className="h-[calc(100vh-4rem)]">{children}</main>
-        ) : (
-          <>
-            <main>{children}</main>
-            <SiteFooter />
-          </>
-        )}
-      </div>
-    </>
-  );
-}
 
-function SiteFooter() {
-  return (
-    <footer>
-      <div className="grid md:grid-cols-4">
-        <div className="border-b border-border p-6 md:col-span-2 md:border-b-0 md:border-r">
-          <Link href="/" className="heading-display text-xl text-white">
-            Naufal Rahfi Anugerah
-          </Link>
-          <p className="mt-4 max-w-md text-xs leading-6 text-zinc-300">
-            AI Software Engineer. Building at the intersection of machine learning and
-            cloud, and writing about what breaks along the way.
-          </p>
+      {/* MOBILE LAYOUT - Sequential order */}
+      <div className="lg:hidden mx-auto max-w-7xl px-4 py-6 min-h-screen">
+        <div className="flex flex-col gap-4">
+          {!isFullPage && (
+            <>
+              {/* 1. Header */}
+              <BlurFade delay={0.05}>
+                <HeadHome />
+              </BlurFade>
+
+              {/* 2. Clock */}
+              <BlurFade delay={0.1}>
+                <Clock />
+              </BlurFade>
+
+              {/* 3. Website Visitors (Analytics) */}
+              <BlurFade delay={0.15}>
+                <AnalyticsWidget />
+              </BlurFade>
+            </>
+          )}
+
+          {/* 4. Main Content */}
+          <main className="flex flex-col gap-4 min-w-0 w-full pb-32">
+            {children}
+          </main>
+
+          {!isFullPage && (
+            <>
+              {/* 5. Experience Graph */}
+              <BlurFade delay={0.25}>
+                <ExperienceGraph />
+              </BlurFade>
+
+              {/* 6. Specialties */}
+              <BlurFade delay={0.3}>
+                <div className="rounded-lg border border-border bg-card p-4">
+                  <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-2">
+                    Rahfi&apos;s Specialties
+                  </div>
+                  <IconCloudSpecialties />
+                </div>
+              </BlurFade>
+
+              {/* 7. Tech Stack */}
+              <BlurFade delay={0.35}>
+                <TechStack />
+              </BlurFade>
+
+              {/* 8. Projects Counter */}
+              <BlurFade delay={0.4}>
+                <ProjectsCounter />
+              </BlurFade>
+
+              {/* 9. Image Carousel */}
+              <BlurFade delay={0.45}>
+                <ImageCarousel />
+              </BlurFade>
+
+              {/* 10. Quotes */}
+              <BlurFade delay={0.5}>
+                <QuoteCarousel />
+              </BlurFade>
+
+              {/* 11. Latest Blog Posts */}
+              <BlurFade delay={0.6}>
+                <LatestBlogsWidget />
+              </BlurFade>
+
+              {/* 12. Social Links */}
+              <BlurFade delay={0.65}>
+                <SocialLinks />
+              </BlurFade>
+
+              {/* Footer */}
+              <BlurFade delay={0.7}>
+                <footer className="text-center text-sm font-bebas text-muted-foreground pb-24">
+                  <p>Â© {new Date().getFullYear()} Naufal Rahfi Anugerah | All rights reserved.</p>
+                </footer>
+              </BlurFade>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* DESKTOP LAYOUT */}
+      <div className="hidden lg:block py-6 min-h-screen">
+        {/* 3xl+ screens (1800px+): 5-column layout — fits all 4 rails + main */}
+        <div className="hidden 3xl:flex justify-center gap-4 px-4 max-w-[1800px] mx-auto items-start">
+          {/* FAR LEFT RAIL - Tech Stack, Specialties, Projects (starts lower for stair effect) */}
+          {!isFullPage && (
+            <div className="grow max-w-72 min-w-[200px] sticky top-48 h-[calc(100vh-14rem)]">
+              <div className="relative h-full">
+                <div className="h-full overflow-y-auto no-scrollbar pb-8">
+                  <BlurFade delay={0.15}>
+                    <FarLeftRail />
+                  </BlurFade>
+                </div>
+                {/* Bottom fade gradient */}
+                <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent" />
+              </div>
+            </div>
+          )}
+
+          {/* LEFT RAIL - Images, Graph, GitHub (middle height) */}
+          {!isFullPage && (
+            <div className="grow max-w-72 min-w-[200px] sticky top-36 h-[calc(100vh-11rem)]">
+              <div className="relative h-full">
+                <div className="h-full overflow-y-auto no-scrollbar pb-8">
+                  <BlurFade delay={0.2}>
+                    <LeftRail />
+                  </BlurFade>
+                </div>
+                {/* Bottom fade gradient */}
+                <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent" />
+              </div>
+            </div>
+          )}
+
+          {/* MAIN CONTENT (top level - highest) */}
+          <main
+            className={`flex flex-col gap-4 min-w-0 pb-32 ${
+              isFullPage ? "max-w-4xl w-full" : "w-[440px] shrink-0"
+            }`}
+          >
+            {!isFullPage && <HeadHome />}
+            {children}
+          </main>
+
+          {/* RIGHT RAIL - Clock, Chatbot, Quotes (middle height) */}
+          {!isFullPage && (
+            <div className="grow max-w-72 min-w-[200px] sticky top-36 h-[calc(100vh-11rem)]">
+              <div className="relative h-full">
+                <div className="h-full overflow-y-auto no-scrollbar pb-8">
+                  <BlurFade delay={0.25}>
+                    <RightRail />
+                  </BlurFade>
+                </div>
+                {/* Bottom fade gradient */}
+                <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent" />
+              </div>
+            </div>
+          )}
+
+          {/* FAR RIGHT RAIL - Analytics, LinkedIn, Spotify, Social (starts lower for stair effect) */}
+          {!isFullPage && (
+            <div className="grow max-w-72 min-w-[200px] sticky top-48 h-[calc(100vh-14rem)]">
+              <div className="relative h-full">
+                <div className="h-full overflow-y-auto no-scrollbar pb-8">
+                  <BlurFade delay={0.3}>
+                    <FarRightRail />
+                  </BlurFade>
+                </div>
+                {/* Bottom fade gradient */}
+                <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent" />
+              </div>
+            </div>
+          )}
         </div>
 
-        <FooterColumn title="Pages" links={navItems.map((i) => [i.label, i.href])} />
-        {/* The bottom dock used to carry these, read from the resume data. The top bar
-            that replaced it holds page links only, so they live here now rather than
-            disappearing with the dock. */}
-        <FooterColumn
-          title="Elsewhere"
-          links={[
-            ["GitHub", "https://github.com/rahfianugerah"],
-            ["LinkedIn", "https://www.linkedin.com/in/rahfianugerah"],
-            ["Résumé", "/api/resume"],
-            ["Ask AI", "/chat"],
-          ]}
-        />
-      </div>
-      <div className="flex flex-col gap-3 border-t border-border px-6 py-5 text-[10px] uppercase tracking-[0.2em] text-zinc-400 sm:flex-row sm:items-center sm:justify-between">
-        <span>&copy; {new Date().getFullYear()} Naufal Rahfi Anugerah</span>
-        <span>All rights reserved</span>
-      </div>
-    </footer>
-  );
-}
+        {/* lg to 3xl screens: Standard 3-column layout (inner rails merged) */}
+        <div className="3xl:hidden mx-auto max-w-7xl px-4">
+          <div className="grid grid-cols-12 gap-6 items-start">
+            {/* LEFT RAIL - Combined far-left + left content */}
+            {!isFullPage && (
+              <div className="col-span-3 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto no-scrollbar">
+                <BlurFade delay={0.2}>
+                  <aside className="flex flex-col gap-4">
+                    <FarLeftRail />
+                    <LeftRail />
+                  </aside>
+                </BlurFade>
+              </div>
+            )}
 
-function FooterColumn({
-  title,
-  links,
-}: {
-  title: string;
-  links: (string | string[])[][] | string[][];
-}) {
-  return (
-    <div className="border-b border-border p-6 md:border-b-0 md:border-r md:last:border-r-0">
-      <h2 className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-300">
-        {title}
-      </h2>
-      <ul className="mt-5 grid gap-3">
-        {(links as string[][]).map(([label, href]) => (
-          <li key={label}>
-            <Link
-              href={href}
-              className="text-xs text-zinc-200 transition-colors hover:text-white"
+            {/* MAIN CONTENT */}
+            <main
+              className={`flex flex-col gap-4 min-w-0 w-full pb-32 ${
+                isFullPage ? "col-span-12 max-w-4xl mx-auto" : "col-span-6"
+              }`}
             >
-              {label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+              {!isFullPage && <HeadHome />}
+              {children}
+            </main>
+
+            {/* RIGHT RAIL - Combined right + far-right content */}
+            {!isFullPage && (
+              <div className="col-span-3 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto no-scrollbar">
+                <BlurFade delay={0.3}>
+                  <aside className="flex flex-col gap-4">
+                    <RightRail />
+                    <FarRightRail />
+                  </aside>
+                </BlurFade>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* FAB - Hidden when reading blog */}
+      {!isFullPage && <ChatbotFab />}
+    </>
   );
 }

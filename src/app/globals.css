@@ -3,44 +3,70 @@
 @tailwind utilities;
 
 @layer base {
-    /* The palette is the consulting site's, translated to HSL for the shadcn token layer.
-       :root and .dark carry identical values on purpose: light mode is retired, so no
-       system preference, stale class, or missing provider can render a white page. */
-    :root,
-    .dark {
-      --background: 0 0% 0%;              /* #000, the consulting ground */
-      --foreground: 240 4.8% 83.9%;       /* zinc-300, the consulting body text */
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 210 11.1% 3.53%;
 
-      --card: 0 0% 0%;                    /* equal to the background: a card is a border, never a fill */
-      --card-foreground: 240 4.8% 83.9%;
+      --card: 0 0% 100%;
+      --card-foreground: 210 11.1% 3.53%;
 
-      --popover: 0 0% 0%;
-      --popover-foreground: 0 0% 100%;
+      --popover: 0 0% 100%;
+      --popover-foreground: 210 11.1% 3.53%;
 
-      --primary: 0 0% 100%;               /* white is the only accent the design has */
-      --primary-foreground: 0 0% 0%;
+      --primary: 0 0% 9%;
+      --primary-foreground: 0 0% 98%;
 
-      --secondary: 240 5.9% 10%;          /* zinc-900, the single raised surface */
-      --secondary-foreground: 0 0% 100%;
+      --secondary: 0 0% 96.1%;
+      --secondary-foreground: 0 0% 9%;
 
-      --muted: 240 5.9% 10%;              /* zinc-900 */
-      --muted-foreground: 240 5% 64.9%;   /* zinc-400: zinc-500 sank into a pure black ground */
+      --muted: 0 0% 96.1%;
+      --muted-foreground: 0 0% 45.1%;
 
-      --accent: 240 5.9% 10%;
-      --accent-foreground: 0 0% 100%;
+      --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
 
-      /* No hue is left in the palette, so a destructive state reads from its label and
-         its icon rather than from color. Every message that uses it already carries text. */
-      --destructive: 0 0% 100%;
-      --destructive-foreground: 0 0% 0%;
+      --destructive: 0 84.2% 60.2%;
+      --destructive-foreground: 0 0% 98%;
 
-      --border: 240 5.2% 33.9%;           /* zinc-600 (#52525B), the same hairline the consulting site uses */
-      --input: 240 5% 45%;                /* a field border reads a step above a division */
-      --ring: 0 0% 100%;                  /* white focus, per the consulting outline */
+      --border: 0 0% 89.8%;
+      --input: 0 0% 89.8%;
+      --ring: 0 0% 3.9%;
 
-      --radius: 0px;                      /* squares every rounded-lg/md/sm in one value */
+      --radius: 0.5rem;
     }
 
+    .dark {
+      --background: 210 11.1% 3.53%;
+      --foreground: 0 0% 98%;
+
+      --card: 210 11.1% 3.53%;
+      --card-foreground: 0 0% 98%;
+
+      --popover: 210 11.1% 3.53%;
+      --popover-foreground: 0 0% 98%;
+
+      --primary: 0 0% 98%;
+      --primary-foreground: 0 0% 9%;
+
+      --secondary: 0 0% 14.9%;
+      --secondary-foreground: 0 0% 98%;
+
+      --muted: 0 0% 14.9%;
+      --muted-foreground: 0 0% 63.9%;
+
+      --accent: 0 0% 14.9%;
+      --accent-foreground: 0 0% 98%;
+
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 0 0% 98%;
+
+      --border: 0 0% 14.9%;
+      --input: 0 0% 14.9%;
+      --ring: 0 0% 83.1%;
+    }
+  .theme {
+        --animate-shiny-text: shiny-text 8s infinite;
+    }
   }
 
   @layer base {
@@ -49,19 +75,6 @@
     }
     body {
       @apply bg-background text-foreground;
-    }
-  }
-
-  @layer components {
-    /* Copperplate Gothic is set with a full-size capital opening the word and smaller
-       capitals after it. This face ships no small-cap glyphs — its lowercase slots hold
-       full-height capitals, which is why "About" was rendering as a flat "ABOUT" — so the
-       browser is asked to synthesise them, and it scales those same forms down.
-       Wide tracking is part of the idiom rather than a flourish: the letterforms were
-       drawn to be spaced, and set tight they read as a smudge. */
-    .heading-display {
-      @apply font-display tracking-[0.08em];
-      font-variant-caps: small-caps;
     }
   }
 
@@ -85,12 +98,83 @@
     counter-reset: line;
   }
 
+  code[data-theme*=" "],
+  code[data-theme*=" "] span {
+    color: var(--shiki-light);
+    background-color: var(--shiki-light-bg);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    code[data-theme*=" "],
+    code[data-theme*=" "] span {
+      color: var(--shiki-dark);
+      background-color: var(--shiki-dark-bg);
+    }
+  }
+
+  /* code[data-line-numbers] {
+    counter-reset: line;
+  }
+
+  code[data-line-numbers] > [data-line]::before {
+    counter-increment: line;
+    content: counter(line);
+    @apply inline-block w-4 mr-4 text-right text-gray-500;
+  }
+
+  code {
+    counter-reset: line;
+  }
+
+  code > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+
+  display: inline-block;
+  width: 1rem;
+  margin-right: 2rem;
+  text-align: right;
+  color: gray;
+}
+
+code[data-line-numbers-max-digits="2"] > [data-line]::before {
+  width: 2rem;
+}
+
+code[data-line-numbers-max-digits="3"] > [data-line]::before {
+  width: 3rem;
+} */
+
 * {
   scrollbar-width: none;            /* Firefox */
   -ms-overflow-style: none;         /* IE 10+ */
 }
 *::-webkit-scrollbar {
   display: none;                    /* Safari & Chrome */
+}
+
+@theme inline {
+  @keyframes shiny-text {
+  0%, 90%, 100% {
+    background-position: calc(-100% - var(--shiny-width)) 0;
+        }
+  30%, 60% {
+    background-position: calc(100% + var(--shiny-width)) 0;
+        }
+    }
+}
+
+@keyframes shiny-text {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shiny-text {
+  animation: shiny-text 2s linear infinite;
 }
 
 /* Hide the default floating reCAPTCHA v3 badge (inline branding is shown instead) */

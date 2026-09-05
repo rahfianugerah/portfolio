@@ -22,52 +22,52 @@ const HIRE_PLATFORMS: Platform[] = [
     name: "LinkedIn",
     url: "https://linkedin.com/in/rahfianugerah",
     icon: FaLinkedin,
-    color: "hover:bg-white/10 hover:text-white",
+    color: "hover:bg-blue-600/20 hover:text-blue-600",
   },
   {
     name: "Upwork",
     url: "https://www.upwork.com/freelancers/~01fb77087e88137072?mp_source=share", // Replace with your Upwork profile
     icon: SiUpwork,
-    color: "hover:bg-white/10 hover:text-white",
+    color: "hover:bg-green-500/20 hover:text-green-500",
   },
   {
     name: "Freelancer",
     url: "https://www.freelancer.co.id/u/rahfiaan?sb=t", // Replace with your Freelancer profile
     icon: SiFreelancer,
-    color: "hover:bg-white/10 hover:text-white",
+    color: "hover:bg-blue-500/20 hover:text-blue-500",
   },
   {
     name: "Indeed (Cannot share public URL, I will search the company name, just ask me if you want to hire me through this platform)",
     url: "https://www.indeed.com", // Replace with your Indeed profile
     icon: SiIndeed,
-    color: "hover:bg-white/10 hover:text-white",
+    color: "hover:bg-sky-500/20 hover:text-sky-500",
   },
 
   {
     name: "Dealls (Cannot share public URL, I will search the company name, just ask me if you want to hire me through this platform)",
     url: "dealls.com", // Replace with your Dealls profile
     imagePath: "/dealls-platform.jpg",
-    color: "hover:bg-white/10 hover:text-white",
+    color: "hover:bg-purple-500/20 hover:text-purple-500",
   },
   {
     name: "JobStreet (Buggy platform, I will search the company name, just ask me if you want to hire me through this platform)",
     url: "https://id.jobstreet.com/profiles/naufalrahfi-anugerah-C5b5Q4rcVV", // Replace with your JobStreet profile
     imagePath: "/jobstreet-platform.png",
-    color: "hover:bg-white/10 hover:text-white",
+    color: "hover:bg-orange-500/20 hover:text-orange-500",
   },
   {
     name: "Glints (Cannot share public URL, I will search the company name, just ask me if you want to hire me through this platform)",
     url: "https://www.glints.com", // Replace with your Glints profile
     imagePath: "/glints-platform.jpg",
-    color: "hover:bg-white/10 hover:text-white",
+    color: "hover:bg-red-500/20 hover:text-red-500",
   },
 ];
 
 export default function HirePlatforms() {
   return (
-    <div className="p-6 h-full flex flex-col">
+    <div className="rounded-lg border border-border bg-card p-6 text-card-foreground shadow-sm h-full flex flex-col">
       <div className="mb-6">
-        <h2 className="text-lg heading-display text-foreground mb-2">
+        <h2 className="text-2xl font-bebas text-foreground mb-2">
           Where To Hire Me
         </h2>
         <p className="text-sm text-muted-foreground">
@@ -86,7 +86,7 @@ export default function HirePlatforms() {
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "flex items-center gap-3 px-4 py-3",
+                "flex items-center gap-3 px-4 py-3 rounded-lg",
                 "border border-border bg-muted/30",
                 "text-muted-foreground",
                 "transition-all duration-200",

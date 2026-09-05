@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import { IconCloud } from "@/components/magicui/icon-cloud";
-import { Widget } from "@/app/components/widgets/widget";
 
 import {
   SiPython,
@@ -73,19 +73,25 @@ const ICON_DEFINITIONS: Array<{
 ];
 
 export function IconCloudSpecialties() {
-  // Always white: the site forces the dark theme, so the light branch this used to carry
-  // was unreachable, and reading the theme only delayed the first paint of the cloud.
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Wait for client-side hydration to complete
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Use a default that matches the most common theme during SSR
+  // After mounting, use the actual resolved theme
+  const color = !mounted ? "#FFFFFF" : resolvedTheme === "dark" ? "#FFFFFF" : "#000000";
+
   const icons = ICON_DEFINITIONS.map(({ key, Component }) => (
-    <Component key={key} size={ICON_SIZE} color="#FFFFFF" />
+    <Component key={key} size={ICON_SIZE} color={color} />
   ));
 
   return (
-    <Widget title="Specialties" meta={`${ICON_DEFINITIONS.length} tools`}>
-      {/* Fills the cell rather than a fixed 240px box, which is what cropped the sphere
-          and left it sitting off-centre against its neighbours. */}
-      <div className="relative flex min-h-[13rem] flex-1 items-center justify-center">
-        <IconCloud icons={icons} />
-      </div>
-    </Widget>
+    <div className="relative flex w-full h-60 items-center justify-center overflow-hidden">
+      <IconCloud icons={icons} />
+    </div>
   );
-}
+};

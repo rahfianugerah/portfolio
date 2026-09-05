@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Widget } from "@/app/components/widgets/widget";
 
 export default function Clock() {
   const [mounted, setMounted] = useState(false);
@@ -13,13 +12,11 @@ export default function Clock() {
     return () => clearInterval(timer);
   }, []);
 
-  // The placeholder keeps the widget frame. Without it the cell rendered as a bare
-  // 140px box on the server and then grew on hydration, which shifted the whole row.
   if (!mounted || !date) {
     return (
-      <Widget title="Local Time" meta="Jakarta, ID" bodyClassName="justify-center">
-        <div className="h-12 w-40 animate-pulse bg-white/10" />
-      </Widget>
+      <div className="flex h-[140px] w-full items-center justify-center rounded-lg border bg-card text-card-foreground shadow-sm animate-pulse">
+        <div className="h-8 w-24 rounded bg-muted"></div>
+      </div>
     );
   }
 
@@ -42,29 +39,25 @@ export default function Clock() {
   const yearStr = date.getFullYear();
 
   return (
-    <Widget
-      title="Local Time"
-      meta={
-        <span className="inline-flex items-center gap-2">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
-          </span>
-          Jakarta, ID
+    <div className="flex w-full flex-col items-center justify-center rounded-lg border bg-card py-6 text-card-foreground shadow-sm">
+      {/* Label */}
+      <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-widest">
+        <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
         </span>
-      }
-      bodyClassName="justify-center"
-    >
+        Jakarta, ID
+      </div>
       
       {/* Time - Big Font */}
-      <div className="heading-display text-5xl leading-none tabular-nums text-white">
+      <div className="text-6xl font-bold font-bebas text-primary mt-1 leading-none">
         {timeStr}
       </div>
 
       {/* Date - Technical Font */}
-      <div className="mt-4 text-[11px] tabular-nums text-zinc-300">
+      <div className="mt-2 text-sm font-mono text-muted-foreground border-t pt-2 w-3/4 text-center">
         {dateStr}, {yearStr}
       </div>
-    </Widget>
+    </div>
   );
 }

@@ -1,4 +1,6 @@
+import { sourceCodePro } from "@/app/layout";
 import type { Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
 const config = {
   darkMode: ["class"],
@@ -19,14 +21,10 @@ const config = {
     },
     extend: {
       fontFamily: {
-        // Body, UI, labels, eyebrows. Matches the consulting site.
-        sans: ["var(--font-montserrat)", "ui-sans-serif", "system-ui", "Segoe UI", "Roboto", "Helvetica", "Arial"],
-        // Code blocks only.
+        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "Segoe UI", "Roboto", "Helvetica", "Arial"],
         mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
-        // Page and section headings, and the hero name: Copperplate CC, the engraved face
-        // the portfolio carries and the consulting site does not. Montserrat stays behind
-        // it as the swap fallback, so a heading is never unstyled while the face loads.
-        display: ["var(--font-display)", "var(--font-montserrat)", "ui-sans-serif", "system-ui", "sans-serif"],
+        bebas: ["var(--font-bebas)", "Inter", "sans-serif"],
+        sourceCodePro: ["var(--font-source-code-pro)", ],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -63,21 +61,10 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      // Every step of the scale collapses to --radius, which is 0. The whole scale is
-      // overridden, not just lg/md/sm: `rounded`, `rounded-xl` and `rounded-t` read
-      // Tailwind's own defaults, so leaving them out would quietly keep corners on the
-      // 21 places that use them. `full` is deliberately left alone — the live-status
-      // pulse dots are the one shape that stays a circle.
       borderRadius: {
-        none: "0px",
-        DEFAULT: "var(--radius)",
-        sm: "var(--radius)",
-        md: "var(--radius)",
         lg: "var(--radius)",
-        xl: "var(--radius)",
-        "2xl": "var(--radius)",
-        "3xl": "var(--radius)",
-        full: "9999px",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "accordion-down": {
@@ -92,6 +79,9 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      screens: {
+        "3xl": "1500px",
       },
     },
   },

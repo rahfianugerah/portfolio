@@ -1,106 +1,71 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
-const BASE =
-  "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public";
+type ImageCarouselProps = {
+  images?: string[];
+  intervalMs?: number;
+};
 
-// Adjust the caption text freely — these are the only words in the component, and the
-// photographs are the ones in public/, none of which are the founder portraits the
-// quote carousel uses.
-const moments = [
-  {
-    image: `${BASE}/me-google-1.jpeg`,
-    caption: "At the Google office",
-    meta: "Jakarta",
-  },
-  {
-    image: `${BASE}/gemastik-3.jpeg`,
-    caption: "Gemastik, the national IT competition",
-    meta: "Indonesia",
-  },
-  {
-    image: `${BASE}/me-hackathon.jpg`,
-    caption: "Amartha Hackathon with GDG Jakarta",
-    meta: "2025",
-  },
-  {
-    image: `${BASE}/me-google-3.jpeg`,
-    caption: "Building with the developer community",
-    meta: "Jakarta",
-  },
-];
+export default function ImageCarousel({ images, intervalMs = 3000 }: ImageCarouselProps) {
+  const placeholders = useMemo(
+    () => [
+      "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/me-google-1.jpeg",
+      "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/gemastik-3.jpeg",
+      "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/me-google-3.jpeg",
+      "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/me-hackathon.jpg",
+    ],
+    []
+  );
 
-/**
- * The same treatment the quote carousel uses — full-bleed photograph, text laid over a
- * fade — applied to my own photographs rather than the founder portraits, and sat in a
- * different column of the grid so the two never read as a matched pair.
- */
-export default function ImageCarousel({ intervalMs = 5000 }: { intervalMs?: number }) {
+  const items = images && images.length > 0 ? images : placeholders;
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-    const id = setInterval(
-      () => setIndex((prev) => (prev + 1) % moments.length),
-      intervalMs
-    );
+    const id = setInterval(() => {
+      setIndex((prev) => (prev + 1) % items.length);
+    }, intervalMs);
     return () => clearInterval(id);
-  }, [intervalMs]);
+  }, [items.length, intervalMs]);
 
   return (
-    <div className="group relative h-full min-h-[22rem] w-full overflow-hidden lg:min-h-0">
-      {moments.map((item, i) => (
-        <div
-          key={item.image}
-          aria-hidden={index !== i}
-          className={cn(
-            "absolute inset-0 transition-opacity duration-1000 ease-in-out",
-            index === i ? "opacity-100" : "opacity-0"
-          )}
-        >
-          <Image
-            src={item.image}
-            alt={item.caption}
+    // FIX 1: Added 'shrink-0' so it never gets squeezed by the sidebar height
+    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm">
+      <div className="relative aspect-square w-full group">
+        
+        {items.map((src, i) => (
+           <Image
+            key={i}
+            src={src}
+            alt={`Slide ${i + 1}`}
             fill
-            sizes="(max-width: 640px) 100vw, 400px"
-            className="object-cover transition-transform duration-[1200ms] group-hover:scale-[1.03]"
+            sizes="(max-width: 768px) 100vw, 300px"
+            className={cn(
+              "object-cover transition-opacity duration-700 ease-in-out",
+              index === i ? "opacity-100 z-10" : "opacity-0 z-0"
+            )}
+            priority={i === 0}
           />
-          <div className="absolute inset-0 bg-[linear-gradient(to_top,#000_6%,rgba(0,0,0,0.55)_45%,rgba(0,0,0,0.15)_100%)]" />
-        </div>
-      ))}
+        ))}
 
-      <div className="absolute inset-x-0 top-0 p-6">
-        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-200">
-          Moments
-        </p>
+        <div className="absolute bottom-2 left-2 rounded bg-black/50 px-2 py-1 text-xs text-white z-20 backdrop-blur-sm">
+          {index + 1} / {items.length}
+        </div>
       </div>
-
-      <div className="absolute inset-x-0 bottom-0 p-6">
-        <p className="heading-display text-base leading-snug text-white">
-          {moments[index].caption}
-        </p>
-        <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-zinc-200">
-          {moments[index].meta}
-        </p>
-
-        <div className="mt-5 flex gap-1.5">
-          {moments.map((item, i) => (
-            <button
-              key={item.image}
-              type="button"
-              onClick={() => setIndex(i)}
-              aria-label={`Show ${item.caption}`}
-              className={cn(
-                "h-0.5 w-8 transition-colors",
-                index === i ? "bg-white" : "bg-white/30 hover:bg-white/60"
-              )}
-            />
-          ))}
-        </div>
+      
+      <div className="flex items-center justify-center gap-1.5 p-2">
+        {items.map((_, i) => (
+          <button
+            key={i}
+            aria-label={`Go to slide ${i + 1}`}
+            onClick={() => setIndex(i)}
+            className={cn(
+                "h-2 rounded-full transition-all duration-300",
+                index === i ? "bg-primary w-4" : "bg-muted w-2 hover:bg-primary/50"
+            )}
+          />
+        ))}
       </div>
     </div>
   );
