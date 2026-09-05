@@ -1,10 +1,14 @@
+import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+// Removed incorrect import of image component
 
 interface Props {
   title: string;
   description: string | string[];
   dates: string;
   location: string;
+  image?: string;
   issued?: string;
   links?: readonly {
     icon: React.ReactNode;
@@ -13,56 +17,49 @@ interface Props {
   }[];
 }
 
-/**
- * One achievement, as a row.
- *
- * The previous version carried an absolutely-positioned box at `-left-16` holding a
- * commented-out avatar — the fossil of a timeline layout that reserved a 64px left rail.
- * It reserved nothing and rendered nothing, but it was half the gutter this section
- * appeared to have. The `image` prop went with it: only the deleted avatar read it.
- */
 export function HardworkCard({
   title,
   description,
   dates,
   location,
+  image,
   issued,
   links,
 }: Props) {
   return (
-    <li className="py-6">
-      <div className="flex flex-col gap-2">
-        {dates && (
-          <time className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
-            {dates}
-          </time>
-        )}
-        <h3 className="heading-display text-base leading-snug text-white">{title}</h3>
-
-        {(location || issued) && (
-          <p className="text-[11px] uppercase tracking-[0.14em] text-zinc-400">
-            {[location, issued && `Issued by ${issued}`].filter(Boolean).join(" · ")}
-          </p>
-        )}
-
-        {description && (
-          <p className="mt-1 max-w-3xl text-[13px] leading-6 text-zinc-200">
-            {description}
-          </p>
-        )}
+    <li className="relative py-4">
+      <div className="flex flex-1 flex-col justify-start gap-1">
+      <div className="absolute -left-16 top-2 flex items-center justify-center rounded-full">
+        {/* <Avatar className="border size-12 m-auto">
+          <AvatarImage src={image} alt={title} className="object-contain" />
+          <AvatarFallback>{title[0]}</AvatarFallback>
+        </Avatar> */}
       </div>
-
+        {dates && (
+          <time className="text-xs text-muted-foreground">{dates}</time>
+        )}
+        <h2 className="font-semibold leading-none">{title}</h2>
+        {location && (
+          <p className="text-sm text-muted-foreground">{location}</p>
+        )}
+        {issued && (
+          <p className="text-sm">Issued by {issued}</p>
+        )}
+        {description && (
+          <span className="prose dark:prose-invert text-muted-foreground">
+            {description}
+          </span>
+        )}
+        
+      </div>
       {links && links.length > 0 && (
-        <div className="mt-4 flex flex-row flex-wrap items-center gap-x-5 gap-y-2">
-          {links.map((link, idx) => (
-            <Link
-              href={link.href}
-              key={idx}
-              target="_blank"
-              className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-200 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-            >
-              {link.icon}
-              {link.title}
+        <div className="mt-2 flex flex-row flex-wrap items-start gap-2 ">
+          {links?.map((link, idx) => (
+            <Link href={link.href} key={idx}>
+              <Badge key={idx} title={link.title} className="flex gap-2 inline-flex items-center rounded-sm bg-white/5 px-2 py-2 text-sm text-foreground/90 shadow-sm backdrop-blur transition hover:bg-white/10">
+                {link.icon}
+                {link.title}
+              </Badge>
             </Link>
           ))}
         </div>

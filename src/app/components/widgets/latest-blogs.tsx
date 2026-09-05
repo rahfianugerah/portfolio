@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { VscChevronRight } from "react-icons/vsc";
-import { Widget } from "./widget";
+import { ArrowRight } from "lucide-react";
 
 type BlogPost = {
   slug: string;
@@ -41,7 +40,10 @@ export default function LatestBlogsWidget() {
 
   if (loading) {
     return (
-      <Widget title="Latest Writing" meta="From the blog">
+      <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
+        <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
+          Latest Blog Posts
+        </div>
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="animate-pulse flex gap-3">
@@ -53,12 +55,15 @@ export default function LatestBlogsWidget() {
             </div>
           ))}
         </div>
-      </Widget>
+      </div>
     );
   }
 
   return (
-    <Widget title="Latest Writing" meta="From the blog">
+    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
+      <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
+        Latest Blog Posts
+      </div>
 
       {posts.length === 0 ? (
         <p className="text-xs text-muted-foreground">No blog posts yet.</p>
@@ -67,7 +72,7 @@ export default function LatestBlogsWidget() {
           {posts.map((post) => (
             <Link
               key={post.slug}
-              href={`/writing/${post.slug}`}
+              href={`/blog/${post.slug}`}
               className="flex gap-3 group hover:bg-muted/50 rounded-md p-1.5 -m-1.5 transition-colors"
             >
               {/* Thumbnail
@@ -103,12 +108,12 @@ export default function LatestBlogsWidget() {
 
       {/* Read More Button */}
       <Link
-        href="/writing"
-        className="mt-4 flex min-h-11 items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-200 transition-colors hover:text-white"
+        href="/blog"
+        className="mt-4 flex items-center justify-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors py-2 border-t border-border"
       >
-        Read more writing
-        <VscChevronRight className="h-3 w-3" />
+        Read More Blogs
+        <ArrowRight className="w-3 h-3" />
       </Link>
-    </Widget>
+    </div>
   );
 }

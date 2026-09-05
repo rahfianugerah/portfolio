@@ -8,8 +8,31 @@ import LayoutContent from "@/app/components/layout-content";
 
 import type { Metadata } from "next";
 
-import { montserrat, sourceCodePro, copperplate } from "@/lib/fonts";
+import { Inter as FontSans, Source_Code_Pro, Bebas_Neue } from "next/font/google";
 import "./globals.css";
+
+export const inter = FontSans({
+  subsets: ["latin", "latin-ext"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+export const sourceCodePro = Source_Code_Pro({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-mono",
+  fallback: ["monospace"],
+  display: "swap",
+});
+
+export const bebasNeue = Bebas_Neue({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400"],
+  variable: "--font-bebas",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
@@ -69,9 +92,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(sourceCodePro.variable, montserrat.variable, copperplate.variable)} suppressHydrationWarning>
-      <body className={`font-sans ${montserrat.className}`}>
-        <ThemeProvider attribute="class" forcedTheme="dark" disableTransitionOnChange>
+    <html lang="en" className={cn(sourceCodePro.variable, inter.variable, bebasNeue.variable)} suppressHydrationWarning>
+      <body className={`font-sans ${inter.className}`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <TooltipProvider delayDuration={0}>
             <BlogReadingProvider>
               <LayoutContent>

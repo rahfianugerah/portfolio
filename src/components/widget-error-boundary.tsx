@@ -10,7 +10,7 @@ interface WidgetErrorBoundaryProps {
 
 export function WidgetFallback({ message = "Data Unavailable" }: { message?: string }) {
   return (
-    <div className="flex items-center justify-center p-6 text-sm text-muted-foreground">
+    <div className="flex items-center justify-center rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground">
       <span>{message}</span>
     </div>
   );

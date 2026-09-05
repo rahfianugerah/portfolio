@@ -21,7 +21,7 @@ const components: Partial<PortableTextComponents> = {
         const height = value?.asset?.metadata?.dimensions?.height || 600;
 
         return (
-          <figure className="my-6 overflow-hidden border border-border">
+          <figure className="my-6 overflow-hidden rounded-lg border border-border">
               <Image
                 src={imageUrl}
                 alt={alt}
@@ -52,7 +52,7 @@ const components: Partial<PortableTextComponents> = {
           href={href}
           target={isInternal ? "_self" : "_blank"}
           rel={isInternal ? undefined : "noopener noreferrer"}
-          className="text-white hover:underline underline-offset-2 transition-colors"
+          className="text-blue-600 dark:text-blue-400 hover:underline underline-offset-2 transition-colors"
         >
           {children}
         </a>
@@ -65,22 +65,22 @@ const components: Partial<PortableTextComponents> = {
   },
   block: {
     h1: ({ children }: any) => (
-      <h1 className="heading-display mt-10 mb-6 text-2xl text-white">{children}</h1>
+      <h1 className="text-4xl font-bold mt-10 mb-6">{children}</h1>
     ),
     h2: ({ children }: any) => (
-      <h2 className="heading-display mt-8 mb-4 text-xl text-white">{children}</h2>
+      <h2 className="text-3xl font-bold mt-8 mb-4">{children}</h2>
     ),
     h3: ({ children }: any) => (
-      <h3 className="heading-display mt-6 mb-3 text-lg text-white">{children}</h3>
+      <h3 className="text-2xl font-bold mt-6 mb-3">{children}</h3>
     ),
     h4: ({ children }: any) => (
-      <h4 className="heading-display mt-5 mb-2 text-base text-white">{children}</h4>
+      <h4 className="text-xl font-semibold mt-5 mb-2">{children}</h4>
     ),
     normal: ({ children }: any) => (
       <p className="text-base leading-8 mb-4 text-foreground/90">{children}</p>
     ),
     blockquote: ({ children }: any) => (
-      <blockquote className="border-l-4 border-primary/50 pl-6 py-2 my-6 italic text-muted-foreground bg-white/5">
+      <blockquote className="border-l-4 border-primary/50 pl-6 py-2 my-6 italic text-muted-foreground bg-muted/30 rounded-r-lg">
         {children}
       </blockquote>
     ),

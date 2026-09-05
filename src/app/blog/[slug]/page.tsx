@@ -44,7 +44,7 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime,
-      url: `${DATA.url}/writing/${post.slug}`,
+      url: `${DATA.url}/blog/${post.slug}`,
       images: [
         {
           url: ogImage,
@@ -75,7 +75,7 @@ export default async function Blog({
 
   return (
     <BlogPostWrapper>
-      <section id="blog" className="mx-auto max-w-[650px] px-6 py-16 sm:py-20">
+      <section id="blog" className="max-w-[650px] mx-auto">
         <script
           type="application/ld+json"
           suppressHydrationWarning
@@ -90,7 +90,7 @@ export default async function Blog({
               image: post.metadata.image
                 ? post.metadata.image
                 : `${DATA.url}/og?title=${post.metadata.title}`,
-              url: `${DATA.url}/writing/${post.slug}`,
+              url: `${DATA.url}/blog/${post.slug}`,
               author: {
                 "@type": "Person",
                 name: DATA.name,
@@ -108,11 +108,11 @@ export default async function Blog({
           </Suspense>
         </div>
 
-        <h1 className="heading-display mb-8 text-2xl text-white sm:text-3xl">
+        <h1 className="title font-medium text-2xl tracking-tighter mb-8">
           {post.metadata.title}
         </h1>
 
-        <article>
+        <article className="prose dark:prose-invert">
           {/* 2. Use the wrapper here. It safely handles the component mapping on the client. */}
           <CustomPortableText value={post.content} />
           <hr/><br/>
@@ -121,6 +121,9 @@ export default async function Blog({
         </article>
       </section>
       
+      <footer className="mt-12 text-center text-sm font-bebas text-muted-foreground pb-24">
+        <p>© 2025 Naufal Rahfi Anugerah | All rights reserved.</p>
+      </footer>
     </BlogPostWrapper>
   );
 }

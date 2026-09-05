@@ -18,7 +18,7 @@ export default async function AdminPage() {
       <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
         Signed in as {auth.email}
       </p>
-      <h1 className="heading-display mt-4 text-2xl text-white sm:text-3xl">
+      <h1 className="font-bebas mt-4 text-2xl text-white sm:text-3xl">
         Media Library
       </h1>
       <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-300">

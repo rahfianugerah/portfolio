@@ -1,7 +1,5 @@
 "use client";
 
-import { Widget } from "./widget";
-import { VscChevronRight } from "react-icons/vsc";
 import { WidgetFallback } from "@/components/widget-error-boundary";
 import { 
   SiInstagram, 
@@ -24,7 +22,7 @@ const SOCIAL_LINKS: SocialLink[] = [
     name: "Instagram",
     url: "https://instagram.com/nrhfx", // Replace with your username
     icon: SiInstagram,
-    color: "hover:bg-white/10 hover:text-white",
+    color: "hover:bg-pink-500/20 hover:text-pink-500",
   },
   {
     name: "Threads",
@@ -36,19 +34,19 @@ const SOCIAL_LINKS: SocialLink[] = [
     name: "Discord",
     url: "https://discord.com/users/rhfx", // Replace with your username or server invite
     icon: SiDiscord,
-    color: "hover:bg-white/10 hover:text-white",
+    color: "hover:bg-indigo-500/20 hover:text-indigo-500",
   },
   {
     name: "LinkedIn",
     url: "https://linkedin.com/in/naufalrahfi", // Replace with your username
     icon: FaLinkedin,
-    color: "hover:bg-white/10 hover:text-white",
+    color: "hover:bg-blue-500/20 hover:text-blue-500",
   },
   {
     name: "GitHub",
     url: "https://github.com/naufalrahfi", // Replace with your username
     icon: SiGithub,
-    color: "hover:bg-white/10 hover:text-white dark:hover:bg-gray-400/20 dark:hover:text-gray-400",
+    color: "hover:bg-gray-500/20 hover:text-gray-500 dark:hover:bg-gray-400/20 dark:hover:text-gray-400",
   },
 ];
 
@@ -77,8 +75,8 @@ export default function SocialLinks({ orientation = "horizontal" }: SocialLinksP
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "flex items-center justify-center w-12 h-12",
-                "border border-border bg-black/90 backdrop-blur-sm",
+                "flex items-center justify-center w-12 h-12 rounded-lg",
+                "border border-border bg-card/90 backdrop-blur-sm shadow-sm",
                 "text-muted-foreground",
                 "transition-all duration-200",
                 link.color
@@ -94,29 +92,36 @@ export default function SocialLinks({ orientation = "horizontal" }: SocialLinksP
     );
   }
 
+  // Default horizontal card style
   return (
-    <Widget title="Connect With Me" meta={`${SOCIAL_LINKS.length} places`}>
-      <ul className="flex flex-1 flex-col justify-between">
+    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
+      <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
+        Connect With Me
+      </div>
+
+      <div className="flex items-center justify-center gap-2">
         {SOCIAL_LINKS.map((link) => {
           const Icon = link.icon;
           return (
-            <li key={link.name}>
-              <a
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-3 border-b border-border py-3 transition-colors last:border-b-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                <Icon className="h-4 w-4 shrink-0 text-zinc-300 transition-colors group-hover:text-white" />
-                <span className="flex-1 text-[11px] text-zinc-200 transition-colors group-hover:text-white">
-                  {link.name}
-                </span>
-                <VscChevronRight className="h-3 w-3 shrink-0 text-zinc-400 transition-colors group-hover:text-zinc-200" />
-              </a>
-            </li>
+            <a
+              key={link.name}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                "flex items-center justify-center p-2.5 rounded-lg",
+                "bg-muted/50 text-muted-foreground",
+                "transition-all duration-200",
+                link.color
+              )}
+              aria-label={`Follow on ${link.name}`}
+              title={link.name}
+            >
+              <Icon className="h-5 w-5" />
+            </a>
           );
         })}
-      </ul>
-    </Widget>
+      </div>
+    </div>
   );
 }

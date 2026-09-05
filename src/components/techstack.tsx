@@ -1,7 +1,6 @@
 // components/TechStack.tsx
 import { ComponentType } from "react";
 import { DATA } from "@/data/resume";
-import { Widget } from "@/app/components/widgets/widget";
 import {
   SiPython, SiJavascript, SiTypescript, SiCplusplus, SiC,
   SiTensorflow, SiScikitlearn, SiPandas, SiNumpy,
@@ -70,36 +69,39 @@ function getIcon(name: string): IconT {
   return ICONS[norm(name)] ?? RxQuestionMarkCircled; // safe fallback
 }
 
-export default function TechStack() {
+interface TechStackProps {
+  title?: string;
+  className?: string;
+}
+
+export default function TechStack({
+  title = "Tech Stack",
+  className = "",
+}: TechStackProps) {
+  // expect these arrays in your DATA (resume.tsx)
   const sections = [
-    { label: "Languages", items: DATA.programmingLanguages ?? [] },
-    { label: "Frameworks", items: DATA.frameworks ?? [] },
+    { label: "Programming Languages", items: DATA.programmingLanguages ?? [] },
+    { label: "Frameworks & Libraries", items: DATA.frameworks ?? [] },
     { label: "Databases", items: DATA.databases ?? [] },
-    { label: "Tools", items: DATA.tools ?? [] },
+    { label: "Tools & Platforms", items: DATA.tools ?? [] },
   ];
 
-  const total = sections.reduce((n, s) => n + s.items.length, 0);
-
-  // The widget frame supplies the label and the padding. This component used to draw a
-  // text-lg heading of its own with no padding around it, which is why it sat flush
-  // against the cell edge and pushed the whole grid row taller than its neighbours.
   return (
-    <Widget title="Tech Stack" meta={`${total} tools`}>
-      <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto no-scrollbar">
+    <section className={className}>
+      <h3 className="mb-4 text-lg font-semibold text-foreground">{title}</h3>
+      <div className="space-y-6">
         {sections.map(({ label, items }) => (
           <div key={label}>
-            <h4 className="mb-2.5 text-[9px] uppercase tracking-[0.18em] text-zinc-400">
-              {label}
-            </h4>
-            <ul className="flex flex-wrap gap-1.5">
+            <h4 className="mb-2 text-sm font-medium text-foreground/80">{label}</h4>
+            <ul className="flex flex-wrap gap-2">
               {items.map((name: string) => {
                 const Icon = getIcon(name);
                 return (
                   <li
                     key={`${label}-${name}`}
-                    className="inline-flex items-center gap-1.5 border border-border px-2 py-1 text-[10px] text-zinc-200 transition-colors hover:border-white hover:text-white"
+                    className="group inline-flex items-center rounded-sm bg-white/5 px-3 py-2 text-sm text-foreground/90 shadow-sm backdrop-blur transition hover:bg-white/10"
                   >
-                    <Icon className="h-3 w-3" />
+                    <Icon className="mr-2 h-4 w-4 opacity-90 transition" />
                     <span>{name}</span>
                   </li>
                 );
@@ -108,6 +110,6 @@ export default function TechStack() {
           </div>
         ))}
       </div>
-    </Widget>
+    </section>
   );
 }
