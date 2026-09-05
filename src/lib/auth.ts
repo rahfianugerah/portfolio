@@ -5,7 +5,7 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
  * The one place identity is read.
  *
  * Every route fills the same shape, so changing the identity source later means changing
- * this file and nothing else — that is the "one swappable abstraction" auth.rules.md asks
+ * this file and nothing else, which is the "one swappable abstraction" auth.rules.md asks
  * for, and the reason no route ever touches a Supabase client directly to ask who is
  * calling.
  *

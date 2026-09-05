@@ -31,7 +31,7 @@ function storage(): Storage {
   let credentials: { client_email: string; private_key: string };
   try {
     // Base64 so the PEM's newlines survive every environment UI that would otherwise
-    // mangle them — the single most common cause of a "invalid PEM" at deploy time.
+    // mangle them, the single most common cause of an "invalid PEM" at deploy time.
     credentials = JSON.parse(Buffer.from(raw, "base64").toString("utf8"));
   } catch {
     throw new Error(

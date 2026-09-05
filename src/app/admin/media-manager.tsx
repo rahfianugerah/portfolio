@@ -122,8 +122,8 @@ export function MediaManager() {
               defaultValue="public"
               className="min-h-11 w-full border border-input bg-black px-4 text-sm text-white focus:border-white focus:outline-none"
             >
-              <option value="public">Public — images on the site</option>
-              <option value="private">Private — documents, signed link</option>
+              <option value="public">Public: images on the site</option>
+              <option value="private">Private: documents, signed link</option>
             </select>
           </label>
 
@@ -166,7 +166,7 @@ export function MediaManager() {
           Add a link
         </h2>
         <p className="mt-3 text-xs leading-6 text-zinc-300">
-          For a document that lives somewhere else — a credential, a paper, a drive folder.
+          For a document that lives somewhere else, such as a credential, a paper, or a drive folder.
           Nothing is uploaded and nothing is stored but the address.
         </p>
 
@@ -229,7 +229,7 @@ export function MediaManager() {
       </form>
 
       <h2 className="mt-12 text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400">
-        Library {items.length > 0 && `— ${items.length}`}
+        Library {items.length > 0 && `(${items.length})`}
       </h2>
 
       {loading ? (

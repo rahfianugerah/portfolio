@@ -11,14 +11,14 @@ import type { Metadata } from "next";
 import { Inter as FontSans, Source_Code_Pro, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 
-export const inter = FontSans({
+const inter = FontSans({
   subsets: ["latin", "latin-ext"],
   weight: ["300", "400", "500", "600", "700", "800"],
   variable: "--font-sans",
   display: "swap",
 });
 
-export const sourceCodePro = Source_Code_Pro({
+const sourceCodePro = Source_Code_Pro({
   subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
@@ -27,7 +27,7 @@ export const sourceCodePro = Source_Code_Pro({
   display: "swap",
 });
 
-export const bebasNeue = Bebas_Neue({
+const bebasNeue = Bebas_Neue({
   subsets: ["latin", "latin-ext"],
   weight: ["400"],
   variable: "--font-bebas",
@@ -93,7 +93,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn(sourceCodePro.variable, inter.variable, bebasNeue.variable)} suppressHydrationWarning>
-      <body className={`font-sans ${inter.className}`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font -- the rule is a
+            Pages Router rule; in the App Router a <link> here is hoisted into every
+            document, which is exactly what a site-wide font needs. */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="font-sans">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <TooltipProvider delayDuration={0}>
             <BlogReadingProvider>

@@ -11,7 +11,7 @@ import {
 // Uploads decode images, which is real work on a real buffer. Not an edge route.
 export const runtime = "nodejs";
 
-/** List the library. Owner only — the middleware does not cover /api. */
+/** List the library. Owner only, because the middleware does not cover /api. */
 export async function GET() {
   try {
     await requireOwner();

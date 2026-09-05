@@ -25,7 +25,7 @@ interface CertificateCardProps {
   issued?: string;
   href?: string;
   description?: string;
-  category?: readonly string[]; // <— add categories to render as badges
+  category?: readonly string[]; // categories rendered as badges
   links?: readonly {
     icon: React.ReactNode;
     title: string;

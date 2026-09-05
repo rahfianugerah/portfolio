@@ -6,8 +6,8 @@ export const runtime = "nodejs";
 /**
  * Record a link.
  *
- * A link points at a document that lives somewhere else — a credential, a paper, a drive
- * folder — so there is nothing to upload and nothing to store. It shares the media table
+ * A link points at a document that lives somewhere else, such as a credential, a paper or
+ * a drive folder, so there is nothing to upload and nothing to store. It shares the media table
  * with files because the two are listed, filtered and ordered together.
  */
 export async function POST(request: Request) {
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
   //
   // A `javascript:` or `data:` URL rendered into an href is a stored cross-site scripting
   // hole: it executes in the visitor's session the moment somebody clicks it. React
-  // escapes text, not URL schemes, so this check is the control — there is nothing
+  // escapes text, not URL schemes, so this check is the control, because there is nothing
   // downstream that would catch it.
   let url: URL;
   try {

@@ -9,8 +9,8 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
  * middleware pass the refreshed session would never be persisted and the owner would be
  * signed out whenever the access token expired.
  *
- * The guard is deny-by-default. It matches the CMS paths and lets exactly one through —
- * the login page — rather than listing what to protect, because a list of protected paths
+ * The guard is deny-by-default. It matches the CMS paths and lets exactly one through,
+ * the login page, rather than listing what to protect, because a list of protected paths
  * is a list somebody forgets to add the next route to.
  */
 export async function middleware(request: NextRequest) {
@@ -74,7 +74,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   // Only the CMS. The public site is untouched, so no visitor request pays for an auth
-  // round trip. The API routes under /api/media check identity themselves as well —
+  // round trip. The API routes under /api/media check identity themselves as well,
   // middleware is a gate, not the only lock.
   matcher: ["/admin/:path*"],
 };

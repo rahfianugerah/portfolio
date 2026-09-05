@@ -12,7 +12,7 @@ export const runtime = "nodejs";
  * Public on purpose: a visitor must be able to download the CV. That makes this the one
  * unauthenticated route that can cause repeated work, so it is rate limited by IP.
  *
- * The resume is personal data — a name, contact details, an employment history — which is
+ * The resume is personal data, holding a name, contact details and an employment history, which is
  * why the object is private and this route mints a minutes-long URL rather than the file
  * living at a public path where it would be indexed and archived.
  */

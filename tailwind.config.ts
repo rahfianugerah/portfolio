@@ -1,4 +1,3 @@
-import { sourceCodePro } from "@/app/layout";
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
@@ -21,10 +20,12 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "Segoe UI", "Roboto", "Helvetica", "Arial"],
+        // Google Sans is not in Next 14's font catalogue, so it arrives through the stylesheet
+        // link in app/layout.tsx rather than next/font. Inter sits behind it, already loaded
+        // and metric-matched, so a slow font response does not shift the page.
+        sans: ["Google Sans", "var(--font-sans)", "ui-sans-serif", "system-ui", "Segoe UI", "Roboto", "Helvetica", "Arial"],
         mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
         bebas: ["var(--font-bebas)", "Inter", "sans-serif"],
-        sourceCodePro: ["var(--font-source-code-pro)", ],
       },
       colors: {
         border: "hsl(var(--border))",

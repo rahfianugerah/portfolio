@@ -115,7 +115,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
       {/* DESKTOP LAYOUT */}
       <div className="hidden lg:block py-6 min-h-screen">
-        {/* 3xl+ screens (1800px+): 5-column layout — fits all 4 rails + main */}
+        {/* 3xl+ screens (1800px+): 5-column layout, fitting all 4 rails plus main */}
         <div className="hidden 3xl:flex justify-center gap-4 px-4 max-w-[1800px] mx-auto items-start">
           {/* FAR LEFT RAIL - Tech Stack, Specialties, Projects (starts lower for stair effect) */}
           {!isFullPage && (

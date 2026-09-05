@@ -139,7 +139,7 @@ export async function processUpload(
   const processed = await processImage(input);
 
   // Compression must never make a file larger. Where WebP loses, keep the original bytes
-  // and the original type — but only after the re-encode has proved the file decodes.
+  // and the original type, but only after the re-encode has proved the file decodes.
   const useOriginal = processed.buffer.byteLength >= input.byteLength;
   const buffer = useOriginal ? input : processed.buffer;
   const mimeType = useOriginal ? mime : "image/webp";
@@ -164,7 +164,7 @@ export function sha256Of(buffer: Buffer): string {
  * The stored object path.
  *
  * Built entirely on the server from the content hash. The uploader's filename never
- * reaches it — a name like `../../config` is a path traversal, and even a benign one
+ * reaches it. A name like `../../config` is a path traversal, and even a benign one
  * leaks whatever the person happened to call the file. The original is kept as metadata,
  * where it is data rather than a path.
  */
