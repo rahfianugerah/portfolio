@@ -49,15 +49,18 @@ backfilled and has no element to draw its border.
 **Font weights come from a font's metadata, not its filename.** Copperplate CC keeps Goudy's
 naming, where *Heavy* is the upright regular at `usWeightClass` 400 and Bold is 700.
 
-**No font file belongs in `public/`.** Everything there is served at the site root, and one of
-these licences forbids the site offering the font as a download. They live in `src/fonts/`.
+**No font file belongs in this repository at all.** Every face is served by Google Fonts, which
+is what keeps a bundled font's licence obligations from applying here.
 
 ## Where Things Live
 
-- **`src/lib/content.ts` is the content source for projects and certificates.** They are Sanity
-  documents now, and that module is the only thing that queries them. It falls back to
-  `src/data/resume.tsx` when Sanity is unset, unreachable, or empty, so do not "fix" a page that
-  looks right locally by pointing it back at the resume data; check whether the fallback fired.
+- **`src/lib/content.ts` is the content source for everything Sanity holds.** Projects and
+  certificates fall back to `src/data/resume.tsx` when Sanity is unset, unreachable, or empty, so
+  do not "fix" a page that looks right locally by pointing it back at the resume data; check
+  whether the fallback fired. Photographs and quotations have no fallback on purpose.
+- **There is no image in this project and no storage bucket.** Google Cloud Storage is gone, and
+  so are `src/lib/gcs.ts`, `src/lib/media.ts`, and every route under `/api/media`. An image is a
+  Sanity asset. Do not commit one, and do not add an upload endpoint: the studio already is one.
 - **`src/data/resume.tsx` still owns work, education, leadership, and achievements.** Those have
   no schema yet. Its `icon` fields hold React elements, which is what kept any of this out of a
   database until the link icons were replaced by a `type` string.

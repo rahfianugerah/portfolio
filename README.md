@@ -115,14 +115,14 @@ src/
 │   ├── blog/                 # Blog list and post
 │   ├── contact/              # Contact form
 │   ├── experience/           # Work history
-│   ├── admin/                # Media library and the content migration
+│   ├── admin/                # The one-time content migration
 │   ├── studio/               # Embedded Sanity Studio
 │   ├── api/                  # analytics, blog, github/stats, media, admin, content
 │   ├── actions.ts            # Server actions
 │   └── components/           # Page-level components and widgets
 ├── components/               # Shared components, magicui, ui primitives
 ├── data/                     # resume.tsx, blog.ts
-├── lib/                      # content, supabase, auth, gcs, media, helpers
+├── lib/                      # content, supabase, auth, rate-limit, helpers
 └── sanity/                   # CMS client, write client, schemas
 ```
 
@@ -154,6 +154,8 @@ src/
 | Variable | Required | Description | Example |
 | :- | :- | :- | :- |
 | `GEMINI_API_KEY` | Yes | Assistant model key | `your_api_key_here` |
+| `SANITY_API_WRITE_TOKEN` | Once | Needed only by the `/admin` migration button | `your_write_token` |
+| `CMS_OWNER_EMAIL` | Yes | The single address allowed to sign in to `/admin` | `you@example.com` |
 | `GITHUB_TOKEN` | Yes | Read-only token for the stats endpoint | `your_token_here` |
 | `GMAIL_USER` | Yes | Contact form sender | `you@example.com` |
 | `GMAIL_APP_PASSWORD` | Yes | Contact form app password | `your_app_password_here` |
@@ -201,7 +203,7 @@ Next App Router, file-based.
 | `/contact` | Contact form | Public |
 | `/experience` | Work history | Public |
 | `/studio` | Sanity Studio | Authenticated by Sanity |
-| `/admin` | Media library, content migration | Owner only |
+| `/admin` | The one-time content migration | Owner only |
 | `/api/content` | Carousel photographs and quotations | Public |
 | `/api/admin/seed-content` | One-time resume to Sanity copy | Owner only |
 
@@ -274,12 +276,13 @@ User Action > Handler > Server Action or API Route > State Update > Render
 | Home carousel quotations | Sanity, `quote` documents | `/studio` |
 | Consulting engagements | Sanity, `clientProject` documents | `/studio` |
 | Work, education, leadership, achievements | `src/data/resume.tsx` | A commit |
-| Photographs and the résumé PDF | Google Cloud Storage, metadata in Supabase | `/admin` |
 
-`src/lib/content.ts` is the only place that reads projects and certificates. It queries Sanity and
-returns the résumé data instead when the project id is unset, when the query throws, or when it
-comes back empty, so an unconfigured or unreachable CMS shows the old content rather than an empty
-page a visitor cannot explain.
+`src/lib/content.ts` is the only place that reads any of it. Projects and certificates fall back
+to the résumé data when the project id is unset, when the query throws, or when it comes back
+empty, so an unconfigured CMS shows the old content rather than an empty page a visitor cannot
+explain. **The photographs and quotations have no fallback and are not meant to**: there is no
+committed image anywhere in this project, so an empty studio shows an empty frame rather than a
+picture nobody chose to publish.
 
 > [!note]
 > The link icons that used to make this content unserialisable are gone. A link carries a `type`
@@ -520,7 +523,9 @@ approval.
 | :- | :- | :- |
 | Work, education, leadership and achievements are still in `src/data/resume.tsx` | Editing them is a commit and a deploy | The same treatment as projects: a schema, a query in `src/lib/content.ts`, and a line in the migration route |
 | `src/data/resume.tsx` still holds React elements in the `icon` fields the migrated types no longer read | Nothing breaks, but the file reads as if those icons matter | Drop them when the last consumer moves to Sanity |
-| Fifteen unused packages removed from `package.json` but still installed | `node_modules` is larger than it needs to be | Run `npm install` |
+| Unused packages removed from `package.json` but still installed | `node_modules` is larger than it needs to be, and still holds `@google-cloud/storage`, `sharp` and `file-type` | Run `npm install` |
+| The home carousels are empty until something is published | Two cards on the home page show a placeholder line | Upload `moment` and `quote` documents in the studio |
+| The résumé download is the Google Drive link in `src/data/resume.tsx` | Replacing the CV is a commit, and the previous file stays reachable | Give the résumé a Sanity document with a file field |
 | Two majors behind on Next | Missing framework fixes | Upgrade 14 to 16; two call sites break on Next 15's async request APIs |
 | The GitHub activity graph is decorative | The squares are randomised, not real contribution data | Use the GitHub contributions API |
 | No test suite | Regressions are caught by review only | Add end-to-end coverage of the routes |
@@ -530,4 +535,4 @@ approval.
 1. **Two branches, not three.** `branch.rules.md` says a project that deploys uses the promotion shape, `dev` > `staging` > `main`. This uses trunk, `dev` > `main`, at the owner's direction. One person reviews every change, so a staging branch was a merge nobody read on the way to a deployment nobody else was waiting for. The cost is real and named where it bites: `main` is the first place a database migration ever runs, so what is pending is read before the merge rather than discovered after it. The preview at `preview-rahfi-portfolio.vercel.app` is where a change is looked at, and it is a deployment rather than a branch.
 2. **Vercel, not Cloud Run.** `deploy.rules.md` requires every deployed project to ship to Cloud Run. This is a Next.js site with no server of its own to run, and Vercel builds it, serves it from the edge, and gives every branch a preview for nothing. The exception does not generalise to a project with a backend.
 3. **The design language is not the house standard.** `uix.component.md` specifies black on white with Inter. This site uses the token layer, the red punctuation accent, and Bebas Neue described under Design System, shared with `consulting.rahfi.pro`, at the owner's direction. The cost is that neither site can adopt a house component without restyling it.
-4. **Public files are served publicly.** `media.rules.md` requires an uploaded file to be served only through an authenticated endpoint. A portfolio's photographs are public by definition, so serving them behind authentication would mean no visitor could see them. Storage is split instead: `public/` is CDN-backed, `private/` is reachable only through a short-lived signed URL, and every other control in the rule holds on both. The reasoning is in `PRD.md`.
+4. **Uploaded images are served publicly.** `media.rules.md` requires an uploaded file to be served only through an authenticated endpoint. A portfolio's photographs are public by definition, so serving them behind authentication would mean no visitor could see them. They are Sanity assets on Sanity's CDN, with server-generated names that cannot be guessed and no directory listing. The intent of the rule holds; only the read path differs, and it differs because the files genuinely are public.

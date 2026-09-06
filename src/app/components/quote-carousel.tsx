@@ -5,31 +5,12 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useSiteContent } from "@/lib/use-site-content";
 
-const FALLBACK_QUOTES = [
-  {
-    author: "Jensen Huang",
-    role: "CEO, NVIDIA",
-    text: "Software is eating the world, but AI is going to eat software.",
-    image: "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/jensen-huang.jpg"
-  },
-  {
-    author: "Steve Jobs",
-    role: "Co-founder, Apple",
-    text: "Being the richest man in the cemetery doesn't matter to me. Going to bed at night saying we've done something wonderful... that's what matters to me",
-    image: "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/steve-jobs.jpg"
-  },
-  {
-    author: "Linus Torvalds",
-    role: "Creator, Linux",
-    text: "Talk is cheap. Show me the code.",
-    image: "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/torvalds.jpg"
-  }
-];
 
 export default function QuoteCarousel() {
   const [index, setIndex] = useState(0);
   const content = useSiteContent();
-  const quotes = content?.quotes.length ? content.quotes : FALLBACK_QUOTES;
+  // Sanity is the only source, as it is for the photographs beside this.
+  const quotes = content?.quotes ?? [];
 
   useEffect(() => {
     setIndex((prev) => (prev < quotes.length ? prev : 0));
@@ -44,6 +25,12 @@ export default function QuoteCarousel() {
 
   return (
     <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm relative aspect-[4/5] group">
+      {quotes.length === 0 && (
+        <div className="flex h-full w-full items-center justify-center p-4 text-center text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
+          No quotations published yet
+        </div>
+      )}
+
       {quotes.map((item, i) => (
         <div
           key={i}

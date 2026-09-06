@@ -1,9 +1,8 @@
 import { getAuth } from "@/lib/auth";
-import { MediaManager } from "./media-manager";
 import { SeedContentButton } from "./seed-content-button";
 
 export const metadata = {
-  title: "Media Library",
+  title: "Content",
   robots: { index: false, follow: false },
 };
 
@@ -20,15 +19,13 @@ export default async function AdminPage() {
         Signed in as {auth.email}
       </p>
       <h1 className="font-bebas mt-4 text-2xl text-white sm:text-3xl">
-        Media Library
+        Content
       </h1>
       <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-300">
-        Images are stored publicly and served from the CDN. Documents are private and
-        reachable only through a short-lived link. Uploading with the slug{" "}
-        <code className="text-white">resume</code> replaces the CV in place, so its
-        download URL never changes.
+        Every image, document and post lives in Sanity and is edited at{" "}
+        <a className="underline underline-offset-4" href="/studio">/studio</a>. This page
+        holds the one thing the studio cannot do for itself.
       </p>
-      <MediaManager />
       <SeedContentButton />
     </div>
   );

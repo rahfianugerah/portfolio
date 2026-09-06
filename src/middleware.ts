@@ -74,7 +74,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   // Only the CMS. The public site is untouched, so no visitor request pays for an auth
-  // round trip. The API routes under /api/media check identity themselves as well,
-  // middleware is a gate, not the only lock.
+  // round trip. /api/admin/seed-content checks identity itself as well, because middleware
+  // is a gate, not the only lock.
   matcher: ["/admin/:path*"],
 };
