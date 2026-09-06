@@ -236,7 +236,7 @@ Next App Router, file-based.
 | :- | :- | :- |
 | `/` | Home | Public |
 | `/project` | Projects and certifications, full width | Public |
-| `/service` | Services | Public |
+| `/service` | Services, also summarised in the left rail | Public |
 | `/blog` | Blog list | Public |
 | `/blog/[slug]` | Blog post | Public |
 | `/contact` | Contact form | Public |
@@ -317,6 +317,7 @@ User Action > Handler > Server Action or API Route > State Update > Render
 | Achievements | Sanity, `achievement` documents | `/studio` |
 | The name, role, summary and social links | Sanity, the single `profile` document | `/studio` |
 | Skills | Sanity, `skillGroup` documents | `/studio` |
+| Services | Sanity, `service` documents | `/studio` |
 
 `src/lib/content.ts` is the only place that reads any of it, and **nothing has a fallback**. That
 is deliberate: a fallback was worth having while the dataset was empty, and keeping one now would

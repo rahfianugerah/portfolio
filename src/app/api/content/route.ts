@@ -6,6 +6,7 @@ import {
   getProjects,
   getQuotes,
   getRoles,
+  getServices,
   getSkillGroups,
 } from "@/lib/content";
 
@@ -20,13 +21,14 @@ import {
 export const revalidate = 60;
 
 export async function GET() {
-  const [profile, skills, moments, quotes, projects, roles] = await Promise.all([
+  const [profile, skills, moments, quotes, projects, roles, services] = await Promise.all([
     getProfile(),
     getSkillGroups(),
     getMoments(),
     getQuotes(),
     getProjects(),
     getRoles(),
+    getServices(),
   ]);
 
   // The counter wants the number, not the eighteen documents behind it.
@@ -37,5 +39,6 @@ export async function GET() {
     quotes,
     projectCount: projects.length,
     roles,
+    services,
   });
 }

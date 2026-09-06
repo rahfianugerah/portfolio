@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import type { Moment, Profile, Quote, Role, SkillGroup } from "@/lib/content";
+import type { Moment, Profile, Quote, Role, Service, SkillGroup } from "@/lib/content";
 
 export type SiteContent = {
   profile: Profile | null;
@@ -11,6 +11,7 @@ export type SiteContent = {
   quotes: Quote[];
   projectCount: number;
   roles: Role[];
+  services: Service[];
 };
 
 // Both carousels mount on the same page and want the same payload. Without this they would

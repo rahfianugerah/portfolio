@@ -3,10 +3,16 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { IconCloudSpecialties } from "@/components/specialties-icon";
 import TechStack from "@/components/techstack";
+import ServicesCard from "./widgets/services-card";
 
 export default function FarLeftRail() {
   return (
     <aside className="flex h-auto w-full flex-col gap-4">
+      {/* Services, above the cloud */}
+      <BlurFade delay={0.08}>
+        <ServicesCard />
+      </BlurFade>
+
       {/* Rahfi's Specialties - Icon Cloud */}
       <BlurFade delay={0.1}>
         <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">

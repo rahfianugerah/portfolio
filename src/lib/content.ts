@@ -69,6 +69,12 @@ export type Profile = {
   social: SocialLink[];
 };
 
+export type Service = {
+  id: string;
+  title: string;
+  description: string;
+};
+
 export type SkillGroup = {
   id: string;
   title: string;
@@ -177,6 +183,12 @@ const SKILL_QUERY = `*[_type == "skillGroup"]|order(order asc){
   "items": coalesce(items, [])
 }`;
 
+const SERVICE_QUERY = `*[_type == "service"]|order(order asc){
+  "id": _id,
+  title,
+  description
+}`;
+
 const ROLE_QUERY = `*[_type == "role"]|order(order asc){
   "id": _id,
   kind,
@@ -264,6 +276,10 @@ export async function getProfile(): Promise<Profile | null> {
 
 export async function getSkillGroups(): Promise<SkillGroup[]> {
   return query<SkillGroup>(SKILL_QUERY, []);
+}
+
+export async function getServices(): Promise<Service[]> {
+  return query<Service>(SERVICE_QUERY, []);
 }
 
 export async function getRoles(): Promise<Role[]> {

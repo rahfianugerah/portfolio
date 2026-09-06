@@ -1,30 +1,11 @@
 import Link from "next/link";
 import BlurFade from "@/components/magicui/blur-fade";
+import { getServices } from "@/lib/content";
 
-const SERVICES = [
-  {
-    id: 1,
-    title: "Full-Stack Web Development",
-    description: "End-to-end web applications using Next.js, React, Node.js, and modern databases, from UI to deployment.",
-  },
-  {
-    id: 2,
-    title: "Machine Learning & AI Integration",
-    description: "Building and integrating ML models (TensorFlow, PyTorch, scikit-learn) into production-ready APIs and pipelines.",
-  },
-  {
-    id: 3,
-    title: "Backend & API Development",
-    description: "Scalable REST APIs with FastAPI or Flask, backed by SQL/NoSQL databases and containerized with Docker.",
-  },
-  {
-    id: 4,
-    title: "Cloud & DevOps",
-    description: "Infrastructure setup, CI/CD pipelines, and cloud deployments on AWS, GCP, or Azure.",
-  },
-];
 
-export default function ServicePage() {
+export default async function ServicePage() {
+  const services = await getServices();
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-12 flex flex-col gap-8">
       <BlurFade delay={0.05}>
@@ -37,7 +18,7 @@ export default function ServicePage() {
       </BlurFade>
 
       <div className="flex flex-col gap-4">
-        {SERVICES.map((service, i) => (
+        {services.map((service, i) => (
           <BlurFade key={service.id} delay={0.1 + i * 0.07}>
             <div className="rounded-lg border border-border bg-card p-5 flex flex-col gap-3 shadow-sm">
               <div>

@@ -8,6 +8,7 @@ import profile from './profile'
 import project from './project'
 import quote from './quote'
 import role from './role'
+import service from './service'
 import skillGroup from './skill-group'
 
 // One studio and one dataset serve both sites. `clientProject` is the consulting site's
@@ -20,6 +21,7 @@ export const schemaTypes = [
   role,
   education,
   achievement,
+  service,
   skillGroup,
   moment,
   quote,
