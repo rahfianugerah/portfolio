@@ -1,3 +1,4 @@
+import BlurFade from "@/components/magicui/blur-fade";
 import AssistantChat from "@/app/components/assistant-chat";
 
 export const metadata = {
@@ -6,5 +7,11 @@ export const metadata = {
 };
 
 export default function ChatPage() {
-  return <AssistantChat />;
+  // The room is the whole route, so the fade has to carry its height too, or the
+  // transcript collapses inside a wrapper that has none.
+  return (
+    <BlurFade delay={0.05} className="h-full">
+      <AssistantChat />
+    </BlurFade>
+  );
 }
