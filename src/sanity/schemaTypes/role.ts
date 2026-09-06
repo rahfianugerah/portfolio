@@ -31,9 +31,11 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'company',
-      title: 'Company Or Organisation',
-      type: 'string',
+      name: 'organisation',
+      title: 'Organisation',
+      type: 'reference',
+      to: [{ type: 'organisation' }],
+      description: 'The place. Its name and logo live there, so they are written once.',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -42,14 +44,7 @@ export default defineType({
       type: 'string',
       validation: (rule) => rule.required(),
     }),
-    defineField({ name: 'href', title: 'Website', type: 'url' }),
     defineField({ name: 'location', title: 'Location', type: 'string' }),
-    defineField({
-      name: 'logo',
-      title: 'Logo',
-      type: 'image',
-      options: { hotspot: true },
-    }),
     defineField({
       name: 'start',
       title: 'Start',
@@ -85,5 +80,5 @@ export default defineType({
       initialValue: 100,
     }),
   ],
-  preview: { select: { title: 'title', subtitle: 'company', media: 'logo' } },
+  preview: { select: { title: 'title', subtitle: 'organisation.name', media: 'organisation.logo' } },
 })

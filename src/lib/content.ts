@@ -96,6 +96,7 @@ export type SkillGroup = {
 export type Role = {
   id: string;
   kind: "work" | "leadership";
+  /** The organisation's name. One document, shared by every role and course under it. */
   company: string;
   title: string;
   href: string | null;
@@ -219,11 +220,11 @@ const SERVICE_QUERY = `*[_type == "service"]|order(order asc){
 const ROLE_QUERY = `*[_type == "role"]|order(order asc){
   "id": _id,
   kind,
-  company,
+  "company": organisation->name,
   title,
-  href,
+  "href": organisation->website,
   location,
-  "logo": logo.asset->url,
+  "logo": organisation->logo.asset->url,
   start,
   end,
   "badges": coalesce(badges, []),
@@ -232,10 +233,10 @@ const ROLE_QUERY = `*[_type == "role"]|order(order asc){
 
 const EDUCATION_QUERY = `*[_type == "education"]|order(order asc){
   "id": _id,
-  school,
+  "school": organisation->name,
   degree,
-  href,
-  "logo": logo.asset->url,
+  "href": organisation->website,
+  "logo": organisation->logo.asset->url,
   start,
   end,
   "description": coalesce(description, [])

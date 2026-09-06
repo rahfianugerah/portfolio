@@ -7,9 +7,11 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'school',
-      title: 'School',
-      type: 'string',
+      name: 'organisation',
+      title: 'Organisation',
+      type: 'reference',
+      to: [{ type: 'organisation' }],
+      description: 'The school. Shared with any role held at the same place.',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -17,13 +19,6 @@ export default defineType({
       title: 'Degree Or Programme',
       type: 'string',
       validation: (rule) => rule.required(),
-    }),
-    defineField({ name: 'href', title: 'Website', type: 'url' }),
-    defineField({
-      name: 'logo',
-      title: 'Logo',
-      type: 'image',
-      options: { hotspot: true },
     }),
     defineField({
       name: 'start',
@@ -46,5 +41,5 @@ export default defineType({
     }),
     defineField({ name: 'order', title: 'Order', type: 'number', initialValue: 100 }),
   ],
-  preview: { select: { title: 'school', subtitle: 'degree', media: 'logo' } },
+  preview: { select: { title: 'organisation.name', subtitle: 'degree', media: 'organisation.logo' } },
 })
