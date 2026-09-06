@@ -202,8 +202,6 @@ export default function LeftRail() {
                   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                 })()}
               </span>
-              {/* Arrow */}
-              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 border-b border-r bg-popover border-border"></div>
             </div>
           </div>,
           document.body

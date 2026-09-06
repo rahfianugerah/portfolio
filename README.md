@@ -256,8 +256,8 @@ Home carries anchored sections: `#about`, `#experiences`, `#projects`, `#achieve
 
 | Component | Category | Responsibility |
 | :- | :- | :- |
-| `TopNavbar` | Layout | Fixed top bar: the wordmark, the online indicator, and the blur band the page scrolls under |
-| `Navbar` | Layout | The bottom dock: links, socials, theme toggle |
+| `TopNavbar` | Layout | Fixed top bar: the wordmark, the routes with the current one marked, the online indicator, and the blur band the page scrolls under |
+| `Navbar` | Layout | The bottom dock: the same routes as icons, plus socials and the theme toggle |
 | `ResumeCard` | Feature | One company, expandable |
 | `ProjectShowcase` | Feature | One project: preview, tags, source and site links |
 | `CertificateList` | Feature | Certificates, five to a page, with the PDF readable in place |

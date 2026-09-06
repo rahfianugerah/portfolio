@@ -89,13 +89,10 @@ export default function ExperienceGraph() {
     if (positionPercent < 0.2) anchorPercent = 15; 
     else if (positionPercent > 0.8) anchorPercent = 85; 
 
-    return {
-      transform: `translate(-${anchorPercent}%, -135%)`,
-      arrowLeft: `${anchorPercent}%`
-    };
+    return { transform: `translate(-${anchorPercent}%, -135%)` };
   };
 
-  const tooltipStyle = hoveredIndex !== null ? getTooltipStyle(hoveredIndex) : { transform: "", arrowLeft: "50%" };
+  const tooltipStyle = hoveredIndex !== null ? getTooltipStyle(hoveredIndex) : { transform: "" };
 
   return (
     <div className="w-full rounded-lg border bg-card p-4 text-card-foreground shadow-sm relative z-0">
@@ -149,12 +146,7 @@ export default function ExperienceGraph() {
                   <span className="text-muted-foreground text-[9px] font-mono mt-0.5">
                       {formatDuration(hoveredPoint.months)} {hoveredPoint.isPresent && "(Current)"}
                   </span>
-                  
-                  {/* Dynamic Arrow */}
-                  <div 
-                    className="absolute -bottom-1 h-2 w-2 rotate-45 border-b border-r bg-popover border-border"
-                    style={{ left: tooltipStyle.arrowLeft, transform: "translateX(-50%) rotate(45deg)" }}
-                  ></div>
+
               </div>
            </div>
         )}

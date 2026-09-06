@@ -6,6 +6,7 @@
  * this application's routes rather than anything about the person.
  */
 import {
+  BriefcaseIcon,
   HomeIcon,
   MailIcon,
   NotebookIcon,
@@ -19,6 +20,7 @@ export const navItems = [
   { href: "/", icon: HomeIcon, label: "Home" },
   { href: "/experience", icon: FaBusinessTime, label: "Experience" },
   { href: "/project", icon: TerminalIcon, label: "Project" },
+  { href: "/service", icon: BriefcaseIcon, label: "Services" },
   { href: "/blog", icon: NotebookIcon, label: "Blog" },
   { href: "/contact", icon: MailIcon, label: "Contact" },
 ];
