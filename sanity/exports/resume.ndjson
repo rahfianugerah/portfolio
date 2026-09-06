@@ -97,3 +97,10 @@
 {"_id": "service-machine-learning-ai-integration", "_type": "service", "title": "Machine Learning & AI Integration", "description": "Building and integrating ML models (TensorFlow, PyTorch, scikit-learn) into production-ready APIs and pipelines.", "order": 1}
 {"_id": "service-backend-api-development", "_type": "service", "title": "Backend & API Development", "description": "Scalable REST APIs with FastAPI or Flask, backed by SQL/NoSQL databases and containerized with Docker.", "order": 2}
 {"_id": "service-cloud-devops", "_type": "service", "title": "Cloud & DevOps", "description": "Infrastructure setup, CI/CD pipelines, and cloud deployments on AWS, GCP, or Azure.", "order": 3}
+{"_id": "quote-jensen-huang", "_type": "quote", "author": "Jensen Huang", "role": "CEO, NVIDIA", "text": "Software is eating the world, but AI is going to eat software.", "order": 0}
+{"_id": "quote-steve-jobs", "_type": "quote", "author": "Steve Jobs", "role": "Co-founder, Apple", "text": "Being the richest man in the cemetery doesn't matter to me. Going to bed at night saying we've done something wonderful... that's what matters to me", "order": 1}
+{"_id": "quote-linus-torvalds", "_type": "quote", "author": "Linus Torvalds", "role": "Creator, Linux", "text": "Talk is cheap. Show me the code.", "order": 2}
+{"_id": "moment-at-google-0", "_type": "moment", "alt": "At Google", "order": 0}
+{"_id": "moment-gemastik-1", "_type": "moment", "alt": "GEMASTIK", "order": 1}
+{"_id": "moment-at-google-again-2", "_type": "moment", "alt": "At Google, again", "order": 2}
+{"_id": "moment-at-a-hackathon-3", "_type": "moment", "alt": "At a hackathon", "order": 3}
