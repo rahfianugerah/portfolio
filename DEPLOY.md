@@ -1,4 +1,4 @@
-# Deployment Runbook — Rahfi's Portfolio
+# Deployment Runbook: Rahfi's Portfolio
 
 > [!important]
 > This project deploys to Vercel rather than Cloud Run, which is a recorded deviation from
@@ -102,8 +102,8 @@ preview** if you do not want preview traffic writing to production analytics.
 > `secret.rules.md`.
 
 > [!note]
-> `NEXT_PUBLIC_SUPABASE_ANON_KEY` is public by design — it is the anon key, and row-level security
-> is what protects the data behind it. Its policies live in `supabase-rls-policies.sql`.
+> `NEXT_PUBLIC_SUPABASE_ANON_KEY` is public by design. It is the anon key, and row-level security
+> is what protects the data behind it. Its policies live in `supabase/migrations/`.
 
 ## Routine Deployment
 
@@ -138,6 +138,70 @@ vercel --prod     # production
 curl -sI https://rahfi.pro | grep -i "strict-transport\|x-frame\|x-content-type"
 ```
 
+## Database Migrations
+
+The schema lives in `supabase/migrations/`, applied in filename order. Nothing else defines it:
+the two contradicting `.sql` files that used to sit at the repository root are gone, and with them
+the question of which one was pasted into the console last.
+
+| File | Adds |
+| :- | :- |
+| `0001_analytics_baseline.sql` | `counters`, `daily_stats`, `sessions` |
+| `0002_media.sql` | `media` |
+| `0003_media_links.sql` | Link rows on `media` |
+
+Those four tables are exactly the four the code queries, so the schema is complete for what ships
+today. Sanity content needs no migration; it is a different system.
+
+### How they are applied
+
+`.github/workflows/migrate.yml` runs on a push to `staging` and to `main`, before the deploy. It
+needs one secret, `SUPABASE_DB_URL`, set on each GitHub **environment** (`staging` and
+`production`) rather than repository-wide, so the staging run cannot reach production. Take the
+value from **Project Settings > Database > Connection string**, the pooler URI, with the password
+filled in.
+
+That is the whole setup. After the secret exists, a merge applies migrations on its own.
+
+### Applying them by hand
+
+Read what is pending first. This only reads:
+
+```bash
+supabase migration list --db-url "$SUPABASE_DB_URL"
+```
+
+Then apply:
+
+```bash
+supabase db push --db-url "$SUPABASE_DB_URL"
+```
+
+Run it against staging first, then production, which is the order the workflow enforces.
+
+> [!warning]
+> Pasting a migration into the SQL editor in the Supabase dashboard works, and it is also how the
+> old drift happened. The editor does not record what it ran, so `supabase_migrations` stays empty,
+> `migration list` shows the migration as still pending, and the next `db push` tries to apply it
+> a second time. `0001` and `0002` are written with `if not exists` and will survive that; do not
+> assume a later one will. If you have already run them by hand, reconcile with
+> `supabase migration repair --status applied <version> --db-url "$SUPABASE_DB_URL"` rather than
+> letting the two disagree.
+
+> [!important]
+> The filenames use a `0001` prefix rather than the 14-digit timestamp the CLI generates. Confirm
+> the CLI reads them before relying on the workflow: `supabase migration list` prints one row per
+> local migration, so three rows means it parsed all three. If it does not list them, rename them
+> to timestamps in one commit, and only while `supabase_migrations` is still empty. Renaming after
+> a migration has been applied changes its recorded version and it will be applied again.
+
+### Adding one
+
+Forward-only and additive, per `PRD.md`. Add a column, backfill it, and drop the old one in a
+*later* migration, never the same one, so rolling back the app never requires rolling back the
+schema. A failed migration stops the job and the deploy gate depends on it, so a half-applied
+schema never gets a matching app shipped on top of it.
+
 ## Rollback
 
 Vercel keeps every deployment. In the dashboard, open **Deployments**, find the last good one, and
@@ -158,4 +222,6 @@ force pushing. `main` is never force pushed, per `branch.rules.md`.
 | `dev` is not the remote default branch | A fresh clone lands on `main` |
 | Local `main` is one commit ahead of `origin/main` | Predates this work; resolve before the first production deploy |
 | No CI runs lint or typecheck before a merge | Vercel's build failing is the only current signal |
+| `SUPABASE_DB_URL` is not yet set on either GitHub environment | The migration workflow runs and fails; migrations have to be pushed by hand until it is |
+| Migration filenames use `0001` rather than a 14-digit timestamp | Unverified against the CLI. `supabase migration list` settles it in one read-only command |
 | Fifteen unused packages are removed from `package.json` but still installed | Run `npm install` to prune `node_modules` |
