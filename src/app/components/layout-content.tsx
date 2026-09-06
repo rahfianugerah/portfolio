@@ -17,7 +17,6 @@ import ImageCarousel from "./image-carousel";
 import QuoteCarousel from "./quote-carousel";
 import LatestBlogsWidget from "./widgets/latest-blogs";
 import SocialLinks from "./widgets/social-links";
-import ChatbotFab from "./chatbot-fab";
 import BlurFade from "@/components/magicui/blur-fade";
 
 export default function LayoutContent({ children }: { children: ReactNode }) {
@@ -27,6 +26,18 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
   // The studio renders its own chrome and expects the whole viewport. It gets it: no bar,
   // no rails, no container, because every one of those would be a second layout fighting it.
   if (pathname?.startsWith("/studio")) return <>{children}</>;
+
+  // The chat is a room, not a page with a chat on it. It takes the viewport below the bar
+  // and nothing else takes any of it: no rails, no container, and no dock, because a dock
+  // floating over a composer is a second thing to reach past to type.
+  if (pathname === "/chat") {
+    return (
+      <>
+        <TopNavbar />
+        <main className="h-dvh pt-20">{children}</main>
+      </>
+    );
+  }
 
   const isFullPage =
     pathname?.startsWith("/blog") ||
@@ -232,7 +243,6 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
       </div>
 
       {/* FAB - Hidden when reading blog */}
-      {!isFullPage && <ChatbotFab />}
     </>
   );
 }

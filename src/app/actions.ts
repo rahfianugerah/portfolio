@@ -1,7 +1,6 @@
 // src/app/actions.ts
 "use server";
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import {
   getAchievements,
   getCertificates,
@@ -15,6 +14,7 @@ import nodemailer from "nodemailer";
 import { z } from "zod";
 import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { chat, type ChatMessage } from "@/lib/ollama";
 
 // Contact form validation schema
 const contactSchema = z.object({
@@ -39,19 +39,18 @@ const contactSchema = z.object({
   captchaToken: z.string().optional(),
 });
 
-export async function generateChatResponse(history: any[], currentMessage: string) {
-  // This reads the secure key from Vercel/Local .env
-  const apiKey = process.env.GEMINI_API_KEY; 
-
-  if (!apiKey) {
-    return { error: "Server Error: API Key missing." };
-  }
-
+/**
+ * Ashley, the assistant on this site.
+ *
+ * She answers from the same documents the pages render, so she cannot describe a résumé
+ * that has drifted out of date, and she is told to say she does not know rather than to
+ * fill a gap.
+ */
+export async function generateChatResponse(
+  history: { role: string; content: string }[],
+  currentMessage: string
+) {
   try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    
-    // Built from the same documents the pages render, so the assistant cannot answer from a
-    // copy of the resume that has drifted out of date.
     const [profile, roles, education, achievements, projects, certificates, skills] =
       await Promise.all([
         getProfile(),
@@ -62,38 +61,38 @@ export async function generateChatResponse(history: any[], currentMessage: strin
         getCertificates(),
         getSkillGroups(),
       ]);
+
     const resume = { profile, roles, education, achievements, projects, certificates, skills };
 
-    const systemPrompt = `
-      You are a helpful AI assistant for Rahfi's personal portfolio website.
-      Your goal is to answer questions about Rahfi based STRICTLY on the data provided below.
-      
-      If the user asks about something not in this data, simply say you don't know or ask them to email him.
-      Be concise, professional, and friendly.
+    const messages: ChatMessage[] = [
+      {
+        role: "system",
+        content: [
+          "You are Ashley, the AI assistant on Naufal Rahfi Anugerah's portfolio.",
+          "She/her. Warm, concise, professional. Never claim to be Rahfi himself.",
+          "Answer STRICTLY from the data below. If it is not there, say you do not know",
+          "and suggest the contact page. Do not invent a date, a title, or a link.",
+          "",
+          `Data: ${JSON.stringify(resume)}`,
+        ].join("\n"),
+      },
+      ...history
+        .filter((m) => m.content?.trim())
+        .map((m): ChatMessage => ({
+          // The old provider called the assistant "model"; Ollama calls it "assistant".
+          role: m.role === "user" ? "user" : "assistant",
+          content: m.content,
+        })),
+      { role: "user", content: currentMessage },
+    ];
 
-      Here is the Resume Data:
-      ${JSON.stringify(resume)}
-    `;
-
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-2.5-flash",
-      systemInstruction: systemPrompt,
-    });
-
-    const chat = model.startChat({
-      history: history,
-    });
-
-    const result = await chat.sendMessage(currentMessage);
-    const response = result.response.text();
-    
-    return { success: response };
-
+    return { success: await chat(messages) };
   } catch (error) {
-    console.error("AI Error:", error);
-    return { error: "Failed to generate response." };
+    console.error("Assistant error:", error);
+    return { error: "Ashley could not answer just now. Try again in a moment." };
   }
 }
+
 
 // Submit contact form
 export async function submitContactForm(formData: {

@@ -2,7 +2,8 @@
 
 import BlurFade from "@/components/magicui/blur-fade";
 import Clock from "@/components/clock";
-import Chatbot from "./chatbot";
+import Link from "next/link";
+import { AssistantAvatar } from "@/components/assistant-avatar";
 import QuoteCarousel from "./quote-carousel";
 
 export default function RightRail() {
@@ -13,11 +14,20 @@ export default function RightRail() {
         <Clock />
       </BlurFade>
 
-      {/* AI Chatbot */}
+      {/* Ashley, who has her own page */}
       <BlurFade delay={0.15}>
-        <div className="h-[400px] w-full shrink-0">
-          <Chatbot />
-        </div>
+        <Link
+          href="/chat"
+          className="flex items-center gap-3 rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm transition-shadow hover:shadow-md"
+        >
+          <AssistantAvatar className="size-9" />
+          <span className="min-w-0">
+            <span className="block text-xs font-medium">Ask Ashley</span>
+            <span className="mt-0.5 block text-[11px] leading-4 text-muted-foreground">
+              Rahfi&apos;s AI assistant, on her own page
+            </span>
+          </span>
+        </Link>
       </BlurFade>
 
       {/* Quote Carousel */}
