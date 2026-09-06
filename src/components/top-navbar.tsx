@@ -35,7 +35,7 @@ export default function TopNavbar() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
           </span>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+          <span className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
             Rahfi is Online
           </span>
         </span>

@@ -14,12 +14,15 @@ subdomain.
 | Branch | Vercel environment | URL |
 | :- | :- | :- |
 | `main` | Production | `rahfi.pro` |
-| `staging` | Preview | Vercel-assigned preview URL |
-| `dev` | Preview | Vercel-assigned preview URL |
+| `dev` | Preview | `preview-rahfi-portfolio.vercel.app` |
 
-A change moves one way, per `branch.rules.md`: `local work > dev > staging > main`, through a
-pull request with a recorded human approval at each stage. Never push directly to `staging` or
-`main`.
+A change moves one way: `local work > dev > main`, through a pull request with a recorded human
+approval. Never push directly to `main`.
+
+**`dev` has a fixed preview URL, not a generated one.** Vercel gives every branch deployment a
+URL containing the commit, which changes on every push and cannot be bookmarked or shared ahead
+of time. A domain assigned to a git branch always points at that branch's latest deployment, so
+`preview-rahfi-portfolio.vercel.app` is stable. Adding it is step 6 of First-Time Setup.
 
 ## What Is Already in the Repository
 
@@ -111,9 +114,8 @@ Once linked, Vercel builds on every push.
 
 | Action | Result |
 | :- | :- |
-| Push to `dev` | Preview deployment |
-| Merge `dev` into `staging` | Preview deployment to verify against |
-| Merge `staging` into `main` | Production deployment |
+| Push to `dev` | Preview deployment, at `preview-rahfi-portfolio.vercel.app` |
+| Merge `dev` into `main` | Production deployment, at `rahfi.pro`, and Supabase migrations applied first |
 
 To deploy manually:
 
@@ -155,13 +157,17 @@ today. Sanity content needs no migration; it is a different system.
 
 ### How they are applied
 
-`.github/workflows/migrate.yml` runs on a push to `staging` and to `main`, before the deploy. It
-needs one secret, `SUPABASE_DB_URL`, set on each GitHub **environment** (`staging` and
-`production`) rather than repository-wide, so the staging run cannot reach production. Take the
-value from **Project Settings > Database > Connection string**, the pooler URI, with the password
-filled in.
+`.github/workflows/migrate.yml` runs on a push to `main`, before the deploy. It needs one secret,
+`SUPABASE_DB_URL`, set on a GitHub **environment** named `production` rather than
+repository-wide, so nothing outside a `main` push can read it. Take the value from **Project
+Settings > Database > Connection string**, the pooler URI, with the password filled in.
 
-That is the whole setup. After the secret exists, a merge applies migrations on its own.
+That is the whole setup. After the secret exists, a merge to `main` applies migrations on its
+own, and the job fails the deploy if a migration fails.
+
+**With no staging branch, `main` is the first place a migration ever runs.** The soak period the
+promotion shape provides is gone, so read what is pending before you merge. `supabase migration
+list` changes nothing and takes a second.
 
 ### Applying them by hand
 
@@ -177,7 +183,8 @@ Then apply:
 supabase db push --db-url "$SUPABASE_DB_URL"
 ```
 
-Run it against staging first, then production, which is the order the workflow enforces.
+This is what the workflow runs. Doing it by hand before merging is how you find out a migration
+fails without a failed deploy attached to it.
 
 > [!warning]
 > Pasting a migration into the SQL editor in the Supabase dashboard works, and it is also how the

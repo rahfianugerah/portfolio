@@ -1,19 +1,21 @@
 name: Database migrations
 
-# Applied automatically, but never blind. Four properties make that survivable:
+# Applied automatically on a merge to main, but never blind. There is no staging branch to
+# rehearse against, so the other three properties carry the whole risk:
 #
-#   1. staging runs first. A merge to main only ever applies what staging already accepted,
-#      so main is the second time a migration runs, not the first.
-#   2. A failure stops the job, and the deploy gate below depends on it, so a half-applied
-#      schema never gets a matching app shipped on top of it.
-#   3. Migrations are forward-only and additive. Add a column, backfill, and drop it in a
+#   1. A failure stops the job before anything else runs, so a half-applied schema never gets
+#      a matching app shipped on top of it.
+#   2. Migrations are forward-only and additive. Add a column, backfill, and drop it in a
 #      LATER migration, never the same one, so a rollback of the app does not require a
 #      rollback of the schema.
-#   4. concurrency cancels an overlapping run, so two deploys cannot both apply.
+#   3. concurrency will not cancel a run in progress, so two merges cannot both apply.
+#
+# With no staging branch, main is the first place a migration ever runs. Read what is pending
+# before merging: supabase migration list --db-url "$SUPABASE_DB_URL" changes nothing.
 
 on:
   push:
-    branches: [staging, main]
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -23,7 +25,7 @@ concurrency:
 jobs:
   migrate:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+    environment: production
     steps:
       - uses: actions/checkout@v4
 

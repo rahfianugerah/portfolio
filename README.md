@@ -26,6 +26,7 @@ Live at [rahfi.pro](https://rahfi.pro). Intent is in `PRD.md`; deployment is in 
 8. Authentication, Styling, and Accessibility
 9. Testing, Errors, and Performance
 10. Development and Deployment
+11. Deviations From the Standards
 
 ## 1. Project Overview
 
@@ -179,7 +180,7 @@ src/
 | Environment | Purpose | Branch |
 | :- | :- | :- |
 | Development | Local development | `dev` |
-| Staging | Pre-production verification | `staging` |
+| Preview | Shared verification, at `preview-rahfi-portfolio.vercel.app` | `dev` |
 | Production | Live at `rahfi.pro` | `main` |
 
 ## 6. Routing, Pages, and Components
@@ -489,7 +490,7 @@ npm run build
 | Item | Description |
 | :- | :- |
 | Platform | Vercel |
-| Trigger | Push to `main` for production; `staging` and `dev` build as previews |
+| Trigger | Push to `main` for production; `dev` builds a preview at `preview-rahfi-portfolio.vercel.app` |
 | Build-time config | Every `NEXT_PUBLIC_` value |
 | Health check | Vercel deployment status |
 | Rollback process | Promote a previous deployment in the Vercel dashboard |
@@ -502,16 +503,16 @@ The full procedure is in `DEPLOY.md`.
 
 ### Branching
 
-This project uses the promotion shape from `branch.rules.md`.
+This project uses the trunk shape from `branch.rules.md`, which is a recorded deviation. See
+Deviations From the Standards.
 
 | Branch | Holds | Accepts a merge from |
 | :- | :- | :- |
-| `main` | What is deployed | `staging` only |
-| `staging` | What is being verified | `dev` only |
+| `main` | What is deployed | `dev` only |
 | `dev` | Where work lands first; the default branch | A working branch, merged locally |
 
-A change moves one way: `local work > dev > staging > main`, through a pull request with a
-recorded human approval at each stage.
+A change moves one way: `local work > dev > main`, through a pull request with a recorded human
+approval.
 
 ### Known Limitations
 
@@ -523,3 +524,10 @@ recorded human approval at each stage.
 | Two majors behind on Next | Missing framework fixes | Upgrade 14 to 16; two call sites break on Next 15's async request APIs |
 | The GitHub activity graph is decorative | The squares are randomised, not real contribution data | Use the GitHub contributions API |
 | No test suite | Regressions are caught by review only | Add end-to-end coverage of the routes |
+
+## 11. Deviations From the Standards
+
+1. **Two branches, not three.** `branch.rules.md` says a project that deploys uses the promotion shape, `dev` > `staging` > `main`. This uses trunk, `dev` > `main`, at the owner's direction. One person reviews every change, so a staging branch was a merge nobody read on the way to a deployment nobody else was waiting for. The cost is real and named where it bites: `main` is the first place a database migration ever runs, so what is pending is read before the merge rather than discovered after it. The preview at `preview-rahfi-portfolio.vercel.app` is where a change is looked at, and it is a deployment rather than a branch.
+2. **Vercel, not Cloud Run.** `deploy.rules.md` requires every deployed project to ship to Cloud Run. This is a Next.js site with no server of its own to run, and Vercel builds it, serves it from the edge, and gives every branch a preview for nothing. The exception does not generalise to a project with a backend.
+3. **The design language is not the house standard.** `uix.component.md` specifies black on white with Inter. This site uses the token layer, the red punctuation accent, and Bebas Neue described under Design System, shared with `consulting.rahfi.pro`, at the owner's direction. The cost is that neither site can adopt a house component without restyling it.
+4. **Public files are served publicly.** `media.rules.md` requires an uploaded file to be served only through an authenticated endpoint. A portfolio's photographs are public by definition, so serving them behind authentication would mean no visitor could see them. Storage is split instead: `public/` is CDN-backed, `private/` is reachable only through a short-lived signed URL, and every other control in the rule holds on both. The reasoning is in `PRD.md`.

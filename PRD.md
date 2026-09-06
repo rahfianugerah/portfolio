@@ -2,7 +2,7 @@
 
 **Owner:** Naufal Rahfi Anugerah
 **Date:** 2026-08-26
-**Status:** Approved - built on `dev`, not yet promoted to `staging` or `main`
+**Status:** Approved - built on `dev`, not yet promoted to `main`
 
 ## Problem
 
@@ -84,7 +84,7 @@ No change. Nothing about what the site reads or writes moves:
 
 ## Open Questions
 
-- **When is this promoted past `dev`?** The work is built and verified on `dev`. Promotion to `staging` and then to `main` is the owner's decision, one stage at a time, through a pull request with a recorded approval at each stage. Nothing has been pushed.
+- **When is this promoted past `dev`?** The work is built and verified on `dev`. Promotion to `main` is the owner's decision, through a pull request with a recorded approval. Nothing has been pushed.
 - **When is the font exposure on the consulting site fixed?** That site serves its display font from a publicly browsable path, which its licence does not permit. Recorded here because it was found during this work; it is a one-file move in a different repository and needs its own change.
 
 The question this document opened with - the licence and provenance of the engraved display face - is answered, and the terms it turned out to carry are recorded under Constraints.
@@ -227,8 +227,9 @@ Supabase console last. There is no record of what has been applied.
 - Every upload route rejects an unauthenticated request, a file whose magic bytes do not
   match its claimed type, and anything over the size limit.
 - No access token is present in `localStorage` or `sessionStorage` at any point.
-- A migration applied to `main` has already been applied to `staging`, and a failed
-  migration stops the deploy rather than shipping an app against a half-applied schema.
+- A failed migration stops the deploy rather than shipping an app against a half-applied
+  schema. There is no staging branch to rehearse against, so `main` is the first place a
+  migration runs and what is pending is read before the merge, not after it.
 
 ## Constraints
 
