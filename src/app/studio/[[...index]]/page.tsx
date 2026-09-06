@@ -1,5 +1,7 @@
 import Studio from "../studio";
 
+import "../studio.css";
+
 export const metadata = {
   title: "Studio",
   robots: { index: false, follow: false },
