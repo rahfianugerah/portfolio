@@ -23,7 +23,9 @@ const theme = buildLegacyTheme({
   '--default-button-color': '#0a0a0a',
   '--default-button-primary-color': '#0a0a0a',
 
-  '--focus-color': '#0a0a0a',
+  // The focus ring is the field's own border rather than a second, heavier one drawn around
+  // it: a clicked input should read as the same box, not a different one.
+  '--focus-color': '#d8d8d8',
 })
 
 export default defineConfig({
