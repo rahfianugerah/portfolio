@@ -1,7 +1,13 @@
-import Link from "next/link";
-import { ExternalLink, FileText } from "lucide-react";
+"use client";
 
+import { useState } from "react";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, ExternalLink, FileText } from "lucide-react";
+
+import BlurFade from "@/components/magicui/blur-fade";
 import type { Certificate } from "@/lib/content";
+
+const PER_PAGE = 5;
 
 /**
  * A certificate, readable in place when its PDF has been uploaded.
@@ -90,6 +96,8 @@ function CertificateRow({ certificate }: { certificate: Certificate }) {
 }
 
 export function CertificateList({ certificates }: { certificates: Certificate[] }) {
+  const [page, setPage] = useState(0);
+
   if (certificates.length === 0) {
     return (
       <p className="rounded-lg border border-border bg-card p-5 text-sm text-muted-foreground shadow-sm">
@@ -98,11 +106,70 @@ export function CertificateList({ certificates }: { certificates: Certificate[] 
     );
   }
 
+  const pages = Math.ceil(certificates.length / PER_PAGE);
+  // Clamped rather than trusted: a list can shrink under a page index that is already set.
+  const current = Math.min(page, pages - 1);
+  const shown = certificates.slice(current * PER_PAGE, current * PER_PAGE + PER_PAGE);
+
   return (
     <div className="flex flex-col gap-3">
-      {certificates.map((certificate) => (
-        <CertificateRow key={certificate.id} certificate={certificate} />
-      ))}
+      {/* Keyed on the page so the block remounts and fades, rather than swapping in place. */}
+      <BlurFade key={current} className="flex flex-col gap-3">
+        {shown.map((certificate) => (
+          <CertificateRow key={certificate.id} certificate={certificate} />
+        ))}
+      </BlurFade>
+
+      {pages > 1 && (
+        <div className="flex items-center justify-between gap-3 pt-1">
+          <PageButton
+            label="Previous"
+            disabled={current === 0}
+            onClick={() => setPage(current - 1)}
+          >
+            <ChevronLeft className="size-3" />
+            Previous
+          </PageButton>
+
+          <p className="text-xs tabular-nums text-muted-foreground">
+            {current * PER_PAGE + 1} to {current * PER_PAGE + shown.length} of{" "}
+            {certificates.length}
+          </p>
+
+          <PageButton
+            label="Next"
+            disabled={current === pages - 1}
+            onClick={() => setPage(current + 1)}
+          >
+            Next
+            <ChevronRight className="size-3" />
+          </PageButton>
+        </div>
+      )}
     </div>
+  );
+}
+
+function PageButton({
+  label,
+  disabled,
+  onClick,
+  children,
+}: {
+  label: string;
+  disabled: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      disabled={disabled}
+      onClick={onClick}
+      className="inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-40"
+    >
+      {children}
+    </button>
   );
 }

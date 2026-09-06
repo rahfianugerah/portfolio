@@ -215,10 +215,11 @@ Home carries anchored sections: `#about`, `#experiences`, `#projects`, `#achieve
 
 | Component | Category | Responsibility |
 | :- | :- | :- |
-| `Navbar` | Layout | Fixed top bar, reads `nav-items.ts` |
+| `TopNavbar` | Layout | Fixed top bar: the wordmark and the online indicator |
+| `Navbar` | Layout | The bottom dock: links, socials, theme toggle |
 | `ResumeCard` | Feature | One company, expandable |
 | `ProjectShowcase` | Feature | One project: preview, tags, source and site links |
-| `CertificateList` | Feature | Certificates, with the PDF readable in place |
+| `CertificateList` | Feature | Certificates, five to a page, with the PDF readable in place |
 | `Widget` | Shared | The frame every signals cell sits in |
 | `Chatbot` | Feature | The assistant |
 

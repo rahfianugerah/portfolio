@@ -6,7 +6,7 @@ import FarLeftRail from "@/app/components/far-left-rail";
 import LeftRail from "@/app/components/left-rail";
 import RightRail from "@/app/components/right-rail";
 import FarRightRail from "@/app/components/far-right-rail";
-import HeadHome from "@/components/header-home.";
+import TopNavbar from "@/components/top-navbar";
 import Clock from "@/components/clock";
 import AnalyticsWidget from "./widgets/analytics-widget";
 import ExperienceGraph from "./experience-graph";
@@ -31,19 +31,15 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
   return (
     <>
+      <TopNavbar />
       <Navbar />
 
       {/* MOBILE LAYOUT - Sequential order */}
-      <div className="lg:hidden mx-auto max-w-7xl px-4 py-6 min-h-screen">
+      <div className="lg:hidden mx-auto max-w-7xl px-4 pt-24 pb-6 min-h-screen">
         <div className="flex flex-col gap-4">
           {!isFullPage && (
             <>
-              {/* 1. Header */}
-              <BlurFade delay={0.05}>
-                <HeadHome />
-              </BlurFade>
-
-              {/* 2. Clock */}
+              {/* 1. Clock */}
               <BlurFade delay={0.1}>
                 <Clock />
               </BlurFade>
@@ -119,7 +115,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
       </div>
 
       {/* DESKTOP LAYOUT */}
-      <div className="hidden lg:block py-6 min-h-screen">
+      <div className="hidden lg:block pt-24 pb-6 min-h-screen">
         {/* 3xl+ screens (1800px+): 5-column layout, fitting all 4 rails plus main */}
         <div className="hidden 3xl:flex justify-center gap-4 px-4 max-w-[1800px] mx-auto items-start">
           {/* FAR LEFT RAIL - Tech Stack, Specialties, Projects (starts lower for stair effect) */}
@@ -158,7 +154,6 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
               isFullPage ? "max-w-4xl w-full" : "w-[440px] shrink-0"
             }`}
           >
-            {!isFullPage && <HeadHome />}
             {children}
           </main>
 
@@ -214,8 +209,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
                 isFullPage ? "col-span-12 max-w-4xl mx-auto" : "col-span-6"
               }`}
             >
-              {!isFullPage && <HeadHome />}
-              {children}
+                {children}
             </main>
 
             {/* RIGHT RAIL - Combined right + far-right content */}
