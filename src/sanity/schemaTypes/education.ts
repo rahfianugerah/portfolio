@@ -7,10 +7,10 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'organisation',
-      title: 'Organisation',
+      name: 'organization',
+      title: 'Organization',
       type: 'reference',
-      to: [{ type: 'organisation' }],
+      to: [{ type: 'organization' }],
       description: 'The school. Shared with any role held at the same place.',
       validation: (rule) => rule.required(),
     }),
@@ -41,5 +41,5 @@ export default defineType({
     }),
     defineField({ name: 'order', title: 'Order', type: 'number', initialValue: 100 }),
   ],
-  preview: { select: { title: 'organisation.name', subtitle: 'degree', media: 'organisation.logo' } },
+  preview: { select: { title: 'organization.name', subtitle: 'degree', media: 'organization.logo' } },
 })

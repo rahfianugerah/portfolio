@@ -314,9 +314,9 @@ User Action > Handler > Server Action or API Route > State Update > Render
 | Home carousel photographs | Sanity, `moment` documents | `/studio` |
 | Home carousel quotations | Sanity, `quote` documents | `/studio` |
 | Consulting engagements | Sanity, `clientProject` documents | `/studio` |
-| Companies and schools | Sanity, `organisation` documents | `/studio` |
-| Work and leadership | Sanity, `role` documents, each pointing at an organisation | `/studio` |
-| Education | Sanity, `education` documents, pointing at the same organisations | `/studio` |
+| Companies and schools | Sanity, `organization` documents | `/studio` |
+| Work and leadership | Sanity, `role` documents, each pointing at an organization | `/studio` |
+| Education | Sanity, `education` documents, pointing at the same organizations | `/studio` |
 | Achievements | Sanity, `achievement` documents | `/studio` |
 | The name, role, summary and social links | Sanity, the single `profile` document | `/studio` |
 | Skills | Sanity, `skillGroup` documents | `/studio` |
@@ -332,7 +332,7 @@ content: the origin is needed synchronously by `metadataBase`, and the navigatio
 application's own routes.
 
 > [!note]
-> A company or a school is one `organisation` document, and roles and education both point at
+> A company or a school is one `organization` document, and roles and education both point at
 > it. The name, the website and the logo are written once: an employer with three roles under it
 > carries one logo rather than three copies that drift apart, and a place that is both an employer
 > and a school, which several of these are, is one document serving both.

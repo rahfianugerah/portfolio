@@ -31,10 +31,10 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'organisation',
-      title: 'Organisation',
+      name: 'organization',
+      title: 'Organization',
       type: 'reference',
-      to: [{ type: 'organisation' }],
+      to: [{ type: 'organization' }],
       description: 'The place. Its name and logo live there, so they are written once.',
       validation: (rule) => rule.required(),
     }),
@@ -80,5 +80,5 @@ export default defineType({
       initialValue: 100,
     }),
   ],
-  preview: { select: { title: 'title', subtitle: 'organisation.name', media: 'organisation.logo' } },
+  preview: { select: { title: 'title', subtitle: 'organization.name', media: 'organization.logo' } },
 })

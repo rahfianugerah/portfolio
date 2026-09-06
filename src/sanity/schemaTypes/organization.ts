@@ -8,8 +8,8 @@ import { defineField, defineType } from 'sanity'
  * place that is both an employer and a school, which is the case for more than one of these.
  */
 export default defineType({
-  name: 'organisation',
-  title: 'Organisation',
+  name: 'organization',
+  title: 'Organization',
   type: 'document',
   fields: [
     defineField({
