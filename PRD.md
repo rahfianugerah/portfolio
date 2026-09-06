@@ -181,7 +181,7 @@ The first version of this phase answered the content half by building a second C
 - **No second editor, no roles, no permissions model.** One identity, allowlisted by address.
 - **No password.** Authentication into `/admin` is a magic link, so there is no credential to store, leak, phish, or rotate.
 - **No upload endpoint of our own.** The studio is one. Writing a second would mean re-implementing validation Sanity already does.
-- **No move of the resume data itself.** `src/data/resume.tsx` still holds the work history, education, leadership, and achievements. Projects and certificates left it; the rest follow the same pattern when they go.
+- **No move of the skills lists or the summary.** Everything else left `src/data/resume.tsx`: work, education, leadership, achievements, projects and certificates are documents. What remains in that file is the fallback the query layer returns when Sanity is empty, plus the skills and the social links, which are UI configuration rather than resume content.
 
 ## Success Measure
 
@@ -216,5 +216,5 @@ They are Sanity assets on Sanity's CDN: server-generated names that cannot be gu
 
 ## Open Questions
 
-- **When does the rest of the resume data move?** Work, education, leadership, and achievements have no schema yet. The pattern is settled by projects and certificates; only the work is outstanding.
+- **Do the skills lists move too?** They are a fixed set of chips rather than something edited weekly, so the cost of a schema may exceed the cost of a commit. Left open deliberately.
 - **Should the resume download become a Sanity document?** It would make replacing the CV an upload rather than a commit, which is the same argument that moved everything else.

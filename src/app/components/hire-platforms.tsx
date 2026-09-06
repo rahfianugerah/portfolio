@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import {
   SiUpwork,
@@ -9,11 +8,12 @@ import {
 } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa";
 
+// A platform with no icon in react-icons falls back to its initial. It used to carry a
+// committed logo file instead, and there is no image in this repository any more.
 type Platform = {
   name: string;
   url: string;
   icon?: React.ComponentType<{ className?: string }>;
-  imagePath?: string;
   color: string;
 };
 
@@ -46,19 +46,16 @@ const HIRE_PLATFORMS: Platform[] = [
   {
     name: "Dealls (Cannot share public URL, I will search the company name, just ask me if you want to hire me through this platform)",
     url: "dealls.com", // Replace with your Dealls profile
-    imagePath: "/dealls-platform.jpg",
     color: "hover:bg-purple-500/20 hover:text-purple-500",
   },
   {
     name: "JobStreet (Buggy platform, I will search the company name, just ask me if you want to hire me through this platform)",
     url: "https://id.jobstreet.com/profiles/naufalrahfi-anugerah-C5b5Q4rcVV", // Replace with your JobStreet profile
-    imagePath: "/jobstreet-platform.png",
     color: "hover:bg-orange-500/20 hover:text-orange-500",
   },
   {
     name: "Glints (Cannot share public URL, I will search the company name, just ask me if you want to hire me through this platform)",
     url: "https://www.glints.com", // Replace with your Glints profile
-    imagePath: "/glints-platform.jpg",
     color: "hover:bg-red-500/20 hover:text-red-500",
   },
 ];
@@ -106,16 +103,6 @@ export default function HirePlatforms() {
               <div className="flex items-center justify-center h-8 w-8 flex-shrink-0">
                 {Icon ? (
                   <Icon className="h-5 w-5" />
-                ) : platform.imagePath ? (
-                  <div className="relative h-8 w-8">
-                    <Image
-                      src={platform.imagePath}
-                      alt={`${platform.name} logo`}
-                      fill
-                      className="object-contain rounded-md"
-                      sizes="32px"
-                    />
-                  </div>
                 ) : (
                   <div className="h-8 w-8 rounded-md bg-muted flex items-center justify-center text-xs font-bold">
                     {platform.name.charAt(0)}

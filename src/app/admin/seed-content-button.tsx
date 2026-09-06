@@ -26,7 +26,11 @@ export function SeedContentButton() {
       } else {
         setResult({
           ok: true,
-          message: `Sent ${body.projects} projects and ${body.certificates} certificates. Anything already in Sanity was left alone.`,
+          message:
+            `Sent ${body.projects} projects, ${body.certificates} certificates, ` +
+            `${body.roles} roles, ${body.education} education entries and ` +
+            `${body.achievements} achievements. Text only: upload the images in the studio. ` +
+            `Anything already in Sanity was left alone.`,
         });
       }
     } catch {
@@ -40,8 +44,9 @@ export function SeedContentButton() {
     <div className="mt-10 rounded-lg border border-zinc-800 p-5">
       <h2 className="font-bebas text-xl text-white">Move the resume content to Sanity</h2>
       <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-300">
-        Copies every project and certificate out of the repository and into the studio, once,
-        so they can be edited without a deploy. Needs{" "}
+        Copies the projects, certificates, roles, education and achievements out of the
+        repository and into the studio, once, so they can be edited without a deploy. Text
+        only: no image comes across, because the images are uploaded in the studio. Needs{" "}
         <code className="text-white">SANITY_API_WRITE_TOKEN</code>. Running it again is
         harmless and will not overwrite anything you have edited.
       </p>

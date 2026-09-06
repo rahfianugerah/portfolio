@@ -1,6 +1,7 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { ResumeCard } from "@/components/resume-card";
-import { DATA } from "@/data/resume";
+import { getEducation, getRoles } from "@/lib/content";
+import { groupRolesByCompany, type GroupedJob } from "@/lib/group-roles";
 import Image from "next/image";
 
 // Base delay for all staggered animations on this page
@@ -11,94 +12,13 @@ export const metadata = {
     description: "A comprehensive list of my professional and leadership experiences.",
 };
 
-type JobEntry = {
-  title: string;
-  subtitle?: string;
-  period: string;
-  description: string | string[];
-  badges?: readonly string[];
-};
+export default async function ExperiencePage() {
+  const [roles, education] = await Promise.all([getRoles(), getEducation()]);
+  const groupedWorkExp = groupRolesByCompany(roles.filter((role) => role.kind === "work"));
+  const groupedLeadershipExp = groupRolesByCompany(
+    roles.filter((role) => role.kind === "leadership")
+  );
 
-type GroupedCompany = {
-  company: string;
-  logoUrl: string;
-  href?: string;
-  jobs: JobEntry[];
-  period: string;
-};
-
-// Group work by company
-const groupedRawExp = DATA.work.reduce((acc, item) => {
-  if (!acc[item.company]) {
-    acc[item.company] = {
-      company: item.company,
-      logoUrl: item.logoUrl,
-      href: item.href,
-      jobs: [] as JobEntry[],
-    };
-  }
-  acc[item.company].jobs.push({
-    title: item.title,
-    subtitle: item.location,
-    period: `${item.start} - ${item.end ?? "Present"}`,
-    description:
-      typeof item.description === "string" ? item.description : [...item.description],
-    badges: item.badges,
-  });
-  return acc;
-}, {} as Record<string, Omit<GroupedCompany, "period">>);
-
-const groupedWorkExp: GroupedCompany[] = Object.values(groupedRawExp).map((group) => {
-  const latestJob = group.jobs.reduce((prev, curr) => {
-    const getEndTime = (p: string) => {
-      const end = p.split(" - ")[1];
-      return end === "Present" ? Infinity : new Date(end).getTime();
-    };
-    return getEndTime(curr.period) >= getEndTime(prev.period) ? curr : prev;
-  }, group.jobs[0]);
-
-  return {
-    ...group,
-    period: latestJob.period,
-  };
-});
-
-// Group leadership by company, using the same schema as work
-const groupedLeadershipRaw = (DATA.leadership ?? []).reduce((acc, item) => {
-  if (!acc[item.company]) {
-    acc[item.company] = {
-      company: item.company,
-      logoUrl: item.logoUrl,
-      href: item.href,
-      jobs: [] as JobEntry[],
-    };
-  }
-  acc[item.company].jobs.push({
-    title: item.title,
-    subtitle: item.location,
-    period: `${item.start} - ${item.end ?? "Present"}`,
-    description: typeof item.description === "string" ? item.description : [...item.description],
-    badges: item.badges,
-  });
-  return acc;
-}, {} as Record<string, Omit<GroupedCompany, "period">>);
-
-const groupedLeadershipExp: GroupedCompany[] = Object.values(groupedLeadershipRaw).map((group) => {
-  const latestJob = group.jobs.reduce((prev, curr) => {
-    const getEndTime = (p: string) => {
-      const end = p.split(" - ")[1];
-      return end === "Present" ? Infinity : new Date(end).getTime();
-    };
-    return getEndTime(curr.period) >= getEndTime(prev.period) ? curr : prev;
-  }, group.jobs[0]);
-
-  return {
-    ...group,
-    period: latestJob.period,
-  };
-});
-
-export default function ExperiencePage() {
   // Sequential delay helper (stable across a single render)
   let seq = 0;
   const nextDelay = () => {
@@ -234,44 +154,40 @@ export default function ExperiencePage() {
         </div>
 
         <div className="flex min-h-0 flex-col gap-y-6 mt-6">
-          {[...DATA.education]
-            .sort((a: any, b: any) => {
-              const parseEnd = (x: any) => (x.end === "Present" ? Infinity : new Date(x.end).getTime());
-              return parseEnd(b) - parseEnd(a);
-            })
-            .map((edu: any) => {
-              const job: JobEntry = {
-                title: edu.degree,
-                period: `${edu.start} - ${edu.end ?? "Present"}`,
-                description: typeof edu.description === "string" ? edu.description : [...edu.description],
-              };
-              return (
-                <BlurFade key={`${edu.school}-${edu.degree}-${edu.start}`} delay={nextDelay()}>
-                  <div className="flex items-start gap-4">
-                    {edu.logoUrl ? (
-                      <div className="relative w-12 h-12 rounded-lg overflow-hidden border">
-                        <Image src={edu.logoUrl} alt={`${edu.school} logo`} fill sizes="48px" className="object-contain bg-muted" />
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 rounded-lg border bg-muted/40 grid place-items-center text-xs text-muted-foreground">
-                        Logo
-                      </div>
-                    )}
-                    <div className="flex-1">
-                      <ResumeCard
-                        logoUrl={edu.logoUrl}
-                        altText={edu.school}
-                        title={edu.school}
-                        href={edu.href}
-                        period={`${edu.start} - ${edu.end ?? "Present"}`}
-                        jobs={[job]}
-                        description={job.description}
-                      />
+          {education.map((edu) => {
+            const period = `${edu.start} - ${edu.end ?? "Present"}`;
+            const job: GroupedJob = {
+              title: edu.degree,
+              period,
+              description: edu.description,
+            };
+            return (
+              <BlurFade key={edu.id} delay={nextDelay()}>
+                <div className="flex items-start gap-4">
+                  {edu.logo ? (
+                    <div className="relative w-12 h-12 rounded-lg overflow-hidden border">
+                      <Image src={edu.logo} alt={`${edu.school} logo`} fill sizes="48px" className="object-contain bg-muted" />
                     </div>
+                  ) : (
+                    <div className="w-12 h-12 rounded-lg border bg-muted/40 grid place-items-center text-xs text-muted-foreground">
+                      Logo
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <ResumeCard
+                      logoUrl={edu.logo ?? ""}
+                      altText={edu.school}
+                      title={edu.school}
+                      href={edu.href ?? undefined}
+                      period={period}
+                      jobs={[job]}
+                      description={job.description}
+                    />
                   </div>
-                </BlurFade>
-              );
-            })}
+                </div>
+              </BlurFade>
+            );
+          })}
         </div>
       </section>
     </div>

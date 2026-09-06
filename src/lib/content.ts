@@ -46,6 +46,43 @@ export type Quote = {
   image: string | null;
 };
 
+export type Role = {
+  id: string;
+  kind: "work" | "leadership";
+  company: string;
+  title: string;
+  href: string | null;
+  location: string | null;
+  logo: string | null;
+  start: string;
+  /** Empty for a position still held. The renderer supplies the word "Present". */
+  end: string | null;
+  badges: string[];
+  description: string[];
+};
+
+export type Education = {
+  id: string;
+  school: string;
+  degree: string;
+  href: string | null;
+  logo: string | null;
+  start: string;
+  end: string | null;
+  description: string[];
+};
+
+export type Achievement = {
+  id: string;
+  title: string;
+  issuer: string | null;
+  dates: string | null;
+  location: string | null;
+  description: string;
+  image: string | null;
+  links: { title: string; href: string }[];
+};
+
 export type Certificate = {
   id: string;
   title: string;
@@ -94,6 +131,42 @@ const QUOTE_QUERY = `*[_type == "quote"]|order(order asc){
   "image": image.asset->url
 }`;
 
+const ROLE_QUERY = `*[_type == "role"]|order(order asc){
+  "id": _id,
+  kind,
+  company,
+  title,
+  href,
+  location,
+  "logo": logo.asset->url,
+  start,
+  end,
+  "badges": coalesce(badges, []),
+  "description": coalesce(description, [])
+}`;
+
+const EDUCATION_QUERY = `*[_type == "education"]|order(order asc){
+  "id": _id,
+  school,
+  degree,
+  href,
+  "logo": logo.asset->url,
+  start,
+  end,
+  "description": coalesce(description, [])
+}`;
+
+const ACHIEVEMENT_QUERY = `*[_type == "achievement"]|order(order asc){
+  "id": _id,
+  title,
+  issuer,
+  dates,
+  location,
+  "description": coalesce(description, ""),
+  "image": image.asset->url,
+  "links": coalesce(links[]{title, href}, [])
+}`;
+
 // Content changes when its author saves, not when a visitor arrives, so an hour of cache is
 // generous. The studio can revalidate sooner through a webhook if that ever matters.
 const REVALIDATE = 3600;
@@ -120,6 +193,18 @@ export async function getProjects(): Promise<Project[]> {
 
 export async function getCertificates(): Promise<Certificate[]> {
   return query<Certificate>(CERTIFICATE_QUERY, certificatesFromResume());
+}
+
+export async function getRoles(): Promise<Role[]> {
+  return query<Role>(ROLE_QUERY, rolesFromResume());
+}
+
+export async function getEducation(): Promise<Education[]> {
+  return query<Education>(EDUCATION_QUERY, educationFromResume());
+}
+
+export async function getAchievements(): Promise<Achievement[]> {
+  return query<Achievement>(ACHIEVEMENT_QUERY, achievementsFromResume());
 }
 
 export async function getMoments(): Promise<Moment[]> {
@@ -171,4 +256,56 @@ export function certificatesFromResume(): Certificate[] {
     ...map(DATA.certifications, "professional"),
     ...map(DATA.learning_certificate, "learning"),
   ];
+}
+
+/** Work and leadership as plain data, in the order the resume listed them. */
+export function rolesFromResume(): Role[] {
+  const map = (
+    entries: typeof DATA.work | typeof DATA.leadership,
+    kind: Role["kind"],
+    offset: number
+  ): Role[] =>
+    entries.map((entry, index) => ({
+      id: `resume-role-${kind}-${index}`,
+      kind,
+      company: entry.company,
+      title: entry.title,
+      // "#" was the placeholder for a company with no site. It is not a link.
+      href: entry.href && entry.href !== "#" ? entry.href : null,
+      location: entry.location || null,
+      logo: entry.logoUrl || null,
+      start: entry.start,
+      end: entry.end && entry.end !== "Present" ? entry.end : null,
+      badges: [...(entry.badges ?? [])],
+      description: [...(entry.description ?? [])],
+      order: offset + index,
+    })).map(({ order: _order, ...role }) => role);
+
+  return [...map(DATA.work, "work", 0), ...map(DATA.leadership ?? [], "leadership", 0)];
+}
+
+export function educationFromResume(): Education[] {
+  return DATA.education.map((entry, index) => ({
+    id: `resume-education-${index}`,
+    school: entry.school,
+    degree: entry.degree,
+    href: entry.href || null,
+    logo: entry.logoUrl || null,
+    start: entry.start,
+    end: entry.end || null,
+    description: [...(entry.description ?? [])],
+  }));
+}
+
+export function achievementsFromResume(): Achievement[] {
+  return DATA.hardwork.map((entry, index) => ({
+    id: `resume-achievement-${index}`,
+    title: entry.title,
+    issuer: entry.issued || null,
+    dates: entry.dates || null,
+    location: entry.location || null,
+    description: entry.description ?? "",
+    image: entry.image || null,
+    links: (entry.links ?? []).map((link) => ({ title: link.title, href: link.href })),
+  }));
 }

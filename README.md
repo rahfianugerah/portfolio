@@ -165,7 +165,7 @@ src/
 │   └── components/           # Page-level components and widgets
 ├── components/               # Shared components, magicui, ui primitives
 ├── data/                     # resume.tsx, blog.ts
-├── lib/                      # content, supabase, auth, rate-limit, helpers
+├── lib/                      # content, group-roles, supabase, auth, rate-limit, helpers
 └── sanity/                   # CMS client, write client, schemas
 ```
 
@@ -317,7 +317,10 @@ User Action > Handler > Server Action or API Route > State Update > Render
 | Home carousel photographs | Sanity, `moment` documents | `/studio` |
 | Home carousel quotations | Sanity, `quote` documents | `/studio` |
 | Consulting engagements | Sanity, `clientProject` documents | `/studio` |
-| Work, education, leadership, achievements | `src/data/resume.tsx` | A commit |
+| Work and leadership | Sanity, `role` documents | `/studio` |
+| Education | Sanity, `education` documents | `/studio` |
+| Achievements | Sanity, `achievement` documents | `/studio` |
+| Skills and the summary | `src/data/resume.tsx` | A commit |
 
 `src/lib/content.ts` is the only place that reads any of it. Projects and certificates fall back
 to the résumé data when the project id is unset, when the query throws, or when it comes back
@@ -562,8 +565,9 @@ approval.
 
 | Limitation | Impact | Planned resolution |
 | :- | :- | :- |
-| Work, education, leadership and achievements are still in `src/data/resume.tsx` | Editing them is a commit and a deploy | The same treatment as projects: a schema, a query in `src/lib/content.ts`, and a line in the migration route |
-| `src/data/resume.tsx` still holds React elements in the `icon` fields the migrated types no longer read | Nothing breaks, but the file reads as if those icons matter | Drop them when the last consumer moves to Sanity |
+| The skills lists and the summary are still in `src/data/resume.tsx` | Editing them is a commit and a deploy | The same treatment as the rest: a schema and a query in `src/lib/content.ts` |
+| `src/data/resume.tsx` still holds React elements in the `icon` fields no migrated type reads | Nothing breaks, but the file reads as if those icons matter | Drop them when the last consumer moves to Sanity |
+| Every image field is empty until something is uploaded | Logos, achievement photos and carousel images render as their placeholder | Upload in the studio |
 | Unused packages removed from `package.json` but still installed | `node_modules` is larger than it needs to be, and still holds `@google-cloud/storage`, `sharp` and `file-type` | Run `npm install` |
 | The home carousels are empty until something is published | Two cards on the home page show a placeholder line | Upload `moment` and `quote` documents in the studio |
 | The résumé download is the Google Drive link in `src/data/resume.tsx` | Replacing the CV is a commit, and the previous file stays reachable | Give the résumé a Sanity document with a file field |

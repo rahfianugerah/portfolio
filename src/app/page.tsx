@@ -2,67 +2,23 @@ import BlurFade from "@/components/magicui/blur-fade";
 import { HardworkCard } from "@/components/hardwork-card";
 import { ResumeCard } from "@/components/resume-card";
 import { DATA } from "@/data/resume";
+import { getAchievements, getEducation, getRoles } from "@/lib/content";
+import { groupRolesByCompany, type GroupedJob } from "@/lib/group-roles";
 import Link from "next/link";
 import Markdown from "react-markdown";
 import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
 
 const BLUR_FADE_DELAY = 0.04;
 
-type JobEntry = {
-  title: string;
-  subtitle?: string;
-  period: string; // e.g. "Jan 2022 - Mar 2023" or "Feb 2023 - Present"
-  description: string | string[];
-  badges?: readonly string[];
-};
+export default async function Page() {
+  const [roles, education, achievements] = await Promise.all([
+    getRoles(),
+    getEducation(),
+    getAchievements(),
+  ]);
+  const groupedWorkAll = groupRolesByCompany(roles.filter((role) => role.kind === "work"));
+  const groupedWorkLimited = groupedWorkAll.slice(0, 8);
 
-type GroupedCompany = {
-  company: string;
-  logoUrl: string;
-  href?: string;
-  jobs: JobEntry[];
-  period: string; // taken from the latest job below
-};
-
-// ---- group work by company ----
-const groupedRaw = DATA.work.reduce((acc, item) => {
-  if (!acc[item.company]) {
-    acc[item.company] = {
-      company: item.company,
-      logoUrl: item.logoUrl,
-      href: item.href,
-      jobs: [] as JobEntry[],
-    };
-  }
-  acc[item.company].jobs.push({
-    title: item.title,
-    subtitle: item.location,
-    period: `${item.start} - ${item.end ?? "Present"}`,
-    description:
-      typeof item.description === "string" ? item.description : [...item.description],
-    badges: item.badges,
-  });
-  return acc;
-}, {} as Record<string, Omit<GroupedCompany, "period">>);
-
-const groupedWorkAll: GroupedCompany[] = Object.values(groupedRaw).map((group) => {
-  const latestJob = group.jobs.reduce((prev, curr) => {
-    const getEndTime = (p: string) => {
-      const end = p.split(" - ")[1];
-      return end === "Present" ? Infinity : new Date(end).getTime();
-    };
-    return getEndTime(curr.period) >= getEndTime(prev.period) ? curr : prev;
-  }, group.jobs[0]);
-
-  return {
-    ...group,
-    period: latestJob.period,
-  };
-});
-
-const groupedWorkLimited = groupedWorkAll.slice(0, 8);
-
-export default function Page() {
   return (
     <div className="flex flex-col space-y-10">
       <section id="hero">
@@ -136,21 +92,21 @@ export default function Page() {
             </h2>
           </BlurFade>
 
-          {DATA.education.slice(0, 4).map((edu, id) => {
-            const job: JobEntry = {
+          {education.slice(0, 4).map((edu, id) => {
+            const period = `${edu.start} - ${edu.end ?? "Present"}`;
+            const job: GroupedJob = {
               title: edu.degree,
-              period: `${edu.start} - ${edu.end}`,
-              description:
-                typeof edu.description === "string" ? edu.description : [...edu.description],
+              period,
+              description: edu.description,
             };
             return (
-              <BlurFade key={edu.school} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
+              <BlurFade key={edu.id} delay={BLUR_FADE_DELAY * 8 + id * 0.05}>
                 <ResumeCard
-                  logoUrl={edu.logoUrl}
+                  logoUrl={edu.logo ?? ""}
                   altText={edu.school}
                   title={edu.school}
-                  href={edu.href}
-                  period={`${edu.start} - ${edu.end}`}
+                  href={edu.href ?? undefined}
+                  period={period}
                   jobs={[job]}
                   description={job.description}
                 />
@@ -159,7 +115,7 @@ export default function Page() {
           })}
 
           {/* Link to view all education (full list in /experience#education) */}
-          {Array.isArray(DATA.education) && DATA.education.length > 4 && (
+          {education.length > 4 && (
             <BlurFade delay={BLUR_FADE_DELAY * 8 + 4 * 0.05}>
               <div className="text-center pt-2">
                 <Link href="/experience" className="underline underline-offset-4">
@@ -191,19 +147,19 @@ export default function Page() {
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 14}>
             <ul className="mb-4 text-justify divide-y">
-              {DATA.hardwork.map((project, id) => (
+              {achievements.map((achievement, id) => (
                 <BlurFade
-                  key={project.title + project.dates}
+                  key={achievement.id}
                   delay={BLUR_FADE_DELAY * 15 + id * 0.05}
                 >
                   <HardworkCard
-                    title={project.title}
-                    description={project.description}
-                    location={project.location}
-                    issued={project.issued}
-                    dates={project.dates}
-                    image={project.image}
-                    links={project.links}
+                    title={achievement.title}
+                    description={achievement.description}
+                    location={achievement.location ?? ""}
+                    issued={achievement.issuer ?? ""}
+                    dates={achievement.dates ?? ""}
+                    image={achievement.image ?? ""}
+                    links={achievement.links}
                   />
                 </BlurFade>
               ))}

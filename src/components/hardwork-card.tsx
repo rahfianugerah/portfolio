@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 // Removed incorrect import of image component
 
@@ -10,8 +11,10 @@ interface Props {
   location: string;
   image?: string;
   issued?: string;
+  // The icon used to travel with each link as a React element, which is what kept this
+  // content out of a database. Every one of these points at a certificate hosted elsewhere,
+  // so the card draws the icon rather than the data carrying it.
   links?: readonly {
-    icon: React.ReactNode;
     title: string;
     href: string;
   }[];
@@ -57,7 +60,7 @@ export function HardworkCard({
           {links?.map((link, idx) => (
             <Link href={link.href} key={idx}>
               <Badge key={idx} title={link.title} className="flex gap-2 inline-flex items-center rounded-sm bg-white/5 px-2 py-2 text-sm text-foreground/90 shadow-sm backdrop-blur transition hover:bg-white/10">
-                {link.icon}
+                <ExternalLink className="size-3" />
                 {link.title}
               </Badge>
             </Link>

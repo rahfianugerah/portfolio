@@ -61,9 +61,12 @@ is what keeps a bundled font's licence obligations from applying here.
 - **There is no image in this project and no storage bucket.** Google Cloud Storage is gone, and
   so are `src/lib/gcs.ts`, `src/lib/media.ts`, and every route under `/api/media`. An image is a
   Sanity asset. Do not commit one, and do not add an upload endpoint: the studio already is one.
-- **`src/data/resume.tsx` still owns work, education, leadership, and achievements.** Those have
-  no schema yet. Its `icon` fields hold React elements, which is what kept any of this out of a
-  database until the link icons were replaced by a `type` string.
+- **`src/data/resume.tsx` now owns only the skills lists, the summary, and the social links.**
+  Work, education, leadership, achievements, projects and certificates are Sanity documents; what
+  is left in that file is the fallback the query layer returns when Sanity is empty.
+- **`src/lib/group-roles.ts` collapses the flat role list into one entry per company.** It was
+  written out three times across two pages before, and the copies had begun to disagree about
+  what "Present" meant. Use it rather than grouping again.
 - **`src/data/nav-items.ts` is the single source for navigation.** `DATA.navbar` still exists in
   the resume data but nothing reads it.
 - **`src/lib/fonts.ts` owns every font.** They are not defined in `app/layout.tsx`, because a

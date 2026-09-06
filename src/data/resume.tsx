@@ -3,7 +3,6 @@ import { FaBusinessTime } from "react-icons/fa";
 import { TbCertificate } from "react-icons/tb";
 import { HomeIcon, NotebookIcon, TerminalIcon, MailIcon } from "lucide-react";
 
-const githubUrl = "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/";
 
 export const DATA = {
   name: "Naufal Rahfi Anugerah",
@@ -84,7 +83,7 @@ export const DATA = {
       badges: [],
       location: "Tangerang Selatan, Indonesia",
       title: "AI Software Engineer",
-      logoUrl: `${githubUrl}amn-exp.png`,
+      logoUrl: "",
       start: "Sep 2025",
       end: "Present",
       description: [
@@ -99,7 +98,7 @@ export const DATA = {
       badges: [],
       location: "Tangerang Selatan, Indonesia",
       title: "Co-Founder",
-      logoUrl: `${githubUrl}amn-exp.png`,
+      logoUrl: "",
       start: "Sep 2025",
       end: "Present",
       description: [
@@ -114,7 +113,7 @@ export const DATA = {
       badges: ["Remote", "Machine Learning", "Cohort"],
       location: "Jakarta, Indonesia",
       title: "Machine Learning Cohort",
-      logoUrl: `${githubUrl}asah-exp.png`,
+      logoUrl: "",
       start: "Aug 2025",
       end: "Jan 2026",
       description: [
@@ -129,7 +128,7 @@ export const DATA = {
       badges: ["Remote", "Freelance", "Code Review", "Mentor", "Machine Learning", "Deep Learning", "Google Cloud"],
       location: "Jakarta, Indonesia",
       title: "External Academy Code Reviewer",
-      logoUrl: `${githubUrl}dicoding-exp.jpeg`,
+      logoUrl: "",
       start: "Mar 2025",
       end: "Present",
       description: [
@@ -144,7 +143,7 @@ export const DATA = {
       badges: ["Student", "Machine Learning", "Deep Learning"],
       location: "Jakarta, Indonesia",
       title: "Machine Learning Student",
-      logoUrl: `${githubUrl}dicoding-exp.jpeg`,
+      logoUrl: "",
       start: "April 2024",
       end: "Aug 2024",
       description: [
@@ -159,7 +158,7 @@ export const DATA = {
       href: "#",
       location: "Jakarta, Indonesia",
       title: "AI & IoT Development Trainee",
-      logoUrl: `${githubUrl}sic-exp.jpg`,
+      logoUrl: "",
       start: "Jan 2025",
       end: "Feb 2025",
       description: [
@@ -174,7 +173,7 @@ export const DATA = {
       badges: ["Remote", "Cloud Computing", "Cohort"],
       location: "Jakarta, Indonesia",
       title: "Cloud Computing Cohort",
-      logoUrl: `${githubUrl}bangkit-exp.jpg`,
+      logoUrl: "",
       start: "Aug 2024",
       end: "Jan 2025",
       description: [
@@ -189,7 +188,7 @@ export const DATA = {
       badges: ["Part-Time", "On-Site", "Back-End Development", "Mentor", "RESTful API Development"],
       location: "Jakarta, Indonesia",
       title: "Back-End Research and Development Associate",
-      logoUrl: `${githubUrl}aslab-exp.jpg`,
+      logoUrl: "",
       start: "Jan 2024",
       end: "Feb 2025",
       description: [
@@ -204,7 +203,7 @@ export const DATA = {
       badges: ["Part-Time", "On-Site"],
       location: "Jakarta, Indonesia",
       title: "Sr. Computer Laboratory Assistant",
-      logoUrl: `${githubUrl}aslab-exp.jpg`,
+      logoUrl: "",
       start: "Jan 2024",
       end: "Feb 2025",
       description: [
@@ -219,7 +218,7 @@ export const DATA = {
       badges: ["Part-Time", "On-Site"],
       location: "Jakarta, Indonesia",
       title: "Jr. Computer Laboratory Assistant",
-      logoUrl: `${githubUrl}aslab-exp.jpg`,
+      logoUrl: "",
       start: "Apr 2023",
       end: "Jan 2024",
       description: [
@@ -234,7 +233,7 @@ export const DATA = {
       badges: ["Hybrid", "Community"],
       location: "Jakarta, Indonesia",
       title: "GDSC Member",
-      logoUrl: `${githubUrl}gdsc-exp.jpg`,
+      logoUrl: "",
       start: "Dec 2023",
       end: "Oct 2024",
       description: [
@@ -249,7 +248,7 @@ export const DATA = {
       badges: ["Remote", "AWS", "Trainee"],
       location: "Jakarta, Indonesia",
       title: "AWS Engineer Trainee",
-      logoUrl: `${githubUrl}dts-exp.jpg`,
+      logoUrl: "",
       start: "Feb 2024",
       end: "Mar 2024",
       description: [
@@ -264,7 +263,7 @@ export const DATA = {
       school: "Mercu Buana University",
       href: "https://mercubuana.ac.id",
       degree: "Bachelor's Degree of Computer Science",
-      logoUrl: `${githubUrl}umb-edu.jpg`,
+      logoUrl: "",
       start: "2022",
       end: "2026",
       description: [
@@ -278,7 +277,7 @@ export const DATA = {
       school: "Asah led by Dicoding in association with Accenture",
       href: "https://www.dicoding.com",
       degree: "Non-Degree Program in Machine Learning - Machine Learning Cohort",
-      logoUrl: `${githubUrl}asah-exp.png`,
+      logoUrl: "",
       start: "Aug 2025",
       end: "Jan 2026",
       description: [
@@ -290,7 +289,7 @@ export const DATA = {
       school: "Bangkit Academy 2024 Batch 2 - Bangkit led by Google, Goto and Traveloka",
       href: "https://grow.google/intl/id_id/bangkit/?tab=cloud-computing",
       degree: "Non-Degree Program in Cloud Computing - Cloud Computing Cohort",
-      logoUrl: `${githubUrl}bangkit-exp.jpg`,
+      logoUrl: "",
       start: "Aug 2024",
       end: "Jan 2025",
       description: [
@@ -306,7 +305,7 @@ export const DATA = {
       badges: ["Remote", "Machine Learning", "Cohort", "Project Lead", "Modeling", "AI Engineering"],
       location: "Jakarta, Indonesia",
       title: "Capstone Project Manager",
-      logoUrl: `${githubUrl}asah-exp.png`,
+      logoUrl: "",
       start: "Oct 2025",
       end: "Jan 2026",
       description: [
@@ -321,7 +320,7 @@ export const DATA = {
       badges: ["Full-Time", "Project Lead", "Back-End Engineering", "Cloud Engineering", "AI Engineering"],
       location: "Jakarta, Indonesia",
       title: "Project Manager - Information Systems Development Project",
-      logoUrl: `${githubUrl}umb-edu.jpg`,
+      logoUrl: "",
       start: "Mar 2025",
       end: "Jul 2025",
       description: [
@@ -336,7 +335,7 @@ export const DATA = {
       badges: ["Project Lead"],
       location: "Jakarta, Indonesia",
       title: "Project Team Lead",
-      logoUrl: `${githubUrl}sic-exp.jpg`,
+      logoUrl: "",
       start: "Jan 2025",
       end: "Feb 2025",
       description: [
@@ -351,7 +350,7 @@ export const DATA = {
       badges: ["Remote", "Cloud Computing", "Cohort", "Project Lead", "Back-End Engineering", "Cloud Engineering"],
       location: "Jakarta, Indonesia",
       title: "Capstone Project Manager",
-      logoUrl: `${githubUrl}bangkit-exp.jpg`,
+      logoUrl: "",
       start: "Nov 2024",
       end: "Dec 2024",
       description: [
@@ -394,7 +393,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}rahfipro.png`,
+      image: "",
       video: "",
 
     },
@@ -427,7 +426,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}aegis-project.png`,
+      image: "",
       video: "",
     },
     {
@@ -452,7 +451,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}satria-final.png`,
+      image: "",
       video: "",
     },
     {
@@ -475,7 +474,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}satria-prototype.png`,
+      image: "",
       video: "",
     },
 
@@ -503,7 +502,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}hanacaraka-project.png`,
+      image: "",
       video: "",
     },
     {
@@ -531,7 +530,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}hybrid-cnn-vit-project.png`,
+      image: "",
       video: "",
     },
     {
@@ -553,7 +552,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}unified-convnext-pipeline-project.png`,
+      image: "",
       video: "",
     },
     {
@@ -576,7 +575,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}the-assistant-project.png`,
+      image: "",
       video: "",
     },
     {
@@ -600,7 +599,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}codepilot-project.png`,
+      image: "",
       video: "",
     },
     {
@@ -629,7 +628,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}mlops-heart-failure-project.png`,
+      image: "",
       video: "",
     },
     {
@@ -655,7 +654,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}research-model-project.png`,
+      image: "",
       video: "",
     },
     {
@@ -684,7 +683,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}asah-project.png`,
+      image: "",
       video: "",
     },
     {
@@ -708,7 +707,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}intrain-ai-project.png`,
+      image: "",
       video: "",
     },
     {
@@ -732,7 +731,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}eztrip-project.png`,
+      image: "",
       video: "",
     },
     {
@@ -764,7 +763,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}bangkit-project.png`,
+      image: "",
       video: "",
     },
     {
@@ -793,7 +792,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}dicoding-project.png`,
+      image: "",
       video: "",
     },
     {
@@ -818,7 +817,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}dotfiles.png`,
+      image: "",
       video: "",
     },
     {
@@ -838,7 +837,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: `${githubUrl}commitwave-project.png`,
+      image: "",
       video: "",
     },
   ],
@@ -894,7 +893,7 @@ export const DATA = {
       location: "Jakarta, Indonesia",
       issued: "Direktorat Pembelajaran dan Kemahasiswaan (Dit. Belmawa), Direktorat Jenderal Pendidikan Tinggi (Ditjen Dikti), Kementerian Pendidikan Tinggi, Sains, dan Teknologi (Kemendiktisaintek)",
       description: "Recognized as a national finalist in the Data Mining category for delivering a high-leverage analytical solution that showcased robust modeling strategy, scalable data engineering, and actionable insights.",
-      image: "/gemastik18.jpg",
+      image: "",
       links: [
         {
           title: "Certificate",
@@ -909,7 +908,7 @@ export const DATA = {
       location: "Jakarta, Indonesia",
       issued: "INNOPA, Mercu Buana University",
       description: "Awarded the Gold Medal at the 2025 National Innovation Exhibition (Pekan Inovasi Nasional) for excellence in product innovation, recognizing outstanding creativity and technical achievement.",
-      image: "/pin2025.jpg",
+      image: "",
       links: [
         {
           title: "Certificate",
@@ -924,7 +923,7 @@ export const DATA = {
       location: "Jakarta, Indonesia",
       issued: "Bangkit led by Google, Goto, and Traveloka",
       description: "Graduated with Distinction by ranking in the top 10% of participants across every learning-path cohort, demonstrating exceptional academic performance and dedication.",
-      image: "/bangkit.jpg",
+      image: "",
       links: [
         {
           title: "Certificate",
@@ -939,7 +938,7 @@ export const DATA = {
       location: "Jakarta, Indonesia",
       issued: "ai4impact, TerraAI, MobileFaculty",
       description: "Successfully achieved 4th place out of 150+ participants in the Indonesian Chatbot Championship Challenge (IC3) 2024, focusing on Generative AI. Developed an innovative chatbot leveraging Smojo.AI and OpenAI API to simplify and enhance coding education. The chatbot empowers users to learn programming effortlessly through interactive and concise guidance, bridging the gap in educational accessibility.",
-      image: "/ic32024.png",
+      image: "",
       links: [
         {
           title: "Certificate",

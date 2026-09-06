@@ -1,13 +1,23 @@
 import { NextResponse } from "next/server";
 
 import { requireOwner } from "@/lib/auth";
-import { certificatesFromResume, projectsFromResume } from "@/lib/content";
+import {
+  achievementsFromResume,
+  certificatesFromResume,
+  educationFromResume,
+  projectsFromResume,
+  rolesFromResume,
+} from "@/lib/content";
 import { writeClient } from "@/sanity/lib/write-client";
 
 export const runtime = "nodejs";
 
 /**
- * Copies the projects and certificates out of src/data/resume.tsx and into Sanity, once.
+ * Copies the resume content out of src/data/resume.tsx and into Sanity, once.
+ *
+ * Text only. No image URL is carried across, because the images it pointed at were committed
+ * to this repository and are gone; the owner uploads them in the studio, which is also the
+ * only way an image gets a hotspot and a rendition.
  *
  * It runs here rather than as a standalone script because resume.tsx is TSX holding React
  * elements, so plain Node cannot import it. Next already compiles it, and this route is
@@ -54,9 +64,6 @@ export async function POST() {
     status: project.status,
     description: project.description,
     technologies: project.technologies,
-    // The resume points at images hosted on GitHub. They stay where they are until they are
-    // re-uploaded through the studio, which is what the `image` field is for.
-    imageUrl: project.image ?? undefined,
     video: project.video ?? undefined,
     links: project.links.map((link, i) => ({
       _key: `link-${i}`,
@@ -78,11 +85,58 @@ export async function POST() {
     order: index,
   }));
 
-  // Annotated rather than inferred: a union of two document shapes makes the transaction's
-  // generic resolve to whichever came first, and the other one stops type-checking.
+  const roles = rolesFromResume().map((role, index) => ({
+    _id: docId(`role-${role.kind}`, `${role.company}-${role.title}`),
+    _type: "role" as const,
+    kind: role.kind,
+    company: role.company,
+    title: role.title,
+    href: role.href ?? undefined,
+    location: role.location ?? undefined,
+    start: role.start,
+    end: role.end ?? undefined,
+    badges: role.badges,
+    description: role.description,
+    order: index,
+  }));
+
+  const education = educationFromResume().map((entry, index) => ({
+    _id: docId("education", `${entry.school}-${entry.degree}`),
+    _type: "education" as const,
+    school: entry.school,
+    degree: entry.degree,
+    href: entry.href ?? undefined,
+    start: entry.start,
+    end: entry.end ?? undefined,
+    description: entry.description,
+    order: index,
+  }));
+
+  const achievements = achievementsFromResume().map((entry, index) => ({
+    _id: docId("achievement", entry.title),
+    _type: "achievement" as const,
+    title: entry.title,
+    issuer: entry.issuer ?? undefined,
+    dates: entry.dates ?? undefined,
+    location: entry.location ?? undefined,
+    description: entry.description,
+    links: entry.links.map((link, i) => ({
+      _key: `link-${i}`,
+      _type: "object",
+      title: link.title,
+      href: link.href,
+    })),
+    order: index,
+  }));
+
+  // Annotated rather than inferred: a union of several document shapes makes the
+  // transaction's generic resolve to whichever came first, and the rest stop type-checking.
   const documents: ({ _id: string; _type: string } & Record<string, unknown>)[] = [
     ...projects,
     ...certificates,
+    ...roles,
+    ...education,
+    ...achievements,
   ];
 
   try {
@@ -97,6 +151,9 @@ export async function POST() {
       submitted: documents.length,
       projects: projects.length,
       certificates: certificates.length,
+      roles: roles.length,
+      education: education.length,
+      achievements: achievements.length,
       written: result.results.length,
     });
   } catch (error) {
