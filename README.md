@@ -158,13 +158,12 @@ src/
 │   ├── blog/                 # Blog list and post
 │   ├── contact/              # Contact form
 │   ├── experience/           # Work history
-│   ├── admin/                # The one-time content migration
 │   ├── studio/               # Embedded Sanity Studio
-│   ├── api/                  # analytics, blog, github/stats, media, admin, content
+│   ├── api/                  # analytics, blog, github/stats, content
 │   ├── actions.ts            # Server actions
 │   └── components/           # Page-level components and widgets
 ├── components/               # Shared components, magicui, ui primitives
-├── data/                     # resume.tsx, blog.ts
+├── data/                     # site.ts, blog.ts
 ├── lib/                      # content, group-roles, supabase, auth, rate-limit, helpers
 └── sanity/                   # CMS client, write client, schemas
 ```
@@ -173,7 +172,7 @@ src/
 
 | Directory | Purpose |
 | :- | :- |
-| `src/data/` | The résumé, and the fallback behind the Sanity content. Edited more often than any component |
+| `src/data/` | The origin and the navigation. Everything else moved to Sanity |
 | `src/fonts/` | Font files. Deliberately not `public/`, see Configuration |
 | `src/app/components/widgets/` | The signals grid cells, all on one shared frame |
 | `src/lib/` | Everything with no JSX in it |
@@ -197,8 +196,6 @@ src/
 | Variable | Required | Description | Example |
 | :- | :- | :- | :- |
 | `GEMINI_API_KEY` | Yes | Assistant model key | `your_api_key_here` |
-| `SANITY_API_WRITE_TOKEN` | Once | Needed only by the `/admin` migration button | `your_write_token` |
-| `CMS_OWNER_EMAIL` | Yes | The single address allowed to sign in to `/admin` | `you@example.com` |
 | `GITHUB_TOKEN` | Yes | Read-only token for the stats endpoint | `your_token_here` |
 | `GMAIL_USER` | Yes | Contact form sender | `you@example.com` |
 | `GMAIL_APP_PASSWORD` | Yes | Contact form app password | `your_app_password_here` |
@@ -245,9 +242,7 @@ Next App Router, file-based.
 | `/contact` | Contact form | Public |
 | `/experience` | Work history | Public |
 | `/studio` | Sanity Studio | Authenticated by Sanity |
-| `/admin` | The one-time content migration | Owner only |
-| `/api/content` | Carousel photographs and quotations | Public |
-| `/api/admin/seed-content` | One-time resume to Sanity copy | Owner only |
+| `/api/content` | Everything a client component renders | Public |
 
 Home carries anchored sections: `#about`, `#experiences`, `#projects`, `#achievements`, `#stats`.
 
@@ -320,14 +315,17 @@ User Action > Handler > Server Action or API Route > State Update > Render
 | Work and leadership | Sanity, `role` documents | `/studio` |
 | Education | Sanity, `education` documents | `/studio` |
 | Achievements | Sanity, `achievement` documents | `/studio` |
-| Skills and the summary | `src/data/resume.tsx` | A commit |
+| The name, role, summary and social links | Sanity, the single `profile` document | `/studio` |
+| Skills | Sanity, `skillGroup` documents | `/studio` |
 
-`src/lib/content.ts` is the only place that reads any of it. Projects and certificates fall back
-to the résumé data when the project id is unset, when the query throws, or when it comes back
-empty, so an unconfigured CMS shows the old content rather than an empty page a visitor cannot
-explain. **The photographs and quotations have no fallback and are not meant to**: there is no
-committed image anywhere in this project, so an empty studio shows an empty frame rather than a
-picture nobody chose to publish.
+`src/lib/content.ts` is the only place that reads any of it, and **nothing has a fallback**. That
+is deliberate: a fallback was worth having while the dataset was empty, and keeping one now would
+mean a second copy of every project, role and photograph living in the repository, which is the
+thing this change removed. An unreachable Sanity renders an empty section and logs why.
+
+What is left in `src/data/` is `site.ts`, which holds the origin and the navigation. Neither is
+content: the origin is needed synchronously by `metadataBase`, and the navigation is a map of this
+application's own routes.
 
 > [!note]
 > The link icons that used to make this content unserialisable are gone. A link carries a `type`
@@ -382,7 +380,9 @@ machine. **No token is stored in browser storage.**
 
 ### Authentication Method
 
-None for visitors. The embedded Sanity Studio at `/studio` authenticates through Sanity itself.
+None, anywhere. The embedded Sanity Studio at `/studio` authenticates through Sanity itself, and
+that is the only sign-in the project has. There is no owner session, no cookie, and no middleware:
+they existed for a media library that no longer does.
 
 ### Styling Method
 
@@ -512,6 +512,29 @@ npm install
 cp .env.example .env
 ```
 
+### Import the Content
+
+The site renders from Sanity and ships with no content of its own, so a fresh dataset shows empty
+sections. `sanity/exports/resume.ndjson` holds all 95 documents: the profile, the skill groups,
+the roles, the education, the projects, the achievements and the certificates.
+
+**Use the standalone CLI, not the one in `node_modules`.** The bundled `sanity` package is 3.99
+and its `yargs` dependency throws `require is not defined in ES module scope` on Node 26, so
+`npx sanity` fails before it does anything.
+
+```bash
+npm install -g @sanity/cli
+sanity logout
+sanity login
+sanity dataset import sanity/exports/resume.ndjson production --replace
+```
+
+`--replace` overwrites a document whose id already exists and leaves everything else alone, so
+running it twice is safe and re-running it after an edit in the studio is not.
+
+Images are not in that file and cannot be: they were committed to this repository and are deleted.
+Upload them in the studio against the documents the import creates.
+
 ### Start the Development Server
 
 ```bash
@@ -565,9 +588,9 @@ approval.
 
 | Limitation | Impact | Planned resolution |
 | :- | :- | :- |
-| The skills lists and the summary are still in `src/data/resume.tsx` | Editing them is a commit and a deploy | The same treatment as the rest: a schema and a query in `src/lib/content.ts` |
-| `src/data/resume.tsx` still holds React elements in the `icon` fields no migrated type reads | Nothing breaks, but the file reads as if those icons matter | Drop them when the last consumer moves to Sanity |
-| Every image field is empty until something is uploaded | Logos, achievement photos and carousel images render as their placeholder | Upload in the studio |
+| The site is empty until the dataset is imported | Every section renders with nothing in it | Import `sanity/exports/resume.ndjson`, then upload the images |
+| No image exists until one is uploaded | Logos, achievement photos and carousel images render as their placeholder | Upload in the studio |
+| The bundled Sanity CLI does not run on Node 26 | `npx sanity` throws a yargs ESM error | Use the standalone CLI: `npm i -g @sanity/cli` |
 | Unused packages removed from `package.json` but still installed | `node_modules` is larger than it needs to be, and still holds `@google-cloud/storage`, `sharp` and `file-type` | Run `npm install` |
 | The home carousels are empty until something is published | Two cards on the home page show a placeholder line | Upload `moment` and `quote` documents in the studio |
 | The résumé download is the Google Drive link in `src/data/resume.tsx` | Replacing the CV is a commit, and the previous file stays reachable | Give the résumé a Sanity document with a file field |

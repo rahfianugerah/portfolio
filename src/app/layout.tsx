@@ -1,7 +1,8 @@
 import React from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { DATA } from "@/data/resume";
+import { SITE_URL } from "@/data/site";
+import { getProfile } from "@/lib/content";
 import { cn } from "@/lib/utils";
 import { BlogReadingProvider } from "./context/blog-reading-context";
 import LayoutContent from "@/app/components/layout-content";
@@ -34,57 +35,62 @@ const bebasNeue = Bebas_Neue({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(DATA.url),
+export async function generateMetadata(): Promise<Metadata> {
+  const profile = await getProfile();
+  const description = profile?.role ?? "";
 
-  title: {
-    default: "Rahfi's Portfolio",
-    template: "%s - Rahfi's Portfolio",
-  },
+  return {
+    metadataBase: new URL(SITE_URL),
 
-  description: DATA.description,
-  keywords: [
-    "Software Engineer",
-    "Back-End Engineer",
-    "Machine Learning",
-    "AI Engineer",
-    "Full-Stack Developer"
-  ],
-  applicationName: "Rahfi's Portfolio",
-  authors: [{ name: "Naufal Rahfi Anugerah" }],
-  creator: "Naufal Rahfi Anugerah",
-  publisher: "Naufal Rahfi Anugerah",
-  category: "technology",
+    title: {
+      default: "Rahfi's Portfolio",
+      template: "%s - Rahfi's Portfolio",
+    },
 
-  alternates: {
-    canonical: DATA.url,
-  },
+    description: description,
+    keywords: [
+      "Software Engineer",
+      "Back-End Engineer",
+      "Machine Learning",
+      "AI Engineer",
+      "Full-Stack Developer"
+    ],
+    applicationName: "Rahfi's Portfolio",
+    authors: [{ name: "Naufal Rahfi Anugerah" }],
+    creator: "Naufal Rahfi Anugerah",
+    publisher: "Naufal Rahfi Anugerah",
+    category: "technology",
 
-  openGraph: {
-    title: "Rahfi's Portfolio",
-    siteName: "Rahfi's Portfolio",
-    description: DATA.description,
-    url: DATA.url,
-    locale: "en_US",
-    type: "website",
-  },
+    alternates: {
+      canonical: SITE_URL,
+    },
 
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    openGraph: {
+      title: "Rahfi's Portfolio",
+      siteName: "Rahfi's Portfolio",
+      description: description,
+      url: SITE_URL,
+      locale: "en_US",
+      type: "website",
+    },
+
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
 
-  verification: {
-    google: "EvP71bUHU3ORlnwhyZejeRssEjrSUOMg3teDGnmd13g",
-  },
-};
+    verification: {
+      google: "EvP71bUHU3ORlnwhyZejeRssEjrSUOMg3teDGnmd13g",
+    },
+  };
+}
 
 export default function RootLayout({
   children,

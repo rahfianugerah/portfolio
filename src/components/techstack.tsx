@@ -1,6 +1,6 @@
 // components/TechStack.tsx
 import { ComponentType } from "react";
-import { DATA } from "@/data/resume";
+import { useSiteContent } from "@/lib/use-site-content";
 import {
   SiPython, SiJavascript, SiTypescript, SiCplusplus, SiC,
   SiTensorflow, SiScikitlearn, SiPandas, SiNumpy,
@@ -78,13 +78,12 @@ export default function TechStack({
   title = "Tech Stack",
   className = "",
 }: TechStackProps) {
-  // expect these arrays in your DATA (resume.tsx)
-  const sections = [
-    { label: "Programming Languages", items: DATA.programmingLanguages ?? [] },
-    { label: "Frameworks & Libraries", items: DATA.frameworks ?? [] },
-    { label: "Databases", items: DATA.databases ?? [] },
-    { label: "Tools & Platforms", items: DATA.tools ?? [] },
-  ];
+  // The four groups and their order are content, so the studio decides both.
+  const content = useSiteContent();
+  const sections = (content?.skills ?? []).map((group) => ({
+    label: group.title,
+    items: group.items,
+  }));
 
   return (
     <section className={className}>

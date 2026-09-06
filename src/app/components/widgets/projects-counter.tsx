@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSiteContent } from "@/lib/use-site-content";
 import { WidgetFallback } from "@/components/widget-error-boundary";
 import { FolderGit2, Eye } from "lucide-react";
-import { DATA } from "@/data/resume";
+
 
 type ProjectStats = {
-  totalProjects: number;
   totalViews: number;
 };
 
@@ -14,6 +14,8 @@ export default function ProjectsCounter() {
   const [stats, setStats] = useState<ProjectStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  const content = useSiteContent();
 
   useEffect(() => {
     async function fetchStats() {
@@ -25,11 +27,9 @@ export default function ProjectsCounter() {
           throw new Error(json.error);
         }
         
-        setStats({
-          // Get project count from local DATA instead of GitHub API to match portfolio list
-          totalProjects: DATA.projects.length,
-          totalViews: json.data?.projects ?? 0, // Ensure '0' is shown, not 'N/A'
-        });
+        // Views come from analytics; the project count comes from the content, which
+        // arrives on its own schedule and is read at render rather than captured here.
+        setStats({ totalViews: json.data?.projects ?? 0 });
       } catch (err) {
         console.error("Failed to fetch project stats:", err);
         setError(true);
@@ -76,7 +76,7 @@ export default function ProjectsCounter() {
             <FolderGit2 className="h-4 w-4 text-blue-500" />
           </div>
           <div>
-            <div className="text-lg font-bold">{stats.totalProjects}</div>
+            <div className="text-lg font-bold">{content?.projectCount ?? 0}</div>
             <div className="text-[10px] text-muted-foreground">Projects</div>
           </div>
         </div>

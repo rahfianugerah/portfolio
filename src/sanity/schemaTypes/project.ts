@@ -74,16 +74,24 @@ export default defineType({
           type: 'object',
           fields: [
             defineField({
-              name: 'type',
-              title: 'Type',
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              description: 'What the button says, for example "Source" or "Forked Source".',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'icon',
+              title: 'Icon',
               type: 'string',
               options: {
                 list: [
-                  { title: 'Website', value: 'Website' },
-                  { title: 'Source Code', value: 'Source Code' },
+                  { title: 'Source code', value: 'github' },
+                  { title: 'Website', value: 'globe' },
                 ],
                 layout: 'radio',
               },
+              initialValue: 'github',
               validation: (rule) => rule.required(),
             }),
             defineField({
@@ -93,7 +101,7 @@ export default defineType({
               validation: (rule) => rule.required(),
             }),
           ],
-          preview: { select: { title: 'type', subtitle: 'href' } },
+          preview: { select: { title: 'label', subtitle: 'href' } },
         }),
       ],
     }),

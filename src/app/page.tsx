@@ -1,8 +1,8 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { HardworkCard } from "@/components/hardwork-card";
 import { ResumeCard } from "@/components/resume-card";
-import { DATA } from "@/data/resume";
-import { getAchievements, getEducation, getRoles } from "@/lib/content";
+
+import { getAchievements, getEducation, getProfile, getRoles } from "@/lib/content";
 import { groupRolesByCompany, type GroupedJob } from "@/lib/group-roles";
 import Link from "next/link";
 import Markdown from "react-markdown";
@@ -11,11 +11,13 @@ import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
 const BLUR_FADE_DELAY = 0.04;
 
 export default async function Page() {
-  const [roles, education, achievements] = await Promise.all([
+  const [profile, roles, education, achievements] = await Promise.all([
+    getProfile(),
     getRoles(),
     getEducation(),
     getAchievements(),
   ]);
+  const linkedIn = profile?.social.find((link) => link.icon === "linkedin")?.url;
   const groupedWorkAll = groupRolesByCompany(roles.filter((role) => role.kind === "work"));
   const groupedWorkLimited = groupedWorkAll.slice(0, 8);
 
@@ -26,9 +28,9 @@ export default async function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 2}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bebas">{DATA.name}</h2>
+                <h2 className="text-3xl font-bebas">{profile?.name}</h2>
                 <p className="md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  <AnimatedShinyText>{DATA.description}</AnimatedShinyText>
+                  <AnimatedShinyText>{profile?.role}</AnimatedShinyText>
                 </p>
               </div>
             </div>
@@ -44,7 +46,7 @@ export default async function Page() {
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
           <Markdown className="font-garamond prose max-w-full text-pretty text-justify font-sans text-sm text-muted-foreground dark:prose-invert">
-            {DATA.summary}
+            {profile?.summary ?? ""}
           </Markdown>
         </BlurFade>
       </section>
@@ -178,10 +180,7 @@ export default async function Page() {
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Want to chat? Just shoot me a dm
                 with a direct question on {" "}
-                <Link
-                  href={DATA.contact.social.LinkedIn.url}
-                  className="text-primary"
-                >
+                <Link href={linkedIn ?? "#"} className="text-primary">
                   LinkedIn
                 </Link>{" "}
                 and I&apos;ll respond whenever I can. I am always eager to

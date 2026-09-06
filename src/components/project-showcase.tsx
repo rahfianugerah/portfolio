@@ -3,11 +3,11 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Icons } from "@/components/icons";
-import type { Project, ProjectLinkType } from "@/lib/content";
+import type { Project, ProjectLinkIcon } from "@/lib/content";
 
-const LINK_ICON: Record<ProjectLinkType, (props: { className?: string }) => JSX.Element> = {
-  Website: Icons.globe,
-  "Source Code": Icons.github,
+const LINK_ICON: Record<ProjectLinkIcon, (props: { className?: string }) => JSX.Element> = {
+  globe: Icons.globe,
+  github: Icons.github,
 };
 
 /**
@@ -77,7 +77,7 @@ export function ProjectShowcase({ project }: { project: Project }) {
         {project.links.length > 0 && (
           <div className="mt-auto flex flex-wrap gap-2 pt-2">
             {project.links.map((link) => {
-              const Icon = LINK_ICON[link.type];
+              const Icon = LINK_ICON[link.icon] ?? Icons.github;
               return (
                 <Link
                   key={link.href}
@@ -87,7 +87,7 @@ export function ProjectShowcase({ project }: { project: Project }) {
                   className="inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
                 >
                   <Icon className="size-3" />
-                  {link.type}
+                  {link.label}
                 </Link>
               );
             })}

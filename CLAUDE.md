@@ -54,26 +54,25 @@ is what keeps a bundled font's licence obligations from applying here.
 
 ## Where Things Live
 
-- **`src/lib/content.ts` is the content source for everything Sanity holds.** Projects and
-  certificates fall back to `src/data/resume.tsx` when Sanity is unset, unreachable, or empty, so
-  do not "fix" a page that looks right locally by pointing it back at the resume data; check
-  whether the fallback fired. Photographs and quotations have no fallback on purpose.
+- **`src/lib/content.ts` is the only thing that queries Sanity.** Every page and every widget goes
+  through it. A client component cannot, so it reads `/api/content`, which serves one payload for
+  all of them.
 - **There is no image in this project and no storage bucket.** Google Cloud Storage is gone, and
   so are `src/lib/gcs.ts`, `src/lib/media.ts`, and every route under `/api/media`. An image is a
   Sanity asset. Do not commit one, and do not add an upload endpoint: the studio already is one.
-- **`src/data/resume.tsx` now owns only the skills lists, the summary, and the social links.**
-  Work, education, leadership, achievements, projects and certificates are Sanity documents; what
-  is left in that file is the fallback the query layer returns when Sanity is empty.
+- **`src/data/resume.tsx` is deleted.** Every piece of content is a Sanity document, exported once
+  to `sanity/exports/resume.ndjson` and imported with the CLI. `src/data/site.ts` holds the origin
+  and the navigation, which are configuration rather than content.
+- **Nothing has a fallback, on purpose.** A fallback would be a second copy of the content in the
+  repository, which is what this removed. An empty section means an empty dataset or a failed
+  query, and the console says which. Do not add one back.
 - **`src/lib/group-roles.ts` collapses the flat role list into one entry per company.** It was
   written out three times across two pages before, and the copies had begun to disagree about
   what "Present" meant. Use it rather than grouping again.
-- **`src/data/nav-items.ts` is the single source for navigation.** `DATA.navbar` still exists in
-  the resume data but nothing reads it.
-- **`src/lib/fonts.ts` owns every font.** They are not defined in `app/layout.tsx`, because a
-  layout may only export a default component and Next's own route fields; any other named export
-  fails the generated type check.
-- **`src/lib/group-work.ts`** collapses the flat work list into one entry per company. It was
-  written out three times across two pages before, and the copies had begun to disagree.
+- **`src/data/site.ts` is the single source for navigation and the origin.**
+- **Fonts are defined in `app/layout.tsx` and not exported.** A layout may only export a default
+  component and Next's own route fields; any other named export fails the generated type check,
+  which is what the font exports there used to do.
 - **`src/app/components/widgets/widget.tsx`** is the frame every signals cell sits in. Use it
   rather than a cell drawing its own label and padding.
 

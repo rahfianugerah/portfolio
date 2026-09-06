@@ -1,13 +1,15 @@
 "use client";
 import { useMemo, useState } from "react";
-import { DATA } from "@/data/resume";
+import { useSiteContent } from "@/lib/use-site-content";
 import { cn } from "@/lib/utils";
 
 export default function ExperienceGraph() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const content = useSiteContent();
+  const roles = content?.roles;
 
   const data = useMemo(() => {
-    const rawWork = (DATA as any).work ?? [];
+    const rawWork = roles?.filter((role) => role.kind === "work") ?? [];
     const now = new Date();
     
     const jobs = rawWork.map((job: any) => {
@@ -41,7 +43,7 @@ export default function ExperienceGraph() {
     }).sort((a: any, b: any) => a.startVal - b.startVal);
 
     return jobs;
-  }, []);
+  }, [roles]);
 
   const formatDuration = (months: number) => {
     if (months < 12) return `${months}Mo`;

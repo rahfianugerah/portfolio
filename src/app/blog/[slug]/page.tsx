@@ -1,6 +1,6 @@
 import BackButton from "@/components/back-button";
 import { getBlogPosts, getPost } from "@/data/blog";
-import { DATA } from "@/data/resume";
+import { SITE_URL } from "@/data/site";
 import { formatDate } from "@/lib/utils";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -34,7 +34,7 @@ export async function generateMetadata({
     summary: description,
     image,
   } = post.metadata;
-  let ogImage = image ? image : `${DATA.url}/og?title=${title}`;
+  let ogImage = image ? image : `${SITE_URL}/og?title=${title}`;
 
   return {
     title,
@@ -44,7 +44,7 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime,
-      url: `${DATA.url}/blog/${post.slug}`,
+      url: `${SITE_URL}/blog/${post.slug}`,
       images: [
         {
           url: ogImage,
@@ -89,11 +89,11 @@ export default async function Blog({
               description: post.metadata.summary,
               image: post.metadata.image
                 ? post.metadata.image
-                : `${DATA.url}/og?title=${post.metadata.title}`,
-              url: `${DATA.url}/blog/${post.slug}`,
+                : `${SITE_URL}/og?title=${post.metadata.title}`,
+              url: `${SITE_URL}/blog/${post.slug}`,
               author: {
                 "@type": "Person",
-                name: DATA.name,
+                name: "Naufal Rahfi Anugerah",
               },
             }),
           }}

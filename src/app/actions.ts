@@ -2,7 +2,15 @@
 "use server";
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { DATA } from "@/data/resume";
+import {
+  getAchievements,
+  getCertificates,
+  getEducation,
+  getProfile,
+  getProjects,
+  getRoles,
+  getSkillGroups,
+} from "@/lib/content";
 import nodemailer from "nodemailer";
 import { z } from "zod";
 import { headers } from "next/headers";
@@ -42,6 +50,20 @@ export async function generateChatResponse(history: any[], currentMessage: strin
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
     
+    // Built from the same documents the pages render, so the assistant cannot answer from a
+    // copy of the resume that has drifted out of date.
+    const [profile, roles, education, achievements, projects, certificates, skills] =
+      await Promise.all([
+        getProfile(),
+        getRoles(),
+        getEducation(),
+        getAchievements(),
+        getProjects(),
+        getCertificates(),
+        getSkillGroups(),
+      ]);
+    const resume = { profile, roles, education, achievements, projects, certificates, skills };
+
     const systemPrompt = `
       You are a helpful AI assistant for Rahfi's personal portfolio website.
       Your goal is to answer questions about Rahfi based STRICTLY on the data provided below.
@@ -50,7 +72,7 @@ export async function generateChatResponse(history: any[], currentMessage: strin
       Be concise, professional, and friendly.
 
       Here is the Resume Data:
-      ${JSON.stringify(DATA)}
+      ${JSON.stringify(resume)}
     `;
 
     const model = genAI.getGenerativeModel({ 
