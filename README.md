@@ -238,6 +238,7 @@ Next App Router, file-based.
 | `/project` | Projects and certifications, full width | Public |
 | `/service` | Permanent home is the consulting site; redirects to `consulting.rahfi.pro/#services` | Public |
 | `/chat` | Ashley, the AI assistant | Public |
+| `/api/chat` | Ashley's answer, streamed from Ollama | Public |
 | `/blog` | Blog list | Public |
 | `/blog/[slug]` | Blog post | Public |
 | `/contact` | Contact form | Public |
@@ -616,4 +617,4 @@ approval.
 | The GitHub activity graph is decorative | The squares are randomised, not real contribution data | Use the GitHub contributions API |
 | No test suite | Regressions are caught by review only | Add end-to-end coverage of the routes |
 | Ashley needs an Ollama host the deployment can reach | The default is localhost, and a serverless function has no Ollama beside it, so `/chat` errors in production until `OLLAMA_BASE_URL` points somewhere real | Run Ollama on a reachable host, or put a small proxy in front of one |
-| Ashley does not stream | Her answer appears all at once after a pause | `stream: true` on the Ollama call, and a different shape all the way up to the component |
+| Ashley keeps no memory between sessions | The transcript is in `sessionStorage` and only the last twelve turns are sent back | A stored conversation, if it is ever worth the privacy question |

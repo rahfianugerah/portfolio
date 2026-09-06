@@ -1,20 +1,10 @@
 // src/app/actions.ts
 "use server";
 
-import {
-  getAchievements,
-  getCertificates,
-  getEducation,
-  getProfile,
-  getProjects,
-  getRoles,
-  getSkillGroups,
-} from "@/lib/content";
 import nodemailer from "nodemailer";
 import { z } from "zod";
 import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { chat, type ChatMessage } from "@/lib/ollama";
 
 // Contact form validation schema
 const contactSchema = z.object({
@@ -39,59 +29,6 @@ const contactSchema = z.object({
   captchaToken: z.string().optional(),
 });
 
-/**
- * Ashley, the assistant on this site.
- *
- * She answers from the same documents the pages render, so she cannot describe a résumé
- * that has drifted out of date, and she is told to say she does not know rather than to
- * fill a gap.
- */
-export async function generateChatResponse(
-  history: { role: string; content: string }[],
-  currentMessage: string
-) {
-  try {
-    const [profile, roles, education, achievements, projects, certificates, skills] =
-      await Promise.all([
-        getProfile(),
-        getRoles(),
-        getEducation(),
-        getAchievements(),
-        getProjects(),
-        getCertificates(),
-        getSkillGroups(),
-      ]);
-
-    const resume = { profile, roles, education, achievements, projects, certificates, skills };
-
-    const messages: ChatMessage[] = [
-      {
-        role: "system",
-        content: [
-          "You are Ashley, the AI assistant on Naufal Rahfi Anugerah's portfolio.",
-          "She/her. Warm, concise, professional. Never claim to be Rahfi himself.",
-          "Answer STRICTLY from the data below. If it is not there, say you do not know",
-          "and suggest the contact page. Do not invent a date, a title, or a link.",
-          "",
-          `Data: ${JSON.stringify(resume)}`,
-        ].join("\n"),
-      },
-      ...history
-        .filter((m) => m.content?.trim())
-        .map((m): ChatMessage => ({
-          // The old provider called the assistant "model"; Ollama calls it "assistant".
-          role: m.role === "user" ? "user" : "assistant",
-          content: m.content,
-        })),
-      { role: "user", content: currentMessage },
-    ];
-
-    return { success: await chat(messages) };
-  } catch (error) {
-    console.error("Assistant error:", error);
-    return { error: "Ashley could not answer just now. Try again in a moment." };
-  }
-}
 
 
 // Submit contact form

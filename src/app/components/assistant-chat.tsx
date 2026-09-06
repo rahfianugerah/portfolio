@@ -6,7 +6,6 @@ import remarkGfm from "remark-gfm";
 import { motion } from "framer-motion";
 
 import { AssistantAvatar, VisitorAvatar } from "@/components/assistant-avatar";
-import { generateChatResponse } from "@/app/actions";
 import { cn } from "@/lib/utils";
 
 type Message = { role: "user" | "assistant"; content: string };
@@ -62,28 +61,55 @@ export default function AssistantChat() {
 
     setInput("");
     setBusy(true);
+
+    // The greeting is this component's, not Ashley's, so it never goes back.
+    const history = messages.slice(1).map((m) => ({ role: m.role, content: m.content }));
     setMessages((m) => [...m, { role: "user", content: trimmed }]);
 
     try {
-      // The greeting is this component's, not Ashley's, so it never goes back.
-      const history = messages.slice(1).map((m) => ({ role: m.role, content: m.content }));
-      const result = await generateChatResponse(history, trimmed);
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ history, message: trimmed }),
+      });
 
-      setMessages((m) => [
-        ...m,
-        { role: "assistant", content: result.success ?? result.error ?? "" },
-      ]);
-    } catch {
-      setMessages((m) => [
-        ...m,
-        { role: "assistant", content: "Something went wrong. Please try again." },
-      ]);
+      if (!response.ok || !response.body) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body.error ?? `Request failed with ${response.status}`);
+      }
+
+      // An empty bubble goes in first and every fragment lands in it, so the answer appears
+      // as it is written rather than after it is finished.
+      setMessages((m) => [...m, { role: "assistant", content: "" }]);
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const fragment = decoder.decode(value, { stream: true });
+        setMessages((m) => {
+          const next = [...m];
+          next[next.length - 1] = {
+            role: "assistant",
+            content: next[next.length - 1].content + fragment,
+          };
+          return next;
+        });
+      }
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : "Something went wrong.";
+      setMessages((m) => [...m, { role: "assistant", content: reason }]);
     } finally {
       setBusy(false);
     }
   }
 
   const fresh = messages.length === 1;
+  // While the last bubble is still filling, the thinking line has been replaced by text.
+  const waiting = busy && messages[messages.length - 1]?.role === "user";
 
   return (
     <div className="flex h-full min-h-0 flex-col">
@@ -145,11 +171,14 @@ export default function AssistantChat() {
                 >
                   {m.content}
                 </ReactMarkdown>
+                {busy && i === messages.length - 1 && m.role === "assistant" && (
+                  <span className="ml-0.5 inline-block h-4 w-1.5 animate-pulse bg-current align-text-bottom" />
+                )}
               </div>
             </motion.div>
           ))}
 
-          {busy && (
+          {waiting && (
             <div className="flex items-start gap-2.5">
               <AssistantAvatar />
               <div className="rounded-2xl rounded-tl-sm bg-muted px-3.5 py-2.5 text-xs text-muted-foreground">
@@ -177,7 +206,22 @@ export default function AssistantChat() {
       </div>
 
       <div className="border-t border-border bg-background/80 px-4 py-3 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-3xl items-center gap-2">
+        <div className="mx-auto w-full max-w-3xl">
+          <p className="mb-2 text-center text-[11px] leading-4 text-muted-foreground">
+            Ashley only answers questions about Rahfi: his roles, projects, certifications and
+            skills. For consulting and pricing, see{" "}
+            <a
+              href="https://consulting.rahfi.pro"
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-2 hover:text-foreground"
+            >
+              the consulting practice
+            </a>
+            .
+          </p>
+
+          <div className="flex items-center gap-2">
           <label htmlFor={inputId} className="sr-only">
             Message Ashley
           </label>
@@ -204,6 +248,7 @@ export default function AssistantChat() {
           >
             Send
           </button>
+          </div>
         </div>
       </div>
     </div>
