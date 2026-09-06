@@ -544,6 +544,13 @@ running it twice is safe and re-running it after an edit in the studio is not.
 Images are not in that file and cannot be: they were committed to this repository and are deleted.
 Upload them in the studio against the documents the import creates.
 
+> [!warning]
+> **No document id may contain a dot.** Sanity reads the segment before a dot as a path namespace,
+> the same mechanism behind `drafts.`, and an anonymous reader has no grant for a custom one. An id
+> like `role-work.acme` imports without complaint and is visible in the studio, while every public
+> query omits it with `"reason": "permission"`, so the site renders empty with no error anywhere.
+> The ids in the export use hyphens throughout.
+
 ### Start the Development Server
 
 ```bash

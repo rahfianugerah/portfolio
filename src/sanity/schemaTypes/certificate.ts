@@ -21,7 +21,7 @@ export default defineType({
     }),
     defineField({
       name: 'issuer',
-      title: 'Issued by',
+      title: 'Issued By',
       type: 'string',
       validation: (rule) => rule.required(),
     }),
@@ -31,8 +31,8 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'Professional certification', value: 'professional' },
-          { title: 'Course completion', value: 'learning' },
+          { title: 'Professional Certification', value: 'professional' },
+          { title: 'Course Completion', value: 'learning' },
         ],
         layout: 'radio',
       },

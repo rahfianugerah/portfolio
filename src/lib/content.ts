@@ -213,9 +213,10 @@ const ACHIEVEMENT_QUERY = `*[_type == "achievement"]|order(order asc){
   "links": coalesce(links[]{title, href}, [])
 }`;
 
-// Content changes when its author saves, not when a visitor arrives, so an hour of cache is
-// generous. The studio can revalidate sooner through a webhook if that ever matters.
-const REVALIDATE = 3600;
+// Content changes when its author saves, and the author wants to see it. A minute is short
+// enough that an edit shows up without a deploy and long enough that a visitor is not
+// paying for a round trip per request. A studio webhook would make it immediate.
+const REVALIDATE = 60;
 
 async function query<T>(groq: string, fallback: T[]): Promise<T[]> {
   if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return fallback;

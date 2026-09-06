@@ -32,7 +32,7 @@ export default defineType({
     }),
     defineField({
       name: 'company',
-      title: 'Company or organisation',
+      title: 'Company Or Organisation',
       type: 'string',
       validation: (rule) => rule.required(),
     }),
@@ -72,7 +72,7 @@ export default defineType({
     }),
     defineField({
       name: 'description',
-      title: 'What the role covered',
+      title: 'What The Role Covered',
       type: 'array',
       of: [defineArrayMember({ type: 'string' })],
       description: 'One line per point.',

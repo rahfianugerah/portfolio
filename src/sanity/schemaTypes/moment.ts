@@ -20,7 +20,7 @@ export default defineType({
     }),
     defineField({
       name: 'alt',
-      title: 'Alternative text',
+      title: 'Alternative Text',
       type: 'string',
       description: 'What the photograph shows, for anyone who cannot see it.',
       validation: (rule) => rule.required(),

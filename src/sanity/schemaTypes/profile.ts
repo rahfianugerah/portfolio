@@ -14,7 +14,7 @@ export default defineType({
   fields: [
     defineField({
       name: 'name',
-      title: 'Full name',
+      title: 'Full Name',
       type: 'string',
       validation: (rule) => rule.required(),
     }),
@@ -39,7 +39,7 @@ export default defineType({
       description: 'The About paragraph. Markdown is rendered.',
     }),
     defineField({ name: 'location', title: 'Location', type: 'string' }),
-    defineField({ name: 'locationLink', title: 'Location link', type: 'url' }),
+    defineField({ name: 'locationLink', title: 'Location Link', type: 'url' }),
     defineField({
       name: 'avatar',
       title: 'Portrait',
@@ -48,7 +48,7 @@ export default defineType({
     }),
     defineField({
       name: 'social',
-      title: 'Social links',
+      title: 'Social Links',
       type: 'array',
       of: [
         defineArrayMember({
@@ -84,7 +84,7 @@ export default defineType({
             }),
             defineField({
               name: 'inNavbar',
-              title: 'Show in the dock',
+              title: 'Show In The Dock',
               type: 'boolean',
               initialValue: true,
             }),

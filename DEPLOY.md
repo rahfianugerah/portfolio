@@ -187,11 +187,12 @@ the question of which one was pasted into the console last.
 | File | Adds |
 | :- | :- |
 | `0001_analytics_baseline.sql` | `counters`, `daily_stats`, `sessions` |
-| `0002_media.sql` | `media` |
-| `0003_media_links.sql` | Link rows on `media` |
 
-Those four tables are exactly the four the code queries, so the schema is complete for what ships
-today. Sanity content needs no migration; it is a different system.
+Those three tables are exactly the three the code queries. Supabase does one job here, counting
+visitors. The media migrations that briefly sat beside this one are deleted with the storage
+bucket they described; if `media` was ever applied to a real database, drop it by hand, because
+nothing in the repository does it now. Sanity content needs no migration; it is a different
+system.
 
 ### How they are applied
 

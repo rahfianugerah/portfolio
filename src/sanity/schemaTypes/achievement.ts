@@ -12,7 +12,7 @@ export default defineType({
       type: 'string',
       validation: (rule) => rule.required(),
     }),
-    defineField({ name: 'issuer', title: 'Awarded by', type: 'string' }),
+    defineField({ name: 'issuer', title: 'Awarded By', type: 'string' }),
     defineField({
       name: 'dates',
       title: 'Date',

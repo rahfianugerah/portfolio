@@ -47,21 +47,21 @@ export default defineType({
     }),
     defineField({
       name: 'image',
-      title: 'Preview image',
+      title: 'Preview Image',
       type: 'image',
       options: { hotspot: true },
       description: 'Shown on the project page. Landscape reads best.',
     }),
     defineField({
       name: 'imageUrl',
-      title: 'Preview image URL',
+      title: 'Preview Image URL',
       type: 'url',
       description:
         'Only for an image hosted elsewhere. If the field above is set, it wins.',
     }),
     defineField({
       name: 'video',
-      title: 'Preview video URL',
+      title: 'Preview Video URL',
       type: 'url',
       description: 'Plays in place of the image when set.',
     }),
@@ -86,7 +86,7 @@ export default defineType({
               type: 'string',
               options: {
                 list: [
-                  { title: 'Source code', value: 'github' },
+                  { title: 'Source Code', value: 'github' },
                   { title: 'Website', value: 'globe' },
                 ],
                 layout: 'radio',
@@ -115,7 +115,7 @@ export default defineType({
   ],
   orderings: [
     {
-      title: 'Manual order',
+      title: 'Manual Order',
       name: 'manual',
       by: [{ field: 'order', direction: 'asc' }],
     },

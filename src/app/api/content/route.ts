@@ -17,7 +17,7 @@ import {
  * uses: fetch an internal route, render a skeleton until it answers. It is one payload
  * rather than four, because they all mount on the same page.
  */
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export async function GET() {
   const [profile, skills, moments, quotes, projects, roles] = await Promise.all([

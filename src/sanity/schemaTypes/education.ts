@@ -14,7 +14,7 @@ export default defineType({
     }),
     defineField({
       name: 'degree',
-      title: 'Degree or programme',
+      title: 'Degree Or Programme',
       type: 'string',
       validation: (rule) => rule.required(),
     }),

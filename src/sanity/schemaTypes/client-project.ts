@@ -48,7 +48,7 @@ export default defineType({
     }),
     defineField({
       name: 'image',
-      title: 'Preview image',
+      title: 'Preview Image',
       type: 'image',
       options: { hotspot: true },
     }),
