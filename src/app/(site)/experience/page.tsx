@@ -1,16 +1,21 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { ResumeCard } from "@/components/resume-card";
-import { getEducation, getRoles } from "@/lib/content";
+import { getEducation, getPageMeta, getRoles } from "@/lib/content";
 import { groupRolesByCompany, type GroupedJob } from "@/lib/group-roles";
 import Image from "next/image";
 
 // Base delay for all staggered animations on this page
 const BLUR_FADE_DELAY = 0.04;
 
-export const metadata = {
-    title: "Full Experiences",
-    description: "A comprehensive list of my professional and leadership experiences.",
-};
+export async function generateMetadata() {
+  const meta = await getPageMeta("/experience");
+  return {
+    title: meta?.title ?? "Full Experiences",
+    description:
+      meta?.description ??
+      "A comprehensive list of my professional and leadership experiences.",
+  };
+}
 
 export default async function ExperiencePage() {
   const [roles, education] = await Promise.all([getRoles(), getEducation()]);

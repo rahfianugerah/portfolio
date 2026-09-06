@@ -13,6 +13,20 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'site',
+      title: 'Site',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Portfolio', value: 'portfolio' },
+          { title: 'Consulting', value: 'consulting' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'portfolio',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'route',
       title: 'Route',
       type: 'string',
@@ -51,5 +65,5 @@ export default defineType({
       description: 'The paragraph under the heading.',
     }),
   ],
-  preview: { select: { title: 'route', subtitle: 'title' } },
+  preview: { select: { title: 'route', subtitle: 'site' } },
 })

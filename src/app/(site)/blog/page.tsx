@@ -1,12 +1,16 @@
 import BlurFade from "@/components/magicui/blur-fade";
+import { getPageMeta } from "@/lib/content";
 import { getBlogPosts } from "@/data/blog";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
 
-export const metadata = {
-  title: "Blog Writings",
-  description: "My thoughts on software development, life, and more.",
-};
+export async function generateMetadata() {
+  const meta = await getPageMeta("/blog");
+  return {
+    title: meta?.title ?? "Blog Writings",
+    description: meta?.description ?? "My thoughts on software development, life, and more.",
+  };
+}
 
 export const revalidate = 0; // Disable caching to show new posts immediately
 

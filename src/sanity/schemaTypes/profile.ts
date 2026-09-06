@@ -41,6 +41,13 @@ export default defineType({
     defineField({ name: 'location', title: 'Location', type: 'string' }),
     defineField({ name: 'locationLink', title: 'Location Link', type: 'url' }),
     defineField({
+      name: 'logo',
+      title: 'Site Logo',
+      type: 'image',
+      description:
+        'Shown in the header instead of the written wordmark. Leave empty to keep the wordmark.',
+    }),
+    defineField({
       name: 'avatar',
       title: 'Portrait',
       type: 'image',

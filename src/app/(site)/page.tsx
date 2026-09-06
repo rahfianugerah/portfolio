@@ -2,13 +2,30 @@ import BlurFade from "@/components/magicui/blur-fade";
 import { HardworkCard } from "@/components/hardwork-card";
 import { ResumeCard } from "@/components/resume-card";
 
-import { getAchievements, getEducation, getProfile, getRoles } from "@/lib/content";
+import {
+  getAchievements,
+  getEducation,
+  getPageMeta,
+  getProfile,
+  getRoles,
+} from "@/lib/content";
 import { groupRolesByCompany, type GroupedJob } from "@/lib/group-roles";
 import Link from "next/link";
 import Markdown from "react-markdown";
 import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
 
 const BLUR_FADE_DELAY = 0.04;
+
+export async function generateMetadata() {
+  const meta = await getPageMeta("/");
+  if (!meta) return {};
+
+  // Absolute, or the layout template appends the site name to a title that already is it.
+  return {
+    title: { absolute: meta.title },
+    description: meta.description ?? undefined,
+  };
+}
 
 export default async function Page() {
   const [profile, roles, education, achievements] = await Promise.all([

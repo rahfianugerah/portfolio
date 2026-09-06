@@ -1,14 +1,18 @@
 import BlurFade from "@/components/magicui/blur-fade";
+import { getPageMeta } from "@/lib/content";
 import ContactForm from "@/app/components/contact-form";
 import HirePlatforms from "@/app/components/hire-platforms";
 import ReCaptchaWrapper from "@/app/components/recaptcha-wrapper";
 
 const BLUR_FADE_DELAY = 0.04;
 
-export const metadata = {
-  title: "Contact Me",
-  description: "Get in touch for collaborations, opportunities, or just to say hello.",
-};
+export async function generateMetadata() {
+  const meta = await getPageMeta("/contact");
+  return {
+    title: meta?.title ?? "Contact Me",
+    description: meta?.description ?? "Get in touch for collaborations, opportunities, or just to say hello.",
+  };
+}
 
 export default function ContactPage() {
   return (

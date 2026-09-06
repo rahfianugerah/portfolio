@@ -77,6 +77,7 @@ export type Profile = {
   location: string | null;
   locationLink: string | null;
   avatar: string | null;
+  logo: string | null;
   social: SocialLink[];
 };
 
@@ -159,7 +160,7 @@ const PROJECT_QUERY = `*[_type == "project"]|order(order asc, title asc){${PROJE
 
 const PROJECT_BY_SLUG_QUERY = `*[_type == "project" && slug.current == $slug][0]{${PROJECT_FIELDS}}`;
 
-const PAGE_META_QUERY = `*[_type == "pageMeta" && route == $route][0]{
+const PAGE_META_QUERY = `*[_type == "pageMeta" && site == "portfolio" && route == $route][0]{
   title,
   description,
   heading,
@@ -199,6 +200,7 @@ const PROFILE_QUERY = `*[_type == "profile"][0]{
   location,
   locationLink,
   "avatar": avatar.asset->url,
+  "logo": logo.asset->url,
   "social": coalesce(social[]{name, url, icon, "inNavbar": coalesce(inNavbar, true)}, [])
 }`;
 

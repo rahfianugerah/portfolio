@@ -1,10 +1,14 @@
 import BlurFade from "@/components/magicui/blur-fade";
+import { getPageMeta } from "@/lib/content";
 import AssistantChat from "@/app/components/assistant-chat";
 
-export const metadata = {
-  title: "AI Assistant",
-  description: "Ask Ashley about Rahfi's roles, projects, and certifications.",
-};
+export async function generateMetadata() {
+  const meta = await getPageMeta("/chat");
+  return {
+    title: meta?.title ?? "AI Assistant",
+    description: meta?.description ?? "Ask Ashley about Rahfi's roles, projects, and certifications.",
+  };
+}
 
 export default function ChatPage() {
   // The room is the whole route, so the fade has to carry its height too, or the

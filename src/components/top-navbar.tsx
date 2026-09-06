@@ -3,9 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import Image from "next/image";
+
 import { ModeToggle } from "@/components/mode-toggle";
 import { navItems } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { useSiteContent } from "@/lib/use-site-content";
 
 /**
  * The fixed top bar: the site's identity, the routes, and the online indicator.
@@ -20,6 +23,7 @@ import { cn } from "@/lib/utils";
  */
 export default function TopNavbar() {
   const pathname = usePathname();
+  const logo = useSiteContent()?.profile?.logo ?? null;
 
   /** `/` matches only itself; every other route also matches what sits under it. */
   const isCurrent = (href: string) =>
@@ -39,9 +43,25 @@ export default function TopNavbar() {
       <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-4">
         <nav className="pointer-events-auto grid min-h-14 w-full max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-lg border border-border bg-background/80 px-4 py-2 shadow-sm backdrop-blur-lg">
           <Link href="/" className="justify-self-start font-bebas text-xl leading-none">
-            Rahfi<span className="text-[#FF0000]">&apos;</span>s{" "}
-            <span className="text-[#FF0000]">|</span> Portfolio
-            <span className="text-[#FF0000]">.</span>
+            {logo ? (
+              // A wordmark's height, so swapping one for the other does not move the bar.
+              <span className="relative block h-6 w-32">
+                <Image
+                  src={logo}
+                  alt="Rahfi's Portfolio"
+                  fill
+                  sizes="128px"
+                  className="object-contain object-left"
+                  priority
+                />
+              </span>
+            ) : (
+              <>
+                Rahfi<span className="text-[#FF0000]">&apos;</span>s{" "}
+                <span className="text-[#FF0000]">|</span> Portfolio
+                <span className="text-[#FF0000]">.</span>
+              </>
+            )}
           </Link>
 
           <span className="flex items-center justify-self-center gap-2">

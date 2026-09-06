@@ -104,3 +104,12 @@
 {"_id": "moment-gemastik-1", "_type": "moment", "alt": "GEMASTIK", "order": 1}
 {"_id": "moment-at-google-again-2", "_type": "moment", "alt": "At Google, again", "order": 2}
 {"_id": "moment-at-a-hackathon-3", "_type": "moment", "alt": "At a hackathon", "order": 3}
+{"_id": "pageMeta-home", "_type": "pageMeta", "route": "/", "title": "Rahfi's Portfolio", "description": "AI Software Engineer", "site": "portfolio"}
+{"_id": "pageMeta-project", "_type": "pageMeta", "route": "/project", "title": "Project", "description": "A showcase of my work, and the certifications behind it.", "heading": "Projects", "subtitle": "Personal and collaborative work, each with its source and, where there is one, a running site.", "site": "portfolio"}
+{"_id": "pageMeta-experience", "_type": "pageMeta", "route": "/experience", "title": "Full Experiences", "description": "A comprehensive list of my professional and leadership experiences.", "site": "portfolio"}
+{"_id": "pageMeta-blog", "_type": "pageMeta", "route": "/blog", "title": "Blog Writings", "description": "My thoughts on software development, life, and more.", "site": "portfolio"}
+{"_id": "pageMeta-contact", "_type": "pageMeta", "route": "/contact", "title": "Contact Me", "description": "Get in touch for collaborations, opportunities, or just to say hello.", "site": "portfolio"}
+{"_id": "pageMeta-chat", "_type": "pageMeta", "route": "/chat", "title": "AI Assistant", "description": "Ask Ashley about Rahfi's roles, projects, and certifications.", "site": "portfolio"}
+{"_id": "pageMeta-consulting-home", "_type": "pageMeta", "site": "consulting", "route": "/", "title": "Rahfi Consulting", "description": "Independent IT consulting that bridges business strategy and technology."}
+{"_id": "pageMeta-consulting-project", "_type": "pageMeta", "site": "consulting", "route": "/project", "title": "Client Work | Rahfi Consulting", "description": "Selected client engagements: process automation, full stack delivery, data engineering, AI integration, and cloud migration.", "heading": "Engagements", "subtitle": "Scope, constraints, and outcome for each engagement, written the way it was agreed before the work started."}
+{"_id": "pageMeta-consulting-chat", "_type": "pageMeta", "site": "consulting", "route": "/chat", "title": "Chat with Zoey | Rahfi Consulting", "description": "Describe the problem you are trying to solve and Zoey will point at the engagement that fits."}
