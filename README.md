@@ -17,16 +17,16 @@ Live at [rahfi.pro](https://rahfi.pro). Intent is in `PRD.md`; deployment is in 
 ## Table of Contents
 
 1. Project Overview
-2. Technology Stack
-3. Frontend Architecture
-4. Project Structure
-5. Configuration
-6. Routing, Pages, and Components
-7. State and Data Management
-8. Authentication, Styling, and Accessibility
-9. Testing, Errors, and Performance
-10. Development and Deployment
-11. Deviations From the Standards
+2. Features
+3. Technology Stack
+4. Frontend Architecture
+5. Project Structure
+6. Configuration
+7. Routing, Pages, and Components
+8. State and Data Management
+9. Authentication, Styling, and Accessibility
+10. Testing, Errors, and Performance
+11. Development and Deployment
 
 ## 1. Project Overview
 
@@ -37,7 +37,50 @@ and other engineers, all of whom arrive cold and scan once.
 It shares a design language with the consulting practice at `consulting.rahfi.pro`, deliberately.
 The two are the same person at two levels of formality.
 
-## 2. Technology Stack
+## 2. Features
+
+### What a Visitor Can Do
+
+| Feature | Where | What it does |
+| :- | :- | :- |
+| Résumé and work history | `/`, `/experience` | Every role, education entry, and leadership position, grouped by company and expandable |
+| Project catalogue | `/project` | Full width, one preview image or video per project, with the source and the running site both linked |
+| Certificates | `/project` | Professional certifications and course completions, five to a page. A certificate with an uploaded PDF opens on the page itself rather than sending the reader away |
+| Blog | `/blog`, `/blog/[slug]` | Posts written in the studio, rendered through Portable Text with syntax-highlighted code blocks |
+| Services | `/service` | What the work covers, with larger engagements pointed at the consulting practice |
+| Contact | `/contact` | A validated form that emails the owner, with a captcha and a rate limit in front of it |
+| AI assistant | The floating panel | Answers questions about the work by asking Gemini through a server action, so the key never reaches the browser |
+| Light and dark themes | Everywhere | Follows the system by default, and remembers an explicit choice |
+
+### The Signals Dashboard
+
+The home page carries a grid of live cards rather than a static page. Each one is independent: it renders a skeleton while it loads and a fallback if its source is unreachable, so one failing card never takes the page with it.
+
+| Card | Source |
+| :- | :- |
+| Website visitors | Supabase, first-party, counted on this site |
+| GitHub activity and latest repositories | The GitHub API, cached for an hour |
+| Experiences velocity | Derived from the résumé data |
+| Tech stack and specialties | The résumé data |
+| Moments and quotations | Sanity, uploaded in the studio |
+| Latest writing | Sanity |
+| Projects overview and social links | Mixed |
+| Clock | The browser, in Asia/Jakarta |
+
+### What the Owner Can Do
+
+| Feature | Where | What it does |
+| :- | :- | :- |
+| Edit every image, post, project, and certificate | `/studio` | Sanity Studio, embedded at full viewport height, signed in through Sanity |
+| Sign in to the private area | `/admin/login` | A magic link to one allowlisted address. There is no password to store or leak |
+| Move the résumé content into Sanity | `/admin` | A one-time copy that is safe to run twice |
+
+> [!note]
+> Nothing on this site requires a visitor to sign in, and nothing collects a name or an address
+> except the contact form, which sends it and stores nothing.
+
+
+## 3. Technology Stack
 
 | Category | Technology | Version |
 | :- | :- | :- |
@@ -56,7 +99,7 @@ The two are the same person at two levels of formality.
 | Testing | <code style="color: red">Not Used</code> | |
 | Deployment | Vercel | Managed |
 
-## 3. Frontend Architecture
+## 4. Frontend Architecture
 
 ### Architecture Type
 
@@ -102,7 +145,7 @@ User Action > Handler > Server Action or API Route > State Update > Render
 Static generation for the content routes, server rendering for the CMS studio and the API routes,
 client rendering for the widgets and the assistant.
 
-## 4. Project Structure
+## 5. Project Structure
 
 ```text
 src/
@@ -135,7 +178,7 @@ src/
 | `src/app/components/widgets/` | The signals grid cells, all on one shared frame |
 | `src/lib/` | Everything with no JSX in it |
 
-## 5. Configuration
+## 6. Configuration
 
 ### Configuration Files
 
@@ -170,8 +213,7 @@ src/
 > [!danger]
 > Every `NEXT_PUBLIC_` variable ends up inside the bundle the browser downloads. It is public the
 > moment it ships. The ones without that prefix are real secrets, an AI key, a GitHub token, a
-> mail password, a captcha secret, a Sanity write token, and must never be given it, per
-> `secret.rules.md`.
+> mail password, a captcha secret, and a Sanity write token, and must never be given it.
 
 > [!note]
 > `NEXT_PUBLIC_SUPABASE_ANON_KEY` is public by design. Row-level security is what protects the
@@ -185,7 +227,7 @@ src/
 | Preview | Shared verification, at `preview-rahfi-portfolio.vercel.app` | `dev` |
 | Production | Live at `rahfi.pro` | `main` |
 
-## 6. Routing, Pages, and Components
+## 7. Routing, Pages, and Components
 
 ### Routing Method
 
@@ -244,7 +286,7 @@ height, so the grid reads as a table rather than a pile.
 > Do not put `min-h-0` on a widget body. It lets the cell shrink below its content, which is what
 > made two charts render at zero height. It belongs only where something actually scrolls.
 
-## 7. State and Data Management
+## 8. State and Data Management
 
 ### State Management Method
 
@@ -333,7 +375,7 @@ loading, and content otherwise.
 Session-scoped on purpose: a conversation about someone's CV is not left behind on a shared
 machine. **No token is stored in browser storage.**
 
-## 8. Authentication, Styling, and Accessibility
+## 9. Authentication, Styling, and Accessibility
 
 ### Authentication Method
 
@@ -351,8 +393,8 @@ heading. Section titles follow one pattern, `Rahfi's | Title.`, with the apostro
 the full stop in the accent.
 
 > [!note]
-> This is a recorded deviation from `uix.component.md`, which specifies black on white with Inter.
-> The deviation is deliberate; see `PRD.md`.
+> The language is defined here and shared with `consulting.rahfi.pro`, so a visitor moving between
+> the two sites sees one identity at two levels of formality.
 
 ### Theme Structure
 
@@ -402,7 +444,7 @@ and a single column below.
 
 Not formally audited.
 
-## 9. Testing, Errors, and Performance
+## 10. Testing, Errors, and Performance
 
 ### Testing Strategy
 
@@ -443,7 +485,7 @@ Error > Try/Catch or Boundary > Fallback Component > Console Log
 | Visitor analytics | Supabase, first-party |
 | Deployment analytics | Vercel |
 
-## 10. Development and Deployment
+## 11. Development and Deployment
 
 ### Requirements
 
@@ -501,13 +543,12 @@ npm run build
 The full procedure is in `DEPLOY.md`.
 
 > [!note]
-> This project deploys to Vercel rather than Cloud Run, which is a documented deviation from
-> `deploy.rules.md`.
+> Vercel builds the site, serves it from the edge, and gives the `dev` branch a preview, so there
+> is no container and no server to maintain.
 
 ### Branching
 
-This project uses the trunk shape from `branch.rules.md`, which is a recorded deviation. See
-Deviations From the Standards.
+Two branches, and a change moves one way.
 
 | Branch | Holds | Accepts a merge from |
 | :- | :- | :- |
@@ -529,10 +570,3 @@ approval.
 | Two majors behind on Next | Missing framework fixes | Upgrade 14 to 16; two call sites break on Next 15's async request APIs |
 | The GitHub activity graph is decorative | The squares are randomised, not real contribution data | Use the GitHub contributions API |
 | No test suite | Regressions are caught by review only | Add end-to-end coverage of the routes |
-
-## 11. Deviations From the Standards
-
-1. **Two branches, not three.** `branch.rules.md` says a project that deploys uses the promotion shape, `dev` > `staging` > `main`. This uses trunk, `dev` > `main`, at the owner's direction. One person reviews every change, so a staging branch was a merge nobody read on the way to a deployment nobody else was waiting for. The cost is real and named where it bites: `main` is the first place a database migration ever runs, so what is pending is read before the merge rather than discovered after it. The preview at `preview-rahfi-portfolio.vercel.app` is where a change is looked at, and it is a deployment rather than a branch.
-2. **Vercel, not Cloud Run.** `deploy.rules.md` requires every deployed project to ship to Cloud Run. This is a Next.js site with no server of its own to run, and Vercel builds it, serves it from the edge, and gives every branch a preview for nothing. The exception does not generalise to a project with a backend.
-3. **The design language is not the house standard.** `uix.component.md` specifies black on white with Inter. This site uses the token layer, the red punctuation accent, and Bebas Neue described under Design System, shared with `consulting.rahfi.pro`, at the owner's direction. The cost is that neither site can adopt a house component without restyling it.
-4. **Uploaded images are served publicly.** `media.rules.md` requires an uploaded file to be served only through an authenticated endpoint. A portfolio's photographs are public by definition, so serving them behind authentication would mean no visitor could see them. They are Sanity assets on Sanity's CDN, with server-generated names that cannot be guessed and no directory listing. The intent of the rule holds; only the read path differs, and it differs because the files genuinely are public.

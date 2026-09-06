@@ -1,9 +1,8 @@
 # Deployment Runbook: Rahfi's Portfolio
 
 > [!important]
-> This project deploys to Vercel rather than Cloud Run, which is a recorded deviation from
-> `deploy.rules.md`. The reason is that it is a Next application with server actions and API
-> routes that Vercel runs directly, and no container of its own.
+> Vercel runs the server actions and the API routes directly, so there is no container to build
+> and no server to keep alive between requests.
 
 Target domain: **`rahfi.pro`** (the apex).
 The consulting site uses the same configuration and deploys to the `consulting.rahfi.pro`
@@ -93,20 +92,59 @@ vercel env add NEXT_PUBLIC_SANITY_DATASET production
 vercel env add NEXT_PUBLIC_SANITY_API_VERSION production
 vercel env add NEXT_PUBLIC_SUPABASE_URL production
 vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY production
+vercel env add CMS_OWNER_EMAIL production
 ```
 
-Repeat with `preview` and `development`. Use a **separate Sanity dataset and Supabase project for
-preview** if you do not want preview traffic writing to production analytics.
+Repeat each with `preview` and `development`. Use a **separate Sanity dataset and Supabase
+project for preview** if you do not want preview traffic writing to production analytics.
+
+`SANITY_API_WRITE_TOKEN` is the exception. It is needed only by the one-time migration button on
+`/admin`, so add it when you run that and revoke it afterwards.
 
 > [!danger]
-> The six without the `NEXT_PUBLIC_` prefix are real secrets: an AI key, a GitHub token, a mail
-> password, and a captcha secret. They must never be given that prefix, because a `NEXT_PUBLIC_`
-> value is compiled into the bundle the browser downloads and is public the moment it ships. See
-> `secret.rules.md`.
+> The ones without the `NEXT_PUBLIC_` prefix are real secrets: an AI key, a GitHub token, a mail
+> password, a captcha secret, and the owner address. They must never be given that prefix, because
+> a `NEXT_PUBLIC_` value is compiled into the bundle the browser downloads and is public the moment
+> it ships.
 
 > [!note]
 > `NEXT_PUBLIC_SUPABASE_ANON_KEY` is public by design. It is the anon key, and row-level security
 > is what protects the data behind it. Its policies live in `supabase/migrations/`.
+
+### 6. Give `dev` a fixed preview URL
+
+Under **Settings > Domains**, add `preview-rahfi-portfolio.vercel.app`. Vercel accepts a second
+`.vercel.app` name if nobody has taken it. In the row it creates, open **Edit**, set **Git
+Branch** to `dev`, and save.
+
+**Do this from the dashboard, not the CLI.** `vercel domains add` registers a domain on the
+account; it does not attach it to a branch, and the branch field is what makes the URL follow
+`dev` instead of pointing at one deployment.
+
+From then on every push to `dev` is reachable at that address. Without it Vercel still builds a
+preview, but its URL contains the commit, so it changes on every push and cannot be shared before
+the push exists.
+
+### 7. Give the migration workflow its secret
+
+The database migrations in `supabase/migrations/` are applied by
+`.github/workflows/migrate.yml` on every push to `main`. It reads one secret from a GitHub
+environment.
+
+On GitHub, open **Settings > Environments**, create one named `production`, and add a secret
+called `SUPABASE_DB_URL`. Its value is the pooler connection string from the Supabase dashboard
+under **Project Settings > Database**, with the password filled in.
+
+**The environment name has to be exactly `production`.** The workflow names it, and a secret added
+repository-wide instead is not visible to a job that declares an environment.
+
+Check it before you rely on it:
+
+```bash
+supabase migration list --db-url "$SUPABASE_DB_URL"
+```
+
+That reads and changes nothing. Four rows means the CLI parsed all four migration files.
 
 ## Routine Deployment
 
@@ -215,7 +253,7 @@ Vercel keeps every deployment. In the dashboard, open **Deployments**, find the 
 choose **Promote to Production**. Instant, no rebuild.
 
 To roll back in git as well, revert the merge commit on `main` through a pull request rather than
-force pushing. `main` is never force pushed, per `branch.rules.md`.
+force pushing. `main` is never force pushed.
 
 > [!warning]
 > A rollback does **not** roll back the database. Supabase analytics and Sanity content are shared
