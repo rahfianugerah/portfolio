@@ -4,7 +4,7 @@ name: Database migrations
 #
 #   1. staging runs first. A merge to main only ever applies what staging already accepted,
 #      so main is the second time a migration runs, not the first.
-#   2. A failure stops the job, and the deploy gate below depends on it — so a half-applied
+#   2. A failure stops the job, and the deploy gate below depends on it, so a half-applied
 #      schema never gets a matching app shipped on top of it.
 #   3. Migrations are forward-only and additive. Add a column, backfill, and drop it in a
 #      LATER migration, never the same one, so a rollback of the app does not require a

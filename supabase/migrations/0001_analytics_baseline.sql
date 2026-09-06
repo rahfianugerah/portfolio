@@ -1,4 +1,4 @@
--- 0001 — analytics baseline
+-- 0001 analytics baseline
 --
 -- Replaces supabase-schema.sql and supabase-rls-policies.sql, which contradicted each
 -- other: the first disabled row-level security on all three tables and the second enabled

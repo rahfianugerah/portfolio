@@ -1,4 +1,4 @@
--- 0002 — media library
+-- 0002 media library
 --
 -- Metadata only. File bytes live in Google Cloud Storage; this table holds facts ABOUT
 -- files so the database stays small, backups stay fast, and the CDN can serve the objects.

@@ -38,8 +38,8 @@ analytics chart rendered at zero and read as an empty widget: its bars sat in a 
 `items-end` never stretched. Any chart needs a definite height somewhere above it.
 
 **`auto-rows-fr` is `minmax(0, 1fr)`, so a grid row's minimum is zero** and a row is allowed to be
-shorter than its content. Combined with cells that span two rows — which contribute half their
-height to each — it silently collapsed the signals grid. The bento uses an explicit minimum.
+shorter than its content. Combined with cells that span two rows - which contribute half their
+height to each - it silently collapsed the signals grid. The bento uses an explicit minimum.
 
 **Every bento span must be `lg:`-prefixed.** An unprefixed `col-span-2` inside a one-column grid
 makes the browser add a column, turning the mobile layout two-wide with half of it empty. The

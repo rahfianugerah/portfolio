@@ -130,10 +130,7 @@ export async function getQuotes(): Promise<Quote[]> {
   return query<Quote>(QUOTE_QUERY, QUOTE_FALLBACK);
 }
 
-/* -------------------------------------------------------------------------- */
-/* The fallback, and the source the one-time migration reads.                  */
-/* -------------------------------------------------------------------------- */
-
+// The fallback, and the source the one-time migration reads.
 /** Projects as plain data. The icon on each link is dropped; `type` replaces it. */
 export function projectsFromResume(): Project[] {
   return DATA.projects.map((project, index) => ({

@@ -2,11 +2,11 @@
 
 **Owner:** Naufal Rahfi Anugerah
 **Date:** 2026-08-26
-**Status:** Approved — built on `dev`, not yet promoted to `staging` or `main`
+**Status:** Approved - built on `dev`, not yet promoted to `staging` or `main`
 
 ## Problem
 
-One person operates two public sites — `rahfi.pro` (the portfolio) and `consulting.rahfi.pro` (the consulting practice) — and they look like they belong to two different people.
+One person operates two public sites - `rahfi.pro` (the portfolio) and `consulting.rahfi.pro` (the consulting practice) - and they look like they belong to two different people.
 
 The portfolio is a light-or-dark themed surface of rounded, shadowed cards, headed in Bebas Neue, punctuated with a red accent, across three typefaces. The consulting site is flat pure black, has no rounded corner anywhere, draws every division with a single hairline border, uses white as its only accent, and runs on two typefaces. They share no color, no shape, no type, and no spacing rhythm.
 
@@ -25,7 +25,7 @@ Once this exists:
 
 - A visitor moving between the two sites sees one continuous visual identity: the same black ground, the same hairline-border construction, the same square geometry, the same uppercase wide-tracked section labels, and the same body typeface.
 - The portfolio reads as the richer, more formal of the two. It carries an engraved display face that the consulting site does not, used in one consistent role, so the two sites read as one identity at two levels of formality rather than as two designs.
-- Every portfolio page — home, experience, projects, services, contact, blog, and blog post — reads in that one language, with no page left in the old vocabulary.
+- Every portfolio page - home, experience, projects, services, contact, blog, and blog post - reads in that one language, with no page left in the old vocabulary.
 - The portfolio keeps everything it does today. Every rail, widget, animation, and interactive surface survives the change; only its appearance moves.
 - The owner has a single set of design decisions to apply when either site changes next, instead of two.
 
@@ -87,15 +87,14 @@ No change. Nothing about what the site reads or writes moves:
 - **When is this promoted past `dev`?** The work is built and verified on `dev`. Promotion to `staging` and then to `main` is the owner's decision, one stage at a time, through a pull request with a recorded approval at each stage. Nothing has been pushed.
 - **When is the font exposure on the consulting site fixed?** That site serves its display font from a publicly browsable path, which its licence does not permit. Recorded here because it was found during this work; it is a one-file move in a different repository and needs its own change.
 
-The question this document opened with — the licence and provenance of the engraved display face — is answered, and the terms it turned out to carry are recorded under Constraints.
+The question this document opened with - the licence and provenance of the engraved display face - is answered, and the terms it turned out to carry are recorded under Constraints.
 
----
 
 # PRD Phase 2: Full-Width Layout and Top Navigation
 
 **Owner:** Naufal Rahfi Anugerah
 **Date:** 2026-08-26
-**Status:** Draft — not started
+**Status:** Draft - not started
 
 ## Problem
 
@@ -116,7 +115,7 @@ The same four as Phase 1. This phase matters most to the **prospective client an
 - The site fills the screen. Content spans a full-width container with the same bordered construction as the consulting site, instead of a fixed narrow column with rails beside it.
 - A conventional fixed top navigation bar carries the whole site: **Home, Projects, Services, Writing, Contact**, plus a distinct entry into the assistant.
 - The home page opens with the name and description on the left and an image beside it, and carries the résumé, GitHub, and LinkedIn links directly beneath that description, so the three things a recruiter wants are above the fold.
-- Home reads as one scrollable narrative with anchored sections — about, experiences, projects — reachable both from the hero and by deep link.
+- Home reads as one scrollable narrative with anchored sections - about, experiences, projects - reachable both from the hero and by deep link.
 - The **complete** experience list is on the home page. It is no longer truncated, and it is no longer duplicated on a separate page.
 - Every analytics and information card that exists today survives, gathered into one full-width dashboard section on the home page rather than scattered down four rails.
 - The assistant becomes its own full-height page laid out like a conversational app, reached from the top bar and from the hero, instead of a small floating panel.
@@ -147,13 +146,12 @@ The same four as Phase 1. This phase matters most to the **prospective client an
 
 - **Does the writing section keep its `/blog` URL, or move to `/writing` to match its label?** Moving is tidier but changes published URLs, so it needs redirects. Owner to decide; the recommendation is to move and redirect, so no existing link breaks.
 
----
 
 # PRD Phase 3: Media CMS and Schema Migration
 
 **Owner:** Naufal Rahfi Anugerah
 **Date:** 2026-08-26
-**Status:** Approved — not yet built
+**Status:** Approved - not yet built
 
 ## Problem
 
@@ -166,7 +164,7 @@ it is a code change. Neither is code, and neither should require a developer to 
 available.
 
 The résumé is the sharper case. It is the single most-requested artefact on the site, it
-changes several times a year, and a stale one is worse than none — a recruiter downloading
+changes several times a year, and a stale one is worse than none - a recruiter downloading
 last year's CV gets a wrong answer with no indication it is wrong.
 
 The database has the same shape of problem in reverse. The analytics schema exists as two
@@ -254,7 +252,7 @@ Supabase console last. There is no record of what has been applied.
   SHA-256, uploader identity, and an ISO 8601 timestamp. Deduplicated by hash.
 - **The GCS service-account key is the most dangerous secret either project holds.** It
   never carries a `NEXT_PUBLIC_` prefix, is never read outside a server route, and is
-  scoped to one bucket with object-level permissions only — no bucket administration, no
+  scoped to one bucket with object-level permissions only - no bucket administration, no
   IAM.
 - **Migrations are forward-only and additive.** Add a column, backfill, and drop in a later
   migration, never in the same one. A migration that fails aborts the deploy.
@@ -264,7 +262,7 @@ Supabase console last. There is no record of what has been applied.
 `media.rules.md` requires that uploaded files be *"served only through an authenticated
 endpoint"* and that an upload folder is *"never exposed directly to the public"*. That rule
 is written for documents in a business application, and a portfolio's photographs are
-public by definition — serving them through an authenticated endpoint would mean no visitor
+public by definition - serving them through an authenticated endpoint would mean no visitor
 could see them.
 
 The resolution splits storage by intent rather than weakening the rule:
@@ -276,13 +274,13 @@ The resolution splits storage by intent rather than weakening the rule:
 
 Both halves keep every other control: uniform bucket-level access so no object carries its
 own ACL, server-generated names so nothing is guessable, no directory listing on either
-path, and no execution anywhere. The intent of the rule — no open upload folder, nothing
-guessable, nothing executable — holds; only the read path differs, and it differs because
+path, and no execution anywhere. The intent of the rule - no open upload folder, nothing
+guessable, nothing executable - holds; only the read path differs, and it differs because
 the two kinds of file genuinely differ.
 
 ## Data
 
-**New, in Supabase Postgres:** one `media` table holding file metadata only — id, storage
+**New, in Supabase Postgres:** one `media` table holding file metadata only - id, storage
 path, visibility, original filename, MIME type, byte sizes, SHA-256, dimensions, alt text,
 uploader id, and timestamps. No file bytes.
 
@@ -290,7 +288,7 @@ uploader id, and timestamps. No file bytes.
 
 **Personal data:** the résumé contains a name, contact details, and an employment history.
 It is personal data, which is why it sits behind a signed URL rather than a public path.
-Uploaded photographs may contain identifiable people, which is why EXIF is stripped —
+Uploaded photographs may contain identifiable people, which is why EXIF is stripped -
 location metadata on a photograph is personal data under both Indonesia's UU PDP and the
 GDPR.
 

@@ -1,8 +1,8 @@
--- 0003 — links alongside files
+-- 0003 links alongside files
 --
 -- The library holds two kinds of thing now. A file is uploaded and stored in the bucket;
--- a link is a URL to a document that lives somewhere else — a credential, a paper, a
--- drive folder — and has no object behind it.
+-- a link is a URL to a document that lives somewhere else, such as a credential, a paper
+-- or a drive folder, and has no object behind it.
 --
 -- One table rather than two: they are listed together, filtered together, and ordered
 -- together, and a second table would mean every read became a union.

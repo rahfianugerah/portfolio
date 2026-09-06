@@ -27,7 +27,7 @@ type GroupedCompany = {
   period: string;
 };
 
-// ---------- Group work by company ----------
+// Group work by company
 const groupedRawExp = DATA.work.reduce((acc, item) => {
   if (!acc[item.company]) {
     acc[item.company] = {
@@ -63,7 +63,7 @@ const groupedWorkExp: GroupedCompany[] = Object.values(groupedRawExp).map((group
   };
 });
 
-// ---------- Group leadership by company (same schema as work) ----------
+// Group leadership by company, using the same schema as work
 const groupedLeadershipRaw = (DATA.leadership ?? []).reduce((acc, item) => {
   if (!acc[item.company]) {
     acc[item.company] = {
