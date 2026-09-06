@@ -518,16 +518,20 @@ The site renders from Sanity and ships with no content of its own, so a fresh da
 sections. `sanity/exports/resume.ndjson` holds all 95 documents: the profile, the skill groups,
 the roles, the education, the projects, the achievements and the certificates.
 
-**Use the standalone CLI, not the one in `node_modules`.** The bundled `sanity` package is 3.99
-and its `yargs` dependency throws `require is not defined in ES module scope` on Node 26, so
-`npx sanity` fails before it does anything.
+**Name the package explicitly, and do not install it.** Bare `npx sanity` resolves to the `sanity`
+studio package, which is 3.99 and whose `yargs` dependency throws `require is not defined in ES
+module scope` on Node 26. `@sanity/cli` is the separate standalone CLI, currently 8.9.1, and it
+runs. Written this way it is fetched into the npm cache rather than into `node_modules`, so it
+never becomes a dependency of the site.
 
 ```bash
-npm install -g @sanity/cli
-sanity logout
-sanity login
-sanity dataset import sanity/exports/resume.ndjson production --replace
+npx --yes @sanity/cli@latest logout
+npx --yes @sanity/cli@latest login
+npx --yes @sanity/cli@latest dataset import sanity/exports/resume.ndjson production --replace
 ```
+
+`logout` first only if a different account is already signed in. The session is stored per user,
+not per project, so signing in once covers every repository on the machine.
 
 `--replace` overwrites a document whose id already exists and leaves everything else alone, so
 running it twice is safe and re-running it after an edit in the studio is not.
@@ -590,7 +594,7 @@ approval.
 | :- | :- | :- |
 | The site is empty until the dataset is imported | Every section renders with nothing in it | Import `sanity/exports/resume.ndjson`, then upload the images |
 | No image exists until one is uploaded | Logos, achievement photos and carousel images render as their placeholder | Upload in the studio |
-| The bundled Sanity CLI does not run on Node 26 | `npx sanity` throws a yargs ESM error | Use the standalone CLI: `npm i -g @sanity/cli` |
+| The bundled Sanity CLI does not run on Node 26 | Bare `npx sanity` throws a yargs ESM error before doing anything | Name the package: `npx --yes @sanity/cli@latest` |
 | Unused packages removed from `package.json` but still installed | `node_modules` is larger than it needs to be, and still holds `@google-cloud/storage`, `sharp` and `file-type` | Run `npm install` |
 | The home carousels are empty until something is published | Two cards on the home page show a placeholder line | Upload `moment` and `quote` documents in the studio |
 | The résumé download is the Google Drive link in `src/data/resume.tsx` | Replacing the CV is a commit, and the previous file stays reachable | Give the résumé a Sanity document with a file field |
