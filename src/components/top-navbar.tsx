@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { ModeToggle } from "@/components/mode-toggle";
 import { navItems } from "@/data/site";
 import { cn } from "@/lib/utils";
 
@@ -53,7 +54,8 @@ export default function TopNavbar() {
             </span>
           </span>
 
-          <div className="hidden items-center gap-1 justify-self-end md:flex">
+          <div className="flex items-center gap-1 justify-self-end">
+            <div className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => {
               const current = isCurrent(item.href);
               return (
@@ -72,6 +74,9 @@ export default function TopNavbar() {
                 </Link>
               );
             })}
+            </div>
+
+            <ModeToggle className="size-8" />
           </div>
         </nav>
       </header>

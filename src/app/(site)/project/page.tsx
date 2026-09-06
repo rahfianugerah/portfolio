@@ -1,14 +1,27 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { CertificateList } from "@/components/certificate-list";
 import { ProjectShowcase } from "@/components/project-showcase";
-import { getCertificates, getProjects } from "@/lib/content";
+import { getCertificates, getPageMeta, getProjects } from "@/lib/content";
 
 const DELAY = 0.04;
 
-export const metadata = {
+// What the page said before the studio could say it. A route with no pageMeta document
+// keeps these words, so writing one is optional rather than a prerequisite.
+const FALLBACK = {
   title: "Project",
   description: "A showcase of my work, and the certifications behind it.",
+  heading: "Projects",
+  subtitle:
+    "Personal and collaborative work, each with its source and, where there is one, a running site.",
 };
+
+export async function generateMetadata() {
+  const meta = await getPageMeta("/project");
+  return {
+    title: meta?.title ?? FALLBACK.title,
+    description: meta?.description ?? FALLBACK.description,
+  };
+}
 
 function Heading({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -24,7 +37,11 @@ function Heading({ title, children }: { title: string; children: React.ReactNode
 }
 
 export default async function ProjectPage() {
-  const [projects, certificates] = await Promise.all([getProjects(), getCertificates()]);
+  const [projects, certificates, meta] = await Promise.all([
+    getProjects(),
+    getCertificates(),
+    getPageMeta("/project"),
+  ]);
 
   const professional = certificates.filter((one) => one.kind === "professional");
   const courses = certificates.filter((one) => one.kind === "learning");
@@ -36,13 +53,12 @@ export default async function ProjectPage() {
     <div className="flex w-full flex-col gap-16 py-8">
       <section id="projects" className="flex flex-col gap-6">
         <BlurFade delay={next()}>
-          <Heading title="Projects">
-            Personal and collaborative work, each with its source and, where there is one, a
-            running site.
+          <Heading title={meta?.heading ?? FALLBACK.heading}>
+            {meta?.subtitle ?? FALLBACK.subtitle}
           </Heading>
         </BlurFade>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
             <BlurFade key={project.id} delay={next()}>
               <ProjectShowcase project={project} />

@@ -3,6 +3,7 @@ import certificate from './certificate'
 import clientProject from './client-project'
 import education from './education'
 import moment from './moment'
+import pageMeta from './page-meta'
 import post from './post'
 import profile from './profile'
 import project from './project'
@@ -15,6 +16,7 @@ import skillGroup from './skill-group'
 // content; everything else is this one's.
 export const schemaTypes = [
   profile,
+  pageMeta,
   post,
   project,
   certificate,

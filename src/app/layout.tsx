@@ -1,16 +1,11 @@
 import React from "react";
-import { ThemeProvider } from "@/components/theme-provider";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { SITE_URL } from "@/data/site";
 import { getProfile } from "@/lib/content";
 import { cn } from "@/lib/utils";
-import { BlogReadingProvider } from "./context/blog-reading-context";
-import LayoutContent from "@/app/components/layout-content";
 
 import type { Metadata } from "next";
 
 import { Inter as FontSans, Source_Code_Pro, Bebas_Neue } from "next/font/google";
-import "./globals.css";
 
 const inter = FontSans({
   subsets: ["latin", "latin-ext"],
@@ -44,7 +39,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     title: {
       default: "Rahfi's Portfolio",
-      template: "%s - Rahfi's Portfolio",
+      template: "%s | Rahfi's Portfolio",
     },
 
     description: description,
@@ -110,17 +105,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-sans">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <TooltipProvider delayDuration={0}>
-            <BlogReadingProvider>
-              <LayoutContent>
-                {children}
-              </LayoutContent>
-            </BlogReadingProvider>
-          </TooltipProvider>
-        </ThemeProvider>
-      </body>
+      <body className="font-sans">{children}</body>
     </html>
   );
 }

@@ -60,6 +60,21 @@ export default defineType({
         'Only for an image hosted elsewhere. If the field above is set, it wins.',
     }),
     defineField({
+      name: 'gallery',
+      title: 'Gallery',
+      type: 'array',
+      of: [defineArrayMember({ type: 'image', options: { hotspot: true } })],
+      description: 'Shown on the project page, as many as you like.',
+      options: { layout: 'grid' },
+    }),
+    defineField({
+      name: 'readmeRepo',
+      title: 'GitHub Repository',
+      type: 'string',
+      description:
+        'owner/repo, for example rahfianugerah/portfolio. Its README is rendered as the documentation. Leave empty to take it from the source link.',
+    }),
+    defineField({
       name: 'video',
       title: 'Preview Video URL',
       type: 'url',

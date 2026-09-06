@@ -27,13 +27,24 @@ export type ProjectLink = {
 
 export type Project = {
   id: string;
+  slug: string;
   title: string;
   status: string;
   description: string;
   technologies: string[];
   image: string | null;
   video: string | null;
+  gallery: string[];
+  /** "owner/repo", whose README is rendered as the project's documentation. */
+  readmeRepo: string | null;
   links: ProjectLink[];
+};
+
+export type PageMeta = {
+  title: string;
+  description: string | null;
+  heading: string | null;
+  subtitle: string | null;
 };
 
 export type Moment = {
@@ -130,15 +141,29 @@ export type Certificate = {
   externalUrl: string | null;
 };
 
-const PROJECT_QUERY = `*[_type == "project"]|order(order asc, title asc){
+const PROJECT_FIELDS = `
   "id": _id,
+  "slug": slug.current,
   title,
   "status": coalesce(status, ""),
   "description": coalesce(description, ""),
   "technologies": coalesce(technologies, []),
   "image": coalesce(image.asset->url, imageUrl),
   video,
+  "gallery": coalesce(gallery[].asset->url, []),
+  readmeRepo,
   "links": coalesce(links[]{label, icon, href}, [])
+`;
+
+const PROJECT_QUERY = `*[_type == "project"]|order(order asc, title asc){${PROJECT_FIELDS}}`;
+
+const PROJECT_BY_SLUG_QUERY = `*[_type == "project" && slug.current == $slug][0]{${PROJECT_FIELDS}}`;
+
+const PAGE_META_QUERY = `*[_type == "pageMeta" && route == $route][0]{
+  title,
+  description,
+  heading,
+  subtitle
 }`;
 
 const CERTIFICATE_QUERY = `*[_type == "certificate"]|order(order asc, title asc){
@@ -276,6 +301,43 @@ export async function getProfile(): Promise<Profile | null> {
 
 export async function getSkillGroups(): Promise<SkillGroup[]> {
   return query<SkillGroup>(SKILL_QUERY, []);
+}
+
+/** One project, by the slug in its URL. Null when there is no such document. */
+export async function getProject(slug: string): Promise<Project | null> {
+  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return null;
+
+  try {
+    return await client.fetch<Project | null>(
+      PROJECT_BY_SLUG_QUERY,
+      { slug },
+      { next: { revalidate: REVALIDATE } }
+    );
+  } catch (error) {
+    console.error("Sanity project fetch failed:", error);
+    return null;
+  }
+}
+
+/**
+ * The title, description and heading of one route.
+ *
+ * Null when nothing has been written for it, which is the normal case: a page keeps the
+ * words it shipped with until someone decides to change them in the studio.
+ */
+export async function getPageMeta(route: string): Promise<PageMeta | null> {
+  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return null;
+
+  try {
+    return await client.fetch<PageMeta | null>(
+      PAGE_META_QUERY,
+      { route },
+      { next: { revalidate: REVALIDATE } }
+    );
+  } catch (error) {
+    console.error("Sanity page metadata fetch failed:", error);
+    return null;
+  }
 }
 
 export async function getServices(): Promise<Service[]> {
