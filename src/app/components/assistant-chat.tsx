@@ -148,29 +148,33 @@ export default function AssistantChat() {
                     : "rounded-tl-sm bg-muted text-foreground"
                 )}
               >
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  className={cn(
-                    "prose break-words text-sm",
-                    m.role === "user" ? "prose-invert" : "dark:prose-invert"
-                  )}
-                  components={{
-                    p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-                    ul: ({ children }) => (
-                      <ul className="mb-2 list-disc pl-4 last:mb-0">{children}</ul>
-                    ),
-                    ol: ({ children }) => (
-                      <ol className="mb-2 list-decimal pl-4 last:mb-0">{children}</ol>
-                    ),
-                    a: ({ href, children }) => (
-                      <a href={href} target="_blank" rel="noreferrer" className="font-medium underline">
-                        {children}
-                      </a>
-                    ),
-                  }}
-                >
-                  {m.content}
-                </ReactMarkdown>
+                {m.role === "user" ? (
+                  // A visitor's own line is not markdown, and running it through prose was
+                  // what made it invisible: prose-invert forces near-white text, and in dark
+                  // mode the bubble under it is near-white too.
+                  <p className="whitespace-pre-wrap break-words">{m.content}</p>
+                ) : (
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    className="prose break-words text-sm dark:prose-invert"
+                    components={{
+                      p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                      ul: ({ children }) => (
+                        <ul className="mb-2 list-disc pl-4 last:mb-0">{children}</ul>
+                      ),
+                      ol: ({ children }) => (
+                        <ol className="mb-2 list-decimal pl-4 last:mb-0">{children}</ol>
+                      ),
+                      a: ({ href, children }) => (
+                        <a href={href} target="_blank" rel="noreferrer" className="font-medium underline">
+                          {children}
+                        </a>
+                      ),
+                    }}
+                  >
+                    {m.content}
+                  </ReactMarkdown>
+                )}
                 {busy && i === messages.length - 1 && m.role === "assistant" && (
                   <span className="ml-0.5 inline-block h-4 w-1.5 animate-pulse bg-current align-text-bottom" />
                 )}
