@@ -12,6 +12,18 @@ const nextConfig = {
       },
     ],
   },
+
+  async redirects() {
+    return [
+      // Services are the consulting practice's, not this site's. /service was a page here
+      // and has been linked, so it redirects rather than starting to 404.
+      {
+        source: "/service",
+        destination: "https://consulting.rahfi.pro/#services",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

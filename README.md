@@ -47,7 +47,7 @@ The two are the same person at two levels of formality.
 | Project catalogue | `/project` | Full width, one preview image or video per project, with the source and the running site both linked |
 | Certificates | `/project` | Professional certifications and course completions, five to a page. A certificate with an uploaded PDF opens on the page itself rather than sending the reader away |
 | Blog | `/blog`, `/blog/[slug]` | Posts written in the studio, rendered through Portable Text with syntax-highlighted code blocks |
-| Services | `/service` | What the work covers, with larger engagements pointed at the consulting practice |
+| Services | The left rail | A summary of what the work covers. The engagement itself is the consulting practice, and the card links there |
 | Contact | `/contact` | A validated form that emails the owner, with a captcha and a rate limit in front of it |
 | AI assistant | The floating panel | Answers questions about the work by asking Gemini through a server action, so the key never reaches the browser |
 | Light and dark themes | Everywhere | Follows the system by default, and remembers an explicit choice |
@@ -154,7 +154,6 @@ src/
 │   ├── page.tsx              # Home: hero, about, experience, projects, signals
 │   ├── globals.css           # Tokens
 │   ├── project/              # Projects and certifications, full width
-│   ├── service/              # Services
 │   ├── blog/                 # Blog list and post
 │   ├── contact/              # Contact form
 │   ├── experience/           # Work history
@@ -236,7 +235,7 @@ Next App Router, file-based.
 | :- | :- | :- |
 | `/` | Home | Public |
 | `/project` | Projects and certifications, full width | Public |
-| `/service` | Services, also summarised in the left rail | Public |
+| `/service` | Permanent home is the consulting site; redirects to `consulting.rahfi.pro/#services` | Public |
 | `/blog` | Blog list | Public |
 | `/blog/[slug]` | Blog post | Public |
 | `/contact` | Contact form | Public |
@@ -317,7 +316,7 @@ User Action > Handler > Server Action or API Route > State Update > Render
 | Achievements | Sanity, `achievement` documents | `/studio` |
 | The name, role, summary and social links | Sanity, the single `profile` document | `/studio` |
 | Skills | Sanity, `skillGroup` documents | `/studio` |
-| Services | Sanity, `service` documents | `/studio` |
+| Services | Sanity, `service` documents, shown only in the left rail | `/studio` |
 
 `src/lib/content.ts` is the only place that reads any of it, and **nothing has a fallback**. That
 is deliberate: a fallback was worth having while the dataset was empty, and keeping one now would

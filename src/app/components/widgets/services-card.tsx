@@ -47,12 +47,14 @@ export default function ServicesCard() {
       </ul>
 
       {!loading && (
-      <Link
-        href="/service"
-        className="mt-3 inline-block text-[11px] font-medium underline underline-offset-4 transition-colors hover:text-primary"
-      >
-        All services
-      </Link>
+        <Link
+          href="https://consulting.rahfi.pro/#services"
+          target="_blank"
+          rel="noreferrer"
+          className="mt-3 inline-block text-[11px] font-medium underline underline-offset-4 transition-colors hover:text-primary"
+        >
+          Full services at the consulting practice
+        </Link>
       )}
     </div>
   );
