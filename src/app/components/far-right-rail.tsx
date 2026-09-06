@@ -9,7 +9,7 @@ import LatestBlogsWidget from "./widgets/latest-blogs";
 export default function FarRightRail() {
   return (
     <aside className="flex h-auto w-full flex-col gap-4">
-      {/* Website Analytics / Visitor Counter */}
+      {/* Website Visitors */}
       <BlurFade delay={0.1}>
         <AnalyticsWidget />
       </BlurFade>

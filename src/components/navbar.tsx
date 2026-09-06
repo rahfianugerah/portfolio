@@ -30,6 +30,7 @@ export default function Navbar() {
                   <item.icon className="size-4" />
                 </Link>
               </TooltipTrigger>
+              <TooltipContent>{item.label}</TooltipContent>
             </Tooltip>
           </DockIcon>
         ))}
@@ -50,6 +51,7 @@ export default function Navbar() {
                     <social.icon className="size-4" />
                   </Link>
                 </TooltipTrigger>
+                <TooltipContent>{social.name}</TooltipContent>
               </Tooltip>
             </DockIcon>
           ))}
@@ -59,6 +61,7 @@ export default function Navbar() {
             <TooltipTrigger asChild>
               <ModeToggle className="size-10 sm:size-12" />
             </TooltipTrigger>
+            <TooltipContent>Theme</TooltipContent>
           </Tooltip>
         </DockIcon>
       </Dock>

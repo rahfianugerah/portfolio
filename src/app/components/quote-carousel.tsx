@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 // 1. Import Next.js Image
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useSiteContent } from "@/lib/use-site-content";
 
-const quotes = [
+const FALLBACK_QUOTES = [
   {
     author: "Jensen Huang",
     role: "CEO, NVIDIA",
@@ -27,13 +28,19 @@ const quotes = [
 
 export default function QuoteCarousel() {
   const [index, setIndex] = useState(0);
+  const content = useSiteContent();
+  const quotes = content?.quotes.length ? content.quotes : FALLBACK_QUOTES;
+
+  useEffect(() => {
+    setIndex((prev) => (prev < quotes.length ? prev : 0));
+  }, [quotes.length]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % quotes.length);
     }, 5000); 
     return () => clearInterval(timer);
-  }, []);
+  }, [quotes.length]);
 
   return (
     <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm relative aspect-[4/5] group">
@@ -45,15 +52,18 @@ export default function QuoteCarousel() {
             index === i ? "opacity-100 z-10" : "opacity-0 z-0"
           )}
         >
-          {/* 2. Use <Image /> with fill prop */}
-          <Image
-            src={item.image}
-            alt={item.author}
-            fill
-            sizes="(max-width: 768px) 100vw, 300px"
-            className="object-cover"
-            priority={i === 0} // Load the first image immediately
-          />
+          {/* A quote uploaded without a portrait still reads: the gradient below covers
+              the whole card, so the text sits on the card surface instead of a photograph. */}
+          {item.image && (
+            <Image
+              src={item.image}
+              alt={item.author}
+              fill
+              sizes="(max-width: 768px) 100vw, 300px"
+              className="object-cover"
+              priority={i === 0}
+            />
+          )}
           
           {/* Dark Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />

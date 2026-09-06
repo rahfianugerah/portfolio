@@ -12,7 +12,17 @@ import Link from "next/link";
  */
 export default function TopNavbar() {
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-4">
+    <>
+      {/*
+       * The band the page scrolls under. The pill's own backdrop-blur only covers the pill,
+       * so anything passing beside or above it arrived at the top edge perfectly sharp. This
+       * blurs the full width and is masked to transparent at its bottom edge, so content
+       * dissolves upward instead of being cut off by a line. The same trick the bottom dock
+       * uses, mirrored.
+       */}
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-30 h-28 w-full bg-background backdrop-blur-lg [-webkit-mask-image:linear-gradient(to_bottom,black_45%,transparent)] [mask-image:linear-gradient(to_bottom,black_45%,transparent)]" />
+
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-4">
       <nav className="pointer-events-auto flex w-full max-w-7xl items-center justify-between gap-3 rounded-lg border border-border bg-background/80 px-4 py-2 shadow-sm backdrop-blur-lg">
         <Link href="/" className="font-bebas text-xl leading-none">
           Rahfi<span className="text-[#FF0000]">&apos;</span>s{" "}
@@ -30,6 +40,7 @@ export default function TopNavbar() {
           </span>
         </span>
       </nav>
-    </header>
+      </header>
+    </>
   );
 }

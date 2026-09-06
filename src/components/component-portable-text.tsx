@@ -87,10 +87,10 @@ const components: Partial<PortableTextComponents> = {
   },
   list: {
     bullet: ({ children }: any) => (
-      <ul className="list-disc list-inside space-y-2 my-4 ml-4">{children}</ul>
+      <ul className="list-disc list-outside space-y-1 my-4 pl-5">{children}</ul>
     ),
     number: ({ children }: any) => (
-      <ol className="list-decimal list-inside space-y-2 my-4 ml-4">{children}</ol>
+      <ol className="list-decimal list-outside space-y-1 my-4 pl-5">{children}</ol>
     ),
   },
   listItem: {
@@ -107,7 +107,7 @@ export default function CustomPortableText({ value }: { value: any }) {
   if (!value) return null;
 
   return (
-    <div className="prose dark:prose-invert">
+    <div>
       <PortableText value={value} components={components} />
     </div>
   );

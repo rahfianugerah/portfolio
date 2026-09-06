@@ -24,6 +24,10 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   // Full page means no rails and a wider column. The project page joined it because its
   // previews and its inline certificates need the width more than the rails need the room.
+  // The studio renders its own chrome and expects the whole viewport. It gets it: no bar,
+  // no rails, no container, because every one of those would be a second layout fighting it.
+  if (pathname?.startsWith("/studio")) return <>{children}</>;
+
   const isFullPage =
     pathname?.startsWith("/blog") ||
     pathname === "/contact" ||

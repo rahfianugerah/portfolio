@@ -31,6 +31,21 @@ export type Project = {
   links: ProjectLink[];
 };
 
+export type Moment = {
+  id: string;
+  image: string;
+  alt: string;
+  caption: string | null;
+};
+
+export type Quote = {
+  id: string;
+  text: string;
+  author: string;
+  role: string | null;
+  image: string | null;
+};
+
 export type Certificate = {
   id: string;
   title: string;
@@ -64,6 +79,21 @@ const CERTIFICATE_QUERY = `*[_type == "certificate"]|order(order asc, title asc)
   externalUrl
 }`;
 
+const MOMENT_QUERY = `*[_type == "moment" && defined(image.asset)]|order(order asc){
+  "id": _id,
+  "image": image.asset->url,
+  "alt": coalesce(alt, ""),
+  caption
+}`;
+
+const QUOTE_QUERY = `*[_type == "quote"]|order(order asc){
+  "id": _id,
+  text,
+  author,
+  role,
+  "image": image.asset->url
+}`;
+
 // Content changes when its author saves, not when a visitor arrives, so an hour of cache is
 // generous. The studio can revalidate sooner through a webhook if that ever matters.
 const REVALIDATE = 3600;
@@ -90,6 +120,14 @@ export async function getProjects(): Promise<Project[]> {
 
 export async function getCertificates(): Promise<Certificate[]> {
   return query<Certificate>(CERTIFICATE_QUERY, certificatesFromResume());
+}
+
+export async function getMoments(): Promise<Moment[]> {
+  return query<Moment>(MOMENT_QUERY, MOMENT_FALLBACK);
+}
+
+export async function getQuotes(): Promise<Quote[]> {
+  return query<Quote>(QUOTE_QUERY, QUOTE_FALLBACK);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -137,3 +175,45 @@ export function certificatesFromResume(): Certificate[] {
     ...map(DATA.learning_certificate, "learning"),
   ];
 }
+
+/**
+ * The photographs and quotations that were hard-coded in the two carousels.
+ *
+ * They stay here as the fallback for the same reason the resume data does: a carousel that
+ * renders nothing looks broken, and an empty dataset is the normal state of a CMS on the
+ * day it is set up. Replace them by uploading in the studio; these disappear the moment a
+ * single document of that type exists.
+ */
+const GITHUB_RAW =
+  "https://raw.githubusercontent.com/rahfianugerah/portfolio/main/public/";
+
+const MOMENT_FALLBACK: Moment[] = [
+  { id: "fallback-moment-0", image: `${GITHUB_RAW}me-google-1.jpeg`, alt: "At Google", caption: null },
+  { id: "fallback-moment-1", image: `${GITHUB_RAW}gemastik-3.jpeg`, alt: "GEMASTIK", caption: null },
+  { id: "fallback-moment-2", image: `${GITHUB_RAW}me-google-3.jpeg`, alt: "At Google", caption: null },
+  { id: "fallback-moment-3", image: `${GITHUB_RAW}me-hackathon.jpg`, alt: "At a hackathon", caption: null },
+];
+
+const QUOTE_FALLBACK: Quote[] = [
+  {
+    id: "fallback-quote-0",
+    author: "Jensen Huang",
+    role: "CEO, NVIDIA",
+    text: "Software is eating the world, but AI is going to eat software.",
+    image: `${GITHUB_RAW}jensen-huang.jpg`,
+  },
+  {
+    id: "fallback-quote-1",
+    author: "Steve Jobs",
+    role: "Co-founder, Apple",
+    text: "Being the richest man in the cemetery doesn't matter to me. Going to bed at night saying we've done something wonderful... that's what matters to me",
+    image: `${GITHUB_RAW}steve-jobs.jpg`,
+  },
+  {
+    id: "fallback-quote-2",
+    author: "Linus Torvalds",
+    role: "Creator, Linux",
+    text: "Talk is cheap. Show me the code.",
+    image: `${GITHUB_RAW}torvalds.jpg`,
+  },
+];

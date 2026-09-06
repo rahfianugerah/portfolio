@@ -116,7 +116,7 @@ src/
 │   ├── experience/           # Work history
 │   ├── admin/                # Media library and the content migration
 │   ├── studio/               # Embedded Sanity Studio
-│   ├── api/                  # analytics, blog, github/stats, media, admin
+│   ├── api/                  # analytics, blog, github/stats, media, admin, content
 │   ├── actions.ts            # Server actions
 │   └── components/           # Page-level components and widgets
 ├── components/               # Shared components, magicui, ui primitives
@@ -201,6 +201,7 @@ Next App Router, file-based.
 | `/experience` | Work history | Public |
 | `/studio` | Sanity Studio | Authenticated by Sanity |
 | `/admin` | Media library, content migration | Owner only |
+| `/api/content` | Carousel photographs and quotations | Public |
 | `/api/admin/seed-content` | One-time resume to Sanity copy | Owner only |
 
 Home carries anchored sections: `#about`, `#experiences`, `#projects`, `#achievements`, `#stats`.
@@ -215,7 +216,7 @@ Home carries anchored sections: `#about`, `#experiences`, `#projects`, `#achieve
 
 | Component | Category | Responsibility |
 | :- | :- | :- |
-| `TopNavbar` | Layout | Fixed top bar: the wordmark and the online indicator |
+| `TopNavbar` | Layout | Fixed top bar: the wordmark, the online indicator, and the blur band the page scrolls under |
 | `Navbar` | Layout | The bottom dock: links, socials, theme toggle |
 | `ResumeCard` | Feature | One company, expandable |
 | `ProjectShowcase` | Feature | One project: preview, tags, source and site links |
@@ -268,6 +269,9 @@ User Action > Handler > Server Action or API Route > State Update > Render
 | Projects | Sanity, `project` documents | `/studio` |
 | Certificates | Sanity, `certificate` documents | `/studio` |
 | Blog posts | Sanity, `post` documents | `/studio` |
+| Home carousel photographs | Sanity, `moment` documents | `/studio` |
+| Home carousel quotations | Sanity, `quote` documents | `/studio` |
+| Consulting engagements | Sanity, `clientProject` documents | `/studio` |
 | Work, education, leadership, achievements | `src/data/resume.tsx` | A commit |
 | Photographs and the résumé PDF | Google Cloud Storage, metadata in Supabase | `/admin` |
 
@@ -280,6 +284,11 @@ page a visitor cannot explain.
 > The link icons that used to make this content unserialisable are gone. A link carries a `type`
 > string now, and `ProjectShowcase` decides which component that means. That single change is what
 > let the content move out of the repository at all.
+
+> [!note]
+> One studio and one dataset serve both sites. `consulting.rahfi.pro` holds no Sanity client:
+> it reads `clientProject` over the public GROQ endpoint with a plain `fetch`, and redirects its
+> own `/studio` here. Two studios against one dataset is two things to keep in step for no gain.
 
 > [!important]
 > The one-time copy runs from a button on `/admin`, not from a script, because `resume.tsx` is TSX

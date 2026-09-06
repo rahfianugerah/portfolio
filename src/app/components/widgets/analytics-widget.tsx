@@ -92,7 +92,7 @@ export default function AnalyticsWidget() {
   return (
     <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
       <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
-        Website Analytics
+        Website Visitors
       </div>
 
       {/* Stats Grid */}

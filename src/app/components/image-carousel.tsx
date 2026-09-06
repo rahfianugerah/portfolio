@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useSiteContent } from "@/lib/use-site-content";
 import Image from "next/image";
 
 type ImageCarouselProps = {
@@ -19,8 +20,23 @@ export default function ImageCarousel({ images, intervalMs = 3000 }: ImageCarous
     []
   );
 
-  const items = images && images.length > 0 ? images : placeholders;
+  // Uploaded photographs win; the prop is next; the hard-coded URLs are the last resort so
+  // the carousel is never empty while the studio has nothing in it yet.
+  const content = useSiteContent();
+  const items = useMemo(() => {
+    if (content?.moments.length) return content.moments.map((one) => one.image);
+    if (images && images.length > 0) return images;
+    return placeholders;
+  }, [content, images, placeholders]);
+
+  const labels = content?.moments.length
+    ? content.moments.map((one) => one.alt)
+    : items.map((_, i) => `Slide ${i + 1}`);
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    setIndex((prev) => (prev < items.length ? prev : 0));
+  }, [items.length]);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -38,7 +54,7 @@ export default function ImageCarousel({ images, intervalMs = 3000 }: ImageCarous
            <Image
             key={i}
             src={src}
-            alt={`Slide ${i + 1}`}
+            alt={labels[i] ?? `Slide ${i + 1}`}
             fill
             sizes="(max-width: 768px) 100vw, 300px"
             className={cn(
