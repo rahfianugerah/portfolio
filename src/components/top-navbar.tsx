@@ -36,14 +36,24 @@ export default function TopNavbar() {
       <div className="pointer-events-none fixed inset-x-0 top-0 z-30 h-28 w-full bg-background backdrop-blur-lg [-webkit-mask-image:linear-gradient(to_bottom,black_45%,transparent)] [mask-image:linear-gradient(to_bottom,black_45%,transparent)]" />
 
       <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-4">
-        <nav className="pointer-events-auto flex min-h-14 w-full max-w-7xl items-center justify-between gap-2 rounded-lg border border-border bg-background/80 px-4 py-2 shadow-sm backdrop-blur-lg">
-          <Link href="/" className="shrink-0 font-bebas text-xl leading-none">
+        <nav className="pointer-events-auto grid min-h-14 w-full max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-lg border border-border bg-background/80 px-4 py-2 shadow-sm backdrop-blur-lg">
+          <Link href="/" className="justify-self-start font-bebas text-xl leading-none">
             Rahfi<span className="text-[#FF0000]">&apos;</span>s{" "}
             <span className="text-[#FF0000]">|</span> Portfolio
             <span className="text-[#FF0000]">.</span>
           </Link>
 
-          <div className="hidden items-center gap-1 md:flex">
+          <span className="flex items-center justify-self-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+            </span>
+            <span className="hidden text-[10px] uppercase tracking-wider font-bold text-muted-foreground sm:inline">
+              Rahfi is Online
+            </span>
+          </span>
+
+          <div className="hidden items-center gap-1 justify-self-end md:flex">
             {navItems.map((item) => {
               const current = isCurrent(item.href);
               return (
@@ -63,16 +73,6 @@ export default function TopNavbar() {
               );
             })}
           </div>
-
-          <span className="flex shrink-0 items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-            </span>
-            <span className="hidden text-[10px] uppercase tracking-wider font-bold text-muted-foreground sm:inline">
-              Rahfi is Online
-            </span>
-          </span>
         </nav>
       </header>
     </>
