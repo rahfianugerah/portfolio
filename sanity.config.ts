@@ -5,7 +5,7 @@ import { codeInput } from '@sanity/code-input'
 
 export default defineConfig({
   name: 'default',
-  title: 'My Portfolio Blog',
+  title: 'Rahfi\'s Workspace',
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
   basePath: '/studio',

@@ -527,8 +527,13 @@ never becomes a dependency of the site.
 ```bash
 npx --yes @sanity/cli@latest logout
 npx --yes @sanity/cli@latest login
-npx --yes @sanity/cli@latest dataset import sanity/exports/resume.ndjson production --replace
+npx --yes @sanity/cli@latest dataset import sanity/exports/resume.ndjson -d production --replace
 ```
+
+Run them from the repository root: the path to the export is relative, and the CLI reads
+`sanity.cli.ts` from the working directory to find out which project to import into. Without that
+file it has no project and asks for one, which is why it exists; `sanity.config.ts` configures the
+studio and is not read for this.
 
 `logout` first only if a different account is already signed in. The session is stored per user,
 not per project, so signing in once covers every repository on the machine.
