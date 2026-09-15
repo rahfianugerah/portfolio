@@ -1,6 +1,7 @@
 import achievement from './achievement'
 import certificate from './certificate'
 import clientProject from './client-project'
+import counter from './counter'
 import education from './education'
 import moment from './moment'
 import organization from './organization'
@@ -13,8 +14,8 @@ import role from './role'
 import service from './service'
 import skillGroup from './skill-group'
 
-// One studio and one dataset serve both sites. `clientProject` is the consulting site's
-// content; everything else is this one's.
+// One studio and one dataset serve both sites. `clientProject` and `counter` are the consulting
+// site's content; everything else is this one's.
 export const schemaTypes = [
   profile,
   organization,
@@ -30,4 +31,5 @@ export const schemaTypes = [
   moment,
   quote,
   clientProject,
+  counter,
 ]
