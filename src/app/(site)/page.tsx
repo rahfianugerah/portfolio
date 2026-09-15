@@ -268,7 +268,7 @@ export default async function Page() {
               <ExperienceGraph />
             </div>
             <div className={CELL}>
-              <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
+              <div className="flex flex-col rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
                 <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                   Rahfi&apos;s Specialties
                 </div>
