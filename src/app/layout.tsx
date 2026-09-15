@@ -10,7 +10,7 @@ import { Inter as FontSans, Source_Code_Pro } from "next/font/google";
 const inter = FontSans({
   subsets: ["latin", "latin-ext"],
   weight: ["300", "400", "500", "600", "700", "800"],
-  variable: "--font-sans",
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -18,7 +18,7 @@ const sourceCodePro = Source_Code_Pro({
   subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  variable: "--font-mono",
+  variable: "--font-source-code",
   fallback: ["monospace"],
   display: "swap",
 });

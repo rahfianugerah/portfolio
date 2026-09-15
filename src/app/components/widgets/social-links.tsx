@@ -76,7 +76,7 @@ export default function SocialLinks({ orientation = "horizontal" }: SocialLinksP
               rel="noopener noreferrer"
               className={cn(
                 "flex items-center justify-center w-12 h-12 rounded-lg",
-                "border border-border bg-card/90 backdrop-blur-sm shadow-sm",
+                "border border-border bg-card/90 backdrop-blur-xs shadow-xs",
                 "text-muted-foreground",
                 "transition-all duration-200",
                 link.color
@@ -94,7 +94,7 @@ export default function SocialLinks({ orientation = "horizontal" }: SocialLinksP
 
   // Default horizontal card style
   return (
-    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
+    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
       <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
         Connect With Me
       </div>

@@ -84,7 +84,7 @@ export default function GitHubCard() {
   };
 
   return (
-    <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
+    <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-xs">
       {/* HEADER: Profile Picture & Info */}
       <div className="flex items-center gap-3 mb-4">
         <div className="relative h-12 w-12 overflow-hidden rounded-full border border-border">

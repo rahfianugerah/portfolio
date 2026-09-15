@@ -24,7 +24,7 @@ export default function QuoteCarousel() {
   }, [quotes.length]);
 
   return (
-    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm relative aspect-[4/5] group">
+    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-xs relative aspect-4/5 group">
       {quotes.length === 0 && (
         <div className="flex h-full w-full items-center justify-center p-4 text-center text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
           No quotations published yet
@@ -53,7 +53,7 @@ export default function QuoteCarousel() {
           )}
           
           {/* Dark Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
 
           {/* Text Content */}
           <div className="absolute bottom-0 left-0 w-full p-4 text-white">

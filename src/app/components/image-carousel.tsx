@@ -31,7 +31,7 @@ export default function ImageCarousel({ intervalMs = 3000 }: ImageCarouselProps)
 
   return (
     // FIX 1: Added 'shrink-0' so it never gets squeezed by the sidebar height
-    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm">
+    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-xs">
       <div className="relative aspect-square w-full group">
         {items.length === 0 && (
           <div className="flex h-full w-full items-center justify-center p-4 text-center text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
@@ -55,7 +55,7 @@ export default function ImageCarousel({ intervalMs = 3000 }: ImageCarouselProps)
         ))}
 
         {items.length > 0 && (
-          <div className="absolute bottom-2 left-2 rounded bg-black/50 px-2 py-1 text-xs text-white z-20 backdrop-blur-sm">
+          <div className="absolute bottom-2 left-2 rounded bg-black/50 px-2 py-1 text-xs text-white z-20 backdrop-blur-xs">
             {index + 1} / {items.length}
           </div>
         )}

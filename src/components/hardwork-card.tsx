@@ -59,7 +59,7 @@ export function HardworkCard({
         <div className="mt-2 flex flex-row flex-wrap items-start gap-2 ">
           {links?.map((link, idx) => (
             <Link href={link.href} key={idx}>
-              <Badge key={idx} title={link.title} className="flex gap-2 inline-flex items-center rounded-sm bg-white/5 px-2 py-2 text-sm text-foreground/90 shadow-sm backdrop-blur transition hover:bg-white/10">
+              <Badge key={idx} title={link.title} className="flex gap-2 inline-flex items-center rounded-sm bg-white/5 px-2 py-2 text-sm text-foreground/90 shadow-xs backdrop-blur-sm transition hover:bg-white/10">
                 <ExternalLink className="size-3" />
                 {link.title}
               </Badge>

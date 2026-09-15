@@ -106,7 +106,7 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-6 text-card-foreground shadow-sm h-full flex flex-col">
+    <div className="rounded-lg border border-border bg-card p-6 text-card-foreground shadow-xs h-full flex flex-col">
       <div className="mb-6">
         <h2 className="text-2xl font-bold tracking-tight text-foreground mb-2">
           Get In Touch

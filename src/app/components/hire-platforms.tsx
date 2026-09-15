@@ -62,7 +62,7 @@ const HIRE_PLATFORMS: Platform[] = [
 
 export default function HirePlatforms() {
   return (
-    <div className="rounded-lg border border-border bg-card p-6 text-card-foreground shadow-sm h-full flex flex-col">
+    <div className="rounded-lg border border-border bg-card p-6 text-card-foreground shadow-xs h-full flex flex-col">
       <div className="mb-6">
         <h2 className="text-2xl font-bold tracking-tight text-foreground mb-2">
           Where To Hire Me
@@ -100,7 +100,7 @@ export default function HirePlatforms() {
               }}
             >
               {/* Icon or Image */}
-              <div className="flex items-center justify-center h-8 w-8 flex-shrink-0">
+              <div className="flex items-center justify-center h-8 w-8 shrink-0">
                 {Icon ? (
                   <Icon className="h-5 w-5" />
                 ) : (

@@ -80,7 +80,7 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({
             <AvatarFallback>{altText[0]}</AvatarFallback>
           </Avatar> */}
         </div>
-        <div className="flex-grow flex flex-col group">
+        <div className="grow flex flex-col group">
           <CardHeader>
             <div className="flex items-center justify-between gap-x-4">
               <div>

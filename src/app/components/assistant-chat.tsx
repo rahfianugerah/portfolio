@@ -88,7 +88,7 @@ const Bubble = memo(function Bubble({
 
       <div
         className={cn(
-          "max-w-[80%] rounded-2xl px-3.5 py-2.5 text-sm shadow-sm",
+          "max-w-[80%] rounded-2xl px-3.5 py-2.5 text-sm shadow-xs",
           isUser
             ? "rounded-tr-sm bg-primary text-primary-foreground"
             : "rounded-tl-sm bg-muted text-foreground"
@@ -97,11 +97,11 @@ const Bubble = memo(function Bubble({
         {isUser ? (
           // A visitor's own line is not markdown, and running it through prose was what made it
           // invisible: prose-invert forces near-white text, and in dark mode the bubble is too.
-          <p className="whitespace-pre-wrap break-words">{message.content}</p>
+          <p className="whitespace-pre-wrap wrap-break-word">{message.content}</p>
         ) : (
           <ReactMarkdown
             remarkPlugins={REMARK_PLUGINS}
-            className="prose break-words text-sm dark:prose-invert"
+            className="prose wrap-break-word text-sm dark:prose-invert"
             components={MARKDOWN_COMPONENTS}
           >
             {message.content}
@@ -328,7 +328,7 @@ export default function AssistantChat() {
                   key={opener}
                   type="button"
                   onClick={() => void send(opener)}
-                  className="rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+                  className="rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground shadow-xs transition-colors hover:bg-accent hover:text-accent-foreground"
                 >
                   {opener}
                 </button>
@@ -338,7 +338,7 @@ export default function AssistantChat() {
         </div>
       </div>
 
-      <div className="border-t border-border bg-background/80 px-4 py-3 backdrop-blur">
+      <div className="border-t border-border bg-background/80 px-4 py-3 backdrop-blur-sm">
         <div className="mx-auto w-full max-w-3xl">
           <p className="mb-2 text-center text-[11px] leading-4 text-muted-foreground">
             Ashley only answers questions about Rahfi: his roles, projects, certifications and
@@ -370,13 +370,13 @@ export default function AssistantChat() {
               disabled={busy}
               autoComplete="off"
               placeholder="Ask about a role, a project, a certification..."
-              className="h-11 flex-1 rounded-full border border-input bg-background px-4 text-sm transition-colors focus-visible:border-foreground focus-visible:outline-none"
+              className="h-11 flex-1 rounded-full border border-input bg-background px-4 text-sm transition-colors focus-visible:border-foreground focus-visible:outline-hidden"
             />
             <button
               type="button"
               onClick={() => void send(input)}
               disabled={busy || !input.trim()}
-              className="h-11 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 disabled:opacity-50"
+              className="h-11 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 disabled:opacity-50"
             >
               Send
             </button>

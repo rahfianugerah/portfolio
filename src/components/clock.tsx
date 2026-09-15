@@ -14,7 +14,7 @@ export default function Clock() {
 
   if (!mounted || !date) {
     return (
-      <div className="flex h-[140px] w-full items-center justify-center rounded-lg border bg-card text-card-foreground shadow-sm animate-pulse">
+      <div className="flex h-[140px] w-full items-center justify-center rounded-lg border bg-card text-card-foreground shadow-xs animate-pulse">
         <div className="h-8 w-24 rounded bg-muted"></div>
       </div>
     );
@@ -39,7 +39,7 @@ export default function Clock() {
   const yearStr = date.getFullYear();
 
   return (
-    <div className="flex w-full flex-col items-center justify-center rounded-lg border bg-card py-6 text-card-foreground shadow-sm">
+    <div className="flex w-full flex-col items-center justify-center rounded-lg border bg-card py-6 text-card-foreground shadow-xs">
       {/* Label */}
       <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
         <span className="relative flex h-2 w-2">

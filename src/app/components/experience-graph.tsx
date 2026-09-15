@@ -95,7 +95,7 @@ export default function ExperienceGraph() {
   const tooltipStyle = hoveredIndex !== null ? getTooltipStyle(hoveredIndex) : { transform: "" };
 
   return (
-    <div className="w-full rounded-lg border bg-card p-4 text-card-foreground shadow-sm relative z-0">
+    <div className="w-full rounded-lg border bg-card p-4 text-card-foreground shadow-xs relative z-0">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
           <span className="relative flex h-2 w-2">
@@ -106,7 +106,7 @@ export default function ExperienceGraph() {
         </div>
       </div>
 
-      <div className="relative aspect-[2/1] w-full mb-2">
+      <div className="relative aspect-2/1 w-full mb-2">
         <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full overflow-visible font-mono text-[4px]">
             
             {/* X-Axis Labels */}
@@ -140,7 +140,7 @@ export default function ExperienceGraph() {
              }}
            >
               <div className="rounded-md bg-popover px-2 py-1.5 shadow-xl border border-border text-popover-foreground flex flex-col items-center text-center min-w-[80px] max-w-[150px] relative">
-                  <span className="font-bold text-[10px] leading-tight whitespace-normal break-words">
+                  <span className="font-bold text-[10px] leading-tight whitespace-normal wrap-break-word">
                     {hoveredPoint.role}
                   </span>
                   <span className="text-muted-foreground text-[9px] font-mono mt-0.5">

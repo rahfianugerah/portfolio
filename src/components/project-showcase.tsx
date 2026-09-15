@@ -23,14 +23,14 @@ const LINK_ICON: Record<ProjectLinkIcon, (props: { className?: string }) => JSX.
  */
 export function ProjectShowcase({ project }: { project: Project }) {
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card text-card-foreground shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-foreground/20 hover:shadow-xl">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card text-card-foreground shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-foreground/20 hover:shadow-xl">
       <Link
         href={`/project/${project.slug}`}
         aria-label={`Open ${project.title}`}
-        className="absolute inset-0 z-0 rounded-lg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+        className="absolute inset-0 z-0 rounded-lg focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
       />
 
-      <div className="relative aspect-[16/9] w-full overflow-hidden border-b border-border bg-muted/40">
+      <div className="relative aspect-video w-full overflow-hidden border-b border-border bg-muted/40">
         {project.video ? (
           <video
             src={project.video}
@@ -94,7 +94,7 @@ export function ProjectShowcase({ project }: { project: Project }) {
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-medium shadow-xs transition-colors hover:bg-accent hover:text-accent-foreground"
                 >
                   <Icon className="size-3" />
                   {link.label}

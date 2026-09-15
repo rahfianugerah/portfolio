@@ -41,10 +41,10 @@ function CertificateRow({ certificate }: { certificate: Certificate }) {
 
   if (certificate.fileUrl) {
     return (
-      <details className="group rounded-lg border border-border bg-card text-card-foreground shadow-sm transition-shadow hover:shadow-md">
+      <details className="group rounded-lg border border-border bg-card text-card-foreground shadow-xs transition-shadow hover:shadow-md">
         <summary className="flex cursor-pointer list-none items-start gap-3 p-5 [&::-webkit-details-marker]:hidden">
           {header}
-          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-medium shadow-sm transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-medium shadow-xs transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
             <FileText className="size-3" />
             <span className="group-open:hidden">View</span>
             <span className="hidden group-open:inline">Close</span>
@@ -75,7 +75,7 @@ function CertificateRow({ certificate }: { certificate: Certificate }) {
     <div className="flex items-start gap-3 p-5">
       {header}
       {certificate.externalUrl && (
-        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-medium shadow-sm transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
+        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-medium shadow-xs transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
           <ExternalLink className="size-3" />
           View
         </span>
@@ -84,7 +84,7 @@ function CertificateRow({ certificate }: { certificate: Certificate }) {
   );
 
   const className =
-    "group block rounded-lg border border-border bg-card text-card-foreground shadow-sm transition-shadow hover:shadow-md";
+    "group block rounded-lg border border-border bg-card text-card-foreground shadow-xs transition-shadow hover:shadow-md";
 
   return certificate.externalUrl ? (
     <Link href={certificate.externalUrl} target="_blank" rel="noreferrer" className={className}>
@@ -100,7 +100,7 @@ export function CertificateList({ certificates }: { certificates: Certificate[] 
 
   if (certificates.length === 0) {
     return (
-      <p className="rounded-lg border border-border bg-card p-5 text-sm text-muted-foreground shadow-sm">
+      <p className="rounded-lg border border-border bg-card p-5 text-sm text-muted-foreground shadow-xs">
         Nothing here yet.
       </p>
     );
@@ -167,7 +167,7 @@ function PageButton({
       aria-label={label}
       disabled={disabled}
       onClick={onClick}
-      className="inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-40"
+      className="inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-medium shadow-xs transition-colors hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-40"
     >
       {children}
     </button>

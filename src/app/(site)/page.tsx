@@ -193,8 +193,8 @@ export default async function Page() {
                 ))}
             </ScrollVelocityRow>
           </ScrollVelocityContainer>
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-background" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-background" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-linear-to-r from-background" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-linear-to-l from-background" />
         </section>
       )}
 
@@ -310,27 +310,27 @@ export default async function Page() {
          * Columns rather than a grid: every card keeps its own height and the columns pack
          * them, so no card is stretched to fill a row and no cell is ever left empty.
          */}
-        <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 2xl:columns-4 [&>*]:mb-4 [&>*]:break-inside-avoid">
+        <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 2xl:columns-4 *:mb-4 *:break-inside-avoid">
           <AnalyticsWidget />
           <GitHubCard />
           <ExperienceGraph />
           <ProjectsCounter />
           <ImageCarousel />
-          <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
+          <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
             <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
               Rahfi&apos;s Specialties
             </div>
             <IconCloudSpecialties />
           </div>
           <QuoteCarousel />
-          <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
+          <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
             <TechStack />
           </div>
           <LatestBlogsWidget />
           <ServicesCard />
           <Link
             href="/chat"
-            className="flex items-center gap-3 rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm transition-shadow hover:shadow-md"
+            className="flex items-center gap-3 rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs transition-shadow hover:shadow-md"
           >
             <AssistantAvatar className="size-9" />
             <span className="min-w-0">

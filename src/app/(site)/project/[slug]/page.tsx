@@ -77,7 +77,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
                 href={link.href}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+                className="inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1 text-xs font-medium shadow-xs transition-colors hover:bg-accent hover:text-accent-foreground"
               >
                 <Icon className="size-3" />
                 {link.label}
@@ -125,7 +125,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
                   gallery.length === 1 ? "sm:col-span-2" : undefined
                 }
               >
-                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-border bg-muted/40">
+                <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-border bg-muted/40">
                   <Image
                     src={src}
                     alt={`${project.title}, image ${i + 1}`}
@@ -142,7 +142,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
       )}
 
       <BlurFade delay={0.16}>
-        <section className="rounded-lg border border-border bg-card p-6 shadow-sm">
+        <section className="rounded-lg border border-border bg-card p-6 shadow-xs">
           <h2 className="text-2xl font-bold tracking-tight">
             Documentation.
           </h2>
@@ -162,7 +162,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
                 , so it is whatever the repository says today.
               </p>
 
-              <article className="prose mt-5 max-w-none break-words text-sm dark:prose-invert">
+              <article className="prose mt-5 max-w-none wrap-break-word text-sm dark:prose-invert">
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
                   components={{
