@@ -7,7 +7,7 @@ import { Icons } from "@/components/icons";
  * database: a React element does not serialise. The document stores a string and this table
  * turns it back into something renderable.
  */
-export const SOCIAL_ICON: Record<string, (props: { className?: string }) => JSX.Element> = {
+export const SOCIAL_ICON: Record<string, (props: { className?: string }) => React.JSX.Element> = {
   github: Icons.github,
   linkedin: Icons.linkedin,
   email: Icons.email,

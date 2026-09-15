@@ -11,7 +11,7 @@ import { Icons } from "@/components/icons";
 import { getProject, getProjects, type ProjectLinkIcon } from "@/lib/content";
 import { fetchReadme, repoFor } from "@/lib/github-readme";
 
-const LINK_ICON: Record<ProjectLinkIcon, (props: { className?: string }) => JSX.Element> = {
+const LINK_ICON: Record<ProjectLinkIcon, (props: { className?: string }) => React.JSX.Element> = {
   globe: Icons.globe,
   github: Icons.github,
 };
@@ -20,14 +20,16 @@ export async function generateStaticParams() {
   return (await getProjects()).map((project) => ({ slug: project.slug }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const project = await getProject(params.slug);
   if (!project) return { title: "Project" };
 
   return { title: project.title, description: project.description };
 }
 
-export default async function ProjectPage({ params }: { params: { slug: string } }) {
+export default async function ProjectPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const project = await getProject(params.slug);
   if (!project) notFound();
 
@@ -168,7 +170,6 @@ export default async function ProjectPage({ params }: { params: { slug: string }
                   components={{
                     // next/image needs a configured host and a README points anywhere, so
                     // these stay plain img elements.
-                    // eslint-disable-next-line @next/next/no-img-element
                     img: ({ src, alt }) => (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={src} alt={alt ?? ""} className="rounded-md border border-border" />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { renderToString } from "react-dom/server";
 
 interface Icon {
@@ -21,7 +21,30 @@ function easeOutCubic(t: number): number {
 
 export function IconCloud({ icons, images }: IconCloudProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [iconPositions, setIconPositions] = useState<Icon[]>([]);
+  // Fibonacci-sphere layout, derived from the icons rather than stored and set from an effect.
+  const iconPositions = useMemo(() => {
+    const isFallback = !icons && !images;
+    const rawItems = icons || images || [];
+    const items = isFallback ? new Array(20).fill(null) : rawItems;
+
+    const N = items.length || 20;
+    const offset = 2 / N;
+    const inc = Math.PI * (3 - Math.sqrt(5));
+    const arr: Icon[] = [];
+
+    for (let i = 0; i < N; i++) {
+      const y = i * offset - 1 + offset / 2;
+      const r = Math.sqrt(1 - y * y);
+      const phi = i * inc;
+      arr.push({
+        x: Math.cos(phi) * r * 100,
+        y: y * 100,
+        z: Math.sin(phi) * r * 100,
+        id: i,
+      });
+    }
+    return arr;
+  }, [icons, images]);
   const [isDragging, setIsDragging] = useState(false);
   const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -36,7 +59,7 @@ export function IconCloud({ icons, images }: IconCloudProps) {
   } | null>(null);
 
   const rotationRef = useRef({ x: 0, y: 0 });
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
   const iconCanvasesRef = useRef<HTMLCanvasElement[]>([]);
   const imagesLoadedRef = useRef<boolean[]>([]);
 
@@ -86,30 +109,6 @@ export function IconCloud({ icons, images }: IconCloudProps) {
     iconCanvasesRef.current = canvases;
   }, [icons, images]);
 
-  // 2) Fibonacci‑sphere layout
-  useEffect(() => {
-    const isFallback = !icons && !images;
-    const rawItems = icons || images || [];
-    const items = isFallback ? new Array(20).fill(null) : rawItems;
-
-    const N = items.length || 20;
-    const offset = 2 / N;
-    const inc = Math.PI * (3 - Math.sqrt(5));
-    const arr: Icon[] = [];
-
-    for (let i = 0; i < N; i++) {
-      const y = i * offset - 1 + offset / 2;
-      const r = Math.sqrt(1 - y * y);
-      const phi = i * inc;
-      arr.push({
-        x: Math.cos(phi) * r * 100,
-        y: y * 100,
-        z: Math.sin(phi) * r * 100,
-        id: i,
-      });
-    }
-    setIconPositions(arr);
-  }, [icons, images]);
 
   // 3) Mouse handlers
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {

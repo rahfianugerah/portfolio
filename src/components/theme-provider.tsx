@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
-import { ThemeProviderProps } from "next-themes/dist/types";
+import { ThemeProvider as NextThemesProvider, useTheme, type ThemeProviderProps } from "next-themes";
 
 // Inner component to access useTheme hook
 function ThemeSyncBroadcaster({ children }: { children: React.ReactNode }) {

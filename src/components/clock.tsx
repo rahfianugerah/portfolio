@@ -2,17 +2,21 @@
 import { useEffect, useState } from "react";
 
 export default function Clock() {
-  const [mounted, setMounted] = useState(false);
   const [date, setDate] = useState<Date | null>(null);
 
+  // The time is read in timer callbacks, never during render, where the server and the browser
+  // would disagree about it. The first tick comes straight after mount rather than a second later.
   useEffect(() => {
-    setMounted(true);
-    setDate(new Date());
-    const timer = setInterval(() => setDate(new Date()), 1000);
-    return () => clearInterval(timer);
+    const tick = () => setDate(new Date());
+    const first = setTimeout(tick, 0);
+    const timer = setInterval(tick, 1000);
+    return () => {
+      clearTimeout(first);
+      clearInterval(timer);
+    };
   }, []);
 
-  if (!mounted || !date) {
+  if (!date) {
     return (
       <div className="flex h-[140px] w-full items-center justify-center rounded-lg border bg-card text-card-foreground shadow-xs animate-pulse">
         <div className="h-8 w-24 rounded bg-muted"></div>

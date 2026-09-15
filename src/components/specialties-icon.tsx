@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useMounted } from "@/lib/use-mounted";
+
+import React from "react";
 import { useTheme } from "next-themes";
 import { IconCloud } from "@/components/magicui/icon-cloud";
 
@@ -74,12 +76,8 @@ const ICON_DEFINITIONS: Array<{
 
 export function IconCloudSpecialties() {
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
 
-  // Wait for client-side hydration to complete
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Use a default that matches the most common theme during SSR
   // After mounting, use the actual resolved theme

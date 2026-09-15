@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Icons } from "@/components/icons";
 import type { Project, ProjectLinkIcon } from "@/lib/content";
 
-const LINK_ICON: Record<ProjectLinkIcon, (props: { className?: string }) => JSX.Element> = {
+const LINK_ICON: Record<ProjectLinkIcon, (props: { className?: string }) => React.JSX.Element> = {
   globe: Icons.globe,
   github: Icons.github,
 };

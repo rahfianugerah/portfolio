@@ -1,5 +1,7 @@
 "use client";
 
+import { useMounted } from "@/lib/use-mounted";
+
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -22,6 +24,10 @@ type GitHubRepo = {
   fork: boolean;
 };
 
+// The simulated activity strip (visual only). A fixed scatter rather than Math.random, so the
+// server and the browser draw the same squares and nothing re-renders to reshuffle them.
+const CONTRIBUTION_GRID = Array.from({ length: 52 }, (_, i) => (Math.imul(i + 1, 2654435761) >>> 0) % 5);
+
 /**
  * The GitHub card: the profile, an activity strip, and the latest repositories.
  *
@@ -35,13 +41,9 @@ export default function GitHubCard() {
   const [loading, setLoading] = useState(true);
   const [hoveredSquare, setHoveredSquare] = useState<number | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // For portal mounting
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Fetch from the internal API, which holds the token, on mount
   useEffect(() => {
@@ -63,14 +65,7 @@ export default function GitHubCard() {
     fetchData();
   }, []);
 
-  // Simulated contribution graph (visual only)
-  const [contributionGrid, setContributionGrid] = useState<number[]>(
-    Array.from({ length: 52 }).map((_, i) => (i * 7 + 3) % 5)
-  );
-
-  useEffect(() => {
-    setContributionGrid(Array.from({ length: 52 }).map(() => Math.floor(Math.random() * 5)));
-  }, []);
+  const contributionGrid = CONTRIBUTION_GRID;
 
   const getLevelColor = (level: number) => {
     switch (level) {

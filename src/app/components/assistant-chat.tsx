@@ -99,13 +99,11 @@ const Bubble = memo(function Bubble({
           // invisible: prose-invert forces near-white text, and in dark mode the bubble is too.
           <p className="whitespace-pre-wrap wrap-break-word">{message.content}</p>
         ) : (
-          <ReactMarkdown
-            remarkPlugins={REMARK_PLUGINS}
-            className="prose wrap-break-word text-sm dark:prose-invert"
-            components={MARKDOWN_COMPONENTS}
-          >
-            {message.content}
-          </ReactMarkdown>
+          <div className="prose wrap-break-word text-sm dark:prose-invert">
+            <ReactMarkdown remarkPlugins={REMARK_PLUGINS} components={MARKDOWN_COMPONENTS}>
+              {message.content}
+            </ReactMarkdown>
+          </div>
         )}
         {streaming && (
           <span className="ml-0.5 inline-block h-4 w-1.5 animate-pulse bg-current align-text-bottom" />
@@ -137,15 +135,21 @@ export default function AssistantChat() {
 
   // Session-scoped on purpose: a conversation about someone's CV is not left behind on a
   // shared machine.
+  // Read before the effect below writes the fresh greeting over it, and drawn on the next frame,
+  // so the restored transcript is set from a callback rather than the effect body.
   useEffect(() => {
     const saved = sessionStorage.getItem("assistant_history");
     if (!saved) return;
+    let parsed: Message[];
     try {
-      const parsed = JSON.parse(saved) as Message[];
-      if (Array.isArray(parsed) && parsed.length > 0) setMessages(parsed);
+      parsed = JSON.parse(saved) as Message[];
     } catch {
       sessionStorage.removeItem("assistant_history");
+      return;
     }
+    if (!Array.isArray(parsed) || parsed.length === 0) return;
+    const frame = requestAnimationFrame(() => setMessages(parsed));
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   // Saved once an answer is finished rather than on every token: serialising the whole

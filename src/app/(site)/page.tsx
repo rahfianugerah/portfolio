@@ -130,9 +130,9 @@ export default async function Page() {
               <AnimatedShinyText className="mx-0 max-w-none">{profile?.role}</AnimatedShinyText>
             </p>
             {profile?.summary && (
-              <Markdown className="prose mt-6 max-w-2xl text-pretty text-sm leading-7 text-muted-foreground dark:prose-invert sm:text-base">
-                {profile.summary}
-              </Markdown>
+              <div className="prose mt-6 max-w-2xl text-pretty text-sm leading-7 text-muted-foreground dark:prose-invert sm:text-base">
+                <Markdown>{profile.summary}</Markdown>
+              </div>
             )}
             <div className="mt-8 flex flex-wrap gap-2">
               {profile?.social.map((link) => {

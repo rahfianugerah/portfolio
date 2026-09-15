@@ -24,24 +24,21 @@ export default async function ExperiencePage() {
     roles.filter((role) => role.kind === "leadership")
   );
 
-  // Sequential delay helper (stable across a single render)
-  let seq = 0;
-  const nextDelay = () => {
-    seq += 1;
-    return seq * BLUR_FADE_DELAY;
-  };
+  // Each block fades in after the ones above it, counted from the lengths of the lists.
+  const work = groupedWorkExp.length;
+  const leadership = groupedLeadershipExp.length;
 
   return (
     <div className="flex flex-col space-y-10">
       {/* Hero */}
       <section id="hero" className="pt-12">
         <div className="flex flex-col items-center justify-center text-center">
-          <BlurFade delay={nextDelay()}>
+          <BlurFade delay={BLUR_FADE_DELAY}>
             <h2 className="text-3xl font-bold tracking-tight">
               Full-List | Experiences.
             </h2>
           </BlurFade>
-          <BlurFade delay={nextDelay()}>
+          <BlurFade delay={BLUR_FADE_DELAY * 2}>
             <p className="mt-2 text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               I have engaged in a wide range of experiences, both personal and collaborative, 
               that highlight my skills, growth, and creativity. Below is a full list of experiences that I am proud to showcase.
@@ -53,8 +50,8 @@ export default async function ExperiencePage() {
       {/* All Experiences */}
       <section id="experiences" className="py-6">
         <div className="flex min-h-0 flex-col gap-y-6">
-          {groupedWorkExp.map((company) => (
-            <BlurFade key={company.company} delay={nextDelay()}>
+          {groupedWorkExp.map((company, i) => (
+            <BlurFade key={company.company} delay={BLUR_FADE_DELAY * (3 + i)}>
               <div className="flex items-start gap-4">
                 {/* Company logo */}
                 {company.logoUrl ? (
@@ -95,12 +92,12 @@ export default async function ExperiencePage() {
       {groupedLeadershipExp.length > 0 && (
         <section id="leadership" className="py-6">
            <div className="flex flex-col items-center justify-center text-center">
-          <BlurFade delay={nextDelay()}>
+          <BlurFade delay={BLUR_FADE_DELAY * (3 + work)}>
             <h2 className="text-3xl font-bold tracking-tight">
               Leadership | Experiences.
             </h2>
           </BlurFade>
-          <BlurFade delay={nextDelay()}>
+          <BlurFade delay={BLUR_FADE_DELAY * (4 + work)}>
             <p className="mt-2 text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               I have taken on diverse leadership experience that reflect my ability to guide, collaborate, and create meaningful impact. 
               Below is a full list of leadership experiences that I am proud to showcase.
@@ -109,8 +106,8 @@ export default async function ExperiencePage() {
         </div>
 
           <div className="flex min-h-0 flex-col gap-y-6 mt-8">
-            {groupedLeadershipExp.map((org) => (
-              <BlurFade key={org.company} delay={nextDelay()}>
+            {groupedLeadershipExp.map((org, i) => (
+              <BlurFade key={org.company} delay={BLUR_FADE_DELAY * (5 + work + i)}>
                 <div className="flex items-start gap-4">
                   {org.logoUrl ? (
                     <div className="relative w-12 h-12 rounded-lg overflow-hidden border">
@@ -142,12 +139,12 @@ export default async function ExperiencePage() {
       {/* Education (All) */}
       <section id="education" className="py-6">
          <div className="flex flex-col items-center justify-center text-center">
-          <BlurFade delay={nextDelay()}>
+          <BlurFade delay={BLUR_FADE_DELAY * (5 + work + leadership)}>
             <h2 className="text-3xl font-bold tracking-tight">
               Full-List | Educations.
             </h2>
           </BlurFade>
-          <BlurFade delay={nextDelay()}>
+          <BlurFade delay={BLUR_FADE_DELAY * (6 + work + leadership)}>
             <p className="mt-2 text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 I have pursued a diverse educational journey that has shaped my knowledge, skills, and personal growth. 
                 Below are some of the key educational experiences that I am proud to highlight.
@@ -156,7 +153,7 @@ export default async function ExperiencePage() {
         </div>
 
         <div className="flex min-h-0 flex-col gap-y-6 mt-6">
-          {education.map((edu) => {
+          {education.map((edu, i) => {
             const period = `${edu.start} - ${edu.end ?? "Present"}`;
             const job: GroupedJob = {
               title: edu.degree,
@@ -164,7 +161,7 @@ export default async function ExperiencePage() {
               description: edu.description,
             };
             return (
-              <BlurFade key={edu.id} delay={nextDelay()}>
+              <BlurFade key={edu.id} delay={BLUR_FADE_DELAY * (7 + work + leadership + i)}>
                 <div className="flex items-start gap-4">
                   {edu.logo ? (
                     <div className="relative w-12 h-12 rounded-lg overflow-hidden border">

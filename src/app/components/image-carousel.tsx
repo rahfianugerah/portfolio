@@ -15,11 +15,10 @@ export default function ImageCarousel({ intervalMs = 3000 }: ImageCarouselProps)
   const moments = content?.moments ?? [];
   const items = moments.map((one) => one.image);
   const labels = moments.map((one) => one.alt);
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    setIndex((prev) => (prev < items.length ? prev : 0));
-  }, [items.length]);
+  const [position, setIndex] = useState(0);
+  // Clamped while rendering rather than corrected in an effect, so a shorter list never shows an
+  // empty frame for one render first.
+  const index = position < items.length ? position : 0;
 
   useEffect(() => {
     if (items.length < 2) return;

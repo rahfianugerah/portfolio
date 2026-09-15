@@ -7,8 +7,9 @@ import { useTheme } from "next-themes";
 
 import { cn } from "@/lib/utils";
 
-// Magic UI's Globe, changed in three ways: one marker, on Jakarta; black and white in both
-// themes; and no WebGL context for a copy the layout has hidden.
+// Magic UI's Globe, changed in four ways: one marker, on Jakarta; black and white in both
+// themes; no WebGL context until the canvas has a width; and cobe 2's update() in place of the
+// render callback cobe 0.6 took.
 
 const MOVEMENT_DAMPING = 1400;
 
@@ -21,7 +22,6 @@ const JAKARTA_PHI = Math.PI - ((JAKARTA[1] * Math.PI) / 180 - Math.PI / 2);
 const GLOBE_CONFIG: COBEOptions = {
   width: 800,
   height: 800,
-  onRender: () => {},
   devicePixelRatio: 2,
   phi: JAKARTA_PHI,
   theta: 0.2,
@@ -83,6 +83,19 @@ export function Globe({
 
   useEffect(() => {
     let globe: ReturnType<typeof createGlobe> | null = null;
+    let frame = 0;
+
+    // Each frame turns the globe a little, adds whatever the drag has moved it, and keeps the
+    // drawing size in step with the canvas.
+    const render = () => {
+      if (!pointerInteracting.current) phiRef.current += 0.005;
+      globe?.update({
+        phi: phiRef.current + rs.get(),
+        width: widthRef.current * 2,
+        height: widthRef.current * 2,
+      });
+      frame = requestAnimationFrame(render);
+    };
 
     // The layout renders a widget once per breakpoint and hides the others, so a hidden copy
     // has no width. It starts only once it has one, on load or when a resize reveals it.
@@ -95,13 +108,8 @@ export function Globe({
         ...(dark ? DARK_CONFIG : {}),
         width: widthRef.current * 2,
         height: widthRef.current * 2,
-        onRender: (state) => {
-          if (!pointerInteracting.current) phiRef.current += 0.005;
-          state.phi = phiRef.current + rs.get();
-          state.width = widthRef.current * 2;
-          state.height = widthRef.current * 2;
-        },
       });
+      frame = requestAnimationFrame(render);
 
       setTimeout(() => (canvas.style.opacity = "1"), 0);
     };
@@ -117,6 +125,7 @@ export function Globe({
     onResize();
 
     return () => {
+      cancelAnimationFrame(frame);
       globe?.destroy();
       window.removeEventListener("resize", onResize);
     };

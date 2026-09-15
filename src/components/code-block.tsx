@@ -1,16 +1,14 @@
 "use client";
+
+import { useMounted } from "@/lib/use-mounted";
 import { useTheme } from "next-themes";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { useEffect, useState } from "react";
 
 export default function CodeBlock({ value }: { value: any }) {
   const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (!value || !value.code) {
     return null;

@@ -46,8 +46,8 @@ export default async function ProjectPage() {
   const professional = certificates.filter((one) => one.kind === "professional");
   const courses = certificates.filter((one) => one.kind === "learning");
 
-  let step = 0;
-  const next = () => (step += 1) * DELAY;
+  // Each block fades in after the ones above it.
+  const count = projects.length;
 
   return (
     <div className="flex w-full flex-col gap-16 pb-8">
@@ -57,7 +57,7 @@ export default async function ProjectPage() {
           <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
             <Meteors number={20} />
           </div>
-          <BlurFade delay={next()}>
+          <BlurFade delay={DELAY}>
             <Heading title={meta?.heading ?? FALLBACK.heading}>
               {meta?.subtitle ?? FALLBACK.subtitle}
             </Heading>
@@ -67,8 +67,8 @@ export default async function ProjectPage() {
         <ProjectVelocity projects={projects} />
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-          {projects.map((project) => (
-            <BlurFade key={project.id} delay={next()} className="h-full">
+          {projects.map((project, i) => (
+            <BlurFade key={project.id} delay={DELAY * (2 + i)} className="h-full">
               <ProjectShowcase project={project} />
             </BlurFade>
           ))}
@@ -76,14 +76,14 @@ export default async function ProjectPage() {
       </section>
 
       <section id="certifications" className="flex flex-col gap-6">
-        <BlurFade delay={next()}>
+        <BlurFade delay={DELAY * (2 + count)}>
           <Heading title="Certifications">
             Professional certifications first, then the courses behind them. Any certificate
             with an uploaded PDF opens on this page.
           </Heading>
         </BlurFade>
 
-        <BlurFade delay={next()}>
+        <BlurFade delay={DELAY * (3 + count)}>
           <div className="flex flex-col gap-3">
             <h3 className="text-xl font-bold tracking-tight">
               Professional.
@@ -92,7 +92,7 @@ export default async function ProjectPage() {
           </div>
         </BlurFade>
 
-        <BlurFade delay={next()}>
+        <BlurFade delay={DELAY * (4 + count)}>
           <div className="flex flex-col gap-3">
             <h3 className="text-xl font-bold tracking-tight">
               Courses.

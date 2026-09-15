@@ -76,7 +76,7 @@ export async function submitContactForm(formData: {
     }
 
     // Get client IP for rate limiting
-    const headersList = headers();
+    const headersList = await headers();
     const forwarded = headersList.get("x-forwarded-for");
     const ip = forwarded ? forwarded.split(",")[0] : "anonymous";
 

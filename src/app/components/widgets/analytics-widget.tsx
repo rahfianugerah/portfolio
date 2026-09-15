@@ -1,5 +1,7 @@
 "use client";
 
+import { useMounted } from "@/lib/use-mounted";
+
 import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { WidgetFallback } from "@/components/widget-error-boundary";
@@ -32,13 +34,9 @@ export default function AnalyticsWidget() {
   const [error, setError] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
   const hasFetched = useRef(false);
 
-  // For portal mounting
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     // Prevent double-fetching in React Strict Mode

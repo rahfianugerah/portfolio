@@ -9,6 +9,10 @@ import { motion } from "framer-motion";
 import { ChevronRightIcon } from "lucide-react";
 import { AnimatedShinyText } from "./magicui/animated-shiny-text";
 
+// Read once when the module loads, not during render, where reading the clock is impure. The
+// longest role only needs to be right to the day.
+const NOW = Date.now();
+
 interface Job {
   title: string;
   period: string;
@@ -53,7 +57,7 @@ export const ResumeCard: React.FC<ResumeCardProps> = ({
   const getDuration = (job: Job) => {
     const [startStr, endStr] = job.period.split(' - ');
     const start = new Date(startStr).getTime();
-    const end = /present/i.test(endStr) ? Date.now() : new Date(endStr).getTime();
+    const end = /present/i.test(endStr) ? NOW : new Date(endStr).getTime();
     return end - start;
   };
   const longestJob = jobsSorted.reduce((prev, curr) =>

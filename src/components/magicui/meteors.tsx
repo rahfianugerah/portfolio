@@ -29,15 +29,20 @@ export const Meteors = ({
   const [meteorStyles, setMeteorStyles] = useState<Array<React.CSSProperties>>([]);
 
   useEffect(() => {
-    const styles = Array.from({ length: number }, () => ({
-      "--angle": -angle + "deg",
-      top: "-5%",
-      left: `calc(0% + ${Math.floor(Math.random() * window.innerWidth)}px)`,
-      animationDelay: Math.random() * (maxDelay - minDelay) + minDelay + "s",
-      animationDuration:
-        Math.floor(Math.random() * (maxDuration - minDuration) + minDuration) + "s",
-    }));
-    setMeteorStyles(styles);
+    // The positions need the window's width, which the server does not have, so they are drawn
+    // on the first frame after mount, and state is set from that callback rather than the effect.
+    const frame = requestAnimationFrame(() => {
+      const styles = Array.from({ length: number }, () => ({
+        "--angle": -angle + "deg",
+        top: "-5%",
+        left: `calc(0% + ${Math.floor(Math.random() * window.innerWidth)}px)`,
+        animationDelay: Math.random() * (maxDelay - minDelay) + minDelay + "s",
+        animationDuration:
+          Math.floor(Math.random() * (maxDuration - minDuration) + minDuration) + "s",
+      }));
+      setMeteorStyles(styles);
+    });
+    return () => cancelAnimationFrame(frame);
   }, [number, minDelay, maxDelay, minDuration, maxDuration, angle]);
 
   return (
