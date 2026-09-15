@@ -81,6 +81,13 @@ The home page ends on a Magic UI bento grid of live cards, spanned so every row 
 > Nothing on this site requires a visitor to sign in, and nothing collects a name or an address
 > except the contact form, which sends it and stores nothing.
 
+> [!important]
+> A project's page renders its repository's README with the README's own HTML, the way GitHub
+> does. That HTML comes from outside this codebase, so it is parsed by `rehype-raw` and then
+> cleaned by `rehype-sanitize` with its default schema, which follows GitHub's, before anything
+> renders. Nothing reaches the page through `dangerouslySetInnerHTML`. This is the recorded
+> deviation `security.rules.md` asks for when stored or fetched HTML has to render.
+
 
 ## 3. Technology Stack
 
@@ -279,7 +286,8 @@ Home carries anchored sections: `#hero`, `#experience`, `#education`, `#signals`
 | `InteractiveHexagonPattern` | Magic UI | The hexagon grid behind the hero, lit under the pointer |
 | `Marquee` | Magic UI | One row moving on its own, the base of `MarqueeBand` |
 | `BentoGrid` | Magic UI | The frame the signal cards are laid into |
-| `Terminal` | Magic UI | What `/project` and a single project show while they load |
+| `Terminal` | Magic UI | The intro that opens a visit, and what `/project` shows while it loads |
+| `SiteIntro` | Layout | A terminal over the whole screen on a visitor's first page of a session, skipped by any key, a click, or reduced motion |
 | `Timeline` | Aceternity UI | The rail `/experience` sets every role and school on |
 | `SiteFooter` | Layout | Columns of routes and links, and a closing line divided by HeroUI separators |
 | `AssistantChat` | Feature | Ashley, on `/chat` |
