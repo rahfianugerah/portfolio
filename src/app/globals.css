@@ -276,9 +276,10 @@
   margin-right: 1rem;
 }
 
-/* Reduced motion skips the intro. Unlayered, this beats the overlay's own display utility. */
+/* Reduced motion skips the terminal overlays, the intro and /project's. Unlayered, this beats the
+   overlay's own display utility. */
 @media (prefers-reduced-motion: reduce) {
-  .site-intro {
+  .terminal-overlay {
     display: none;
   }
 }
