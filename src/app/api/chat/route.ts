@@ -81,11 +81,19 @@ export async function POST(request: Request) {
       { role: "user", content: message },
     ];
 
+    // Wait for the first fragment before answering. A failure that happens before the model
+    // has said anything, a missing key or a refused request, then becomes an error response
+    // the page can show as one plain line, instead of a 200 stream whose only content is an
+    // apology padded with blank lines.
+    const fragments = streamChat(messages);
+    const first = await fragments.next();
+
     const encoder = new TextEncoder();
     const stream = new ReadableStream<Uint8Array>({
       async start(controller) {
         try {
-          for await (const fragment of streamChat(messages)) {
+          if (!first.done) controller.enqueue(encoder.encode(first.value));
+          for await (const fragment of fragments) {
             controller.enqueue(encoder.encode(fragment));
           }
         } catch (error) {
@@ -111,8 +119,12 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Ashley failed to answer:", error);
+    // In development the reason is the useful part, and it names the missing key outright.
+    // In production a visitor gets the sentence and the log keeps the rest.
+    const detail =
+      process.env.NODE_ENV !== "production" && error instanceof Error ? ` ${error.message}` : "";
     return NextResponse.json(
-      { error: "Ashley could not answer just now. Try again in a moment." },
+      { error: `Ashley could not answer just now. Try again in a moment.${detail}` },
       { status: 502 }
     );
   }

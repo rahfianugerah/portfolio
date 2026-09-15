@@ -78,18 +78,27 @@ export default function AssistantChat() {
         throw new Error(body.error ?? `Request failed with ${response.status}`);
       }
 
-      // An empty bubble goes in first and every fragment lands in it, so the answer appears
-      // as it is written rather than after it is finished.
-      setMessages((m) => [...m, { role: "assistant", content: "" }]);
-
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
+      let started = false;
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
 
         const fragment = decoder.decode(value, { stream: true });
+
+        // The bubble appears with its first words, not before them. An empty bubble holding
+        // only a caret is what sat above the error, and newlines the model leads with are not
+        // content either, so they are dropped rather than drawn as blank lines.
+        if (!started) {
+          const text = fragment.trimStart();
+          if (!text) continue;
+          started = true;
+          setMessages((m) => [...m, { role: "assistant", content: text }]);
+          continue;
+        }
+
         setMessages((m) => {
           const next = [...m];
           next[next.length - 1] = {
@@ -98,6 +107,10 @@ export default function AssistantChat() {
           };
           return next;
         });
+      }
+
+      if (!started) {
+        setMessages((m) => [...m, { role: "assistant", content: "Ashley had nothing to say to that. Try asking another way." }]);
       }
     } catch (error) {
       const reason = error instanceof Error ? error.message : "Something went wrong.";

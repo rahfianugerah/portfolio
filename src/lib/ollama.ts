@@ -36,7 +36,7 @@ export async function* streamChat(messages: ChatMessage[]): AsyncGenerator<strin
   });
 
   if (!response.ok || !response.body) {
-    throw new Error(`Ollama Cloud returned ${response.status}: ${await response.text()}`);
+    throw new Error(`Ollama Cloud returned ${response.status}: ${(await response.text()).trim()}`);
   }
 
   const reader = response.body.getReader();
