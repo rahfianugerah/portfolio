@@ -53,7 +53,7 @@ export default function ServicesCard() {
           rel="noreferrer"
           className="mt-3 inline-block text-[11px] font-medium underline underline-offset-4 transition-colors hover:text-primary"
         >
-          Full services at the consulting practice
+          Full services at Consulting
         </Link>
       )}
     </div>

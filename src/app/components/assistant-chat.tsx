@@ -353,7 +353,7 @@ export default function AssistantChat() {
               rel="noreferrer"
               className="underline underline-offset-2 hover:text-foreground"
             >
-              the consulting practice
+              Consulting
             </a>.
           </p>
 

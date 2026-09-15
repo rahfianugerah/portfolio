@@ -20,7 +20,7 @@ const COLUMNS = [
     links: [
       { label: "Contact", href: "/contact" },
       { label: "Chat with Ashley", href: "/chat" },
-      { label: "Consulting practice", href: "https://consulting.rahfi.pro" },
+      { label: "Consulting", href: "https://consulting.rahfi.pro" },
     ],
   },
 ];

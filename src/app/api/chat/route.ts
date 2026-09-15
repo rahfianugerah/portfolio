@@ -66,7 +66,7 @@ export async function POST(request: Request) {
           "You answer questions about Rahfi and nothing else: his roles, his education, his",
           "projects, his certifications, his achievements and his skills. Anything outside",
           "that, including consulting engagements and pricing, you decline in one line and",
-          "point at the consulting practice at consulting.rahfi.pro.",
+          "point at Rahfi Consulting, at consulting.rahfi.pro.",
           "",
           "Answer STRICTLY from the data below. If it is not there, say you do not know and",
           "suggest the contact page. Do not invent a date, a title, or a link.",
