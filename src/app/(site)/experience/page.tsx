@@ -37,7 +37,7 @@ export default async function ExperiencePage() {
       <section id="hero" className="pt-12">
         <div className="flex flex-col items-center justify-center text-center">
           <BlurFade delay={nextDelay()}>
-            <h2 className="text-3xl font-bebas">
+            <h2 className="text-3xl font-bold tracking-tight">
               Full-List | Experiences.
             </h2>
           </BlurFade>
@@ -96,7 +96,7 @@ export default async function ExperiencePage() {
         <section id="leadership" className="py-6">
            <div className="flex flex-col items-center justify-center text-center">
           <BlurFade delay={nextDelay()}>
-            <h2 className="text-3xl font-bebas">
+            <h2 className="text-3xl font-bold tracking-tight">
               Leadership | Experiences.
             </h2>
           </BlurFade>
@@ -143,7 +143,7 @@ export default async function ExperiencePage() {
       <section id="education" className="py-6">
          <div className="flex flex-col items-center justify-center text-center">
           <BlurFade delay={nextDelay()}>
-            <h2 className="text-3xl font-bebas">
+            <h2 className="text-3xl font-bold tracking-tight">
               Full-List | Educations.
             </h2>
           </BlurFade>

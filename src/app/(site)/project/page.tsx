@@ -26,9 +26,8 @@ export async function generateMetadata() {
 function Heading({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 className="font-bebas text-3xl">
-        Rahfi&apos;s{" "}
-        | {title}.
+      <h2 className="text-3xl font-bold tracking-tight">
+        Rahfi&apos;s | {title}.
       </h2>
       <p className="mt-1 text-sm leading-6 text-muted-foreground">{children}</p>
     </div>
@@ -76,7 +75,7 @@ export default async function ProjectPage() {
 
         <BlurFade delay={next()}>
           <div className="flex flex-col gap-3">
-            <h3 className="font-bebas text-xl">
+            <h3 className="text-xl font-bold tracking-tight">
               Professional.
             </h3>
             <CertificateList certificates={professional} />
@@ -85,7 +84,7 @@ export default async function ProjectPage() {
 
         <BlurFade delay={next()}>
           <div className="flex flex-col gap-3">
-            <h3 className="font-bebas text-xl">
+            <h3 className="text-xl font-bold tracking-tight">
               Courses.
             </h3>
             <CertificateList certificates={courses} />

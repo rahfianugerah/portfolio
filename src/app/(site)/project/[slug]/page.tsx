@@ -53,7 +53,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
           All projects
         </Link>
 
-        <h1 className="mt-3 font-bebas text-3xl leading-tight">
+        <h1 className="mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
           {project.title}.
         </h1>
 
@@ -143,7 +143,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
 
       <BlurFade delay={0.16}>
         <section className="rounded-lg border border-border bg-card p-6 shadow-sm">
-          <h2 className="font-bebas text-2xl">
+          <h2 className="text-2xl font-bold tracking-tight">
             Documentation.
           </h2>
 

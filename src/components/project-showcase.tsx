@@ -50,7 +50,7 @@ export function ProjectShowcase({ project }: { project: Project }) {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center px-4">
-            <span className="text-center font-bebas text-xl text-muted-foreground">
+            <span className="text-center text-lg font-bold tracking-tight text-muted-foreground">
               {project.title}
             </span>
           </div>
@@ -59,7 +59,7 @@ export function ProjectShowcase({ project }: { project: Project }) {
 
       <div className="pointer-events-none relative z-10 flex flex-1 flex-col gap-3 p-5">
         <div className="flex items-start justify-between gap-3">
-          <h3 className="font-bebas text-xl leading-tight">{project.title}</h3>
+          <h3 className="text-lg font-bold leading-tight tracking-tight">{project.title}</h3>
           {project.status && (
             <Badge variant="secondary" className="shrink-0 text-[10px] font-normal">
               {project.status}

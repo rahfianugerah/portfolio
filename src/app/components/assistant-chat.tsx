@@ -286,7 +286,7 @@ export default function AssistantChat() {
         <div className="mx-auto flex w-full max-w-3xl items-center gap-3">
           <AssistantAvatar className="size-9" />
           <div className="min-w-0">
-            <h1 className="font-bebas text-xl leading-none">
+            <h1 className="text-lg font-bold leading-none tracking-tight">
               Ashley.
             </h1>
             <p className="mt-1 text-[11px] leading-4 text-muted-foreground">

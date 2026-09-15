@@ -25,7 +25,6 @@ const config = {
         // and metric-matched, so a slow font response does not shift the page.
         sans: ["Google Sans", "var(--font-sans)", "ui-sans-serif", "system-ui", "Segoe UI", "Roboto", "Helvetica", "Arial"],
         mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
-        bebas: ["var(--font-bebas)", "Inter", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

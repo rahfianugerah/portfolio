@@ -45,7 +45,7 @@ export default async function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 2}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bebas">{profile?.name}</h2>
+                <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{profile?.name}</h1>
                 <p className="md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   <AnimatedShinyText>{profile?.role}</AnimatedShinyText>
                 </p>
@@ -57,7 +57,7 @@ export default async function Page() {
 
       <section id="about">
         <BlurFade delay={BLUR_FADE_DELAY * 3}>
-          <h2 className="text-2xl font-bebas">
+          <h2 className="text-2xl font-bold tracking-tight">
             About | Rahfi.
           </h2>
         </BlurFade>
@@ -71,7 +71,7 @@ export default async function Page() {
       <section id="work">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
-            <h2 className="text-2xl font-bebas">
+            <h2 className="text-2xl font-bold tracking-tight">
               Rahfi&apos;s | Experiences.
             </h2>
           </BlurFade>
@@ -106,7 +106,7 @@ export default async function Page() {
       <section id="education">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 7}>
-            <h2 className="text-2xl font-bebas">
+            <h2 className="text-2xl font-bold tracking-tight">
               Rahfi&apos;s | Education.
             </h2>
           </BlurFade>
@@ -153,7 +153,7 @@ export default async function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 13}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bebas">
+                <h2 className="text-3xl font-bold tracking-tight">
                   Rahfi&apos;s | Achievements.
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
@@ -191,7 +191,7 @@ export default async function Page() {
         <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
           <BlurFade delay={BLUR_FADE_DELAY * 16}>
             <div className="space-y-3">
-              <h2 className="text-3xl font-bebas">
+              <h2 className="text-3xl font-bold tracking-tight">
                 Let&apos;s Connect.
               </h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">

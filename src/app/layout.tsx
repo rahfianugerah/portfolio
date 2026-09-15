@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 import type { Metadata } from "next";
 
-import { Inter as FontSans, Source_Code_Pro, Bebas_Neue } from "next/font/google";
+import { Inter as FontSans, Source_Code_Pro } from "next/font/google";
 
 const inter = FontSans({
   subsets: ["latin", "latin-ext"],
@@ -20,13 +20,6 @@ const sourceCodePro = Source_Code_Pro({
   style: ["normal", "italic"],
   variable: "--font-mono",
   fallback: ["monospace"],
-  display: "swap",
-});
-
-const bebasNeue = Bebas_Neue({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400"],
-  variable: "--font-bebas",
   display: "swap",
 });
 
@@ -93,7 +86,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(sourceCodePro.variable, inter.variable, bebasNeue.variable)} suppressHydrationWarning>
+    <html lang="en" className={cn(sourceCodePro.variable, inter.variable)} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

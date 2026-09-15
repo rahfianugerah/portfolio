@@ -50,7 +50,7 @@ export default function Clock() {
       </div>
       
       {/* Time - Big Font */}
-      <div className="text-6xl font-bold font-bebas text-primary mt-1 leading-none">
+      <div className="text-5xl font-bold tracking-tight tabular-nums text-primary mt-1 leading-none">
         {timeStr}
       </div>
 

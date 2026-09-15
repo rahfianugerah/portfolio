@@ -120,7 +120,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
               {/* Footer */}
               <BlurFade delay={0.7}>
-                <footer className="text-center text-sm font-bebas text-muted-foreground pb-24">
+                <footer className="text-center text-xs text-muted-foreground pb-24">
                   <p>Â© {new Date().getFullYear()} Naufal Rahfi Anugerah | All rights reserved.</p>
                 </footer>
               </BlurFade>

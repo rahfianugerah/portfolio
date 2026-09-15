@@ -423,8 +423,7 @@ around them.
 
 | Face | Role | Licence |
 | :- | :- | :- |
-| Bebas Neue | Headings, via `font-bebas` | SIL OFL 1.1, Google Fonts |
-| Google Sans | Body, UI, labels | Google Fonts |
+| Google Sans | Headings in bold, body, UI, labels | Google Fonts |
 | Inter | Fallback behind Google Sans | SIL OFL 1.1, Google Fonts |
 | Source Code Pro | Code blocks only | SIL OFL 1.1, Google Fonts |
 
