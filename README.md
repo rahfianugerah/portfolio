@@ -49,7 +49,7 @@ The two are the same person at two levels of formality.
 | Blog | `/blog`, `/blog/[slug]` | Posts written in the studio, rendered through Portable Text with syntax-highlighted code blocks |
 | Services | The left rail | A summary of what the work covers. The engagement itself is the consulting practice, and the card links there |
 | Contact | `/contact` | A validated form that emails the owner, with a captcha and a rate limit in front of it |
-| Ashley, the AI assistant | `/chat` | Answers questions about the work from the same documents the pages render. She runs on a self-hosted Ollama model through a server action, so nothing about the request leaves the deployment except the call to your own Ollama host |
+| Ashley, the AI assistant | `/chat` | Answers questions about the work from the same documents the pages render. She runs on Ollama Cloud through a server route, with the API key held on the server, so the browser never sees the key or the model host |
 | Light and dark themes | Everywhere | Follows the system by default, and remembers an explicit choice |
 
 ### The Signals Dashboard
@@ -94,7 +94,7 @@ The home page carries a grid of live cards rather than a static page. Each one i
 | Icons | Lucide, React Icons | 0.395.0, 5.5.0 |
 | Content | Sanity, Portable Text | 3.99.0 |
 | Database | Supabase, PostgreSQL | 2.86.2 |
-| AI | Ollama, self-hosted, over HTTP | No client library |
+| AI | Ollama Cloud, over HTTP with an API key | No client library |
 | Animation | Framer Motion | 11.18.2 |
 | Testing | <code style="color: red">Not Used</code> | |
 | Deployment | Vercel | Managed |
@@ -194,8 +194,9 @@ src/
 
 | Variable | Required | Description | Example |
 | :- | :- | :- | :- |
-| `OLLAMA_BASE_URL` | Yes | Where an Ollama server is listening | `http://127.0.0.1:11434` |
-| `OLLAMA_MODEL` | Yes | A model you have pulled | `llama3.2` |
+| `OLLAMA_API_KEY` | Yes | Ollama Cloud key, server only | `your_ollama_api_key_here` |
+| `OLLAMA_BASE_URL` | No | Ollama-compatible host, Ollama Cloud by default | `https://ollama.com` |
+| `OLLAMA_MODEL` | No | A model listed at `ollama.com/api/tags` | `gpt-oss:120b` |
 | `GITHUB_TOKEN` | Yes | Read-only token for the stats endpoint | `your_token_here` |
 | `GMAIL_USER` | Yes | Contact form sender | `you@example.com` |
 | `GMAIL_APP_PASSWORD` | Yes | Contact form app password | `your_app_password_here` |
@@ -210,7 +211,7 @@ src/
 > [!danger]
 > Every `NEXT_PUBLIC_` variable ends up inside the bundle the browser downloads. It is public the
 > moment it ships. The ones without that prefix are real secrets, an AI key, a GitHub token, a
-> mail password, a captcha secret, and a Sanity write token, and must never be given it.
+> mail password, a captcha secret, and the Ollama Cloud key, and must never be given it.
 
 > [!note]
 > `NEXT_PUBLIC_SUPABASE_ANON_KEY` is public by design. Row-level security is what protects the
@@ -623,5 +624,5 @@ approval.
 | Two majors behind on Next | Missing framework fixes | Upgrade 14 to 16; two call sites break on Next 15's async request APIs |
 | The GitHub activity graph is decorative | The squares are randomised, not real contribution data | Use the GitHub contributions API |
 | No test suite | Regressions are caught by review only | Add end-to-end coverage of the routes |
-| Ashley needs an Ollama host the deployment can reach | The default is localhost, and a serverless function has no Ollama beside it, so `/chat` errors in production until `OLLAMA_BASE_URL` points somewhere real | Run Ollama on a reachable host, or put a small proxy in front of one |
+| Ashley needs `OLLAMA_API_KEY` in every environment | Without it every answer is "(Ashley lost her connection. Please try again.)", and the real reason, the missing key, is only in the server log | Set the key in `.env` locally and in each Vercel environment, then restart the dev server, which reads the environment once at startup |
 | Ashley keeps no memory between sessions | The transcript is in `sessionStorage` and only the last twelve turns are sent back | A stored conversation, if it is ever worth the privacy question |
