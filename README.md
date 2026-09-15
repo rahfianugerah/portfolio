@@ -43,18 +43,19 @@ The two are the same person at two levels of formality.
 
 | Feature | Where | What it does |
 | :- | :- | :- |
+| Interactive home | `/` | A full-width landing page: meteors behind the hero, a draggable globe marking Jakarta, rows that drift faster as the page scrolls, and figures that count up as they come into view |
 | Résumé and work history | `/`, `/experience` | Every role, education entry, and leadership position, grouped by company and expandable |
 | Project catalogue | `/project` | Full width, one preview image or video per project, with the source and the running site both linked |
 | Certificates | `/project` | Professional certifications and course completions, five to a page. A certificate with an uploaded PDF opens on the page itself rather than sending the reader away |
 | Blog | `/blog`, `/blog/[slug]` | Posts written in the studio, rendered through Portable Text with syntax-highlighted code blocks |
-| Services | The left rail | A summary of what the work covers. The engagement itself is the consulting practice, and the card links there |
+| Services | The signals section on `/` | A summary of what the work covers. The engagement itself is the consulting practice, and the card links there |
 | Contact | `/contact` | A validated form that emails the owner, with a captcha and a rate limit in front of it |
 | Ashley, the AI assistant | `/chat` | Answers questions about the work from the same documents the pages render. She runs on Ollama Cloud through a server route, with the API key held on the server, so the browser never sees the key or the model host |
 | Light and dark themes | Everywhere | Follows the system by default, and remembers an explicit choice |
 
 ### The Signals Dashboard
 
-The home page carries a grid of live cards rather than a static page. Each one is independent: it renders a skeleton while it loads and a fallback if its source is unreachable, so one failing card never takes the page with it.
+The home page ends on a section of live cards, packed into columns so each keeps its own height. Each one is independent: it renders a skeleton while it loads and a fallback if its source is unreachable, so one failing card never takes the page with it.
 
 | Card | Source |
 | :- | :- |
@@ -108,19 +109,18 @@ components, and analytics, blog, and GitHub data come from API routes.
 
 ### Architecture Description
 
-A single shell in `src/app/components/layout-content.tsx` supplies navigation and the footer for
-every route. Projects and certificates are read from Sanity through `src/lib/content.ts`, which
-falls back to `src/data/resume.tsx` when Sanity is empty or unreachable; the rest of the résumé is
-still compiled in from that file. Blog content is fetched
-from Sanity; analytics are read from and written to Supabase; the assistant calls Ollama through a
-server action, so the model host is never named in the browser.
+A single shell in `src/app/components/layout-content.tsx` supplies the top bar, a full-width
+page, and the footer for every route. Every piece of content is read from Sanity through
+`src/lib/content.ts`, with no fallback. Analytics are read from and written to Supabase, and the
+assistant calls Ollama Cloud through a server route, so the model host is never named in the
+browser.
 
 ### Main Layers
 
 | Layer | Responsibility |
 | :- | :- |
 | `src/app/layout.tsx` | Fonts, metadata, providers |
-| `src/app/components/layout-content.tsx` | Navigation, container, footer |
+| `src/app/components/layout-content.tsx` | Top bar, full-width page, footer |
 | `src/app/*/page.tsx` | Route composition |
 | `src/app/api/` | Analytics, blog, and GitHub endpoints |
 | `src/app/actions.ts` | Server actions: assistant and contact |
@@ -249,24 +249,30 @@ Next App Router, file-based.
 | `/studio` | Sanity Studio | Authenticated by Sanity |
 | `/api/content` | Everything a client component renders | Public |
 
-Home carries anchored sections: `#about`, `#experiences`, `#projects`, `#achievements`, `#stats`.
+Home carries anchored sections: `#hero`, `#experience`, `#education`, `#projects`, `#signals`,
+`#achievements`, `#contact`.
 
 ### Main Layouts
 
 | Layout | Purpose | Used by |
 | :- | :- | :- |
-| `layout-content.tsx` | Navigation, container, footer | Every route |
+| `layout-content.tsx` | Top bar, full-width page, footer | Every route |
 
 ### Main Components
 
 | Component | Category | Responsibility |
 | :- | :- | :- |
 | `TopNavbar` | Layout | Fixed top bar: the wordmark, the routes with the current one marked, the online indicator, and the blur band the page scrolls under |
-| `Navbar` | Layout | The bottom dock: the same routes as icons, plus socials and the theme toggle |
+| `Navbar` | Layout | The bottom dock, shown only below `md` where the top bar hides its links: the same routes as icons, plus socials and the theme toggle |
 | `ResumeCard` | Feature | One company, expandable |
 | `ProjectShowcase` | Feature | One project: preview, tags, source and site links |
 | `CertificateList` | Feature | Certificates, five to a page, with the PDF readable in place |
-| `Widget` | Shared | The frame every signals cell sits in |
+| `ProjectVelocity` | Feature | Project previews, or titles until there are previews, in two rows that drift faster as the page scrolls |
+| `GitHubCard` | Feature | The GitHub profile, an activity strip, and the latest repositories |
+| `Globe` | Magic UI | A draggable WebGL globe with one marker, on Jakarta, drawn in black and white in both themes |
+| `Meteors` | Magic UI | Meteors falling behind the hero and the page headings |
+| `ScrollVelocityRow` | Magic UI | A row of anything that drifts sideways and speeds up with the scroll |
+| `NumberTicker` | Magic UI | A figure that counts up when it scrolls into view |
 | `AssistantChat` | Feature | Ashley, on `/chat` |
 
 ### Important Component Details
@@ -317,13 +323,14 @@ User Action > Handler > Server Action or API Route > State Update > Render
 | Home carousel photographs | Sanity, `moment` documents | `/studio` |
 | Home carousel quotations | Sanity, `quote` documents | `/studio` |
 | Consulting engagements | Sanity, `clientProject` documents | `/studio` |
+| Consulting track record figures | Sanity, `counter` documents | `/studio` |
 | Companies and schools | Sanity, `organization` documents | `/studio` |
 | Work and leadership | Sanity, `role` documents, each pointing at an organization | `/studio` |
 | Education | Sanity, `education` documents, pointing at the same organizations | `/studio` |
 | Achievements | Sanity, `achievement` documents | `/studio` |
 | The name, role, summary and social links | Sanity, the single `profile` document | `/studio` |
 | Skills | Sanity, `skillGroup` documents | `/studio` |
-| Services | Sanity, `service` documents, shown only in the left rail | `/studio` |
+| Services | Sanity, `service` documents, shown only in the signals section | `/studio` |
 
 `src/lib/content.ts` is the only place that reads any of it, and **nothing has a fallback**. That
 is deliberate: a fallback was worth having while the dataset was empty, and keeping one now would

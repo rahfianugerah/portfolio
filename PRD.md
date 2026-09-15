@@ -94,7 +94,7 @@ The question this document opened with - the licence and provenance of the engra
 
 **Owner:** Naufal Rahfi Anugerah
 **Date:** 2026-08-26
-**Status:** Draft - not started
+**Status:** Built on `dev` on 2026-09-15 as a full-width landing page. The navigation kept its existing routes, and `/experience` stayed as the full history behind the home page's list
 
 ## Problem
 
