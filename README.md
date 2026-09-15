@@ -48,7 +48,7 @@ The two are the same person at two levels of formality.
 | Résumé and work history | `/`, `/experience` | Every role, education entry, and leadership position, grouped by company. On `/experience` each sits on an Aceternity UI timeline that fills as the page scrolls |
 | Project catalogue | `/project` | A bento grid of HeroUI cards, one preview image or video per project, each opening the project's own page with its stack and links, and a terminal while the page loads |
 | Certificates | `/project` | Professional certifications and course completions, five to a page. A certificate with an uploaded PDF opens on the page itself rather than sending the reader away |
-| Blog | `/blog`, `/blog/[slug]` | Posts written in the studio, rendered through Portable Text with syntax-highlighted code blocks |
+| Writings | `/blog`, `/blog/[slug]` | Every post as a card, three to a row, under a heading band over the hexagons; each post written in the studio and rendered through Portable Text with syntax-highlighted code blocks |
 | Services | The signals section on `/` | A summary of what the work covers. The engagement itself is the consulting practice, and the card links there |
 | Contact | `/contact` | A validated form that emails the owner, with a captcha and a rate limit in front of it |
 | Ashley, the AI assistant | `/chat` | Answers questions about the work from the same documents the pages render. She runs on Ollama Cloud through a server route, with the API key held on the server, so the browser never sees the key or the model host |
@@ -281,13 +281,13 @@ Home carries anchored sections: `#hero`, `#experience`, `#education`, `#signals`
 | `ProjectMarquee` | Feature | The projects in a `MarqueeBand`, each title beside its preview or a folder icon |
 | `GitHubCard` | Feature | The GitHub profile, an activity strip, and the latest repositories |
 | `Globe` | Magic UI | A draggable WebGL globe with one marker, on Jakarta, drawn in black and white in both themes |
-| `Meteors` | Magic UI | Meteors falling behind the hero and the page headings |
 | `NumberTicker` | Magic UI | A figure that counts up when it scrolls into view |
-| `InteractiveHexagonPattern` | Magic UI | The hexagon grid behind the hero, lit under the pointer |
+| `InteractiveHexagonPattern` | Magic UI | The hexagon grid behind the hero, every page heading, and the contact band, lit under the pointer |
 | `Marquee` | Magic UI | One row moving on its own, the base of `MarqueeBand` |
 | `BentoGrid` | Magic UI | The frame the signal cards are laid into |
-| `Terminal` | Magic UI | The intro that opens a visit, and what `/project` shows while it loads |
+| `Terminal` | Magic UI | The intro that opens a visit, and the screen that opens `/project` every time |
 | `SiteIntro` | Layout | A terminal over the whole screen on a visitor's first page of a session, skipped by any key, a click, or reduced motion |
+| `ProjectSplash` | Layout | The same terminal overlay under the top bar each time `/project` opens, from the `/project` layout so a cached visit plays it too |
 | `Timeline` | Aceternity UI | The rail `/experience` sets every role and school on |
 | `SiteFooter` | Layout | Columns of routes and links, and a closing line divided by HeroUI separators |
 | `AssistantChat` | Feature | Ashley, on `/chat` |
