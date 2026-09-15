@@ -1,35 +1,44 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 
-export const ModeToggle = React.forwardRef<
-  HTMLButtonElement,
-  React.ComponentPropsWithoutRef<typeof Button>
->(({ onClick, ...props }, ref) => {
-  const { theme, setTheme } = useTheme();
+import { useMounted } from "@/lib/use-mounted";
+import { cn } from "@/lib/utils";
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setTheme(theme === "dark" ? "light" : "dark");
-    onClick?.(e);
-  };
+/**
+ * Light and dark, drawn the same as the consulting site's toggle: a round button with lucide's sun
+ * in the light theme and its moon in the dark one.
+ *
+ * The icon waits for the client, because the server cannot know which theme the browser chose.
+ * Props and the ref are forwarded, so the dock can still wrap it in a tooltip trigger.
+ */
+export const ModeToggle = React.forwardRef<HTMLButtonElement, React.ComponentPropsWithoutRef<"button">>(
+  ({ className, onClick, ...props }, ref) => {
+    const { resolvedTheme, setTheme } = useTheme();
+    const mounted = useMounted();
+    const dark = mounted && resolvedTheme === "dark";
 
-  return (
-    <Button
-      ref={ref}
-      variant="ghost"
-      type="button"
-      size="icon"
-      className="px-2"
-      onClick={handleClick}
-      {...props}
-    >
-      <SunIcon className="h-[1.2rem] w-[1.2rem] text-neutral-800 dark:hidden dark:text-neutral-200" />
-      <MoonIcon className="hidden h-[1.2rem] w-[1.2rem] text-neutral-800 dark:block dark:text-neutral-200" />
-    </Button>
-  );
-});
+    return (
+      <button
+        ref={ref}
+        type="button"
+        aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
+        onClick={(event) => {
+          setTheme(dark ? "light" : "dark");
+          onClick?.(event);
+        }}
+        className={cn(
+          "inline-flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring",
+          className
+        )}
+        {...props}
+      >
+        {dark ? <MoonIcon className="size-4" /> : <SunIcon className="size-4" />}
+      </button>
+    );
+  }
+);
 
 ModeToggle.displayName = "ModeToggle";
