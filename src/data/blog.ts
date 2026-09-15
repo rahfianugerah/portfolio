@@ -33,7 +33,13 @@ export async function getPost(slug: string) {
     publishedAt,
     summary,
     mainImage,
-    body
+    body[]{
+      ...,
+      _type == "image" => {
+        "url": asset->url,
+        "dimensions": asset->metadata.dimensions
+      }
+    }
   }`;
 
   const post = await client.fetch(query, { slug });

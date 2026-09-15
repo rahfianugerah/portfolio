@@ -33,7 +33,7 @@ export default function ContactPage() {
         </BlurFade>
 
         <BlurFade delay={BLUR_FADE_DELAY * 2}>
-          <ReCaptchaWrapper>
+          <ReCaptchaWrapper siteKey={process.env.RECAPTCHA_SITE_KEY}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
               {/* Left Column - Contact Form */}
               <div className="w-full h-full">

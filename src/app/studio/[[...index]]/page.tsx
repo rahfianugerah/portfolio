@@ -14,5 +14,11 @@ export const metadata = {
  * inputs and the weight out of its menus.
  */
 export default function StudioPage() {
-  return <Studio />;
+  // Read here, on the server, and handed to the studio rather than compiled into the bundle.
+  return (
+    <Studio
+      projectId={process.env.SANITY_PROJECT_ID ?? ""}
+      dataset={process.env.SANITY_DATASET ?? "production"}
+    />
+  );
 }

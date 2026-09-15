@@ -259,7 +259,7 @@ const ACHIEVEMENT_QUERY = `*[_type == "achievement"]|order(order asc){
 const REVALIDATE = 60;
 
 async function query<T>(groq: string, fallback: T[]): Promise<T[]> {
-  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return fallback;
+  if (!process.env.SANITY_PROJECT_ID) return fallback;
 
   try {
     const rows = await client.fetch<T[]>(
@@ -288,7 +288,7 @@ export async function getCertificates(): Promise<Certificate[]> {
  * fallback, because the copy that used to be one lives in this dataset now.
  */
 export async function getProfile(): Promise<Profile | null> {
-  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return null;
+  if (!process.env.SANITY_PROJECT_ID) return null;
 
   try {
     return await client.fetch<Profile | null>(
@@ -308,7 +308,7 @@ export async function getSkillGroups(): Promise<SkillGroup[]> {
 
 /** One project, by the slug in its URL. Null when there is no such document. */
 export async function getProject(slug: string): Promise<Project | null> {
-  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return null;
+  if (!process.env.SANITY_PROJECT_ID) return null;
 
   try {
     return await client.fetch<Project | null>(
@@ -329,7 +329,7 @@ export async function getProject(slug: string): Promise<Project | null> {
  * words it shipped with until someone decides to change them in the studio.
  */
 export async function getPageMeta(route: string): Promise<PageMeta | null> {
-  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return null;
+  if (!process.env.SANITY_PROJECT_ID) return null;
 
   try {
     return await client.fetch<PageMeta | null>(

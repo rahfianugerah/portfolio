@@ -86,12 +86,12 @@ vercel env add GITHUB_TOKEN production
 vercel env add GMAIL_USER production
 vercel env add GMAIL_APP_PASSWORD production
 vercel env add RECAPTCHA_SECRET_KEY production
-vercel env add NEXT_PUBLIC_RECAPTCHA_SITE_KEY production
-vercel env add NEXT_PUBLIC_SANITY_PROJECT_ID production
-vercel env add NEXT_PUBLIC_SANITY_DATASET production
-vercel env add NEXT_PUBLIC_SANITY_API_VERSION production
-vercel env add NEXT_PUBLIC_SUPABASE_URL production
-vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY production
+vercel env add RECAPTCHA_SITE_KEY production
+vercel env add SANITY_PROJECT_ID production
+vercel env add SANITY_DATASET production
+vercel env add SANITY_API_VERSION production
+vercel env add SUPABASE_URL production
+vercel env add SUPABASE_ANON_KEY production
 vercel env add CMS_OWNER_EMAIL production
 ```
 
@@ -102,13 +102,12 @@ project for preview** if you do not want preview traffic writing to production a
 `/admin`, so add it when you run that and revoke it afterwards.
 
 > [!danger]
-> The ones without the `NEXT_PUBLIC_` prefix are real secrets: an AI key, a GitHub token, a mail
-> password, a captcha secret, and the owner address. They must never be given that prefix, because
-> a `NEXT_PUBLIC_` value is compiled into the bundle the browser downloads and is public the moment
-> it ships.
+> None of these may be given a `NEXT_PUBLIC_` prefix. A prefixed value is compiled into the bundle
+> the browser downloads and is public the moment it ships; every variable here is read on the
+> server instead.
 
 > [!note]
-> `NEXT_PUBLIC_SUPABASE_ANON_KEY` is public by design. It is the anon key, and row-level security
+> `SUPABASE_ANON_KEY` is read only on the server. It is the anon key, and row-level security
 > is what protects the data behind it. Its policies live in `supabase/migrations/`.
 
 ### 6. Give `dev` a fixed preview URL

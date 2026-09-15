@@ -201,21 +201,23 @@ src/
 | `GMAIL_USER` | Yes | Contact form sender | `you@example.com` |
 | `GMAIL_APP_PASSWORD` | Yes | Contact form app password | `your_app_password_here` |
 | `RECAPTCHA_SECRET_KEY` | Yes | Captcha verification | `your_secret_here` |
-| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Yes | Captcha site key | `your_site_key_here` |
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Yes | CMS project | `your_project_id` |
-| `NEXT_PUBLIC_SANITY_DATASET` | Yes | CMS dataset | `production` |
-| `NEXT_PUBLIC_SANITY_API_VERSION` | Yes | CMS API date | `2025-12-01` |
-| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Analytics project URL | `https://xxx.supabase.co` |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Analytics anon key | `your_anon_key` |
+| `RECAPTCHA_SITE_KEY` | Yes | Captcha site key | `your_site_key_here` |
+| `SANITY_PROJECT_ID` | Yes | CMS project | `your_project_id` |
+| `SANITY_DATASET` | Yes | CMS dataset | `production` |
+| `SANITY_API_VERSION` | Yes | CMS API date | `2025-12-01` |
+| `SUPABASE_URL` | Yes | Analytics project URL | `https://xxx.supabase.co` |
+| `SUPABASE_ANON_KEY` | Yes | Analytics anon key | `your_anon_key` |
 
 > [!danger]
-> Every `NEXT_PUBLIC_` variable ends up inside the bundle the browser downloads. It is public the
-> moment it ships. The ones without that prefix are real secrets, an AI key, a GitHub token, a
-> mail password, a captcha secret, and the Ollama Cloud key, and must never be given it.
+> No variable here carries the `NEXT_PUBLIC_` prefix, and none may be given it: a prefixed value
+> is compiled into the bundle the browser downloads. Every variable is read on the server. The two
+> values the browser genuinely needs, the captcha site key and the Sanity project for the studio,
+> are handed to their page as props, and both are identifiers rather than secrets.
 
 > [!note]
-> `NEXT_PUBLIC_SUPABASE_ANON_KEY` is public by design. Row-level security is what protects the
-> data behind it; the policies are in `supabase-rls-policies.sql`.
+> `SUPABASE_ANON_KEY` is read only by the analytics route. It would be safe in the browser anyway,
+> because row-level security is what protects the data behind it; the policies are in
+> `supabase/migrations/`.
 
 ### Environments
 
@@ -588,7 +590,7 @@ npm run build
 | :- | :- |
 | Platform | Vercel |
 | Trigger | Push to `main` for production; `dev` builds a preview at `preview-rahfi-portfolio.vercel.app` |
-| Build-time config | Every `NEXT_PUBLIC_` value |
+| Build-time config | None. No variable is compiled into the browser bundle |
 | Health check | Vercel deployment status |
 | Rollback process | Promote a previous deployment in the Vercel dashboard |
 

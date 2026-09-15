@@ -33,18 +33,24 @@ const theme = buildLegacyTheme({
   '--font-family-base': '"Google Sans", var(--font-sans), ui-sans-serif, system-ui, sans-serif',
 })
 
-export default defineConfig({
-  name: 'default',
-  title: 'Rahfi\'s Workspace',
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
-  basePath: '/studio',
-  plugins: [
-    structureTool(),
-    codeInput() 
-  ],
-  schema: {
-    types: schemaTypes,
-  },
-  theme,
-})
+/**
+ * The studio's configuration, built from the project id and dataset the studio page reads on
+ * the server and passes in.
+ *
+ * The studio runs in the browser and has to know which project it edits, but neither value is
+ * a NEXT_PUBLIC_ variable compiled into every bundle ahead of time any more.
+ */
+export default function studioConfig({ projectId, dataset }: { projectId: string; dataset: string }) {
+  return defineConfig({
+    name: 'default',
+    title: 'Rahfi\'s Workspace',
+    projectId,
+    dataset,
+    basePath: '/studio',
+    plugins: [structureTool(), codeInput()],
+    schema: {
+      types: schemaTypes,
+    },
+    theme,
+  })
+}
