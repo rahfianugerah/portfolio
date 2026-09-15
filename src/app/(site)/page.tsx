@@ -248,9 +248,9 @@ export default async function Page() {
         </BlurFade>
 
         {/*
-         * A bento grid of four columns. The photographs keep their square and the quotations
-         * their 4:5, each in its own row so the cards beside it stretch to match; the spans tile
-         * every row with no hole.
+         * A bento grid of four columns. The photographs and the quotations are the same square
+         * card, at either end of the first row, and the visitors card between them stretches to
+         * match; the spans tile every row with no hole.
          */}
         <BlurFade delay={0.06}>
           <BlurFadeFreeBento>
@@ -260,6 +260,12 @@ export default async function Page() {
             <div className={cn("lg:col-span-2", CELL)}>
               <AnalyticsWidget />
             </div>
+            <div>
+              <QuoteCarousel />
+            </div>
+            <div className={cn("lg:col-span-2", CELL)}>
+              <ExperienceGraph />
+            </div>
             <div className={CELL}>
               <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
                 <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
@@ -267,12 +273,6 @@ export default async function Page() {
                 </div>
                 <IconCloudSpecialties />
               </div>
-            </div>
-            <div className={cn("lg:col-span-2", CELL)}>
-              <ExperienceGraph />
-            </div>
-            <div>
-              <QuoteCarousel />
             </div>
             <div className={CELL}>
               <LatestBlogsWidget />
