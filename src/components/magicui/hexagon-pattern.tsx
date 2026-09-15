@@ -2,7 +2,9 @@ import { useId } from "react"
 
 // Magic UI's Hexagon Pattern. Classes are joined by hand, the default outline is the theme's
 // foreground rather than Tailwind's blue-tinted gray, and the geometry helpers are exported so the
-// interactive version can find the cell under the pointer on the same grid.
+// interactive version can find the cell under the pointer on the same grid. Every vertex is rounded
+// to a thousandth of a pixel: Math.cos and Math.sin may differ in their last digits between the
+// server and the browser, and that difference in the points attribute fails hydration.
 
 interface HexagonPatternProps extends React.SVGProps<SVGSVGElement> {
   /**
@@ -51,6 +53,8 @@ interface HexagonPatternProps extends React.SVGProps<SVGSVGElement> {
 
 type HexPoint = readonly [number, number]
 
+const round = (value: number) => Math.round(value * 1000) / 1000
+
 function hexVertexList(
   cx: number,
   cy: number,
@@ -60,7 +64,7 @@ function hexVertexList(
   const startAngle = direction === "horizontal" ? 0 : 30
   return Array.from({ length: 6 }, (_, i) => {
     const angle = ((startAngle + i * 60) * Math.PI) / 180
-    return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)] as const
+    return [round(cx + r * Math.cos(angle)), round(cy + r * Math.sin(angle))] as const
   })
 }
 
