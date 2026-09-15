@@ -21,9 +21,7 @@ import BlurFade from "@/components/magicui/blur-fade";
 import { InteractiveHexagonPattern } from "@/components/magicui/interactive-hexagon-pattern";
 import { Meteors } from "@/components/magicui/meteors";
 import { NumberTicker } from "@/components/magicui/number-ticker";
-import { ProjectShowcase } from "@/components/project-showcase";
 import { MarqueeBand } from "@/components/marquee-band";
-import { ProjectMarquee } from "@/components/project-marquee";
 import { ResumeCard } from "@/components/resume-card";
 import { SOCIAL_ICON } from "@/components/social-icon";
 import { skillIcon } from "@/components/skill-icons";
@@ -241,33 +239,6 @@ export default async function Page() {
               })}
             </div>
           </BlurFade>
-        </section>
-      )}
-
-      {projects.length > 0 && (
-        <section id="projects" className="mt-24 flex flex-col gap-8">
-          <BlurFade className="flex flex-wrap items-end justify-between gap-4">
-            <SectionTitle title="Projects">
-              Personal and collaborative work, in the same moving rows as the skills.
-            </SectionTitle>
-            <Link
-              href="/project"
-              className="inline-flex items-center gap-1 text-sm font-medium underline underline-offset-4 hover:text-muted-foreground"
-            >
-              Every project and certificate
-              <ArrowRight className="size-3.5" />
-            </Link>
-          </BlurFade>
-
-          <ProjectMarquee projects={projects} className="border-t" />
-
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.slice(0, 6).map((project, i) => (
-              <BlurFade key={project.id} delay={0.04 * i} className="h-full">
-                <ProjectShowcase project={project} />
-              </BlurFade>
-            ))}
-          </div>
         </section>
       )}
 

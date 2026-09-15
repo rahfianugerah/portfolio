@@ -44,7 +44,7 @@ The two are the same person at two levels of formality.
 
 | Feature | Where | What it does |
 | :- | :- | :- |
-| Interactive home | `/` | A landing page in a centred column: hexagons behind the hero that light up under the pointer, a draggable globe marking Jakarta, the skills and the projects in two-row icon marquees, and figures that count up as they come into view |
+| Interactive home | `/` | A landing page in a centred column: hexagons behind the hero that light up under the pointer, a draggable globe marking Jakarta, the skills in a two-row icon marquee, and figures that count up as they come into view |
 | Résumé and work history | `/`, `/experience` | Every role, education entry, and leadership position, grouped by company. On `/experience` each sits on an Aceternity UI timeline that fills as the page scrolls |
 | Project catalogue | `/project` | HeroUI cards with one preview image or video per project, the source and the running site both linked, and a terminal while the page loads |
 | Certificates | `/project` | Professional certifications and course completions, five to a page. A certificate with an uploaded PDF opens on the page itself rather than sending the reader away |
@@ -252,7 +252,7 @@ Next App Router, file-based.
 | `/studio` | Sanity Studio | Authenticated by Sanity |
 | `/api/content` | Everything a client component renders | Public |
 
-Home carries anchored sections: `#hero`, `#experience`, `#education`, `#projects`, `#signals`,
+Home carries anchored sections: `#hero`, `#experience`, `#education`, `#signals`,
 `#achievements`, `#contact`.
 
 ### Main Layouts
