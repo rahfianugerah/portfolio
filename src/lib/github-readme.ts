@@ -6,9 +6,8 @@
  * one the rate limit is sixty requests an hour per IP, which the revalidate window makes
  * plenty, and with one it is five thousand.
  *
- * Relative links and images in a README point at paths inside the repository, so they are
- * rewritten to absolute URLs before rendering. Without that every screenshot in the file
- * resolves against this site and 404s.
+ * Relative links and images in a README point at paths inside the repository. The page resolves
+ * them with inRepo as it renders each one, which covers raw HTML tags as well as markdown syntax.
  */
 export async function fetchReadme(repo: string): Promise<string | null> {
   const match = repo.trim().match(/^([\w.-]+)\/([\w.-]+)$/);
@@ -29,23 +28,27 @@ export async function fetchReadme(repo: string): Promise<string | null> {
       return null;
     }
 
-    return absolutise(await response.text(), owner, name);
+    return await response.text();
   } catch (error) {
     console.error(`README for ${repo} could not be fetched:`, error);
     return null;
   }
 }
 
-/** Turns `![x](docs/a.png)` and `[y](CONTRIBUTING.md)` into links that resolve on GitHub. */
-function absolutise(markdown: string, owner: string, name: string): string {
-  const raw = `https://raw.githubusercontent.com/${owner}/${name}/HEAD/`;
-  const blob = `https://github.com/${owner}/${name}/blob/HEAD/`;
+/**
+ * A link or image a README gives relative to its repository, made absolute the way GitHub
+ * resolves it: an image to the raw file, a link to the file's page. Anything with a scheme, a
+ * protocol-relative URL, or an in-page anchor is returned as it is; the sanitizer has already
+ * removed every scheme but the safe ones.
+ */
+export function inRepo(url: string | undefined, repo: string, kind: "raw" | "blob"): string | undefined {
+  if (!url || /^([a-z][a-z\d+.-]*:|\/\/|#)/i.test(url)) return url;
 
-  return markdown.replace(
-    /(!?)\[([^\]]*)\]\((?!https?:\/\/|#|mailto:)\/?([^)\s]+)([^)]*)\)/g,
-    (_all, bang: string, text: string, path: string, tail: string) =>
-      `${bang}[${text}](${bang ? raw : blob}${path}${tail})`
-  );
+  const base =
+    kind === "raw"
+      ? `https://raw.githubusercontent.com/${repo}/HEAD/`
+      : `https://github.com/${repo}/blob/HEAD/`;
+  return new URL(url.replace(/^\//, ""), base).toString();
 }
 
 /** The repository named on a project, or the one its source link points at. */

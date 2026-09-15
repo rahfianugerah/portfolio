@@ -245,6 +245,37 @@
   }
 }
 
+/* A README lays itself out with the align attribute, which GitHub honours. Any author rule
+   outranks a presentational attribute, the justified paragraphs included, so it is restated.
+   Badges and inline images sit on the line, as on GitHub, not in typography's block margins. */
+.readme [align="center"] {
+  text-align: center;
+}
+
+.readme [align="right"] {
+  text-align: right;
+}
+
+.readme [align="left"] {
+  text-align: left;
+}
+
+.readme img {
+  display: inline;
+  max-width: 100%;
+  margin-block: 0;
+}
+
+.readme img[align="right"] {
+  float: right;
+  margin-left: 1rem;
+}
+
+.readme img[align="left"] {
+  float: left;
+  margin-right: 1rem;
+}
+
 /* Reduced motion skips the intro. Unlayered, this beats the overlay's own display utility. */
 @media (prefers-reduced-motion: reduce) {
   .site-intro {

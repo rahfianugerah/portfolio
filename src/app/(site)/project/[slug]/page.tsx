@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 import { ChevronLeft } from "lucide-react";
 
@@ -9,7 +11,7 @@ import BlurFade from "@/components/magicui/blur-fade";
 import { Badge } from "@/components/ui/badge";
 import { Icons } from "@/components/icons";
 import { getProject, getProjects, type ProjectLinkIcon } from "@/lib/content";
-import { fetchReadme, repoFor } from "@/lib/github-readme";
+import { fetchReadme, inRepo, repoFor } from "@/lib/github-readme";
 
 const LINK_ICON: Record<ProjectLinkIcon, (props: { className?: string }) => React.JSX.Element> = {
   globe: Icons.globe,
@@ -164,21 +166,39 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
                 , so it is whatever the repository says today.
               </p>
 
-              <article className="prose mt-5 max-w-none wrap-break-word text-sm dark:prose-invert">
+              {/*
+               * A README's own HTML renders as it does on GitHub: rehype-raw parses it, then
+               * rehype-sanitize cleans it with its default schema, which follows GitHub's. The
+               * README comes from outside this codebase, so nothing skips the sanitizer.
+               */}
+              <article className="readme prose mt-5 max-w-none wrap-break-word text-sm dark:prose-invert">
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeRaw, rehypeSanitize]}
                   components={{
                     // next/image needs a configured host and a README points anywhere, so
-                    // these stay plain img elements.
-                    img: ({ src, alt }) => (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={src} alt={alt ?? ""} className="rounded-md border border-border" />
-                    ),
-                    a: ({ href, children }) => (
-                      <a href={href} target="_blank" rel="noreferrer">
-                        {children}
-                      </a>
-                    ),
+                    // these stay plain img elements, keeping the width, height, and align the
+                    // README gave them. react-markdown also passes its syntax node, which is not
+                    // an attribute.
+                    img: ({ node, src, alt, ...attributes }) => {
+                      void node;
+                      return (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          {...attributes}
+                          src={inRepo(typeof src === "string" ? src : undefined, repo ?? "", "raw")}
+                          alt={alt ?? ""}
+                        />
+                      );
+                    },
+                    a: ({ node, href, children, ...attributes }) => {
+                      void node;
+                      return (
+                        <a {...attributes} href={inRepo(href, repo ?? "", "blob")} target="_blank" rel="noreferrer">
+                          {children}
+                        </a>
+                      );
+                    },
                   }}
                 >
                   {readme}
