@@ -34,7 +34,7 @@ export default function TopNavbar() {
       <div className="pointer-events-none fixed inset-x-0 top-0 z-30 h-28 w-full bg-background backdrop-blur-lg [-webkit-mask-image:linear-gradient(to_bottom,black_45%,transparent)] [mask-image:linear-gradient(to_bottom,black_45%,transparent)]" />
 
       <header className="fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-4 sm:px-6 lg:px-8">
-        <nav className="flex min-h-14 w-full max-w-6xl items-center justify-between gap-2 rounded-lg border border-border bg-background/80 px-4 py-2 shadow-sm backdrop-blur-lg">
+        <nav className="flex min-h-14 w-full max-w-6xl items-center justify-between gap-2 rounded-lg bg-background/80 px-4 py-2 shadow-sm backdrop-blur-lg">
           <Link href="/" className="shrink-0 text-base font-bold leading-none tracking-tight">
             {logo ? (
               // A wordmark's height, so swapping one for the other does not move the bar.
