@@ -46,7 +46,7 @@ The two are the same person at two levels of formality.
 | :- | :- | :- |
 | Interactive home | `/` | A landing page in a centred column: hexagons behind the hero that light up under the pointer, a draggable globe marking Jakarta, the skills in a two-row icon marquee, and figures that count up as they come into view |
 | Résumé and work history | `/`, `/experience` | Every role, education entry, and leadership position, grouped by company. On `/experience` each sits on an Aceternity UI timeline that fills as the page scrolls |
-| Project catalogue | `/project` | HeroUI cards with one preview image or video per project, the source and the running site both linked, and a terminal while the page loads |
+| Project catalogue | `/project` | A bento grid of HeroUI cards, one preview image or video per project, each opening the project's own page with its stack and links, and a terminal while the page loads |
 | Certificates | `/project` | Professional certifications and course completions, five to a page. A certificate with an uploaded PDF opens on the page itself rather than sending the reader away |
 | Blog | `/blog`, `/blog/[slug]` | Posts written in the studio, rendered through Portable Text with syntax-highlighted code blocks |
 | Services | The signals section on `/` | A summary of what the work covers. The engagement itself is the consulting practice, and the card links there |
@@ -186,7 +186,7 @@ src/
 | File | Purpose |
 | :- | :- |
 | `.env.example` | Environment variable reference |
-| `next.config.mjs` | Remote image hosts and redirects for moved routes |
+| `next.config.mjs` | The Sanity image loader and redirects for moved routes |
 | `vercel.json` | Region, branch deployment, and security headers |
 | `eslint.config.mjs` | ESLint flat config, extending Next's core web vitals rules |
 | `sanity.config.ts` | CMS studio configuration |
@@ -268,7 +268,7 @@ Home carries anchored sections: `#hero`, `#experience`, `#education`, `#signals`
 | `TopNavbar` | Layout | Fixed top bar: the wordmark, the routes with the current one marked, the online indicator, and the blur band the page scrolls under |
 | `Navbar` | Layout | The bottom dock, shown only below `md` where the top bar hides its links: the same routes as icons, plus socials and the theme toggle |
 | `ResumeCard` | Feature | One company, expandable |
-| `ProjectShowcase` | Feature | One project as a HeroUI card: preview, tags, source and site links |
+| `ProjectShowcase` | Feature | One project as a bento cell: its preview, status, title, and two lines, linking to its own page |
 | `CertificateList` | Feature | Certificates, five to a page, with the PDF readable in place |
 | `MarqueeBand` | Feature | Two rows of names beside their icons, moving in opposite directions and pausing under the pointer, at a speed set by the length of the text |
 | `ProjectMarquee` | Feature | The projects in a `MarqueeBand`, each title beside its preview or a folder icon |
@@ -505,7 +505,7 @@ Error > Try/Catch or Boundary > Fallback Component > Console Log
 
 - Static generation for content routes
 - Code splitting and tree shaking
-- Image optimization through `next/image`
+- Images resized by Sanity's CDN, through a `next/image` loader in `src/lib/sanity-image-loader.ts`
 - Font optimization through `next/font`, self-hosted
 - Caching: GitHub stats revalidate hourly
 - Rate limiting on the contact form
