@@ -29,9 +29,10 @@ export default function ImageCarousel({ intervalMs = 3000 }: ImageCarouselProps)
   }, [items.length, intervalMs]);
 
   return (
-    // FIX 1: Added 'shrink-0' so it never gets squeezed by the sidebar height
-    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-xs">
-      <div className="relative aspect-square w-full group">
+    // At least a square, then a row of dots. It fills its bento cell, the square growing if the
+    // row is taller, so the row's edges run straight.
+    <div className="flex h-full w-full shrink-0 flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-xs">
+      <div className="group relative aspect-square w-full flex-1">
         {items.length === 0 && (
           <div className="flex h-full w-full items-center justify-center p-4 text-center text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
             No photographs published yet

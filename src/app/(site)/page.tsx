@@ -248,19 +248,20 @@ export default async function Page() {
         </BlurFade>
 
         {/*
-         * A bento grid of four columns. The photographs and the quotations are the same square
-         * card, at either end of the first row, and the visitors card between them stretches to
-         * match; the spans tile every row with no hole.
+         * A bento grid of four columns. Every card fills its cell, so each row's edges run
+         * straight: the photographs and the quotations, at either end of the first row, are at
+         * least square and grow with the visitors card between them; the spans tile every row
+         * with no hole.
          */}
         <BlurFade delay={0.06}>
           <BlurFadeFreeBento>
-            <div>
+            <div className={CELL}>
               <ImageCarousel />
             </div>
             <div className={cn("lg:col-span-2", CELL)}>
               <AnalyticsWidget />
             </div>
-            <div>
+            <div className={CELL}>
               <QuoteCarousel />
             </div>
             <div className={cn("lg:col-span-2", CELL)}>

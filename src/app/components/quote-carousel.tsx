@@ -23,10 +23,11 @@ export default function QuoteCarousel() {
   }, [quotes.length]);
 
   return (
-    // The same frame as the photographs: a square, then a row of dots, so the two cards are
-    // the same size wherever the grid puts them.
-    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-xs">
-      <div className="group relative aspect-square w-full">
+    // The same frame as the photographs: at least a square, then a row of dots, so the two cards
+    // match. It fills its bento cell, the square growing if the row is taller, so the row's edges
+    // run straight.
+    <div className="flex h-full w-full shrink-0 flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-xs">
+      <div className="group relative aspect-square w-full flex-1">
         {quotes.length === 0 && (
           <div className="flex h-full w-full items-center justify-center p-4 text-center text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
             No quotations published yet
