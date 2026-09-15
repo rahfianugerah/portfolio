@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { WidgetFallback } from "@/components/widget-error-boundary";
+import { NumberTicker } from "@/components/magicui/number-ticker";
 import { cn } from "@/lib/utils";
 
 type AnalyticsData = {
@@ -100,7 +101,7 @@ export default function AnalyticsWidget() {
         {/* Visitors */}
         <div className="space-y-1">
           <div className="text-xs text-muted-foreground">Total Visitors</div>
-          <div className="text-2xl font-bold">{data.visitors.toLocaleString()}</div>
+          <div className="text-2xl font-bold"><NumberTicker value={data.visitors} /></div>
           <div className="flex items-center gap-1">
             <span className="text-[10px] text-foreground">↑ {data.delta24h}</span>
             <span className="text-[10px] text-muted-foreground">24h</span>
@@ -110,7 +111,7 @@ export default function AnalyticsWidget() {
         {/* Projects */}
         <div className="space-y-1">
           <div className="text-xs text-muted-foreground">Project Views</div>
-          <div className="text-2xl font-bold">{data.projects.toLocaleString()}</div>
+          <div className="text-2xl font-bold"><NumberTicker value={data.projects} /></div>
           <div className="flex items-center gap-1">
             <span className="text-[10px] text-foreground">↑ {data.delta7d}</span>
             <span className="text-[10px] text-muted-foreground">7d</span>

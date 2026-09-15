@@ -75,10 +75,23 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        // Magic UI's meteor and shiny text, in Tailwind 3's config form. The shiny text used to
+        // name an animation that did not exist here, so the hero's role line never moved.
+        meteor: {
+          "0%": { transform: "rotate(var(--angle)) translateX(0)", opacity: "1" },
+          "70%": { opacity: "1" },
+          "100%": { transform: "rotate(var(--angle)) translateX(-500px)", opacity: "0" },
+        },
+        "shiny-text": {
+          "0%, 90%, 100%": { "background-position": "calc(-100% - var(--shiny-width)) 0" },
+          "30%, 60%": { "background-position": "calc(100% + var(--shiny-width)) 0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        meteor: "meteor 5s linear infinite",
+        "shiny-text": "shiny-text 8s infinite",
       },
       screens: {
         "3xl": "1500px",

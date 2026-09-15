@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSiteContent } from "@/lib/use-site-content";
 import { WidgetFallback } from "@/components/widget-error-boundary";
+import { NumberTicker } from "@/components/magicui/number-ticker";
 import { FolderGit2, Eye } from "lucide-react";
 
 
@@ -76,7 +77,7 @@ export default function ProjectsCounter() {
             <FolderGit2 className="h-4 w-4 text-foreground" />
           </div>
           <div>
-            <div className="text-lg font-bold">{content?.projectCount ?? 0}</div>
+            <div className="text-lg font-bold"><NumberTicker value={content?.projectCount ?? 0} /></div>
             <div className="text-[10px] text-muted-foreground">Projects</div>
           </div>
         </div>
@@ -87,7 +88,7 @@ export default function ProjectsCounter() {
             <Eye className="h-4 w-4 text-foreground" />
           </div>
           <div>
-            <div className="text-lg font-bold">{stats.totalViews.toLocaleString()}</div>
+            <div className="text-lg font-bold"><NumberTicker value={stats.totalViews} /></div>
             <div className="text-[10px] text-muted-foreground">Views</div>
           </div>
         </div>

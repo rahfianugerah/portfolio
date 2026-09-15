@@ -1,3 +1,5 @@
+"use client";
+
 // components/TechStack.tsx
 import { ComponentType } from "react";
 import { useSiteContent } from "@/lib/use-site-content";

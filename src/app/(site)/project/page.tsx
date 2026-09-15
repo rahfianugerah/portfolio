@@ -1,6 +1,8 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { CertificateList } from "@/components/certificate-list";
+import { Meteors } from "@/components/magicui/meteors";
 import { ProjectShowcase } from "@/components/project-showcase";
+import { ProjectVelocity } from "@/components/project-velocity";
 import { getCertificates, getPageMeta, getProjects } from "@/lib/content";
 
 const DELAY = 0.04;
@@ -26,7 +28,7 @@ export async function generateMetadata() {
 function Heading({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 className="text-3xl font-bold tracking-tight">
+      <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
         Rahfi&apos;s | {title}.
       </h2>
       <p className="mt-1 text-sm leading-6 text-muted-foreground">{children}</p>
@@ -48,17 +50,25 @@ export default async function ProjectPage() {
   const next = () => (step += 1) * DELAY;
 
   return (
-    <div className="flex w-full flex-col gap-16 py-8">
+    <div className="flex w-full flex-col gap-16 pb-8">
       <section id="projects" className="flex flex-col gap-6">
-        <BlurFade delay={next()}>
-          <Heading title={meta?.heading ?? FALLBACK.heading}>
-            {meta?.subtitle ?? FALLBACK.subtitle}
-          </Heading>
-        </BlurFade>
+        {/* The heading band runs to both edges and up under the top bar, with meteors behind it. */}
+        <div className="relative isolate -mx-4 -mt-24 overflow-hidden px-4 pb-8 pt-32 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+          <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+            <Meteors number={20} />
+          </div>
+          <BlurFade delay={next()}>
+            <Heading title={meta?.heading ?? FALLBACK.heading}>
+              {meta?.subtitle ?? FALLBACK.subtitle}
+            </Heading>
+          </BlurFade>
+        </div>
+
+        <ProjectVelocity projects={projects} />
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {projects.map((project) => (
-            <BlurFade key={project.id} delay={next()}>
+            <BlurFade key={project.id} delay={next()} className="h-full">
               <ProjectShowcase project={project} />
             </BlurFade>
           ))}
