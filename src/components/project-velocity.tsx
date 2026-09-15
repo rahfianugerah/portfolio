@@ -13,7 +13,7 @@ import type { Project } from "@/lib/content";
  * never renders empty while images are still being uploaded to the studio. It is decoration:
  * the grid beside it carries the links, so the band is hidden from assistive technology.
  *
- * It runs past the page's side padding to both edges of the screen.
+ * It runs past the centred column to both edges of the screen.
  */
 export function ProjectVelocity({ projects }: { projects: Project[] }) {
   const pictured = projects.filter((project) => project.image);
@@ -23,7 +23,7 @@ export function ProjectVelocity({ projects }: { projects: Project[] }) {
   const rows = [items, items.slice().reverse()];
 
   return (
-    <div aria-hidden className="relative -mx-4 overflow-hidden sm:-mx-6 lg:-mx-8">
+    <div aria-hidden className="bleed relative overflow-hidden">
       <ScrollVelocityContainer className="text-3xl font-bold tracking-tight sm:text-5xl">
         {rows.map((row, i) => (
           <ScrollVelocityRow

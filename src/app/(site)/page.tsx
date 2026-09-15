@@ -14,15 +14,14 @@ import QuoteCarousel from "@/app/components/quote-carousel";
 import { AssistantAvatar } from "@/components/assistant-avatar";
 import Clock from "@/components/clock";
 import { HardworkCard } from "@/components/hardwork-card";
+import { HeroGlobe } from "@/components/hero-globe";
 import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
+import { BentoGrid } from "@/components/magicui/bento-grid";
 import BlurFade from "@/components/magicui/blur-fade";
-import { Globe } from "@/components/magicui/globe";
+import { InteractiveHexagonPattern } from "@/components/magicui/interactive-hexagon-pattern";
+import { Marquee } from "@/components/magicui/marquee";
 import { Meteors } from "@/components/magicui/meteors";
 import { NumberTicker } from "@/components/magicui/number-ticker";
-import {
-  ScrollVelocityContainer,
-  ScrollVelocityRow,
-} from "@/components/magicui/scroll-based-velocity";
 import { ProjectShowcase } from "@/components/project-showcase";
 import { ProjectVelocity } from "@/components/project-velocity";
 import { ResumeCard } from "@/components/resume-card";
@@ -68,16 +67,14 @@ function SectionTitle({ title, children }: { title: string; children?: React.Rea
   );
 }
 
-// Runs a band past the page's side padding to both edges of the screen.
-const BLEED = "-mx-4 sm:-mx-6 lg:-mx-8";
+// A signal card fills the height of its bento cell, so every row ends on one line.
+const CELL = "*:h-full";
 
 /**
- * The home page, as one full-width landing page read top to bottom.
+ * The home page, read top to bottom in a centred column.
  *
- * It replaced a 440 pixel column between four sticky rails. Every card those rails carried is
- * still here, gathered into the signals section, and everything the column carried is still
- * here too, now with the width to breathe: the hero, the experience, the education, the
- * projects, the achievements, and the way to get in touch.
+ * The hero and the skills band run to both edges of the screen; everything else keeps to the
+ * column. The signal cards sit in a bento grid, sized so each row of cards ends on one line.
  */
 export default async function Page() {
   const [profile, roles, education, achievements, projects, certificates, skillGroups] =
@@ -105,32 +102,27 @@ export default async function Page() {
 
   return (
     <div className="flex flex-col pb-12">
-      <section
-        id="hero"
-        className={cn(
-          "relative isolate -mt-24 overflow-hidden px-4 pb-16 pt-32 sm:px-6 lg:px-8 lg:pb-24 lg:pt-40",
-          BLEED
-        )}
-      >
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          <Meteors number={24} />
-        </div>
+      <section id="hero" className="bleed relative isolate -mt-24 overflow-hidden border-b border-border">
+        <InteractiveHexagonPattern
+          radius={30}
+          className="-z-10 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_75%)]"
+        />
 
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 pt-32 pb-16 sm:px-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:px-8 lg:pt-36 lg:pb-20">
           <BlurFade delay={0.04}>
             {profile?.location && (
               <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
                 {profile.location}
               </p>
             )}
-            <h1 className="mt-4 text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl xl:text-7xl">
+            <h1 className="mt-4 text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl">
               {profile?.name}
             </h1>
             <p className="mt-4 text-lg sm:text-2xl">
               <AnimatedShinyText className="mx-0 max-w-none">{profile?.role}</AnimatedShinyText>
             </p>
             {profile?.summary && (
-              <div className="prose mt-6 max-w-2xl text-pretty text-sm leading-7 text-muted-foreground dark:prose-invert sm:text-base">
+              <div className="prose mt-6 max-w-2xl text-sm leading-7 text-muted-foreground dark:prose-invert sm:text-base">
                 <Markdown>{profile.summary}</Markdown>
               </div>
             )}
@@ -158,11 +150,9 @@ export default async function Page() {
           </BlurFade>
 
           <BlurFade delay={0.12}>
-            <div className="mx-auto flex w-full max-w-[520px] flex-col gap-4">
+            <div className="mx-auto flex w-full max-w-[440px] flex-col gap-4">
               {/* Jakarta, marked on a globe that turns on its own and follows a drag. */}
-              <div className="relative aspect-square w-full">
-                <Globe />
-              </div>
+              <HeroGlobe />
               <Clock />
             </div>
           </BlurFade>
@@ -170,29 +160,24 @@ export default async function Page() {
       </section>
 
       {skills.length > 0 && (
-        <section
-          aria-label="Skills"
-          className={cn("relative overflow-hidden border-y border-border py-6", BLEED)}
-        >
-          <ScrollVelocityContainer className="text-3xl font-bold tracking-tight sm:text-5xl">
-            <ScrollVelocityRow baseVelocity={2} direction={1} className="py-2">
-              {skills.map((skill) => (
-                <span key={skill} className="px-6">
+        <section aria-label="Skills" className="bleed relative overflow-hidden border-b border-border py-6">
+          <Marquee pauseOnHover className="[--duration:60s] [--gap:3rem]">
+            {skills.map((skill) => (
+              <span key={skill} className="whitespace-nowrap text-3xl font-bold tracking-tight sm:text-5xl">
+                {skill}
+              </span>
+            ))}
+          </Marquee>
+          <Marquee reverse pauseOnHover className="[--duration:60s] [--gap:3rem] text-muted-foreground">
+            {skills
+              .slice()
+              .reverse()
+              .map((skill) => (
+                <span key={skill} className="whitespace-nowrap text-3xl font-bold tracking-tight sm:text-5xl">
                   {skill}
                 </span>
               ))}
-            </ScrollVelocityRow>
-            <ScrollVelocityRow baseVelocity={2} direction={-1} className="py-2 text-muted-foreground">
-              {skills
-                .slice()
-                .reverse()
-                .map((skill) => (
-                  <span key={skill} className="px-6">
-                    {skill}
-                  </span>
-                ))}
-            </ScrollVelocityRow>
-          </ScrollVelocityContainer>
+          </Marquee>
           <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-linear-to-r from-background" />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-linear-to-l from-background" />
         </section>
@@ -200,13 +185,13 @@ export default async function Page() {
 
       <section aria-label="At a glance" className="mt-16">
         <BlurFade>
-          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border lg:grid-cols-4">
+          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border lg:grid-cols-4">
             {stats.map((stat) => (
               <div key={stat.label} className="flex flex-col-reverse bg-background p-6 sm:p-8">
                 <dt className="mt-3 text-xs font-medium uppercase tracking-widest text-muted-foreground">
                   {stat.label}
                 </dt>
-                <dd className="text-4xl font-bold tracking-tight sm:text-6xl">
+                <dd className="text-4xl font-bold tracking-tight sm:text-5xl">
                   <NumberTicker value={stat.value} />
                 </dd>
               </div>
@@ -224,7 +209,7 @@ export default async function Page() {
             href="/experience"
             className="mt-4 inline-flex items-center gap-1 text-sm font-medium underline underline-offset-4 hover:text-muted-foreground"
           >
-            Leadership and the full history
+            The full timeline
             <ArrowRight className="size-3.5" />
           </Link>
         </BlurFade>
@@ -291,8 +276,8 @@ export default async function Page() {
 
           <ProjectVelocity projects={projects} />
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {projects.slice(0, 8).map((project, i) => (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.slice(0, 6).map((project, i) => (
               <BlurFade key={project.id} delay={0.04 * i} className="h-full">
                 <ProjectShowcase project={project} />
               </BlurFade>
@@ -307,41 +292,68 @@ export default async function Page() {
         </BlurFade>
 
         {/*
-         * Columns rather than a grid: every card keeps its own height and the columns pack
-         * them, so no card is stretched to fill a row and no cell is ever left empty.
+         * A bento grid of four columns. Each row's cards stretch to the tallest one in it, and
+         * the spans tile every row with no hole: the photographs and quotations take two rows,
+         * the wide cards two columns.
          */}
-        <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 2xl:columns-4 *:mb-4 *:break-inside-avoid">
-          <AnalyticsWidget />
-          <GitHubCard />
-          <ExperienceGraph />
-          <ProjectsCounter />
-          <ImageCarousel />
-          <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
-            <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-              Rahfi&apos;s Specialties
+        <BlurFade delay={0.06}>
+          <BlurFadeFreeBento>
+            <div className="lg:row-span-2">
+              <ImageCarousel fill />
             </div>
-            <IconCloudSpecialties />
-          </div>
-          <QuoteCarousel />
-          <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
-            <TechStack />
-          </div>
-          <LatestBlogsWidget />
-          <ServicesCard />
-          <Link
-            href="/chat"
-            className="flex items-center gap-3 rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs transition-shadow hover:shadow-md"
-          >
-            <AssistantAvatar className="size-9" />
-            <span className="min-w-0">
-              <span className="block text-xs font-medium">Ask Ashley</span>
-              <span className="mt-0.5 block text-[11px] leading-4 text-muted-foreground">
-                Rahfi&apos;s AI assistant, on her own page
-              </span>
-            </span>
-          </Link>
-          <SocialLinks />
-        </div>
+            <div className="lg:row-span-2">
+              <QuoteCarousel fill />
+            </div>
+            <div className={cn("lg:col-span-2", CELL)}>
+              <AnalyticsWidget />
+            </div>
+            <div className={cn("lg:col-span-2", CELL)}>
+              <ExperienceGraph />
+            </div>
+            <div className={cn("lg:col-span-2 lg:row-span-2", CELL)}>
+              <GitHubCard />
+            </div>
+            <div className={cn("lg:col-span-2 lg:row-span-2", CELL)}>
+              <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
+                <TechStack />
+              </div>
+            </div>
+            <div className={CELL}>
+              <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
+                <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  Rahfi&apos;s Specialties
+                </div>
+                <IconCloudSpecialties />
+              </div>
+            </div>
+            <div className={CELL}>
+              <LatestBlogsWidget />
+            </div>
+            <div className={cn("lg:col-span-2", CELL)}>
+              <ServicesCard />
+            </div>
+            <div className={CELL}>
+              <ProjectsCounter />
+            </div>
+            <div className={CELL}>
+              <SocialLinks />
+            </div>
+            <div className={cn("lg:col-span-2", CELL)}>
+              <Link
+                href="/chat"
+                className="flex items-center gap-3 rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs transition-shadow hover:shadow-md"
+              >
+                <AssistantAvatar className="size-9" />
+                <span className="min-w-0">
+                  <span className="block text-sm font-medium">Ask Ashley</span>
+                  <span className="mt-0.5 block text-xs leading-4 text-muted-foreground">
+                    Rahfi&apos;s AI assistant, on her own page
+                  </span>
+                </span>
+              </Link>
+            </div>
+          </BlurFadeFreeBento>
+        </BlurFade>
       </section>
 
       {achievements.length > 0 && (
@@ -373,14 +385,14 @@ export default async function Page() {
 
       <section
         id="contact"
-        className="relative isolate mt-24 overflow-hidden rounded-lg border border-border px-6 py-16 text-center sm:py-24"
+        className="relative isolate mt-24 overflow-hidden rounded-xl border border-border px-6 py-16 text-center sm:py-24"
       >
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           <Meteors number={16} />
         </div>
         <BlurFade>
           <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">Let&apos;s Connect.</h2>
-          <p className="mx-auto mt-4 max-w-[600px] text-muted-foreground md:text-lg/relaxed">
+          <p className="mx-auto mt-4 max-w-[600px] text-center text-muted-foreground md:text-lg/relaxed">
             Want to chat? Just shoot me a dm with a direct question on{" "}
             <Link href={linkedIn ?? "#"} className="font-medium text-foreground underline underline-offset-4">
               LinkedIn
@@ -399,5 +411,14 @@ export default async function Page() {
         </BlurFade>
       </section>
     </div>
+  );
+}
+
+/** Magic UI's bento grid as the frame for the signal cards: rows sized by their content. */
+function BlurFadeFreeBento({ children }: { children: React.ReactNode }) {
+  return (
+    <BentoGrid className="auto-rows-auto grid-cols-1 md:grid-cols-2 lg:grid-flow-row-dense lg:grid-cols-4">
+      {children}
+    </BentoGrid>
   );
 }

@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { PiPaperPlaneTiltBold } from "react-icons/pi";
 
 // Client-side validation schema
 const formSchema = z.object({
@@ -233,7 +234,10 @@ export default function ContactForm() {
                 Sending...
               </>
             ) : (
-              "Send Message"
+              <>
+                <PiPaperPlaneTiltBold aria-hidden className="mr-2 h-4 w-4" />
+                Send Message
+              </>
             )}
           </Button>
         </form>

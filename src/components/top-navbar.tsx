@@ -1,9 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-import Image from "next/image";
 
 import { ModeToggle } from "@/components/mode-toggle";
 import { navItems } from "@/data/site";
@@ -11,15 +10,11 @@ import { cn } from "@/lib/utils";
 import { useSiteContent } from "@/lib/use-site-content";
 
 /**
- * The fixed top bar: the site's identity, the routes, and the online indicator.
+ * The fixed top bar, built the same as the consulting site's: a floating pill as wide as the
+ * page's column, the wordmark on the left, and the routes and the theme toggle on the right.
  *
- * It replaces header-home.tsx, which drew the same green dot as a card sitting inside the
- * main column. That put the status on the home page only, and left every other route with
- * no header at all. Same shape as the consulting site's bar, so the two navigate alike.
- *
- * The links are hidden below `md` rather than wrapped or collapsed into a menu, because the
- * bottom dock already carries the same routes as icons and is always visible. One bar or the
- * other is on screen at every width, and neither needs a hamburger.
+ * The routes hide below md, where the bottom dock carries them as icons, so one bar or the other
+ * is always on screen and neither needs a menu.
  */
 export default function TopNavbar() {
   const pathname = usePathname();
@@ -32,17 +27,15 @@ export default function TopNavbar() {
   return (
     <>
       {/*
-       * The band the page scrolls under. The pill's own backdrop-blur only covers the pill,
-       * so anything passing beside or above it arrived at the top edge perfectly sharp. This
-       * blurs the full width and is masked to transparent at its bottom edge, so content
-       * dissolves upward instead of being cut off by a line. The same trick the bottom dock
-       * uses, mirrored.
+       * The band the page scrolls under. The pill's own backdrop-blur covers only the pill, so
+       * anything passing beside it reached the top edge perfectly sharp; this blurs the full
+       * width and fades out at its lower edge.
        */}
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-30 h-28 w-full bg-background backdrop-blur-lg [-webkit-mask-image:linear-gradient(to_bottom,black_45%,transparent)] mask-[linear-gradient(to_bottom,black_45%,transparent)]" />
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-30 h-28 w-full bg-background backdrop-blur-lg [-webkit-mask-image:linear-gradient(to_bottom,black_45%,transparent)] [mask-image:linear-gradient(to_bottom,black_45%,transparent)]" />
 
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-4 sm:px-6 lg:px-8">
-        <nav className="pointer-events-auto grid min-h-14 w-full grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-lg border border-border bg-background/80 px-4 py-2 shadow-xs backdrop-blur-lg">
-          <Link href="/" className="justify-self-start text-base font-bold leading-none tracking-tight">
+      <header className="fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-4 sm:px-6 lg:px-8">
+        <nav className="flex min-h-14 w-full max-w-6xl items-center justify-between gap-2 rounded-lg border border-border bg-background/80 px-4 py-2 shadow-sm backdrop-blur-lg">
+          <Link href="/" className="shrink-0 text-base font-bold leading-none tracking-tight">
             {logo ? (
               // A wordmark's height, so swapping one for the other does not move the bar.
               <span className="relative block h-6 w-32">
@@ -56,45 +49,30 @@ export default function TopNavbar() {
                 />
               </span>
             ) : (
-              <>
-                Rahfi&apos;s | Portfolio.
-              </>
+              <>Rahfi&apos;s | Portfolio.</>
             )}
           </Link>
 
-          <span className="flex items-center justify-self-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-foreground opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-foreground" />
-            </span>
-            <span className="hidden text-[10px] uppercase tracking-wider font-bold text-muted-foreground sm:inline">
-              Rahfi is Online
-            </span>
-          </span>
-
-          <div className="flex items-center gap-1 justify-self-end">
-            <div className="hidden items-center gap-1 md:flex">
-            {navItems.map((item) => {
-              const current = isCurrent(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  aria-current={current ? "page" : undefined}
-                  className={cn(
-                    "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
-                    current
-                      ? "bg-accent text-accent-foreground"
-                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
+          <div className="flex items-center gap-1">
+            <div className="hidden items-center md:flex">
+              {navItems.map((item) => {
+                const current = isCurrent(item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={current ? "page" : undefined}
+                    className={cn(
+                      "rounded-md px-3 py-1.5 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
+                      current ? "text-foreground" : "text-muted-foreground"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </div>
-
-            <ModeToggle className="size-8" />
+            <ModeToggle className="size-9" />
           </div>
         </nav>
       </header>

@@ -1,10 +1,105 @@
 @import "tailwindcss";
-@import "tw-animate-css";
+@import "@heroui/styles";
 
 @plugin "@tailwindcss/typography";
 
 /* Matches the .dark class next-themes puts on <html>, and everything under it. */
 @custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * The palette, as full colours, so HeroUI components read the same variables the site does.
+ *
+ * HeroUI v3 reads --background, --foreground, --border, --muted, and --accent directly, and two
+ * of those mean something else to it: its --muted is a grey for text, and its --accent is the
+ * colour behind focus rings. Those two keep HeroUI's meaning here, set to grey and to black, and
+ * the surfaces this site calls muted and accent carry names of their own. The consulting site
+ * declares the same palette the same way.
+ *
+ * Unlayered on purpose: HeroUI declares its theme inside a cascade layer, and a declaration
+ * outside every layer wins over it whatever the selector.
+ */
+:root {
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(210 11.1% 3.53%);
+
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(210 11.1% 3.53%);
+
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(210 11.1% 3.53%);
+
+  --primary: hsl(0 0% 9%);
+  --primary-foreground: hsl(0 0% 98%);
+
+  --secondary: hsl(0 0% 96.1%);
+  --secondary-foreground: hsl(0 0% 9%);
+
+  --muted-surface: hsl(0 0% 96.1%);
+  --muted-foreground: hsl(0 0% 45.1%);
+
+  --accent-surface: hsl(0 0% 96.1%);
+  --accent-surface-foreground: hsl(0 0% 9%);
+
+  --destructive: hsl(0 84.2% 60.2%);
+  --destructive-foreground: hsl(0 0% 98%);
+
+  --border: hsl(0 0% 89.8%);
+  --input: hsl(0 0% 89.8%);
+  --ring: hsl(0 0% 3.9%);
+
+  --radius: 0.5rem;
+
+  /* HeroUI's own variables, in the same black, white, and greys. */
+  --muted: var(--muted-foreground);
+  --accent: var(--foreground);
+  --accent-foreground: var(--background);
+  --focus: var(--foreground);
+  --link: var(--foreground);
+  --surface: var(--card);
+  --surface-foreground: var(--card-foreground);
+  --surface-secondary: var(--muted-surface);
+  --surface-secondary-foreground: var(--foreground);
+  --surface-tertiary: hsl(0 0% 91%);
+  --surface-tertiary-foreground: var(--foreground);
+  --overlay: var(--popover);
+  --overlay-foreground: var(--popover-foreground);
+  --default: var(--muted-surface);
+  --default-foreground: var(--foreground);
+  --separator: var(--border);
+}
+
+/* Dark is pitch black: the page, the cards, and the popovers all sit on #000. */
+.dark {
+  --background: hsl(0 0% 0%);
+  --foreground: hsl(0 0% 98%);
+
+  --card: hsl(0 0% 0%);
+  --card-foreground: hsl(0 0% 98%);
+
+  --popover: hsl(0 0% 0%);
+  --popover-foreground: hsl(0 0% 98%);
+
+  --primary: hsl(0 0% 98%);
+  --primary-foreground: hsl(0 0% 9%);
+
+  --secondary: hsl(0 0% 14.9%);
+  --secondary-foreground: hsl(0 0% 98%);
+
+  --muted-surface: hsl(0 0% 12%);
+  --muted-foreground: hsl(0 0% 63.9%);
+
+  --accent-surface: hsl(0 0% 12%);
+  --accent-surface-foreground: hsl(0 0% 98%);
+
+  --destructive: hsl(0 62.8% 30.6%);
+  --destructive-foreground: hsl(0 0% 98%);
+
+  --border: hsl(0 0% 14.9%);
+  --input: hsl(0 0% 14.9%);
+  --ring: hsl(0 0% 83.1%);
+
+  --surface-tertiary: hsl(0 0% 16%);
+}
 
 @theme inline {
   /*
@@ -18,42 +113,38 @@
   --font-mono:
     var(--font-source-code), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
+  /* After HeroUI's own theme, so these names win. */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted-surface);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent-surface);
+  --color-accent-foreground: var(--accent-surface-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 }
 
-/* Magic UI's meteor and shiny text. */
+/* Magic UI's meteor, shiny text, and marquee. */
 @theme {
   --animate-meteor: meteor 5s linear infinite;
   --animate-shiny-text: shiny-text 8s infinite;
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
 
   @keyframes meteor {
     0% {
@@ -80,82 +171,44 @@
       background-position: calc(100% + var(--shiny-width)) 0;
     }
   }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+}
+
+/* A band that runs past the centred column to both edges of the screen. */
+@utility bleed {
+  margin-inline: calc(50% - 50vw);
 }
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 210 11.1% 3.53%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 210 11.1% 3.53%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 11.1% 3.53%;
-
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-
-    --radius: 0.5rem;
+  /* Every paragraph is justified. A centred one says so with text-center, which wins. */
+  p {
+    text-align: justify;
+    hyphens: auto;
   }
+}
 
-  .dark {
-    --background: 210 11.1% 3.53%;
-    --foreground: 0 0% 98%;
-
-    --card: 210 11.1% 3.53%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 210 11.1% 3.53%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-  }
-
-  /* Tailwind 4 borders default to currentcolor; every border here is the token instead. */
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-border);
-  }
-
-  body {
-    @apply bg-background text-foreground;
+@layer components {
+  /* HeroUI sets these in its muted utility, which on this site names a surface. */
+  .card__description,
+  .separator__content {
+    color: var(--muted);
   }
 }
 
@@ -188,6 +241,14 @@
   *::-webkit-scrollbar {
     display: none; /* Safari & Chrome */
   }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  /* HeroUI's base sets the body in its small size; the site's own scale starts at 16px. */
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 /* Hide the default floating reCAPTCHA v3 badge (inline branding is shown instead) */
