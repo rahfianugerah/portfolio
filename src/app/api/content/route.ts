@@ -8,7 +8,9 @@ import {
   getRoles,
   getServices,
   getSkillGroups,
+  type Project,
 } from "@/lib/content";
+import type { ProjectSummary } from "@/lib/use-site-content";
 
 /**
  * Everything a client component needs to render.
@@ -31,14 +33,35 @@ export async function GET() {
     getServices(),
   ]);
 
-  // The counter wants the number, not the eighteen documents behind it.
+  // The overview card wants a summary, not the eighteen documents behind it.
   return NextResponse.json({
     profile,
     skills,
     moments,
     quotes,
-    projectCount: projects.length,
+    projects: summarise(projects),
     roles,
     services,
   });
+}
+
+/** How many projects there are, by status, the stack they use most, and the first three. */
+function summarise(projects: Project[]): ProjectSummary {
+  const tally = (values: string[]) =>
+    Object.entries(
+      values.reduce<Record<string, number>>((counts, value) => {
+        counts[value] = (counts[value] ?? 0) + 1;
+        return counts;
+      }, {})
+    )
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+
+  return {
+    count: projects.length,
+    statuses: tally(projects.map((project) => project.status).filter(Boolean)),
+    technologies: tally(projects.flatMap((project) => project.technologies)).slice(0, 6),
+    // The studio orders the projects, so its first three are the ones chosen to lead.
+    featured: projects.slice(0, 3).map(({ slug, title }) => ({ slug, title })),
+  };
 }

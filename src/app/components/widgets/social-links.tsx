@@ -1,127 +1,109 @@
 "use client";
 
-import { WidgetFallback } from "@/components/widget-error-boundary";
-import { 
-  SiInstagram, 
-  SiDiscord, 
-  SiThreads,
-  SiGithub
-} from "react-icons/si";
-import { FaLinkedin } from "react-icons/fa";
-import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { ArrowUpRight, MapPin } from "lucide-react";
+import { SiDiscord, SiInstagram, SiThreads } from "react-icons/si";
 
-type SocialLink = {
+import { SOCIAL_ICON } from "@/components/social-icon";
+import { WidgetFallback } from "@/components/widget-error-boundary";
+import { useSiteContent } from "@/lib/use-site-content";
+
+type Row = {
   name: string;
   url: string;
-  icon: React.ComponentType<{ className?: string }>;
-  color: string;
+  handle: string;
+  Icon: React.ComponentType<{ className?: string }>;
 };
 
-const SOCIAL_LINKS: SocialLink[] = [
-  {
-    name: "Instagram",
-    url: "https://instagram.com/nrhfx", // Replace with your username
-    icon: SiInstagram,
-    color: "hover:bg-foreground/10 hover:text-foreground",
-  },
-  {
-    name: "Threads",
-    url: "https://threads.net/@nrhfx", // Replace with your username
-    icon: SiThreads,
-    color: "hover:bg-foreground/20 hover:text-foreground",
-  },
-  {
-    name: "Discord",
-    url: "https://discord.com/users/rhfx", // Replace with your username or server invite
-    icon: SiDiscord,
-    color: "hover:bg-foreground/10 hover:text-foreground",
-  },
-  {
-    name: "LinkedIn",
-    url: "https://linkedin.com/in/naufalrahfi", // Replace with your username
-    icon: FaLinkedin,
-    color: "hover:bg-foreground/10 hover:text-foreground",
-  },
-  {
-    name: "GitHub",
-    url: "https://github.com/naufalrahfi", // Replace with your username
-    icon: SiGithub,
-    color: "hover:bg-foreground/10 hover:text-foreground dark:hover:bg-gray-400/20 dark:hover:text-gray-400",
-  },
+// ponytail: these three are not in the studio's profile yet, whose link icons cover GitHub,
+// LinkedIn, email, a file, and a website. Move them there once it has icons for them.
+const EXTRA_LINKS: Row[] = [
+  { name: "Instagram", url: "https://instagram.com/nrhfx", handle: "nrhfx", Icon: SiInstagram },
+  { name: "Threads", url: "https://threads.net/@nrhfx", handle: "@nrhfx", Icon: SiThreads },
+  { name: "Discord", url: "https://discord.com/users/rhfx", handle: "rhfx", Icon: SiDiscord },
 ];
 
-type SocialLinksProps = {
-  orientation?: "horizontal" | "vertical";
-};
+// A link comes from the dataset, so only a web or mail link is ever rendered into an href.
+const SAFE_URL = /^(https?:|mailto:)/i;
 
-export default function SocialLinks({ orientation = "horizontal" }: SocialLinksProps) {
-  // Check if we have valid social links
-  const hasLinks = SOCIAL_LINKS.length > 0;
+/** What a link reads as beside its name: the account at the end of its URL, or the file. */
+function handleOf(icon: string, url: string): string {
+  if (icon === "file") return "View";
+  try {
+    const parsed = new URL(url);
+    return parsed.pathname.split("/").filter(Boolean).at(-1) ?? parsed.hostname;
+  } catch {
+    return "";
+  }
+}
 
-  if (!hasLinks) {
+/**
+ * Where to find Rahfi: the city, every profile link from the studio with the account it points
+ * at, the networks not in the studio yet, and the contact form.
+ */
+export default function SocialLinks() {
+  const content = useSiteContent();
+  const profile = content?.profile;
+
+  const rows: Row[] = [
+    ...(profile?.social ?? [])
+      .filter((link) => SAFE_URL.test(link.url))
+      .map((link) => ({
+        name: link.name,
+        url: link.url,
+        handle: handleOf(link.icon, link.url),
+        Icon: SOCIAL_ICON[link.icon] ?? SOCIAL_ICON.globe,
+      })),
+    ...EXTRA_LINKS,
+  ];
+
+  if (rows.length === 0) {
     return <WidgetFallback message="Data Unavailable" />;
   }
 
-  // Vertical floating style for outer side rails - Square cards
-  if (orientation === "vertical") {
-    return (
-      <div className="flex flex-col gap-2">
-        {SOCIAL_LINKS.map((link) => {
-          const Icon = link.icon;
-          return (
-            <a
-              key={link.name}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                "flex items-center justify-center w-12 h-12 rounded-lg",
-                "border border-border bg-card/90 backdrop-blur-xs shadow-xs",
-                "text-muted-foreground",
-                "transition-all duration-200",
-                link.color
-              )}
-              aria-label={`Follow on ${link.name}`}
-              title={link.name}
-            >
-              <Icon className="h-5 w-5" />
-            </a>
-          );
-        })}
-      </div>
-    );
-  }
-
-  // Default horizontal card style
   return (
-    <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
-      <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
+    <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
+      <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
         Connect With Me
       </div>
 
-      <div className="flex items-center justify-center gap-2">
-        {SOCIAL_LINKS.map((link) => {
-          const Icon = link.icon;
-          return (
+      {profile?.location && (
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <MapPin className="size-3.5 shrink-0" />
+          {profile.locationLink && SAFE_URL.test(profile.locationLink) ? (
+            <a href={profile.locationLink} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
+              {profile.location}
+            </a>
+          ) : (
+            profile.location
+          )}
+        </div>
+      )}
+
+      <ul className="flex flex-col divide-y divide-border">
+        {rows.map(({ name, url, handle, Icon }) => (
+          <li key={url}>
             <a
-              key={link.name}
-              href={link.url}
+              href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(
-                "flex items-center justify-center p-2.5 rounded-lg",
-                "bg-muted/50 text-muted-foreground",
-                "transition-all duration-200",
-                link.color
-              )}
-              aria-label={`Follow on ${link.name}`}
-              title={link.name}
+              className="group flex items-center gap-2.5 py-1.5 text-xs"
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" />
+              <span className="font-medium">{name}</span>
+              <span className="ml-auto truncate text-muted-foreground">{handle}</span>
+              <ArrowUpRight className="size-3 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" />
             </a>
-          );
-        })}
-      </div>
+          </li>
+        ))}
+      </ul>
+
+      <Link
+        href="/contact"
+        className="mt-auto inline-flex items-center justify-center rounded-md border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+      >
+        Send a message
+      </Link>
     </div>
   );
 }

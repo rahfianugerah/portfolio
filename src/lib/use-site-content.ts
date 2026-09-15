@@ -4,12 +4,22 @@ import { useEffect, useState } from "react";
 
 import type { Moment, Profile, Quote, Role, Service, SkillGroup } from "@/lib/content";
 
+type Tally = { name: string; count: number };
+
+export type ProjectSummary = {
+  count: number;
+  statuses: Tally[];
+  /** The six technologies the most projects use, most first. */
+  technologies: Tally[];
+  featured: { slug: string; title: string }[];
+};
+
 export type SiteContent = {
   profile: Profile | null;
   skills: SkillGroup[];
   moments: Moment[];
   quotes: Quote[];
-  projectCount: number;
+  projects: ProjectSummary;
   roles: Role[];
   services: Service[];
 };
