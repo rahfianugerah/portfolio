@@ -1,11 +1,12 @@
 # Rahfi's Portfolio
 
-![Next](https://img.shields.io/badge/Next-14.2.30-000000?logo=nextdotjs&logoColor=white)
-![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-3178C6?logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.17-06B6D4?logo=tailwindcss&logoColor=white)
-![Sanity](https://img.shields.io/badge/Sanity-3.99.0-F03E2F?logo=sanity&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-2.86.2-3FCF8E?logo=supabase&logoColor=white)
+![Next](https://img.shields.io/badge/Next-16.3.5-000000?logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React-19.3.0-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.3.3-06B6D4?logo=tailwindcss&logoColor=white)
+![HeroUI](https://img.shields.io/badge/HeroUI-3.2.5-000000)
+![Sanity](https://img.shields.io/badge/Sanity-6.13.2-F03E2F?logo=sanity&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-2.116.0-3FCF8E?logo=supabase&logoColor=white)
 ![Node](https://img.shields.io/badge/Node-20-5FA04E?logo=nodedotjs&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-Managed-000000?logo=vercel&logoColor=white)
 ![Testing](https://img.shields.io/badge/Testing-None_Yet-lightgrey)
@@ -43,9 +44,9 @@ The two are the same person at two levels of formality.
 
 | Feature | Where | What it does |
 | :- | :- | :- |
-| Interactive home | `/` | A full-width landing page: meteors behind the hero, a draggable globe marking Jakarta, rows that drift faster as the page scrolls, and figures that count up as they come into view |
-| Résumé and work history | `/`, `/experience` | Every role, education entry, and leadership position, grouped by company and expandable |
-| Project catalogue | `/project` | Full width, one preview image or video per project, with the source and the running site both linked |
+| Interactive home | `/` | A landing page in a centred column: hexagons behind the hero that light up under the pointer, a draggable globe marking Jakarta, a marquee of skills, project rows that drift faster as the page scrolls, and figures that count up as they come into view |
+| Résumé and work history | `/`, `/experience` | Every role, education entry, and leadership position, grouped by company. On `/experience` each sits on an Aceternity UI timeline that fills as the page scrolls |
+| Project catalogue | `/project` | HeroUI cards with one preview image or video per project, the source and the running site both linked, and a terminal while the page loads |
 | Certificates | `/project` | Professional certifications and course completions, five to a page. A certificate with an uploaded PDF opens on the page itself rather than sending the reader away |
 | Blog | `/blog`, `/blog/[slug]` | Posts written in the studio, rendered through Portable Text with syntax-highlighted code blocks |
 | Services | The signals section on `/` | A summary of what the work covers. The engagement itself is the consulting practice, and the card links there |
@@ -55,7 +56,7 @@ The two are the same person at two levels of formality.
 
 ### The Signals Dashboard
 
-The home page ends on a section of live cards, packed into columns so each keeps its own height. Each one is independent: it renders a skeleton while it loads and a fallback if its source is unreachable, so one failing card never takes the page with it.
+The home page ends on a Magic UI bento grid of live cards, spanned so every row ends on one line. Each one is independent: it renders a skeleton while it loads and a fallback if its source is unreachable, so one failing card never takes the page with it.
 
 | Card | Source |
 | :- | :- |
@@ -86,17 +87,19 @@ The home page ends on a section of live cards, packed into columns so each keeps
 | Category | Technology | Version |
 | :- | :- | :- |
 | Runtime | Node | 20 |
-| Framework | Next | 14.2.30 |
-| Language | TypeScript | 5.8.3 |
-| Build tool | Next, webpack | 14.2.30 |
-| Router | Next App Router | 14.2.30 |
-| Data fetching | Server Components, server actions, `fetch` | 14.2.30 |
-| Styling | Tailwind CSS, shadcn token layer | 3.4.17 |
-| Icons | Lucide, React Icons | 0.395.0, 5.5.0 |
-| Content | Sanity, Portable Text | 3.99.0 |
-| Database | Supabase, PostgreSQL | 2.86.2 |
+| Framework | Next | 16.3.5 |
+| Language | TypeScript | 6.0.3 |
+| Build tool | Next, Turbopack | 16.3.5 |
+| Router | Next App Router | 16.3.5 |
+| Data fetching | Server Components, server actions, `fetch` | 16.3.5 |
+| Styling | Tailwind CSS, shadcn token layer, HeroUI theme | 4.3.3 |
+| Icons | Lucide, React Icons | 1.46.0, 5.7.0 |
+| Content | Sanity, Portable Text | 6.13.2 |
+| Database | Supabase, PostgreSQL | 2.116.0 |
 | AI | Ollama Cloud, over HTTP with an API key | No client library |
-| Animation | Framer Motion | 11.18.2 |
+| Animation | Framer Motion | 13.3.0 |
+| UI components | HeroUI | 3.2.5 |
+| Copied components | Magic UI, Aceternity UI, shadcn/ui | Source in the repository |
 | Testing | <code style="color: red">Not Used</code> | |
 | Deployment | Vercel | Managed |
 
@@ -185,7 +188,7 @@ src/
 | `.env.example` | Environment variable reference |
 | `next.config.mjs` | Remote image hosts and redirects for moved routes |
 | `vercel.json` | Region, branch deployment, and security headers |
-| `tailwind.config.ts` | Fonts, palette bindings, and the collapsed radius scale |
+| `eslint.config.mjs` | ESLint flat config, extending Next's core web vitals rules |
 | `sanity.config.ts` | CMS studio configuration |
 | `supabase-schema.sql` | Analytics tables |
 | `supabase-rls-policies.sql` | Row-level security policies |
@@ -265,7 +268,7 @@ Home carries anchored sections: `#hero`, `#experience`, `#education`, `#projects
 | `TopNavbar` | Layout | Fixed top bar: the wordmark, the routes with the current one marked, the online indicator, and the blur band the page scrolls under |
 | `Navbar` | Layout | The bottom dock, shown only below `md` where the top bar hides its links: the same routes as icons, plus socials and the theme toggle |
 | `ResumeCard` | Feature | One company, expandable |
-| `ProjectShowcase` | Feature | One project: preview, tags, source and site links |
+| `ProjectShowcase` | Feature | One project as a HeroUI card: preview, tags, source and site links |
 | `CertificateList` | Feature | Certificates, five to a page, with the PDF readable in place |
 | `ProjectVelocity` | Feature | Project previews, or titles until there are previews, in two rows that drift faster as the page scrolls |
 | `GitHubCard` | Feature | The GitHub profile, an activity strip, and the latest repositories |
@@ -273,6 +276,12 @@ Home carries anchored sections: `#hero`, `#experience`, `#education`, `#projects
 | `Meteors` | Magic UI | Meteors falling behind the hero and the page headings |
 | `ScrollVelocityRow` | Magic UI | A row of anything that drifts sideways and speeds up with the scroll |
 | `NumberTicker` | Magic UI | A figure that counts up when it scrolls into view |
+| `InteractiveHexagonPattern` | Magic UI | The hexagon grid behind the hero, lit under the pointer |
+| `Marquee` | Magic UI | The skills band, moving on its own and pausing under the pointer |
+| `BentoGrid` | Magic UI | The frame the signal cards are laid into |
+| `Terminal` | Magic UI | What `/project` and a single project show while they load |
+| `Timeline` | Aceternity UI | The rail `/experience` sets every role and school on |
+| `SiteFooter` | Layout | Columns of routes and links, and a closing line divided by HeroUI separators |
 | `AssistantChat` | Feature | Ashley, on `/chat` |
 
 ### Important Component Details
@@ -406,13 +415,15 @@ they existed for a media library that no longer does.
 
 ### Styling Method
 
-Tailwind CSS 3 over a shadcn HSL token layer in `src/app/globals.css`.
+Tailwind CSS 4, configured CSS-first in `src/app/globals.css`, over the shadcn tokens and HeroUI's
+theme variables.
 
 ### Design System
 
-Shared with `consulting.rahfi.pro`, and defined here: a shadcn HSL token layer with a light and a
-dark theme, rounded cards on a soft shadow, and no colour at all: black, white, and the greys
-between. Section titles follow one pattern, `Rahfi's | Title.`, in the same colour as the text
+Shared with `consulting.rahfi.pro`, and defined here: a shadcn token layer with a light and a
+pitch black dark theme, rounded cards on a soft shadow, and no colour at all: black, white, and
+the greys between. HeroUI's variables point at the same palette, so its cards, separators, and
+skeletons match, and every paragraph is justified. Section titles follow one pattern, `Rahfi's | Title.`, in the same colour as the text
 around them.
 
 > [!note]
@@ -424,7 +435,7 @@ around them.
 | Item | Source |
 | :- | :- |
 | Colors | `src/app/globals.css`, `:root` and `.dark` |
-| Typography | `src/app/layout.tsx` and `tailwind.config.ts` |
+| Typography | `src/app/layout.tsx` and `src/app/globals.css` |
 | Spacing | Tailwind defaults |
 | Breakpoints | Tailwind defaults |
 
@@ -437,9 +448,8 @@ around them.
 | Source Code Pro | Code blocks only | SIL OFL 1.1, Google Fonts |
 
 > [!warning]
-> Google Sans is not in Next 14's font catalogue, so unlike the consulting site this one cannot
-> load it through `next/font` and takes a stylesheet link in `src/app/layout.tsx` instead, with a
-> preconnect pair in front of it. Inter is loaded through `next/font` and named behind Google Sans
+> Google Sans arrives through a stylesheet link in `src/app/layout.tsx` rather than `next/font`,
+> with a preconnect pair in front of it. Inter is loaded through `next/font` and named behind Google Sans
 > in the family stack, so a slow font response does not shift the page. The lint rule that fires
 > on that link is a Pages Router rule and is disabled at the line.
 
@@ -449,8 +459,8 @@ around them.
 
 ### Responsive Design
 
-Tailwind's default breakpoints. The signals grid is a bento at `lg`, two uniform columns at `sm`,
-and a single column below.
+Tailwind's default breakpoints, with every page in a 1152 pixel column. The signals bento has four
+columns at `lg`, two at `md`, and one below.
 
 ### Accessibility Practices
 
@@ -629,7 +639,7 @@ approval.
 | Unused packages removed from `package.json` but still installed | `node_modules` is larger than it needs to be, and still holds `@google-cloud/storage`, `sharp` and `file-type` | Run `npm install` |
 | The home carousels are empty until something is published | Two cards on the home page show a placeholder line | Upload `moment` and `quote` documents in the studio |
 | The résumé download is the Google Drive link in `src/data/resume.tsx` | Replacing the CV is a commit, and the previous file stays reachable | Give the résumé a Sanity document with a file field |
-| Two majors behind on Next | Missing framework fixes | Upgrade 14 to 16; two call sites break on Next 15's async request APIs |
+| TypeScript and ESLint are held a major behind | typescript-eslint supports TypeScript up to 6.0, and the React, import, and accessibility plugins in eslint-config-next do not yet run on ESLint 10 | Move to TypeScript 7 and ESLint 10 once those packages support them |
 | The GitHub activity graph is decorative | The squares are randomised, not real contribution data | Use the GitHub contributions API |
 | No test suite | Regressions are caught by review only | Add end-to-end coverage of the routes |
 | Ashley needs `OLLAMA_API_KEY` in every environment | Without it every answer is "(Ashley lost her connection. Please try again.)", and the real reason, the missing key, is only in the server log | Set the key in `.env` locally and in each Vercel environment, then restart the dev server, which reads the environment once at startup |
