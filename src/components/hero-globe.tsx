@@ -8,11 +8,14 @@ const Globe = dynamic(() => import("@/components/magicui/globe").then((module) =
   ssr: false,
 });
 
-/** The hero's globe, marking Jakarta, in a square that holds its space while it loads. */
-export function HeroGlobe() {
+/**
+ * The hero's globe, marking Jakarta with a beacon whose tooltip carries the profile image, in a
+ * square that holds its space while it loads.
+ */
+export function HeroGlobe({ avatar, initials }: { avatar: string | null; initials: string }) {
   return (
     <div aria-hidden className="relative aspect-square w-full">
-      <Globe />
+      <Globe avatar={avatar} initials={initials} />
     </div>
   );
 }

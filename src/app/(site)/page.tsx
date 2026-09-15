@@ -151,7 +151,7 @@ export default async function Page() {
           <BlurFade delay={0.12}>
             <div className="mx-auto flex w-full max-w-[440px] flex-col gap-4">
               {/* Jakarta, marked on a globe that turns on its own and follows a drag. */}
-              <HeroGlobe />
+              <HeroGlobe avatar={profile?.avatar ?? null} initials={profile?.initials ?? ""} />
               <Clock />
             </div>
           </BlurFade>

@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import createGlobe, { type COBEOptions } from "cobe";
 import { useMotionValue, useSpring } from "framer-motion";
 import { useTheme } from "next-themes";
 
 import { cn } from "@/lib/utils";
 
-// Magic UI's Globe, changed in four ways: one marker, on Jakarta; black and white in both
-// themes; no WebGL context until the canvas has a width; and cobe 2's update() in place of the
-// render callback cobe 0.6 took.
+// Magic UI's Globe, changed in five ways: one marker, on Jakarta; black and white in both
+// themes; no WebGL context until the canvas has a width; cobe 2's update() in place of the
+// render callback cobe 0.6 took; and a beacon with a tooltip pinned to the marker.
 
 const MOVEMENT_DAMPING = 1400;
 
@@ -32,7 +33,8 @@ const GLOBE_CONFIG: COBEOptions = {
   baseColor: [1, 1, 1],
   markerColor: [0.04, 0.04, 0.04],
   glowColor: [1, 1, 1],
-  markers: [{ location: JAKARTA, size: 0.08 }],
+  // The id makes cobe publish the marker as the CSS anchor --cobe-jakarta, which the beacon uses.
+  markers: [{ location: JAKARTA, size: 0.08, id: "jakarta" }],
 };
 
 // On a dark page the land lightens and the marker turns white, or both vanish into the sphere.
@@ -48,9 +50,14 @@ const DARK_CONFIG: Partial<COBEOptions> = {
 export function Globe({
   className,
   config = GLOBE_CONFIG,
+  avatar = null,
+  initials = "",
 }: {
   className?: string;
   config?: COBEOptions;
+  /** The profile image the beacon's tooltip shows, or null to show the initials instead. */
+  avatar?: string | null;
+  initials?: string;
 }) {
   const dark = useTheme().resolvedTheme === "dark";
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -147,6 +154,22 @@ export function Globe({
         onMouseMove={(e) => updateMovement(e.clientX)}
         onTouchMove={(e) => e.touches[0] && updateMovement(e.touches[0].clientX)}
       />
+
+      {/* Pinned to the Jakarta marker, and shown only while it faces the reader: globals.css. */}
+      <div className="globe-beacon">
+        <span className="absolute -left-3 -top-3 size-6 animate-ping rounded-full bg-foreground/40" />
+        <span className="absolute -left-1.5 -top-1.5 size-3 rounded-full border-2 border-background bg-foreground" />
+        <div className="absolute bottom-4 left-0 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full border border-border bg-popover py-1 pl-1 pr-3 text-xs font-medium text-popover-foreground shadow-lg">
+          {avatar ? (
+            <Image src={avatar} alt="" width={24} height={24} className="size-6 rounded-full object-cover" />
+          ) : (
+            <span className="grid size-6 place-items-center rounded-full bg-foreground text-[10px] font-bold text-background">
+              {initials}
+            </span>
+          )}
+          I&apos;m right here!
+        </div>
+      </div>
     </div>
   );
 }

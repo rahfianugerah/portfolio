@@ -283,6 +283,30 @@
   }
 }
 
+/* The beacon on the globe's Jakarta marker. cobe 2 publishes a marker that has an id as the CSS
+   anchor --cobe-<id>, and sets --cobe-visible-<id> on :root while that marker faces the reader.
+   The value it sets is deliberately invalid, so opacity and scale fall to their initial values,
+   fully shown, and back to the fallback, hidden, once cobe removes it. A browser without anchor
+   positioning shows no beacon rather than one in the wrong place. */
+.globe-beacon {
+  position: absolute;
+  position-anchor: --cobe-jakarta;
+  left: anchor(center);
+  top: anchor(center);
+  opacity: var(--cobe-visible-jakarta, 0);
+  scale: var(--cobe-visible-jakarta, 0.6);
+  transition:
+    opacity 300ms ease-out,
+    scale 300ms ease-out;
+  pointer-events: none;
+}
+
+@supports not (anchor-name: --globe) {
+  .globe-beacon {
+    display: none;
+  }
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
