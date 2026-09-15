@@ -4,7 +4,7 @@ import { schemaTypes } from './src/sanity/schemaTypes/index'
 import { codeInput } from '@sanity/code-input'
 
 /**
- * Black and white, and nothing else changed.
+ * Black and white, set in Google Sans, and nothing else changed.
  *
  * buildLegacyTheme returns a complete theme and takes defaults for anything not named here,
  * so only the brand accent and the two ends of the greyscale move. Success, warning and
@@ -26,6 +26,11 @@ const theme = buildLegacyTheme({
   // The focus ring is the field's own border rather than a second, heavier one drawn around
   // it: a clicked input should read as the same box, not a different one.
   '--focus-color': '#d8d8d8',
+
+  // The face both sites are set in. The root layout already loads Google Sans for every route,
+  // the studio included, so naming it is all the studio needs. Inter, loaded by next/font, sits
+  // behind it for the moment before the stylesheet arrives.
+  '--font-family-base': '"Google Sans", var(--font-sans), ui-sans-serif, system-ui, sans-serif',
 })
 
 export default defineConfig({
