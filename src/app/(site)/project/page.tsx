@@ -1,7 +1,7 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { CertificateList } from "@/components/certificate-list";
 import { BentoGrid } from "@/components/magicui/bento-grid";
-import { Meteors } from "@/components/magicui/meteors";
+import { InteractiveHexagonPattern } from "@/components/magicui/interactive-hexagon-pattern";
 import { ProjectShowcase } from "@/components/project-showcase";
 import { ProjectMarquee } from "@/components/project-marquee";
 import { getCertificates, getPageMeta, getProjects } from "@/lib/content";
@@ -71,11 +71,12 @@ export default async function ProjectPage() {
   return (
     <div className="flex w-full flex-col gap-16 pb-8">
       <section id="projects" className="flex flex-col gap-6">
-        {/* The heading band runs to both edges and up under the top bar, with meteors behind it. */}
+        {/* The heading band runs to both edges and up under the top bar, over the interactive hexagons. */}
         <div className="relative isolate -mx-4 -mt-24 overflow-hidden px-4 pb-8 pt-32 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-          <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-            <Meteors number={20} />
-          </div>
+          <InteractiveHexagonPattern
+            radius={28}
+            className="-z-10 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_80%)]"
+          />
           <BlurFade delay={DELAY}>
             <Heading title={meta?.heading ?? FALLBACK.heading}>
               {meta?.subtitle ?? FALLBACK.subtitle}

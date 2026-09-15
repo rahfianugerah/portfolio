@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import BlurFade from "@/components/magicui/blur-fade";
-import { Meteors } from "@/components/magicui/meteors";
+import { InteractiveHexagonPattern } from "@/components/magicui/interactive-hexagon-pattern";
 import { Timeline, type TimelineEntry } from "@/components/ui/timeline";
 import { getEducation, getPageMeta, getRoles, type Education } from "@/lib/content";
 import { groupRolesByCompany, type GroupedCompany } from "@/lib/group-roles";
@@ -149,9 +149,10 @@ export default async function ExperiencePage() {
   return (
     <div className="flex flex-col gap-16 pb-12">
       <header className="relative isolate -mx-4 -mt-24 overflow-hidden px-4 pt-32 pb-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          <Meteors number={18} />
-        </div>
+        <InteractiveHexagonPattern
+          radius={28}
+          className="-z-10 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_80%)]"
+        />
         <BlurFade delay={0.04}>
           <Intro title="Full-List | Experiences.">
             I have engaged in a wide range of experiences, both personal and collaborative, that

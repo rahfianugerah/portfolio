@@ -19,7 +19,6 @@ import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
 import { BentoGrid } from "@/components/magicui/bento-grid";
 import BlurFade from "@/components/magicui/blur-fade";
 import { InteractiveHexagonPattern } from "@/components/magicui/interactive-hexagon-pattern";
-import { Meteors } from "@/components/magicui/meteors";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { MarqueeBand } from "@/components/marquee-band";
 import { ResumeCard } from "@/components/resume-card";
@@ -344,9 +343,10 @@ export default async function Page() {
         id="contact"
         className="relative isolate mt-24 overflow-hidden rounded-xl border border-border px-6 py-16 text-center sm:py-24"
       >
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          <Meteors number={16} />
-        </div>
+        <InteractiveHexagonPattern
+          radius={28}
+          className="-z-10 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_80%)]"
+        />
         <BlurFade>
           <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">Let&apos;s Connect.</h2>
           <p className="mx-auto mt-4 max-w-[600px] text-center text-muted-foreground md:text-lg/relaxed">

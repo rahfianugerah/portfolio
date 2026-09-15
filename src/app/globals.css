@@ -139,28 +139,13 @@
   --radius-sm: calc(var(--radius) - 4px);
 }
 
-/* Magic UI's meteor, shiny text, and marquee. Inline, so an animation that reads a variable, such
+/* Magic UI's shiny text and marquee. Inline, so an animation that reads a variable, such
    as the marquee's var(--duration), resolves it on the element rather than on :root, where it is
    not set and the whole value would be thrown away. */
 @theme inline {
-  --animate-meteor: meteor 5s linear infinite;
   --animate-shiny-text: shiny-text 8s infinite;
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
-
-  @keyframes meteor {
-    0% {
-      transform: rotate(var(--angle)) translateX(0);
-      opacity: 1;
-    }
-    70% {
-      opacity: 1;
-    }
-    100% {
-      transform: rotate(var(--angle)) translateX(-500px);
-      opacity: 0;
-    }
-  }
 
   @keyframes shiny-text {
     0%,
