@@ -1,11 +1,30 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { CertificateList } from "@/components/certificate-list";
+import { BentoGrid } from "@/components/magicui/bento-grid";
 import { Meteors } from "@/components/magicui/meteors";
 import { ProjectShowcase } from "@/components/project-showcase";
 import { ProjectMarquee } from "@/components/project-marquee";
 import { getCertificates, getPageMeta, getProjects } from "@/lib/content";
+import { cn } from "@/lib/utils";
 
 const DELAY = 0.04;
+
+// Five projects tile three columns by three rows exactly: one large cell, two stacked beside it,
+// then one and one wide. A short last group takes the tiling for its own count, so the grid never
+// ends on a hole. Every span is lg-only: below it the grid is one or two plain columns.
+const GROUP = ["lg:col-span-2 lg:row-span-2", "", "", "", "lg:col-span-2"];
+const TAIL: Record<number, string[]> = {
+  1: ["lg:col-span-3"],
+  2: ["lg:col-span-2", ""],
+  3: ["", "", ""],
+  4: ["lg:col-span-2 lg:row-span-2", "", "", "lg:col-span-3"],
+};
+
+function span(index: number, total: number) {
+  const slot = index % 5;
+  const left = total - (index - slot);
+  return left >= 5 ? GROUP[slot] : TAIL[left][slot];
+}
 
 // What the page said before the studio could say it. A route with no pageMeta document
 // keeps these words, so writing one is optional rather than a prerequisite.
@@ -66,13 +85,17 @@ export default async function ProjectPage() {
 
         <ProjectMarquee projects={projects} className="border-t" />
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        <BentoGrid className="auto-rows-[18rem] grid-cols-1 md:grid-cols-2 lg:auto-rows-[15rem] lg:grid-flow-row-dense lg:grid-cols-3">
           {projects.map((project, i) => (
-            <BlurFade key={project.id} delay={DELAY * (2 + i)} className="h-full">
+            <BlurFade
+              key={project.id}
+              delay={DELAY * (2 + i)}
+              className={cn("h-full", span(i, projects.length))}
+            >
               <ProjectShowcase project={project} />
             </BlurFade>
           ))}
-        </div>
+        </BentoGrid>
       </section>
 
       <section id="certifications" className="flex flex-col gap-6">
