@@ -45,11 +45,7 @@ export default function Clock() {
   return (
     <div className="flex w-full flex-col items-center justify-center rounded-lg border bg-card py-6 text-card-foreground shadow-xs">
       {/* Label */}
-      <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
-        <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-foreground opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-foreground"></span>
-        </span>
+      <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
         Jakarta, ID
       </div>
       
