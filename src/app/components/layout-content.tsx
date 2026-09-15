@@ -50,7 +50,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
       <Navbar />
 
       {/* MOBILE LAYOUT - Sequential order */}
-      <div className="lg:hidden mx-auto max-w-7xl px-4 pt-24 pb-6 min-h-screen">
+      <div className="lg:hidden px-4 pt-24 pb-6 min-h-screen">
         <div className="flex flex-col gap-4">
           {!isFullPage && (
             <>
@@ -132,10 +132,10 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
       {/* DESKTOP LAYOUT */}
       <div className="hidden lg:block pt-24 pb-6 min-h-screen">
         {/* 3xl+ screens (1800px+): 5-column layout, fitting all 4 rails plus main */}
-        <div className="hidden 3xl:flex justify-center gap-4 px-4 max-w-[1800px] mx-auto items-start">
+        <div className="hidden 3xl:flex gap-4 px-4 items-start">
           {/* FAR LEFT RAIL - Tech Stack, Specialties, Projects (starts lower for stair effect) */}
           {!isFullPage && (
-            <div className="grow max-w-72 min-w-[200px] sticky top-48 h-[calc(100vh-14rem)]">
+            <div className="w-72 shrink-0 sticky top-48 h-[calc(100vh-14rem)]">
               <div className="relative h-full">
                 <div className="h-full overflow-y-auto no-scrollbar pb-8">
                   <BlurFade delay={0.15}>
@@ -150,7 +150,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
           {/* LEFT RAIL - Images, Graph, GitHub (middle height) */}
           {!isFullPage && (
-            <div className="grow max-w-72 min-w-[200px] sticky top-36 h-[calc(100vh-11rem)]">
+            <div className="w-72 shrink-0 sticky top-36 h-[calc(100vh-11rem)]">
               <div className="relative h-full">
                 <div className="h-full overflow-y-auto no-scrollbar pb-8">
                   <BlurFade delay={0.2}>
@@ -164,17 +164,13 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
           )}
 
           {/* MAIN CONTENT (top level - highest) */}
-          <main
-            className={`flex flex-col gap-4 min-w-0 pb-32 ${
-              isFullPage ? "max-w-4xl w-full" : "w-[440px] shrink-0"
-            }`}
-          >
+          <main className="flex min-w-0 flex-1 flex-col gap-4 pb-32">
             {children}
           </main>
 
           {/* RIGHT RAIL - Clock, Chatbot, Quotes (middle height) */}
           {!isFullPage && (
-            <div className="grow max-w-72 min-w-[200px] sticky top-36 h-[calc(100vh-11rem)]">
+            <div className="w-72 shrink-0 sticky top-36 h-[calc(100vh-11rem)]">
               <div className="relative h-full">
                 <div className="h-full overflow-y-auto no-scrollbar pb-8">
                   <BlurFade delay={0.25}>
@@ -189,7 +185,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
           {/* FAR RIGHT RAIL - Analytics, LinkedIn, Spotify, Social (starts lower for stair effect) */}
           {!isFullPage && (
-            <div className="grow max-w-72 min-w-[200px] sticky top-48 h-[calc(100vh-14rem)]">
+            <div className="w-72 shrink-0 sticky top-48 h-[calc(100vh-14rem)]">
               <div className="relative h-full">
                 <div className="h-full overflow-y-auto no-scrollbar pb-8">
                   <BlurFade delay={0.3}>
@@ -204,7 +200,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
         </div>
 
         {/* lg to 3xl screens: Standard 3-column layout (inner rails merged) */}
-        <div className="3xl:hidden mx-auto max-w-7xl px-4">
+        <div className="3xl:hidden px-4">
           <div className="grid grid-cols-12 gap-6 items-start">
             {/* LEFT RAIL - Combined far-left + left content */}
             {!isFullPage && (
@@ -221,7 +217,7 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
             {/* MAIN CONTENT */}
             <main
               className={`flex flex-col gap-4 min-w-0 w-full pb-32 ${
-                isFullPage ? "col-span-12 max-w-4xl mx-auto" : "col-span-6"
+                isFullPage ? "col-span-12" : "col-span-6"
               }`}
             >
                 {children}
