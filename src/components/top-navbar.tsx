@@ -41,7 +41,7 @@ export default function TopNavbar() {
               <span className="relative block h-6 w-32">
                 <Image
                   src={logo}
-                  alt="Rahfi's Portfolio"
+                  alt="Rahfi"
                   fill
                   sizes="128px"
                   className="object-contain object-left"
@@ -49,7 +49,7 @@ export default function TopNavbar() {
                 />
               </span>
             ) : (
-              <>Rahfi&apos;s | Portfolio.</>
+              <>Rahfi</>
             )}
           </Link>
 
