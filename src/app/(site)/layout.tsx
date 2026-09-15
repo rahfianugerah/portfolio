@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BlogReadingProvider } from "@/app/context/blog-reading-context";
 import LayoutContent from "@/app/components/layout-content";
+import { SiteIntro } from "@/components/site-intro";
 
 import "@/app/globals.css";
 
@@ -20,6 +21,7 @@ import "@/app/globals.css";
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <SiteIntro />
       <TooltipProvider delayDuration={0}>
         <BlogReadingProvider>
           <LayoutContent>{children}</LayoutContent>

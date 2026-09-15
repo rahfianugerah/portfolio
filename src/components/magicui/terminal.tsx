@@ -19,9 +19,11 @@ import {
   type MotionProps,
 } from "framer-motion"
 
-// Magic UI's Terminal, changed in three ways: classes are joined by hand; the window dots are
-// grey rather than red, amber, and green; and whether a line has started is derived from the
-// sequence instead of being copied into state from an effect, which React 19's lint rules reject.
+// Magic UI's Terminal, changed in five ways: classes are joined by hand; the window dots are
+// grey rather than red, amber, and green; whether a line has started is derived from the
+// sequence instead of being copied into state from an effect, which React 19's lint rules reject;
+// onComplete reports the last line finishing, which the site intro waits on; and the body takes
+// its side padding back from the site's code block rule, which strips a pre's with !important.
 
 interface SequenceContextValue {
   completeItem: (index: number) => void
@@ -205,6 +207,8 @@ interface TerminalProps {
   className?: string
   sequence?: boolean
   startOnView?: boolean
+  /** Called once, when the last line of the sequence has finished. */
+  onComplete?: () => void
 }
 
 export const Terminal = ({
@@ -212,6 +216,7 @@ export const Terminal = ({
   className = "",
   sequence = true,
   startOnView = true,
+  onComplete,
 }: TerminalProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const isInView = useInView(containerRef as React.RefObject<Element>, {
@@ -243,6 +248,16 @@ export const Terminal = ({
     ))
   }, [children, sequence])
 
+  // The last line finishing moves the turn past the end, which is when the sequence is done.
+  const done = sequence && activeIndex >= Children.toArray(children).length
+  const onCompleteRef = useRef(onComplete)
+  useEffect(() => {
+    onCompleteRef.current = onComplete
+  }, [onComplete])
+  useEffect(() => {
+    if (done) onCompleteRef.current?.()
+  }, [done])
+
   const content = (
     <div
       ref={containerRef}
@@ -255,7 +270,7 @@ export const Terminal = ({
           <div className="h-2 w-2 rounded-full bg-foreground/15"></div>
         </div>
       </div>
-      <pre className="p-4">
+      <pre className="px-4! py-4">
         <code className="grid gap-y-1 overflow-auto font-mono">{wrappedChildren}</code>
       </pre>
     </div>

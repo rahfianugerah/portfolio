@@ -2,7 +2,7 @@ import { Skeleton } from "@heroui/react";
 
 /**
  * The shape of a page while it loads, in HeroUI skeletons: a heading, the lines under it, and
- * a grid of cards. /project and its pages have their own terminal instead.
+ * a grid of cards. /project has a terminal instead, and each project its own skeleton.
  */
 export default function Loading() {
   return (

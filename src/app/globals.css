@@ -245,6 +245,13 @@
   }
 }
 
+/* Reduced motion skips the intro. Unlayered, this beats the overlay's own display utility. */
+@media (prefers-reduced-motion: reduce) {
+  .site-intro {
+    display: none;
+  }
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
