@@ -402,9 +402,9 @@ Tailwind CSS 3 over a shadcn HSL token layer in `src/app/globals.css`.
 ### Design System
 
 Shared with `consulting.rahfi.pro`, and defined here: a shadcn HSL token layer with a light and a
-dark theme, rounded cards on a soft shadow, and `#FF0000` used only as punctuation inside a
-heading. Section titles follow one pattern, `Rahfi's | Title.`, with the apostrophe, the pipe and
-the full stop in the accent.
+dark theme, rounded cards on a soft shadow, and no colour at all: black, white, and the greys
+between. Section titles follow one pattern, `Rahfi's | Title.`, in the same colour as the text
+around them.
 
 > [!note]
 > The language is defined here and shared with `consulting.rahfi.pro`, so a visitor moving between

@@ -22,7 +22,7 @@ const SOCIAL_LINKS: SocialLink[] = [
     name: "Instagram",
     url: "https://instagram.com/nrhfx", // Replace with your username
     icon: SiInstagram,
-    color: "hover:bg-pink-500/20 hover:text-pink-500",
+    color: "hover:bg-foreground/10 hover:text-foreground",
   },
   {
     name: "Threads",
@@ -34,19 +34,19 @@ const SOCIAL_LINKS: SocialLink[] = [
     name: "Discord",
     url: "https://discord.com/users/rhfx", // Replace with your username or server invite
     icon: SiDiscord,
-    color: "hover:bg-indigo-500/20 hover:text-indigo-500",
+    color: "hover:bg-foreground/10 hover:text-foreground",
   },
   {
     name: "LinkedIn",
     url: "https://linkedin.com/in/naufalrahfi", // Replace with your username
     icon: FaLinkedin,
-    color: "hover:bg-blue-500/20 hover:text-blue-500",
+    color: "hover:bg-foreground/10 hover:text-foreground",
   },
   {
     name: "GitHub",
     url: "https://github.com/naufalrahfi", // Replace with your username
     icon: SiGithub,
-    color: "hover:bg-gray-500/20 hover:text-gray-500 dark:hover:bg-gray-400/20 dark:hover:text-gray-400",
+    color: "hover:bg-foreground/10 hover:text-foreground dark:hover:bg-gray-400/20 dark:hover:text-gray-400",
   },
 ];
 

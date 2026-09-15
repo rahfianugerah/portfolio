@@ -22,41 +22,41 @@ const HIRE_PLATFORMS: Platform[] = [
     name: "LinkedIn",
     url: "https://linkedin.com/in/rahfianugerah",
     icon: FaLinkedin,
-    color: "hover:bg-blue-600/20 hover:text-blue-600",
+    color: "hover:bg-foreground/10 hover:text-foreground",
   },
   {
     name: "Upwork",
     url: "https://www.upwork.com/freelancers/~01fb77087e88137072?mp_source=share", // Replace with your Upwork profile
     icon: SiUpwork,
-    color: "hover:bg-green-500/20 hover:text-green-500",
+    color: "hover:bg-foreground/10 hover:text-foreground",
   },
   {
     name: "Freelancer",
     url: "https://www.freelancer.co.id/u/rahfiaan?sb=t", // Replace with your Freelancer profile
     icon: SiFreelancer,
-    color: "hover:bg-blue-500/20 hover:text-blue-500",
+    color: "hover:bg-foreground/10 hover:text-foreground",
   },
   {
     name: "Indeed (Cannot share public URL, I will search the company name, just ask me if you want to hire me through this platform)",
     url: "https://www.indeed.com", // Replace with your Indeed profile
     icon: SiIndeed,
-    color: "hover:bg-sky-500/20 hover:text-sky-500",
+    color: "hover:bg-foreground/10 hover:text-foreground",
   },
 
   {
     name: "Dealls (Cannot share public URL, I will search the company name, just ask me if you want to hire me through this platform)",
     url: "dealls.com", // Replace with your Dealls profile
-    color: "hover:bg-purple-500/20 hover:text-purple-500",
+    color: "hover:bg-foreground/10 hover:text-foreground",
   },
   {
     name: "JobStreet (Buggy platform, I will search the company name, just ask me if you want to hire me through this platform)",
     url: "https://id.jobstreet.com/profiles/naufalrahfi-anugerah-C5b5Q4rcVV", // Replace with your JobStreet profile
-    color: "hover:bg-orange-500/20 hover:text-orange-500",
+    color: "hover:bg-foreground/10 hover:text-foreground",
   },
   {
     name: "Glints (Cannot share public URL, I will search the company name, just ask me if you want to hire me through this platform)",
     url: "https://www.glints.com", // Replace with your Glints profile
-    color: "hover:bg-red-500/20 hover:text-red-500",
+    color: "hover:bg-foreground/10 hover:text-foreground",
   },
 ];
 

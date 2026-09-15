@@ -10,7 +10,7 @@ export function AssistantAvatar({ className = "" }: { className?: string }) {
   return (
     <span
       aria-hidden
-      className={`grid size-7 shrink-0 place-items-center rounded-full border border-[#FF0000]/30 bg-[#FF0000]/10 text-[#FF0000] ${className}`}
+      className={`grid size-7 shrink-0 place-items-center rounded-full border border-foreground bg-foreground text-background ${className}`}
     >
       <Bot className="size-4" />
     </span>

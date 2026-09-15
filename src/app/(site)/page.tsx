@@ -58,7 +58,7 @@ export default async function Page() {
       <section id="about">
         <BlurFade delay={BLUR_FADE_DELAY * 3}>
           <h2 className="text-2xl font-bebas">
-            About <span className="text-[#FF0000]">|</span> Rahfi<span className="text-[#FF0000]">.</span>
+            About | Rahfi.
           </h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
@@ -72,7 +72,7 @@ export default async function Page() {
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
             <h2 className="text-2xl font-bebas">
-              Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Experiences<span className="text-[#FF0000]">.</span>
+              Rahfi&apos;s | Experiences.
             </h2>
           </BlurFade>
 
@@ -107,7 +107,7 @@ export default async function Page() {
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 7}>
             <h2 className="text-2xl font-bebas">
-              Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Education<span className="text-[#FF0000]">.</span>
+              Rahfi&apos;s | Education.
             </h2>
           </BlurFade>
 
@@ -154,7 +154,7 @@ export default async function Page() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bebas">
-                  Rahfi<span className="text-[#FF0000]">&apos;</span>s <span className="text-[#FF0000]">|</span> Achievements<span className="text-[#FF0000]">.</span>
+                  Rahfi&apos;s | Achievements.
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   I have participated in various events, where I have
@@ -192,7 +192,7 @@ export default async function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 16}>
             <div className="space-y-3">
               <h2 className="text-3xl font-bebas">
-                Let<span className="text-[#FF0000]">&apos;</span>s Connect<span className="text-[#FF0000]">.</span>
+                Let&apos;s Connect.
               </h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Want to chat? Just shoot me a dm

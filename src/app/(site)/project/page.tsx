@@ -27,9 +27,8 @@ function Heading({ title, children }: { title: string; children: React.ReactNode
   return (
     <div>
       <h2 className="font-bebas text-3xl">
-        Rahfi<span className="text-[#FF0000]">&apos;</span>s{" "}
-        <span className="text-[#FF0000]">|</span> {title}
-        <span className="text-[#FF0000]">.</span>
+        Rahfi&apos;s{" "}
+        | {title}.
       </h2>
       <p className="mt-1 text-sm leading-6 text-muted-foreground">{children}</p>
     </div>
@@ -78,7 +77,7 @@ export default async function ProjectPage() {
         <BlurFade delay={next()}>
           <div className="flex flex-col gap-3">
             <h3 className="font-bebas text-xl">
-              Professional<span className="text-[#FF0000]">.</span>
+              Professional.
             </h3>
             <CertificateList certificates={professional} />
           </div>
@@ -87,7 +86,7 @@ export default async function ProjectPage() {
         <BlurFade delay={next()}>
           <div className="flex flex-col gap-3">
             <h3 className="font-bebas text-xl">
-              Courses<span className="text-[#FF0000]">.</span>
+              Courses.
             </h3>
             <CertificateList certificates={courses} />
           </div>

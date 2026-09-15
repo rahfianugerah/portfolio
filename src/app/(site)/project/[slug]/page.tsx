@@ -54,8 +54,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
         </Link>
 
         <h1 className="mt-3 font-bebas text-3xl leading-tight">
-          {project.title}
-          <span className="text-[#FF0000]">.</span>
+          {project.title}.
         </h1>
 
         {project.description && (
@@ -145,7 +144,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
       <BlurFade delay={0.16}>
         <section className="rounded-lg border border-border bg-card p-6 shadow-sm">
           <h2 className="font-bebas text-2xl">
-            Documentation<span className="text-[#FF0000]">.</span>
+            Documentation.
           </h2>
 
           {readme ? (

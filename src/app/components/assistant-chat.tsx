@@ -287,7 +287,7 @@ export default function AssistantChat() {
           <AssistantAvatar className="size-9" />
           <div className="min-w-0">
             <h1 className="font-bebas text-xl leading-none">
-              Ashley<span className="text-[#FF0000]">.</span>
+              Ashley.
             </h1>
             <p className="mt-1 text-[11px] leading-4 text-muted-foreground">
               Rahfi&apos;s AI assistant. She answers from this site&apos;s own documents.
@@ -350,8 +350,7 @@ export default function AssistantChat() {
               className="underline underline-offset-2 hover:text-foreground"
             >
               the consulting practice
-            </a>
-            .
+            </a>.
           </p>
 
           <div className="flex items-center gap-2">

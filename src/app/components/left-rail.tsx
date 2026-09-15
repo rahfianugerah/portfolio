@@ -74,23 +74,11 @@ export default function LeftRail() {
   const getLevelColor = (level: number) => {
     switch (level) {
       case 0: return "bg-muted";
-      case 1: return "bg-green-900/40";
-      case 2: return "bg-green-700/60";
-      case 3: return "bg-green-500/80";
-      case 4: return "bg-green-400";
+      case 1: return "bg-foreground/20";
+      case 2: return "bg-foreground/40";
+      case 3: return "bg-foreground/70";
+      case 4: return "bg-foreground";
       default: return "bg-muted";
-    }
-  };
-
-  const getLanguageColor = (lang: string | null) => {
-    switch (lang?.toLowerCase()) {
-      case "go": return "bg-cyan-500";
-      case "python": return "bg-blue-500";
-      case "typescript": return "bg-blue-600";
-      case "javascript": return "bg-yellow-400";
-      case "html": return "bg-orange-600";
-      case "css": return "bg-purple-500";
-      default: return "bg-gray-500";
     }
   };
 
@@ -241,7 +229,7 @@ export default function LeftRail() {
                 <div className="flex items-center gap-2 mt-1">
                   {repo.language && (
                     <div className="flex items-center gap-1">
-                      <span className={cn("h-2 w-2 rounded-full", getLanguageColor(repo.language))} />
+                      <span className="h-2 w-2 rounded-full bg-muted-foreground" />
                       <span className="text-[10px] text-muted-foreground">{repo.language}</span>
                     </div>
                   )}

@@ -213,7 +213,7 @@ export default function ContactForm() {
             <div
               className={`p-4 rounded-lg text-sm ${
                 submitMessage.type === "success"
-                  ? "bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20"
+                  ? "bg-muted text-foreground border border-border"
                   : "bg-destructive/10 text-destructive border border-destructive/20"
               }`}
             >

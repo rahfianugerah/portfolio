@@ -57,17 +57,16 @@ export default function TopNavbar() {
               </span>
             ) : (
               <>
-                Rahfi<span className="text-[#FF0000]">&apos;</span>s{" "}
-                <span className="text-[#FF0000]">|</span> Portfolio
-                <span className="text-[#FF0000]">.</span>
+                Rahfi&apos;s{" "}
+                | Portfolio.
               </>
             )}
           </Link>
 
           <span className="flex items-center justify-self-center gap-2">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-foreground opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-foreground" />
             </span>
             <span className="hidden text-[10px] uppercase tracking-wider font-bold text-muted-foreground sm:inline">
               Rahfi is Online

@@ -102,7 +102,7 @@ export default function AnalyticsWidget() {
           <div className="text-xs text-muted-foreground">Total Visitors</div>
           <div className="text-2xl font-bold">{data.visitors.toLocaleString()}</div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-green-500">↑ {data.delta24h}</span>
+            <span className="text-[10px] text-foreground">↑ {data.delta24h}</span>
             <span className="text-[10px] text-muted-foreground">24h</span>
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function AnalyticsWidget() {
           <div className="text-xs text-muted-foreground">Project Views</div>
           <div className="text-2xl font-bold">{data.projects.toLocaleString()}</div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-green-500">↑ {data.delta7d}</span>
+            <span className="text-[10px] text-foreground">↑ {data.delta7d}</span>
             <span className="text-[10px] text-muted-foreground">7d</span>
           </div>
         </div>

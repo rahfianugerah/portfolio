@@ -129,7 +129,7 @@ export async function submitContactForm(formData: {
       subject: `Portfolio Contact: ${subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #333; border-bottom: 2px solid #FF0000; padding-bottom: 10px;">
+          <h2 style="color: #333; border-bottom: 2px solid #0a0a0a; padding-bottom: 10px;">
             New Contact Form Submission
           </h2>
           
