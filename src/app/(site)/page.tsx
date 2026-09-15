@@ -248,31 +248,17 @@ export default async function Page() {
         </BlurFade>
 
         {/*
-         * A bento grid of four columns. Each row's cards stretch to the tallest one in it, and
-         * the spans tile every row with no hole: the photographs and quotations take two rows,
-         * the wide cards two columns.
+         * A bento grid of four columns. The photographs keep their square and the quotations
+         * their 4:5, each in its own row so the cards beside it stretch to match; the spans tile
+         * every row with no hole.
          */}
         <BlurFade delay={0.06}>
           <BlurFadeFreeBento>
-            <div className="lg:row-span-2">
-              <ImageCarousel fill />
-            </div>
-            <div className="lg:row-span-2">
-              <QuoteCarousel fill />
+            <div>
+              <ImageCarousel />
             </div>
             <div className={cn("lg:col-span-2", CELL)}>
               <AnalyticsWidget />
-            </div>
-            <div className={cn("lg:col-span-2", CELL)}>
-              <ExperienceGraph />
-            </div>
-            <div className={cn("lg:col-span-2 lg:row-span-2", CELL)}>
-              <GitHubCard />
-            </div>
-            <div className={cn("lg:col-span-2 lg:row-span-2", CELL)}>
-              <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
-                <TechStack />
-              </div>
             </div>
             <div className={CELL}>
               <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
@@ -282,8 +268,22 @@ export default async function Page() {
                 <IconCloudSpecialties />
               </div>
             </div>
+            <div className={cn("lg:col-span-2", CELL)}>
+              <ExperienceGraph />
+            </div>
+            <div>
+              <QuoteCarousel />
+            </div>
             <div className={CELL}>
               <LatestBlogsWidget />
+            </div>
+            <div className={cn("lg:col-span-2 lg:row-span-2", CELL)}>
+              <GitHubCard />
+            </div>
+            <div className={cn("lg:col-span-2 lg:row-span-2", CELL)}>
+              <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
+                <TechStack />
+              </div>
             </div>
             <div className={cn("lg:col-span-2", CELL)}>
               <ServicesCard />
@@ -294,7 +294,7 @@ export default async function Page() {
             <div className={CELL}>
               <SocialLinks />
             </div>
-            <div className={cn("lg:col-span-2", CELL)}>
+            <div className={cn("lg:col-span-4", CELL)}>
               <Link
                 href="/chat"
                 className="flex items-center gap-3 rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs transition-shadow hover:shadow-md"

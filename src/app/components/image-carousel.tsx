@@ -6,11 +6,9 @@ import Image from "next/image";
 
 type ImageCarouselProps = {
   intervalMs?: number;
-  /** Fill the height of the cell it sits in, rather than keeping a square. */
-  fill?: boolean;
 };
 
-export default function ImageCarousel({ intervalMs = 3000, fill = false }: ImageCarouselProps) {
+export default function ImageCarousel({ intervalMs = 3000 }: ImageCarouselProps) {
   // Sanity is the only source. There is no committed photograph to fall back to, so an
   // empty studio shows an empty frame rather than an image nobody chose to publish.
   const content = useSiteContent();
@@ -32,8 +30,8 @@ export default function ImageCarousel({ intervalMs = 3000, fill = false }: Image
 
   return (
     // FIX 1: Added 'shrink-0' so it never gets squeezed by the sidebar height
-    <div className={cn("w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-xs", fill && "flex h-full flex-col")}>
-      <div className={cn("group relative w-full", fill ? "min-h-64 flex-1" : "aspect-square")}>
+    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-xs">
+      <div className="relative aspect-square w-full group">
         {items.length === 0 && (
           <div className="flex h-full w-full items-center justify-center p-4 text-center text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
             No photographs published yet

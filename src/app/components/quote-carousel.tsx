@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { useSiteContent } from "@/lib/use-site-content";
 
 
-export default function QuoteCarousel({ fill = false }: { fill?: boolean }) {
+export default function QuoteCarousel() {
   const [position, setIndex] = useState(0);
   const content = useSiteContent();
   // Sanity is the only source, as it is for the photographs beside this.
@@ -23,7 +23,7 @@ export default function QuoteCarousel({ fill = false }: { fill?: boolean }) {
   }, [quotes.length]);
 
   return (
-    <div className={cn("group relative w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-xs", fill ? "h-full min-h-80" : "aspect-4/5")}>
+    <div className="w-full shrink-0 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-xs relative aspect-4/5 group">
       {quotes.length === 0 && (
         <div className="flex h-full w-full items-center justify-center p-4 text-center text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
           No quotations published yet
