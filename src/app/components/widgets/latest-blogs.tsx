@@ -26,7 +26,7 @@ export default function LatestBlogsWidget() {
         const res = await fetch("/api/blog");
         if (res.ok) {
           const data = await res.json();
-          setPosts(data.slice(0, 3)); // Get only 3 latest
+          setPosts(data.slice(0, 5)); // The five latest
         }
       } catch (error) {
         console.error("Failed to fetch blog posts:", error);
@@ -45,7 +45,7 @@ export default function LatestBlogsWidget() {
           Latest Blog Posts
         </div>
         <div className="space-y-3">
-          {[1, 2, 3].map((i) => (
+          {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="animate-pulse flex gap-3">
               <div className="w-12 h-12 bg-muted rounded shrink-0" />
               <div className="flex-1 space-y-2">
