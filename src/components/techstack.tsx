@@ -1,75 +1,9 @@
 "use client";
 
-// components/TechStack.tsx
-import { ComponentType } from "react";
-import { useSiteContent } from "@/lib/use-site-content";
-import {
-  SiPython, SiJavascript, SiTypescript, SiCplusplus, SiC,
-  SiTensorflow, SiScikitlearn, SiPandas, SiNumpy,
-  SiFlask, SiFastapi, SiNextdotjs, SiReact, SiNodedotjs,
-  SiTailwindcss, SiBootstrap, SiMysql, SiSqlite, SiPostgresql,
-  SiDocker, SiGooglecloud, SiGnubash,
-  SiGit, SiGithub, SiPostman,
-} from "react-icons/si";
-import { VscAzure } from "react-icons/vsc";
-import { FaAws } from "react-icons/fa";
 import { RxQuestionMarkCircled } from "react-icons/rx";
 
-type IconT = ComponentType<{ className?: string }>;
-
-const ICONS: Record<string, IconT> = {
-  // languages
-  "python": SiPython,
-  "javascript": SiJavascript,
-  "js": SiJavascript,
-  "typescript": SiTypescript,
-  "ts": SiTypescript,
-  "bash": SiGnubash,
-  "c++": SiCplusplus,
-  "cpp": SiCplusplus,
-  "c": SiC,
-
-  // frameworks/libs
-  "tensorflow": SiTensorflow,
-  "scikit-learn": SiScikitlearn,
-  "scikitlearn": SiScikitlearn,
-  "pandas": SiPandas,
-  "numpy": SiNumpy,
-  "flask": SiFlask,
-  "fastapi": SiFastapi,
-  "next.js": SiNextdotjs,
-  "nextjs": SiNextdotjs,
-  "react": SiReact,
-  "node.js": SiNodedotjs,
-  "nodejs": SiNodedotjs,
-  "tailwind css": SiTailwindcss,
-  "tailwind": SiTailwindcss,
-  "bootstrap": SiBootstrap,
-
-  // databases
-  "mysql": SiMysql,
-  "sqlite": SiSqlite,
-  "postgresql": SiPostgresql,
-  "postgres": SiPostgresql,
-
-  // tools/platforms
-  "docker": SiDocker,
-  "aws": FaAws,
-  "amazon web services": FaAws,
-  "google cloud": SiGooglecloud,
-  "gcp": SiGooglecloud,
-  "azure": VscAzure,
-  "git": SiGit,
-  "github": SiGithub,
-  "postman": SiPostman,
-};
-
-function norm(s: string) {
-  return s.trim().toLowerCase().replace(/\s+/g, " ");
-}
-function getIcon(name: string): IconT {
-  return ICONS[norm(name)] ?? RxQuestionMarkCircled; // safe fallback
-}
+import { skillIcon } from "@/components/skill-icons";
+import { useSiteContent } from "@/lib/use-site-content";
 
 interface TechStackProps {
   title?: string;
@@ -96,7 +30,7 @@ export default function TechStack({
             <h4 className="mb-2 text-sm font-medium text-foreground/80">{label}</h4>
             <ul className="flex flex-wrap gap-2">
               {items.map((name: string) => {
-                const Icon = getIcon(name);
+                const Icon = skillIcon(name) ?? RxQuestionMarkCircled;
                 return (
                   <li
                     key={`${label}-${name}`}

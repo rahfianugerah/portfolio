@@ -2,7 +2,7 @@ import BlurFade from "@/components/magicui/blur-fade";
 import { CertificateList } from "@/components/certificate-list";
 import { Meteors } from "@/components/magicui/meteors";
 import { ProjectShowcase } from "@/components/project-showcase";
-import { ProjectVelocity } from "@/components/project-velocity";
+import { ProjectMarquee } from "@/components/project-marquee";
 import { getCertificates, getPageMeta, getProjects } from "@/lib/content";
 
 const DELAY = 0.04;
@@ -64,7 +64,7 @@ export default async function ProjectPage() {
           </BlurFade>
         </div>
 
-        <ProjectVelocity projects={projects} />
+        <ProjectMarquee projects={projects} className="border-t" />
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {projects.map((project, i) => (

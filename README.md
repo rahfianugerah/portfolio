@@ -44,7 +44,7 @@ The two are the same person at two levels of formality.
 
 | Feature | Where | What it does |
 | :- | :- | :- |
-| Interactive home | `/` | A landing page in a centred column: hexagons behind the hero that light up under the pointer, a draggable globe marking Jakarta, a marquee of skills, project rows that drift faster as the page scrolls, and figures that count up as they come into view |
+| Interactive home | `/` | A landing page in a centred column: hexagons behind the hero that light up under the pointer, a draggable globe marking Jakarta, the skills and the projects in two-row icon marquees, and figures that count up as they come into view |
 | Résumé and work history | `/`, `/experience` | Every role, education entry, and leadership position, grouped by company. On `/experience` each sits on an Aceternity UI timeline that fills as the page scrolls |
 | Project catalogue | `/project` | HeroUI cards with one preview image or video per project, the source and the running site both linked, and a terminal while the page loads |
 | Certificates | `/project` | Professional certifications and course completions, five to a page. A certificate with an uploaded PDF opens on the page itself rather than sending the reader away |
@@ -270,14 +270,14 @@ Home carries anchored sections: `#hero`, `#experience`, `#education`, `#projects
 | `ResumeCard` | Feature | One company, expandable |
 | `ProjectShowcase` | Feature | One project as a HeroUI card: preview, tags, source and site links |
 | `CertificateList` | Feature | Certificates, five to a page, with the PDF readable in place |
-| `ProjectVelocity` | Feature | Project previews, or titles until there are previews, in two rows that drift faster as the page scrolls |
+| `MarqueeBand` | Feature | Two rows of names beside their icons, moving in opposite directions and pausing under the pointer, at a speed set by the length of the text |
+| `ProjectMarquee` | Feature | The projects in a `MarqueeBand`, each title beside its preview or a folder icon |
 | `GitHubCard` | Feature | The GitHub profile, an activity strip, and the latest repositories |
 | `Globe` | Magic UI | A draggable WebGL globe with one marker, on Jakarta, drawn in black and white in both themes |
 | `Meteors` | Magic UI | Meteors falling behind the hero and the page headings |
-| `ScrollVelocityRow` | Magic UI | A row of anything that drifts sideways and speeds up with the scroll |
 | `NumberTicker` | Magic UI | A figure that counts up when it scrolls into view |
 | `InteractiveHexagonPattern` | Magic UI | The hexagon grid behind the hero, lit under the pointer |
-| `Marquee` | Magic UI | The skills band, moving on its own and pausing under the pointer |
+| `Marquee` | Magic UI | One row moving on its own, the base of `MarqueeBand` |
 | `BentoGrid` | Magic UI | The frame the signal cards are laid into |
 | `Terminal` | Magic UI | What `/project` and a single project show while they load |
 | `Timeline` | Aceternity UI | The rail `/experience` sets every role and school on |

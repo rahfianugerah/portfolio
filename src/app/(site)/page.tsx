@@ -19,13 +19,14 @@ import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
 import { BentoGrid } from "@/components/magicui/bento-grid";
 import BlurFade from "@/components/magicui/blur-fade";
 import { InteractiveHexagonPattern } from "@/components/magicui/interactive-hexagon-pattern";
-import { Marquee } from "@/components/magicui/marquee";
 import { Meteors } from "@/components/magicui/meteors";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { ProjectShowcase } from "@/components/project-showcase";
-import { ProjectVelocity } from "@/components/project-velocity";
+import { MarqueeBand } from "@/components/marquee-band";
+import { ProjectMarquee } from "@/components/project-marquee";
 import { ResumeCard } from "@/components/resume-card";
 import { SOCIAL_ICON } from "@/components/social-icon";
+import { skillIcon } from "@/components/skill-icons";
 import { IconCloudSpecialties } from "@/components/specialties-icon";
 import TechStack from "@/components/techstack";
 import { buttonVariants } from "@/components/ui/button";
@@ -159,29 +160,13 @@ export default async function Page() {
         </div>
       </section>
 
-      {skills.length > 0 && (
-        <section aria-label="Skills" className="bleed relative overflow-hidden border-b border-border py-6">
-          <Marquee pauseOnHover className="[--duration:60s] [--gap:3rem]">
-            {skills.map((skill) => (
-              <span key={skill} className="whitespace-nowrap text-3xl font-bold tracking-tight sm:text-5xl">
-                {skill}
-              </span>
-            ))}
-          </Marquee>
-          <Marquee reverse pauseOnHover className="[--duration:60s] [--gap:3rem] text-muted-foreground">
-            {skills
-              .slice()
-              .reverse()
-              .map((skill) => (
-                <span key={skill} className="whitespace-nowrap text-3xl font-bold tracking-tight sm:text-5xl">
-                  {skill}
-                </span>
-              ))}
-          </Marquee>
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-linear-to-r from-background" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-linear-to-l from-background" />
-        </section>
-      )}
+      <MarqueeBand
+        label="Skills"
+        items={skills.map((skill) => {
+          const Icon = skillIcon(skill);
+          return { key: skill, label: skill, icon: Icon ? <Icon /> : undefined };
+        })}
+      />
 
       <section aria-label="At a glance" className="mt-16">
         <BlurFade>
@@ -263,7 +248,7 @@ export default async function Page() {
         <section id="projects" className="mt-24 flex flex-col gap-8">
           <BlurFade className="flex flex-wrap items-end justify-between gap-4">
             <SectionTitle title="Projects">
-              Personal and collaborative work. The rows speed up as you scroll.
+              Personal and collaborative work, in the same moving rows as the skills.
             </SectionTitle>
             <Link
               href="/project"
@@ -274,7 +259,7 @@ export default async function Page() {
             </Link>
           </BlurFade>
 
-          <ProjectVelocity projects={projects} />
+          <ProjectMarquee projects={projects} className="border-t" />
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {projects.slice(0, 6).map((project, i) => (
