@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
 import type { Moment, Profile, Quote, Role, Service, SkillGroup } from "@/lib/content";
 
@@ -29,6 +29,7 @@ export type SiteContent = {
 // the life of the tab.
 let cached: SiteContent | null = null;
 let inflight: Promise<SiteContent> | null = null;
+const listeners = new Set<() => void>();
 
 function load(): Promise<SiteContent> {
   if (cached) return Promise.resolve(cached);
@@ -40,6 +41,7 @@ function load(): Promise<SiteContent> {
     })
     .then((content) => {
       cached = content;
+      listeners.forEach((listener) => listener());
       return content;
     })
     .catch((error) => {
@@ -53,24 +55,28 @@ function load(): Promise<SiteContent> {
   return inflight;
 }
 
-/** Returns null until the content arrives, and stays null if it never does. */
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+/**
+ * Returns null until the content arrives, and stays null if it never does.
+ *
+ * The cache is read through useSyncExternalStore rather than used as a component's first state.
+ * The page streams in after the layout, so the footer could fill the cache before a carousel
+ * hydrated, and the carousel then rendered photographs where the server had sent an empty frame.
+ * While hydrating, React reads the server snapshot, which is always null, and moves to the cache
+ * straight after; a component mounted later reads the cache at once.
+ */
 export function useSiteContent(): SiteContent | null {
-  const [content, setContent] = useState<SiteContent | null>(cached);
+  const content = useSyncExternalStore(subscribe, () => cached, () => null);
 
   useEffect(() => {
-    if (content) return;
-
-    let live = true;
-    load()
-      .then((loaded) => {
-        if (live) setContent(loaded);
-      })
-      .catch(() => {});
-
-    return () => {
-      live = false;
-    };
-  }, [content]);
+    if (!cached) load().catch(() => {});
+  }, []);
 
   return content;
 }
