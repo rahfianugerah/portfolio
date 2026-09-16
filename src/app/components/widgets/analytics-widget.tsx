@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { WidgetFallback } from "@/components/widget-error-boundary";
 import { NumberTicker } from "@/components/magicui/number-ticker";
+import { barHeight, pointX, pointY } from "@/lib/chart";
 import { cn } from "@/lib/utils";
 
 type AnalyticsData = {
@@ -43,11 +44,6 @@ function lastSevenDays(sparkline: number[]): Day[] {
     };
   });
 }
-
-/** A day's count as a share of the tallest, and where its point sits across the chart. */
-const barHeight = (visits: number, max: number) => Math.max(4, (visits / max) * 100);
-const pointX = (index: number, count: number) => ((index + 0.5) / count) * 100;
-const pointY = (visits: number, max: number) => 100 - barHeight(visits, max);
 
 function Stat({ label, value, note }: { label: string; value: number; note: string }) {
   return (

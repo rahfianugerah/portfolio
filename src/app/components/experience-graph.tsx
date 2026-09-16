@@ -1,29 +1,37 @@
 "use client";
 import { useMemo, useState } from "react";
 import { useSiteContent } from "@/lib/use-site-content";
+import { barHeight, pointX, pointY } from "@/lib/chart";
 import { cn } from "@/lib/utils";
 
+/**
+ * Every role as a bar as tall as it was long, with the same durations drawn as a line of points
+ * over them, and a point naming its role under the pointer.
+ *
+ * The same chart as the visitors card, from the roles in the studio rather than from the day's
+ * counts, so the two cards read as one pair.
+ */
 export default function ExperienceGraph() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
   const content = useSiteContent();
   const roles = content?.roles;
 
   const data = useMemo(() => {
     const rawWork = roles?.filter((role) => role.kind === "work") ?? [];
     const now = new Date();
-    
+
     const jobs = rawWork.map((job: any) => {
       const start = new Date(job.start || job.startDate);
       const endVal = job.end || job.endDate;
-      const isPresent = 
-        !endVal || 
-        String(endVal).trim().toLowerCase() === "present" || 
+      const isPresent =
+        !endVal ||
+        String(endVal).trim().toLowerCase() === "present" ||
         String(endVal).trim().toLowerCase() === "now";
 
       const end = isPresent ? now : new Date(endVal);
       const isValid = !isNaN(start.getTime()) && !isNaN(end.getTime());
       const diffTime = Math.abs(end.getTime() - start.getTime());
-      const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30.44)); 
+      const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30.44));
       const roleName = job.position || job.role || job.title || job.company || "Role";
       const startYear = start.getFullYear();
       const endYear = isNaN(end.getTime()) ? startYear : end.getFullYear();
@@ -34,11 +42,9 @@ export default function ExperienceGraph() {
         company: job.company || job.name,
         months: isValid ? Math.max(diffMonths, 1) : 1,
         startVal: start.getTime(),
-        startYear,
-        endYear,
+        endVal: end.getTime(),
         displayYear,
-        startStr: job.start || job.startDate,
-        isPresent: isPresent
+        isPresent,
       };
     }).sort((a: any, b: any) => a.startVal - b.startVal);
 
@@ -54,100 +60,116 @@ export default function ExperienceGraph() {
 
   if (data.length === 0) return null;
 
-  // Geometry
-  const paddingLeft = 6; 
-  const paddingRight = 6;
-  const paddingBottom = 16;
-  const width = 100; 
-  const height = 55; 
-  const maxVal = Math.max(...data.map((d: any) => d.months)) * 1.25; 
-  
-  const points = data.map((d: any, i: number) => {
-    const availableWidth = width - paddingLeft - paddingRight;
-    const x = paddingLeft + (i / (data.length - 1)) * availableWidth;
-    const y = (height - paddingBottom) - (d.months / maxVal) * (height - paddingBottom);
-    return { x, y, ...d };
-  });
+  const max = Math.max(...data.map((role: any) => role.months), 1);
+  const longest = data.reduce((best: any, role: any) => (role.months > best.months ? role : best), data[0]);
 
-  const pathData = points.map((p: any, i: number) => (i === 0 ? `M${p.x},${p.y}` : `L${p.x},${p.y}`)).join(" ");
-  const hoveredPoint = hoveredIndex !== null ? points[hoveredIndex] : null;
-
-  // Generate unique year labels for x-axis
-  const allYears = points.map((p: any) => p.displayYear ?? p.startYear);
-  const minYear = Math.min(...allYears);
-  const maxYear = Math.max(...allYears);
-  const yearLabels = [];
-  for (let year = minYear; year <= maxYear; year++) {
-    const progress = maxYear === minYear ? 0.5 : (year - minYear) / (maxYear - minYear);
-    const x = paddingLeft + progress * (width - paddingLeft - paddingRight);
-    yearLabels.push({ year, x });
-  }
-
-  const getTooltipStyle = (index: number) => {
-    const positionPercent = index / (points.length - 1); 
-    let anchorPercent = 50;
-    if (positionPercent < 0.2) anchorPercent = 15; 
-    else if (positionPercent > 0.8) anchorPercent = 85; 
-
-    return { transform: `translate(-${anchorPercent}%, -135%)` };
-  };
-
-  const tooltipStyle = hoveredIndex !== null ? getTooltipStyle(hoveredIndex) : { transform: "" };
+  // Roles overlap, so the months they cover are merged rather than added: adding them counted
+  // the same months once per role and made three years of work read as nine.
+  const covered = data
+    .map((role: any) => [role.startVal, role.endVal] as [number, number])
+    .sort((a: [number, number], b: [number, number]) => a[0] - b[0])
+    .reduce((spans: [number, number][], span: [number, number]) => {
+      const last = spans[spans.length - 1];
+      if (last && span[0] <= last[1]) {
+        last[1] = Math.max(last[1], span[1]);
+        return spans;
+      }
+      return [...spans, [span[0], span[1]] as [number, number]];
+    }, []);
+  const total = Math.round(
+    covered.reduce((sum: number, [from, to]: [number, number]) => sum + (to - from), 0) /
+      (1000 * 60 * 60 * 24 * 30.44)
+  );
 
   return (
-    <div className="w-full rounded-lg border bg-card p-4 text-card-foreground shadow-xs relative z-0">
-      <div className="relative aspect-2/1 w-full mb-2">
-        <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full overflow-visible font-mono text-[4px]">
-            
-            {/* X-Axis Labels */}
-            {yearLabels.map((label, i) => {
-                const anchor = i === 0 ? "start" : i === yearLabels.length - 1 ? "end" : "middle";
-                return <text key={label.year} x={label.x} y={height} textAnchor={anchor} fill="currentColor" className="opacity-50">{label.year}</text>;
-            })}
+    <div className="flex w-full flex-col gap-4 rounded-lg border bg-card p-4 text-card-foreground shadow-xs">
+      <div className="flex min-h-32 flex-1 flex-col gap-1">
+        <div className="relative flex flex-1">
+          {data.map((role: any, i: number) => (
+            <div key={`${role.role}-${i}`} className="relative flex-1">
+              <div
+                className="absolute inset-x-1 bottom-0 rounded-t bg-foreground/25"
+                style={{ height: `${barHeight(role.months, max)}%` }}
+              />
+            </div>
+          ))}
 
-            {/* Graph Area */}
-            <path d={`${pathData} L${points[points.length-1].x},${height - paddingBottom} L${points[0].x},${height - paddingBottom} Z`} className="fill-primary/20 opacity-50" />
-            <path d={pathData} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary" />
+          <svg
+            aria-hidden
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
+          >
+            <polyline
+              points={data
+                .map((role: any, i: number) => `${pointX(i, data.length)},${pointY(role.months, max)}`)
+                .join(" ")}
+              className="fill-none stroke-foreground"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
 
-            {/* Dots */}
-            {points.map((p: any, i: number) => (
-                <g key={i}>
-                    {/* FIX: Removed 'p.isPresent ? 3 : 2' logic. Now all dots are radius 2. */}
-                    <circle cx={p.x} cy={p.y} r={2} className={cn("fill-card stroke-primary stroke-[1.5px] transition-colors duration-200 pointer-events-none", hoveredIndex === i ? "fill-primary" : "")} />
-                    <circle cx={p.x} cy={p.y} r="6" className="fill-transparent cursor-pointer" onMouseEnter={() => setHoveredIndex(i)} onMouseLeave={() => setHoveredIndex(null)} />
-                </g>
-            ))}
-        </svg>
+          {data.map((role: any, i: number) => (
+            <button
+              key={`${role.role}-${i}-point`}
+              type="button"
+              aria-label={`${role.role}, ${formatDuration(role.months)}`}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              onFocus={() => setHovered(i)}
+              onBlur={() => setHovered(null)}
+              className="absolute size-4 -translate-x-1/2 translate-y-1/2 rounded-full"
+              style={{ left: `${pointX(i, data.length)}%`, bottom: `${barHeight(role.months, max)}%` }}
+            >
+              <span
+                className={cn(
+                  "absolute inset-1 rounded-full border-2 border-foreground bg-background transition-colors",
+                  hovered === i && "bg-foreground"
+                )}
+              />
+            </button>
+          ))}
 
-        {/* TOOLTIP */}
-        {hoveredPoint && hoveredIndex !== null && (
-           <div
-             className="absolute z-50 pointer-events-none transition-transform duration-75 ease-out"
-             style={{
-               left: `${(hoveredPoint.x / width) * 100}%`, 
-               top: `${(hoveredPoint.y / height) * 100}%`,
-               transform: tooltipStyle.transform 
-             }}
-           >
-              <div className="rounded-md bg-popover px-2 py-1.5 shadow-xl border border-border text-popover-foreground flex flex-col items-center text-center min-w-[80px] max-w-[150px] relative">
-                  <span className="font-bold text-[10px] leading-tight whitespace-normal wrap-break-word">
-                    {hoveredPoint.role}
-                  </span>
-                  <span className="text-muted-foreground text-[9px] font-mono mt-0.5">
-                      {formatDuration(hoveredPoint.months)} {hoveredPoint.isPresent && "(Current)"}
-                  </span>
+          {hovered !== null && (
+            <div
+              className="pointer-events-none absolute z-10 mb-3 max-w-40 -translate-x-1/2 rounded-md border border-border bg-popover px-2 py-1 text-center shadow-xl"
+              style={{
+                left: `${pointX(hovered, data.length)}%`,
+                bottom: `${barHeight(data[hovered].months, max)}%`,
+              }}
+            >
+              <span className="block text-[10px] font-bold leading-tight wrap-break-word">
+                {data[hovered].role}
+              </span>
+              <span className="mt-0.5 block font-mono text-[9px] whitespace-nowrap text-muted-foreground">
+                {formatDuration(data[hovered].months)} {data[hovered].isPresent && "(Current)"}
+              </span>
+            </div>
+          )}
+        </div>
 
-              </div>
-           </div>
-        )}
+        <div className="flex border-t border-border pt-1">
+          {data.map((role: any, i: number) => (
+            <span
+              key={`${role.role}-${i}-year`}
+              className="flex-1 text-center text-[10px] text-muted-foreground"
+            >
+              {role.displayYear}
+            </span>
+          ))}
+        </div>
       </div>
 
-      <div className="rounded bg-muted/50 p-2 text-[10px] text-muted-foreground leading-tight border border-muted mt-2">
-        <span className="font-semibold text-foreground">Graph Logic:</span>
-        <br/>
-        Height = Duration of Role
-        <br/>
-        Higher Peaks = Longer Tenure
+      <div className="flex flex-wrap justify-between gap-2 text-[11px] text-muted-foreground">
+        <span>
+          Longest <span className="font-medium text-foreground">{formatDuration(longest.months)}</span>
+        </span>
+        <span>
+          In total <span className="font-medium text-foreground">{formatDuration(total)}</span>
+        </span>
       </div>
     </div>
   );
