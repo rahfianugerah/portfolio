@@ -74,8 +74,6 @@ export default function ProjectsCounter() {
 
   return (
     <div className="flex flex-col gap-4 rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
-      <div className={LABEL}>Projects Overview</div>
-
       <div className="grid grid-cols-2 gap-3">
         {/* Total Projects */}
         <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/30">

@@ -123,13 +123,6 @@ export default function AnalyticsWidget() {
 
   return (
     <div className="flex flex-col gap-4 rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
-      <div className="flex items-baseline justify-between gap-2">
-        <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
-          Website Visitors
-        </div>
-        <div className="text-[10px] text-muted-foreground">Counted once per session</div>
-      </div>
-
       <dl className="grid grid-cols-3 gap-3">
         <Stat label="Total visitors" value={data.visitors} note={`${week} in the last 7 days`} />
         <Stat label="Today" value={data.delta24h} note={`${yesterday} yesterday`} />

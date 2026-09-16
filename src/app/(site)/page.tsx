@@ -1,6 +1,19 @@
 import Link from "next/link";
 import Markdown from "react-markdown";
-import { ArrowRight } from "lucide-react";
+import {
+  Activity,
+  ArrowRight,
+  Bot,
+  Camera,
+  FolderGit2,
+  Layers,
+  NotebookPen,
+  Quote,
+  Share2,
+  Sparkles,
+  TrendingUp,
+  Wrench,
+} from "lucide-react";
 
 import AnalyticsWidget from "@/app/components/widgets/analytics-widget";
 import GitHubCard from "@/app/components/widgets/github-card";
@@ -11,12 +24,12 @@ import SocialLinks from "@/app/components/widgets/social-links";
 import ExperienceGraph from "@/app/components/experience-graph";
 import ImageCarousel from "@/app/components/image-carousel";
 import QuoteCarousel from "@/app/components/quote-carousel";
-import { AssistantAvatar } from "@/components/assistant-avatar";
 import Clock from "@/components/clock";
 import { HardworkCard } from "@/components/hardwork-card";
 import { HeroGlobe } from "@/components/hero-globe";
+import { Icons } from "@/components/icons";
 import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
-import { BentoGrid } from "@/components/magicui/bento-grid";
+import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
 import BlurFade from "@/components/magicui/blur-fade";
 import { InteractiveHexagonPattern } from "@/components/magicui/interactive-hexagon-pattern";
 import { NumberTicker } from "@/components/magicui/number-ticker";
@@ -64,9 +77,6 @@ function SectionTitle({ title, children }: { title: string; children?: React.Rea
     </div>
   );
 }
-
-// A signal card fills the height of its bento cell, so every row ends on one line.
-const CELL = "*:h-full";
 
 /**
  * The home page, read top to bottom in a centred column.
@@ -247,68 +257,159 @@ export default async function Page() {
         </BlurFade>
 
         {/*
-         * A bento grid of four columns. Every card fills its cell, so each row's edges run
-         * straight: the photographs and the quotations, at either end of the first row, are at
-         * least square and grow with the visitors card between them; the spans tile every row
-         * with no hole.
+         * Magic UI's bento: three columns of cards, each carrying an icon, a name, and, where the
+         * card leads somewhere, a link that rises under the pointer. The live widget is the card's
+         * background, so every cell is one frame rather than a card inside a card.
          */}
         <BlurFade delay={0.06}>
-          <BlurFadeFreeBento>
-            <div className={CELL}>
-              <ImageCarousel />
-            </div>
-            <div className={cn("lg:col-span-2", CELL)}>
-              <AnalyticsWidget />
-            </div>
-            <div className={CELL}>
-              <QuoteCarousel />
-            </div>
-            <div className={cn("lg:col-span-2", CELL)}>
-              <ExperienceGraph />
-            </div>
-            <div className={CELL}>
-              <div className="flex flex-col rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
-                <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                  Rahfi&apos;s Specialties
-                </div>
-                <IconCloudSpecialties />
-              </div>
-            </div>
-            <div className={CELL}>
-              <LatestBlogsWidget />
-            </div>
-            <div className={cn("lg:col-span-2 lg:row-span-2", CELL)}>
-              <GitHubCard />
-            </div>
-            <div className={cn("lg:col-span-2 lg:row-span-2", CELL)}>
-              <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
-                <TechStack />
-              </div>
-            </div>
-            <div className={cn("lg:col-span-2", CELL)}>
-              <ServicesCard />
-            </div>
-            <div className={CELL}>
-              <ProjectsCounter />
-            </div>
-            <div className={CELL}>
-              <SocialLinks />
-            </div>
-            <div className={cn("lg:col-span-4", CELL)}>
-              <Link
-                href="/chat"
-                className="flex items-center gap-3 rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs transition-shadow hover:shadow-md"
-              >
-                <AssistantAvatar className="size-9" />
-                <span className="min-w-0">
-                  <span className="block text-sm font-medium">Ask Ashley</span>
-                  <span className="mt-0.5 block text-xs leading-4 text-muted-foreground">
-                    Rahfi&apos;s AI assistant, on her own page
-                  </span>
-                </span>
-              </Link>
-            </div>
-          </BlurFadeFreeBento>
+          <BentoGrid className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <BentoCard
+              Icon={Activity}
+              name="Website visitors"
+              description="First-party, counted once per session."
+              className="col-span-1 lg:col-span-2"
+              background={
+                <Signal>
+                  <AnalyticsWidget />
+                </Signal>
+              }
+            />
+            <BentoCard
+              Icon={Camera}
+              name="Moments"
+              description="Photographs, uploaded in the studio."
+              className="col-span-1"
+              background={
+                <Signal className="[mask-image:linear-gradient(to_top,transparent_15%,#000_60%)]">
+                  <ImageCarousel />
+                </Signal>
+              }
+            />
+            <BentoCard
+              Icon={Icons.github}
+              name="GitHub"
+              description="The profile, the activity, and the latest repositories."
+              href="https://github.com/rahfianugerah"
+              cta="Open GitHub"
+              className="col-span-1 lg:col-span-2"
+              background={
+                <Signal>
+                  <GitHubCard />
+                </Signal>
+              }
+            />
+            <BentoCard
+              Icon={Quote}
+              name="Words I keep"
+              description="Quotations, uploaded in the studio."
+              className="col-span-1"
+              background={
+                <Signal className="[mask-image:linear-gradient(to_top,transparent_15%,#000_60%)]">
+                  <QuoteCarousel />
+                </Signal>
+              }
+            />
+            <BentoCard
+              Icon={Layers}
+              name="Tech stack"
+              description="Every language, framework, and tool the work is built with."
+              className="col-span-1 lg:col-span-2"
+              background={
+                <Signal>
+                  <TechStack />
+                </Signal>
+              }
+            />
+            <BentoCard
+              Icon={Sparkles}
+              name="Specialties"
+              description="The same tools, on a cloud that turns."
+              className="col-span-1"
+              background={
+                <Signal className="flex items-center justify-center *:h-auto">
+                  <IconCloudSpecialties />
+                </Signal>
+              }
+            />
+            <BentoCard
+              Icon={TrendingUp}
+              name="Experiences velocity"
+              description="How long each role ran, year by year."
+              href="/experience"
+              cta="The full timeline"
+              className="col-span-1 lg:col-span-2"
+              background={
+                <Signal>
+                  <ExperienceGraph />
+                </Signal>
+              }
+            />
+            <BentoCard
+              Icon={NotebookPen}
+              name="Latest writing"
+              description="The five most recent posts."
+              href="/blog"
+              cta="Every post"
+              className="col-span-1"
+              background={
+                <Signal>
+                  <LatestBlogsWidget />
+                </Signal>
+              }
+            />
+            <BentoCard
+              Icon={Wrench}
+              name="Services"
+              description="What the work covers, and where a larger engagement goes."
+              href="https://consulting.rahfi.pro/#services"
+              cta="See Consulting"
+              className="col-span-1 lg:col-span-2"
+              background={
+                <Signal>
+                  <ServicesCard />
+                </Signal>
+              }
+            />
+            <BentoCard
+              Icon={FolderGit2}
+              name="Projects overview"
+              description="The counts, the stack they use most, and the leading three."
+              href="/project"
+              cta="Every project"
+              className="col-span-1"
+              background={
+                <Signal>
+                  <ProjectsCounter />
+                </Signal>
+              }
+            />
+            <BentoCard
+              Icon={Bot}
+              name="Ask Ashley"
+              description="Rahfi's AI assistant, on her own page."
+              href="/chat"
+              cta="Open the chat"
+              className="col-span-1 lg:col-span-2"
+              background={
+                <Signal className="flex items-center justify-center *:h-auto">
+                  <Bot className="size-28 text-foreground/15" />
+                </Signal>
+              }
+            />
+            <BentoCard
+              Icon={Share2}
+              name="Connect"
+              description="The city, every account, and the contact form."
+              href="/contact"
+              cta="Send a message"
+              className="col-span-1"
+              background={
+                <Signal>
+                  <SocialLinks />
+                </Signal>
+              }
+            />
+          </BentoGrid>
         </BlurFade>
       </section>
 
@@ -371,11 +472,21 @@ export default async function Page() {
   );
 }
 
-/** Magic UI's bento grid as the frame for the signal cards: rows sized by their content. */
-function BlurFadeFreeBento({ children }: { children: React.ReactNode }) {
+/**
+ * A live widget as a bento card's background: it fills the cell, gives up its own frame to the
+ * card around it, and fades out under the card's words.
+ */
+function Signal({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <BentoGrid className="auto-rows-auto grid-cols-1 md:grid-cols-2 lg:grid-flow-row-dense lg:grid-cols-4">
+    <div
+      className={cn(
+        "absolute inset-0 overflow-hidden [mask-image:linear-gradient(to_top,transparent_30%,#000_70%)]",
+        "transition-transform duration-300 ease-out group-hover:scale-[1.02]",
+        "*:h-full *:rounded-none *:border-0 *:bg-transparent *:shadow-none",
+        className
+      )}
+    >
       {children}
-    </BentoGrid>
+    </div>
   );
 }

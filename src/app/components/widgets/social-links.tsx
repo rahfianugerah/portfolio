@@ -63,10 +63,6 @@ export default function SocialLinks() {
 
   return (
     <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
-      <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
-        Connect With Me
-      </div>
-
       {profile?.location && (
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <MapPin className="size-3.5 shrink-0" />

@@ -23,10 +23,6 @@ export default function ServicesCard() {
 
   return (
     <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
-      <div className="mb-2 text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
-        Rahfi&apos;s Services
-      </div>
-
       {loading && (
         <div className="flex flex-col gap-2">
           {[0, 1, 2, 3].map((i) => (

@@ -6,14 +6,10 @@ import { skillIcon } from "@/components/skill-icons";
 import { useSiteContent } from "@/lib/use-site-content";
 
 interface TechStackProps {
-  title?: string;
   className?: string;
 }
 
-export default function TechStack({
-  title = "Tech Stack",
-  className = "",
-}: TechStackProps) {
+export default function TechStack({ className = "" }: TechStackProps) {
   // The four groups and their order are content, so the studio decides both.
   const content = useSiteContent();
   const sections = (content?.skills ?? []).map((group) => ({
@@ -23,7 +19,6 @@ export default function TechStack({
 
   return (
     <section className={className}>
-      <h3 className="mb-4 text-lg font-semibold text-foreground">{title}</h3>
       <div className="space-y-6">
         {sections.map(({ label, items }) => (
           <div key={label}>

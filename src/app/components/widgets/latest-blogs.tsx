@@ -41,9 +41,6 @@ export default function LatestBlogsWidget() {
   if (loading) {
     return (
       <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
-        <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
-          Latest Blog Posts
-        </div>
         <div className="space-y-3">
           {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="animate-pulse flex gap-3">
@@ -61,10 +58,6 @@ export default function LatestBlogsWidget() {
 
   return (
     <div className="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs">
-      <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-3">
-        Latest Blog Posts
-      </div>
-
       {posts.length === 0 ? (
         <p className="text-xs text-muted-foreground">No blog posts yet.</p>
       ) : (

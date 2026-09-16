@@ -19,8 +19,9 @@ interface BentoCardProps extends ComponentPropsWithoutRef<"div"> {
   background: ReactNode;
   Icon: ElementType;
   description: string;
-  href: string;
-  cta: string;
+  /** A card that leads somewhere shows its call to action; one that does not, does not. */
+  href?: string;
+  cta?: string;
 }
 
 const BentoGrid = ({ children, className, ...props }: BentoGridProps) => {
@@ -60,20 +61,24 @@ const BentoCard = ({
         <p className="max-w-lg text-sm leading-6 text-muted-foreground">{description}</p>
       </div>
 
-      <div className="pointer-events-none flex w-full translate-y-0 transform-gpu flex-row items-center transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 lg:hidden">
-        <Link href={href} className="pointer-events-auto mt-2 inline-flex items-center text-sm font-medium underline-offset-4 hover:underline">
+      {href && (
+        <div className="pointer-events-none flex w-full translate-y-0 transform-gpu flex-row items-center transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 lg:hidden">
+          <Link href={href} className="pointer-events-auto mt-2 inline-flex items-center text-sm font-medium underline-offset-4 hover:underline">
+            {cta}
+            <ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" />
+          </Link>
+        </div>
+      )}
+    </div>
+
+    {href && (
+      <div className="pointer-events-none absolute bottom-0 hidden w-full translate-y-10 transform-gpu flex-row items-center p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 lg:flex">
+        <Link href={href} className="pointer-events-auto inline-flex items-center text-sm font-medium underline-offset-4 hover:underline">
           {cta}
           <ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" />
         </Link>
       </div>
-    </div>
-
-    <div className="pointer-events-none absolute bottom-0 hidden w-full translate-y-10 transform-gpu flex-row items-center p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 lg:flex">
-      <Link href={href} className="pointer-events-auto inline-flex items-center text-sm font-medium underline-offset-4 hover:underline">
-        {cta}
-        <ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" />
-      </Link>
-    </div>
+    )}
 
     <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-foreground/[0.03]" />
   </div>
