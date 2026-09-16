@@ -25,8 +25,9 @@ type GitHubRepo = {
 };
 
 // The simulated activity strip (visual only). A fixed scatter rather than Math.random, so the
-// server and the browser draw the same squares and nothing re-renders to reshuffle them.
-const CONTRIBUTION_GRID = Array.from({ length: 52 }, (_, i) => (Math.imul(i + 1, 2654435761) >>> 0) % 5);
+// server and the browser draw the same squares and nothing re-renders to reshuffle them. One
+// square a day, for the thirty days the label above it claims.
+const CONTRIBUTION_GRID = Array.from({ length: 30 }, (_, i) => (Math.imul(i + 1, 2654435761) >>> 0) % 5);
 
 /**
  * The GitHub card: the profile, an activity strip, and the latest repositories.
@@ -115,7 +116,9 @@ export default function GitHubCard() {
           <span>Activity</span>
           <span>Last 30 Days</span>
         </div>
-        <div className="flex flex-wrap gap-1 justify-between">
+        {/* Packed from the left at their own size: spreading them to the card's width stretched
+            the gaps and left the last few squares adrift on a line of their own. */}
+        <div className="flex flex-wrap gap-1">
           {contributionGrid.map((level, i) => (
             <div
               key={i}
@@ -167,7 +170,7 @@ export default function GitHubCard() {
               <span className="text-muted-foreground text-[9px] font-mono mt-0.5">
                 {(() => {
                   const date = new Date();
-                  date.setDate(date.getDate() - (51 - hoveredSquare));
+                  date.setDate(date.getDate() - (CONTRIBUTION_GRID.length - 1 - hoveredSquare));
                   return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
                 })()}
               </span>
