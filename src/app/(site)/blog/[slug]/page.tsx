@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import BackButton from "@/components/back-button";
 import { getBlogPosts, getPost } from "@/data/blog";
 import { SITE_URL } from "@/data/site";
@@ -114,11 +116,24 @@ export default async function Blog(
           {post.metadata.title}
         </h1>
 
+        {/* The main image from the studio, when the post has one. */}
+        {post.metadata.image && (
+          <div className="relative mb-8 aspect-video w-full overflow-hidden rounded-lg border border-border">
+            <Image
+              src={post.metadata.image}
+              alt=""
+              fill
+              sizes="650px"
+              className="object-cover"
+              priority
+            />
+          </div>
+        )}
+
         <article className="prose dark:prose-invert">
           {/* 2. Use the wrapper here. It safely handles the component mapping on the client. */}
           <CustomPortableText value={post.content} />
           <hr/><br/>
-          Created by 🧠 & ❤️<br/>
           Authored by Naufal Rahfi Anugerah
         </article>
       </section>
