@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 import { useSiteContent } from "@/lib/use-site-content";
 
 /**
@@ -41,17 +39,6 @@ export default function ServicesCard() {
           </li>
         ))}
       </ul>
-
-      {!loading && (
-        <Link
-          href="https://consulting.rahfi.pro/#services"
-          target="_blank"
-          rel="noreferrer"
-          className="mt-3 inline-block text-[11px] font-medium underline underline-offset-4 transition-colors hover:text-primary"
-        >
-          Full services at Consulting
-        </Link>
-      )}
     </div>
   );
 }

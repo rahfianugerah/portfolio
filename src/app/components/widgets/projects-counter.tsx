@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSiteContent } from "@/lib/use-site-content";
 import { WidgetFallback } from "@/components/widget-error-boundary";
 import { NumberTicker } from "@/components/magicui/number-ticker";
-import { ArrowRight, FolderGit2, Eye } from "lucide-react";
+import { FolderGit2, Eye } from "lucide-react";
 
 
 type ProjectStats = {
@@ -142,14 +142,6 @@ export default function ProjectsCounter() {
           </ul>
         </div>
       )}
-
-      <Link
-        href="/project"
-        className="mt-auto inline-flex items-center gap-1 text-xs font-medium underline underline-offset-4 hover:text-muted-foreground"
-      >
-        Every project
-        <ArrowRight className="size-3" />
-      </Link>
     </div>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowUpRight, MapPin } from "lucide-react";
 import { SiDiscord, SiInstagram, SiThreads } from "react-icons/si";
 
@@ -93,13 +92,6 @@ export default function SocialLinks() {
           </li>
         ))}
       </ul>
-
-      <Link
-        href="/contact"
-        className="mt-auto inline-flex items-center justify-center rounded-md border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
-      >
-        Send a message
-      </Link>
     </div>
   );
 }

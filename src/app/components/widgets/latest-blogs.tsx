@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
 
 type BlogPost = {
   slug: string;
@@ -98,15 +97,6 @@ export default function LatestBlogsWidget() {
           ))}
         </div>
       )}
-
-      {/* Read More Button */}
-      <Link
-        href="/blog"
-        className="mt-4 flex items-center justify-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors py-2 border-t border-border"
-      >
-        Read More Blogs
-        <ArrowRight className="w-3 h-3" />
-      </Link>
     </div>
   );
 }

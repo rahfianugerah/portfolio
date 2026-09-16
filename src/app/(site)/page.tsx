@@ -29,7 +29,7 @@ import { HardworkCard } from "@/components/hardwork-card";
 import { HeroGlobe } from "@/components/hero-globe";
 import { Icons } from "@/components/icons";
 import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
-import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
+import { BentoGrid } from "@/components/magicui/bento-grid";
 import BlurFade from "@/components/magicui/blur-fade";
 import { InteractiveHexagonPattern } from "@/components/magicui/interactive-hexagon-pattern";
 import { NumberTicker } from "@/components/magicui/number-ticker";
@@ -257,158 +257,108 @@ export default async function Page() {
         </BlurFade>
 
         {/*
-         * Magic UI's bento: three columns of cards, each carrying an icon, a name, and, where the
-         * card leads somewhere, a link that rises under the pointer. The live widget is the card's
-         * background, so every cell is one frame rather than a card inside a card.
+         * Magic UI's bento grid: three columns, the wider cards spanning two of them. Each
+         * cell names itself and then gets out of the way of the widget inside it.
          */}
         <BlurFade delay={0.06}>
-          <BentoGrid className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            <BentoCard
+          <BentoGrid className="auto-rows-auto grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <SignalCard
               Icon={Activity}
               name="Website visitors"
               description="First-party, counted once per session."
-              className="col-span-1 lg:col-span-2"
-              background={
-                <Signal>
-                  <AnalyticsWidget />
-                </Signal>
-              }
-            />
-            <BentoCard
-              Icon={Camera}
-              name="Moments"
-              description="Photographs, uploaded in the studio."
-              className="col-span-1"
-              background={
-                <Signal className="[mask-image:linear-gradient(to_top,transparent_15%,#000_60%)]">
-                  <ImageCarousel />
-                </Signal>
-              }
-            />
-            <BentoCard
+              className="lg:col-span-2"
+            >
+              <AnalyticsWidget />
+            </SignalCard>
+            <SignalCard Icon={Camera} name="Moments" description="Photographs, uploaded in the studio.">
+              <ImageCarousel />
+            </SignalCard>
+            <SignalCard
               Icon={Icons.github}
               name="GitHub"
               description="The profile, the activity, and the latest repositories."
               href="https://github.com/rahfianugerah"
               cta="Open GitHub"
-              className="col-span-1 lg:col-span-2"
-              background={
-                <Signal>
-                  <GitHubCard />
-                </Signal>
-              }
-            />
-            <BentoCard
-              Icon={Quote}
-              name="Words I keep"
-              description="Quotations, uploaded in the studio."
-              className="col-span-1"
-              background={
-                <Signal className="[mask-image:linear-gradient(to_top,transparent_15%,#000_60%)]">
-                  <QuoteCarousel />
-                </Signal>
-              }
-            />
-            <BentoCard
+              className="lg:col-span-2"
+            >
+              <GitHubCard />
+            </SignalCard>
+            <SignalCard Icon={Quote} name="Words I keep" description="Quotations, uploaded in the studio.">
+              <QuoteCarousel />
+            </SignalCard>
+            <SignalCard
               Icon={Layers}
               name="Tech stack"
               description="Every language, framework, and tool the work is built with."
-              className="col-span-1 lg:col-span-2"
-              background={
-                <Signal>
-                  <TechStack />
-                </Signal>
-              }
-            />
-            <BentoCard
-              Icon={Sparkles}
-              name="Specialties"
-              description="The same tools, on a cloud that turns."
-              className="col-span-1"
-              background={
-                <Signal className="flex items-center justify-center *:h-auto">
-                  <IconCloudSpecialties />
-                </Signal>
-              }
-            />
-            <BentoCard
+              className="lg:col-span-2"
+            >
+              <TechStack />
+            </SignalCard>
+            <SignalCard Icon={Sparkles} name="Specialties" description="The same tools, on a cloud that turns.">
+              <IconCloudSpecialties />
+            </SignalCard>
+            <SignalCard
               Icon={TrendingUp}
               name="Experiences velocity"
               description="How long each role ran, year by year."
               href="/experience"
               cta="The full timeline"
-              className="col-span-1 lg:col-span-2"
-              background={
-                <Signal>
-                  <ExperienceGraph />
-                </Signal>
-              }
-            />
-            <BentoCard
+              className="lg:col-span-2"
+            >
+              <ExperienceGraph />
+            </SignalCard>
+            <SignalCard
               Icon={NotebookPen}
               name="Latest writing"
               description="The five most recent posts."
               href="/blog"
               cta="Every post"
-              className="col-span-1"
-              background={
-                <Signal>
-                  <LatestBlogsWidget />
-                </Signal>
-              }
-            />
-            <BentoCard
+            >
+              <LatestBlogsWidget />
+            </SignalCard>
+            <SignalCard
               Icon={Wrench}
               name="Services"
               description="What the work covers, and where a larger engagement goes."
               href="https://consulting.rahfi.pro/#services"
               cta="See Consulting"
-              className="col-span-1 lg:col-span-2"
-              background={
-                <Signal>
-                  <ServicesCard />
-                </Signal>
-              }
-            />
-            <BentoCard
+              className="lg:col-span-2"
+            >
+              <ServicesCard />
+            </SignalCard>
+            <SignalCard
               Icon={FolderGit2}
               name="Projects overview"
               description="The counts, the stack they use most, and the leading three."
               href="/project"
               cta="Every project"
-              className="col-span-1"
-              background={
-                <Signal>
-                  <ProjectsCounter />
-                </Signal>
-              }
-            />
-            <BentoCard
+            >
+              <ProjectsCounter />
+            </SignalCard>
+            <SignalCard
               Icon={Bot}
               name="Ask Ashley"
               description="Rahfi's AI assistant, on her own page."
               href="/chat"
               cta="Open the chat"
-              className="col-span-1 lg:col-span-2"
-              background={
-                <Signal className="flex items-center justify-center *:h-auto">
-                  <Bot className="size-28 text-foreground/15" />
-                </Signal>
-              }
-            />
-            <BentoCard
+              className="lg:col-span-2"
+            >
+              <Link
+                href="/chat"
+                className="grid h-full min-h-32 place-items-center rounded-lg border border-dashed border-border transition-colors hover:bg-accent"
+              >
+                <Bot className="size-16 text-foreground/20" />
+              </Link>
+            </SignalCard>
+            <SignalCard
               Icon={Share2}
               name="Connect"
               description="The city, every account, and the contact form."
               href="/contact"
               cta="Send a message"
-              className="col-span-1"
-              background={
-                <Signal>
-                  <SocialLinks />
-                </Signal>
-              }
-            />
+            >
+              <SocialLinks />
+            </SignalCard>
           </BentoGrid>
         </BlurFade>
       </section>
@@ -473,20 +423,61 @@ export default async function Page() {
 }
 
 /**
- * A live widget as a bento card's background: it fills the cell, gives up its own frame to the
- * card around it, and fades out under the card's words.
+ * One cell of the signals bento: the icon, the name, and where it leads across the top, and the
+ * live widget under them.
+ *
+ * The widget sits inside the card rather than behind it. As a background it was covered by the
+ * card's own words, which hid a quotation and swallowed every link and tooltip under them; here it
+ * keeps all of its behaviour and gives up only its own frame to the card around it.
  */
-function Signal({ children, className }: { children: React.ReactNode; className?: string }) {
+function SignalCard({
+  Icon,
+  name,
+  description,
+  href,
+  cta,
+  className,
+  children,
+}: {
+  Icon: React.ElementType;
+  name: string;
+  description: string;
+  href?: string;
+  cta?: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const external = href?.startsWith("http");
+
   return (
     <div
       className={cn(
-        "absolute inset-0 overflow-hidden [mask-image:linear-gradient(to_top,transparent_30%,#000_70%)]",
-        "transition-transform duration-300 ease-out group-hover:scale-[1.02]",
-        "*:h-full *:rounded-none *:border-0 *:bg-transparent *:shadow-none",
+        "flex flex-col gap-3 overflow-hidden rounded-xl border border-border bg-card p-4 text-card-foreground shadow-xs",
         className
       )}
     >
-      {children}
+      <div className="flex items-start gap-3">
+        <Icon className="size-5 shrink-0 text-foreground/70" />
+        <div className="min-w-0 flex-1">
+          <h3 className="text-sm font-semibold leading-tight">{name}</h3>
+          <p className="mt-0.5 text-xs leading-5 text-muted-foreground">{description}</p>
+        </div>
+        {href && cta && (
+          <Link
+            href={href}
+            {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+            className="inline-flex shrink-0 items-center gap-1 text-xs font-medium underline-offset-4 hover:underline"
+          >
+            {cta}
+            <ArrowRight className="size-3" />
+          </Link>
+        )}
+      </div>
+
+      {/* The widget keeps its behaviour and loses its frame: the card is the frame. */}
+      <div className="min-h-0 flex-1 *:h-full *:rounded-none *:border-0 *:bg-transparent *:p-0 *:shadow-none">
+        {children}
+      </div>
     </div>
   );
 }
