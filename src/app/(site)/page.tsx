@@ -29,7 +29,7 @@ import { HardworkCard } from "@/components/hardwork-card";
 import { HeroGlobe } from "@/components/hero-globe";
 import { Icons } from "@/components/icons";
 import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
-import { BentoGrid } from "@/components/magicui/bento-grid";
+import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
 import BlurFade from "@/components/magicui/blur-fade";
 import { InteractiveHexagonPattern } from "@/components/magicui/interactive-hexagon-pattern";
 import { NumberTicker } from "@/components/magicui/number-ticker";
@@ -264,7 +264,7 @@ export default async function Page() {
           <BentoGrid className="auto-rows-auto grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <SignalCard
               Icon={Activity}
-              name="Website visitors"
+              name="Website Visitors"
               description="First-party, counted once per session."
               className="lg:col-span-2"
             >
@@ -283,12 +283,12 @@ export default async function Page() {
             >
               <GitHubCard />
             </SignalCard>
-            <SignalCard Icon={Quote} name="Words I keep" description="Quotations, uploaded in the studio.">
+            <SignalCard Icon={Quote} name="Words I Keep" description="Quotations, uploaded in the studio.">
               <QuoteCarousel />
             </SignalCard>
             <SignalCard
               Icon={Layers}
-              name="Tech stack"
+              name="Tech Stack"
               description="Every language, framework, and tool the work is built with."
               className="lg:col-span-2"
             >
@@ -299,7 +299,7 @@ export default async function Page() {
             </SignalCard>
             <SignalCard
               Icon={TrendingUp}
-              name="Experiences velocity"
+              name="Experiences Velocity"
               description="How long each role ran, year by year."
               href="/experience"
               cta="The full timeline"
@@ -307,53 +307,62 @@ export default async function Page() {
             >
               <ExperienceGraph />
             </SignalCard>
-            <SignalCard
+            <BentoCard
               Icon={NotebookPen}
-              name="Latest writing"
+              name="Latest Writing"
               description="The five most recent posts."
               href="/blog"
               cta="Every post"
-            >
-              <LatestBlogsWidget />
-            </SignalCard>
-            <SignalCard
+              className="col-span-1 min-h-80"
+              background={
+                <Backdrop>
+                  <LatestBlogsWidget />
+                </Backdrop>
+              }
+            />
+            <BentoCard
               Icon={Wrench}
               name="Services"
               description="What the work covers, and where a larger engagement goes."
               href="https://consulting.rahfi.pro/#services"
               cta="See Consulting"
-              className="lg:col-span-2"
-            >
-              <ServicesCard />
-            </SignalCard>
-            <SignalCard
+              className="col-span-1 min-h-80 lg:col-span-2"
+              background={
+                <Backdrop>
+                  <ServicesCard />
+                </Backdrop>
+              }
+            />
+            <BentoCard
               Icon={FolderGit2}
-              name="Projects overview"
-              description="The counts, the stack they use most, and the leading three."
+              name="Projects Overview"
+              description="Counts, stack, and leading work."
               href="/project"
               cta="Every project"
-            >
-              <ProjectsCounter />
-            </SignalCard>
-            <SignalCard
+              className="col-span-1 min-h-80"
+              background={
+                <Backdrop>
+                  <ProjectsCounter />
+                </Backdrop>
+              }
+            />
+            <BentoCard
               Icon={Bot}
               name="Ask Ashley"
               description="Rahfi's AI assistant, on her own page."
               href="/chat"
               cta="Open the chat"
-              className="lg:col-span-2"
-            >
-              <Link
-                href="/chat"
-                className="grid h-full min-h-32 place-items-center rounded-lg border border-dashed border-border transition-colors hover:bg-accent"
-              >
-                <Bot className="size-16 text-foreground/20" />
-              </Link>
-            </SignalCard>
+              className="col-span-1 min-h-80 lg:col-span-2"
+              background={
+                <Backdrop className="grid place-items-center *:h-auto">
+                  <Bot className="size-24 text-foreground/15" />
+                </Backdrop>
+              }
+            />
             <SignalCard
               Icon={Share2}
               name="Connect"
-              description="The city, every account, and the contact form."
+              description="Where to find me."
               href="/contact"
               cta="Send a message"
             >
@@ -418,6 +427,26 @@ export default async function Page() {
           </div>
         </BlurFade>
       </section>
+    </div>
+  );
+}
+
+/**
+ * A widget behind a bento card's words, for the four cards that are read and then followed rather
+ * than used in place: it fills the cell, loses its own frame, and fades out under the card's text,
+ * which rises under the pointer to show where the card leads.
+ */
+function Backdrop({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div
+      className={cn(
+        "absolute inset-0 overflow-hidden [mask-image:linear-gradient(to_top,transparent_35%,#000_80%)]",
+        "transition-transform duration-300 ease-out group-hover:scale-[1.02]",
+        "*:h-full *:rounded-none *:border-0 *:bg-transparent *:shadow-none",
+        className
+      )}
+    >
+      {children}
     </div>
   );
 }
