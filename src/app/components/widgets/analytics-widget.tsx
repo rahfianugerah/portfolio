@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { WidgetFallback } from "@/components/widget-error-boundary";
 import { NumberTicker } from "@/components/magicui/number-ticker";
+import { cn } from "@/lib/utils";
 
 type AnalyticsData = {
   visitors: number;
@@ -43,6 +44,11 @@ function lastSevenDays(sparkline: number[]): Day[] {
   });
 }
 
+/** A day's count as a share of the tallest, and where its point sits across the chart. */
+const barHeight = (visits: number, max: number) => Math.max(4, (visits / max) * 100);
+const pointX = (index: number, count: number) => ((index + 0.5) / count) * 100;
+const pointY = (visits: number, max: number) => 100 - barHeight(visits, max);
+
 function Stat({ label, value, note }: { label: string; value: number; note: string }) {
   return (
     <div className="min-w-0">
@@ -64,6 +70,7 @@ export default function AnalyticsWidget() {
   const [days, setDays] = useState<Day[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [hovered, setHovered] = useState<number | null>(null);
   const hasFetched = useRef(false);
 
 
@@ -129,26 +136,78 @@ export default function AnalyticsWidget() {
         <Stat label="Project views" value={data.projects} note={`${data.delta7d} this week`} />
       </dl>
 
-      {/* The bars take whatever height the cell leaves them, with each day's count above its bar. */}
-      <div className="flex min-h-28 flex-1 flex-col gap-1">
-        <div className="flex flex-1 gap-2">
+      {/*
+       * The seven days as bars, with the same counts drawn as a line of points over them, and a
+       * point naming its day under the pointer. The columns carry no gap of their own, so a
+       * column's centre is exactly where the line puts its point; the bars are inset instead.
+       */}
+      <div className="flex min-h-32 flex-1 flex-col gap-1">
+        <div className="relative flex flex-1">
           {days.map((day) => (
-            <div
-              key={day.date}
-              title={`${day.visits} ${day.visits === 1 ? "visit" : "visits"} on ${day.date}`}
-              className="flex flex-1 flex-col items-center gap-1"
-            >
-              <span className="text-[10px] tabular-nums text-muted-foreground">{day.visits}</span>
-              <div className="relative w-full flex-1">
-                <div
-                  className="absolute inset-x-0 bottom-0 rounded-t bg-foreground/70"
-                  style={{ height: `${Math.max(4, (day.visits / max) * 100)}%` }}
-                />
-              </div>
+            <div key={day.date} className="relative flex-1">
+              <div
+                className="absolute inset-x-1 bottom-0 rounded-t bg-foreground/25"
+                style={{ height: `${barHeight(day.visits, max)}%` }}
+              />
             </div>
           ))}
+
+          <svg
+            aria-hidden
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
+          >
+            <polyline
+              points={days.map((day, i) => `${pointX(i, days.length)},${pointY(day.visits, max)}`).join(" ")}
+              className="fill-none stroke-foreground"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+
+          {days.map((day, i) => (
+            <button
+              key={`${day.date}-point`}
+              type="button"
+              aria-label={`${day.visits} ${day.visits === 1 ? "visit" : "visits"} on ${day.date}`}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              onFocus={() => setHovered(i)}
+              onBlur={() => setHovered(null)}
+              className="absolute size-4 -translate-x-1/2 translate-y-1/2 rounded-full"
+              style={{ left: `${pointX(i, days.length)}%`, bottom: `${barHeight(day.visits, max)}%` }}
+            >
+              <span
+                className={cn(
+                  "absolute inset-1 rounded-full border-2 border-foreground bg-background transition-colors",
+                  hovered === i && "bg-foreground"
+                )}
+              />
+            </button>
+          ))}
+
+          {hovered !== null && (
+            <div
+              className="pointer-events-none absolute z-10 mb-3 -translate-x-1/2 rounded-md border border-border bg-popover px-2 py-1 text-center shadow-xl"
+              style={{
+                left: `${pointX(hovered, days.length)}%`,
+                bottom: `${barHeight(days[hovered].visits, max)}%`,
+              }}
+            >
+              <span className="block text-[10px] font-bold leading-tight whitespace-nowrap">
+                {days[hovered].visits} {days[hovered].visits === 1 ? "visit" : "visits"}
+              </span>
+              <span className="mt-0.5 block font-mono text-[9px] whitespace-nowrap text-muted-foreground">
+                {days[hovered].date}
+              </span>
+            </div>
+          )}
         </div>
-        <div className="flex gap-2 border-t border-border pt-1">
+
+        <div className="flex border-t border-border pt-1">
           {days.map((day) => (
             <span key={day.date} className="flex-1 text-center text-[10px] text-muted-foreground">
               {day.label}
