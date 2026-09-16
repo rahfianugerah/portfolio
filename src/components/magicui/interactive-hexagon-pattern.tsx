@@ -36,6 +36,13 @@ function cellAt(x: number, y: number, radius: number) {
  * with the words over it. It listens on the window rather than on itself, because the content
  * laid over it takes the pointer events, and it ignores movement outside its own box.
  *
+ * Every cell fades on its own age, from a frame loop that runs only while cells are lit, rather
+ * than on its place in the trail. The trail used to be pruned by a timer set on pointer movement,
+ * so it froze wherever the pointer stopped and then vanished in one step; and the cell under a
+ * pointer that kept moving inside it aged out while it was still hovered. Now the hovered cell is
+ * born again on each move, and everything behind it fades out smoothly whether the pointer moves
+ * on or stops.
+ *
  * Decoration only: hidden from assistive technology, and still under reduced motion.
  */
 export function InteractiveHexagonPattern({
@@ -50,11 +57,11 @@ export function InteractiveHexagonPattern({
   const fieldRef = useRef<SVGSVGElement>(null)
   const frameRef = useRef(0)
   const [trail, setTrail] = useState<Cell[]>([])
+  const [now, setNow] = useState(0)
   const [shift, setShift] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
-    let prune: ReturnType<typeof setTimeout> | null = null
 
     const onMove = (event: PointerEvent) => {
       const field = fieldRef.current
@@ -67,25 +74,16 @@ export function InteractiveHexagonPattern({
 
       cancelAnimationFrame(frameRef.current)
       frameRef.current = requestAnimationFrame(() => {
-        const now = performance.now()
+        const stamp = performance.now()
         // The pattern is drawn from -1, -1, so the pointer is moved onto the same origin.
         const cell = cellAt(x + 1, y + 1, radius)
 
-        setTrail((current) =>
-          current[0]?.key === cell.key
-            ? current
-            : [{ ...cell, born: now }, ...current.filter((one) => one.key !== cell.key)].slice(
-                0,
-                trailLength
-              )
-        )
+        // The cell under the pointer is born again every move, so it stays lit while it is hovered.
+        setTrail((current) => [
+          { ...cell, born: stamp },
+          ...current.filter((one) => one.key !== cell.key).slice(0, trailLength - 1),
+        ])
         setShift({ x: (x / rect.width - 0.5) * 16, y: (y / rect.height - 0.5) * 16 })
-
-        if (prune) clearTimeout(prune)
-        prune = setTimeout(() => {
-          const cutoff = performance.now() - FADE_MS
-          setTrail((current) => current.filter((one) => one.born > cutoff))
-        }, FADE_MS)
       })
     }
 
@@ -93,9 +91,28 @@ export function InteractiveHexagonPattern({
     return () => {
       window.removeEventListener("pointermove", onMove)
       cancelAnimationFrame(frameRef.current)
-      if (prune) clearTimeout(prune)
     }
   }, [radius, trailLength])
+
+  // While anything is lit, each frame ages the trail and drops whatever has finished fading. The
+  // loop stops as soon as the field is dark again, so an idle page runs nothing.
+  useEffect(() => {
+    if (trail.length === 0) return
+
+    let frame = 0
+    const step = () => {
+      const stamp = performance.now()
+      setNow(stamp)
+      setTrail((current) => {
+        const alive = current.filter((one) => stamp - one.born < FADE_MS)
+        return alive.length === current.length ? current : alive
+      })
+      frame = requestAnimationFrame(step)
+    }
+
+    frame = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(frame)
+  }, [trail.length])
 
   return (
     <div aria-hidden className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}>
@@ -105,14 +122,15 @@ export function InteractiveHexagonPattern({
       >
         <HexagonPattern radius={radius} className="fill-transparent stroke-foreground/10" />
         <svg ref={fieldRef} className="absolute inset-0 h-full w-full">
-          {trail.map((cell, i) => {
+          {trail.map((cell) => {
             const [cx, cy] = hexCenter(cell.col, cell.row, radius, "horizontal", 0)
+            const life = Math.max(0, 1 - (now - cell.born) / FADE_MS)
             return (
               <polygon
                 key={cell.key}
                 points={hexPoints(cx - 1, cy - 1, radius - 1, "horizontal")}
-                className="fill-foreground stroke-none transition-opacity duration-700"
-                style={{ opacity: 0.16 * (1 - i / trailLength) }}
+                className="fill-foreground stroke-none"
+                style={{ opacity: 0.18 * life }}
               />
             )
           })}
