@@ -1,7 +1,6 @@
 // src/app/actions.ts
 "use server";
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { DATA } from "@/data/resume";
 import nodemailer from "nodemailer";
 import { z } from "zod";
@@ -31,21 +30,23 @@ const contactSchema = z.object({
   captchaToken: z.string().optional(),
 });
 
-export async function generateChatResponse(history: any[], currentMessage: string) {
+type ChatTurn = { role: "user" | "assistant"; content: string };
+
+export async function generateChatResponse(history: ChatTurn[], currentMessage: string) {
   // This reads the secure key from Vercel/Local .env
-  const apiKey = process.env.GEMINI_API_KEY; 
+  const apiKey = process.env.OLLAMA_API_KEY;
+  const baseUrl = process.env.OLLAMA_BASE_URL || "https://ollama.com/v1";
+  const model = process.env.OLLAMA_MODEL || "gpt-oss:120b";
 
   if (!apiKey) {
     return { error: "Server Error: API Key missing." };
   }
 
   try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    
     const systemPrompt = `
       You are a helpful AI assistant for Rahfi's personal portfolio website.
       Your goal is to answer questions about Rahfi based STRICTLY on the data provided below.
-      
+
       If the user asks about something not in this data, simply say you don't know or ask them to email him.
       Be concise, professional, and friendly.
 
@@ -53,19 +54,38 @@ export async function generateChatResponse(history: any[], currentMessage: strin
       ${JSON.stringify(DATA)}
     `;
 
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-2.5-flash",
-      systemInstruction: systemPrompt,
+    // Ollama speaks the OpenAI chat completions format, so plain fetch is enough
+    const response = await fetch(`${baseUrl}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        stream: false,
+        messages: [
+          { role: "system", content: systemPrompt },
+          ...history,
+          { role: "user", content: currentMessage },
+        ],
+      }),
     });
 
-    const chat = model.startChat({
-      history: history,
-    });
+    if (!response.ok) {
+      console.error("AI Error:", response.status, await response.text());
+      return { error: "Failed to generate response." };
+    }
 
-    const result = await chat.sendMessage(currentMessage);
-    const response = result.response.text();
-    
-    return { success: response };
+    const data = await response.json();
+    const reply = data?.choices?.[0]?.message?.content;
+
+    if (!reply) {
+      console.error("AI Error: no content in response", data);
+      return { error: "Failed to generate response." };
+    }
+
+    return { success: reply as string };
 
   } catch (error) {
     console.error("AI Error:", error);

@@ -58,8 +58,8 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
 
     try {
       const historyForServer = messages.slice(1).map(m => ({
-        role: m.role === "assistant" ? "model" : "user",
-        parts: [{ text: m.content }]
+        role: m.role === "user" ? ("user" as const) : ("assistant" as const),
+        content: m.content
       }));
 
       const result = await generateChatResponse(historyForServer, text);

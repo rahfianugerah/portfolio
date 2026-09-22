@@ -25,7 +25,7 @@
 ![Portable Text](https://img.shields.io/badge/Portable_Text-5.0.0-orange)
 ![Supabase](https://img.shields.io/badge/Supabase-2.86.2-3ECF8E?logo=supabase&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Latest-336791?logo=postgresql&logoColor=white)
-![Gemini](https://img.shields.io/badge/Google_Gemini_AI-0.24.1-4285F4?logo=google&logoColor=white)
+![Ollama](https://img.shields.io/badge/Ollama-API-000000?logo=ollama&logoColor=white)
 ![reCAPTCHA v3](https://img.shields.io/badge/reCAPTCHA_v3-1.11.0-4285F4?logo=google&logoColor=white)
 ![React Hook Form](https://img.shields.io/badge/React_Hook_Form-7.71.1-EC5990?logo=reacthookform&logoColor=white)
 ![Zod](https://img.shields.io/badge/Zod-3.25.76-3E67B1?logo=zod&logoColor=white)
@@ -46,7 +46,7 @@
 
 | Feature | Description |
 |---|---|
-| **AI Chatbot** | Floating chatbot powered by Google Gemini AI that answers questions about skills, projects, and experience. Chat history is persisted per browser session. |
+| **AI Chatbot** | Floating chatbot powered by Ollama that answers questions about skills, projects, and experience. Chat history is persisted per browser session. |
 | **Blog** | Full blog system with Sanity CMS as the headless CMS. Posts are rendered with Portable Text and support syntax-highlighted code blocks via Shiki. |
 | **Analytics Dashboard** | Real-time visitor tracking widget backed by Supabase (PostgreSQL). Tracks unique sessions, daily/weekly deltas, and displays a sparkline chart. |
 | **GitHub Stats** | Live GitHub stats widget (public repos, latest repositories) fetched from the GitHub API with hourly caching. |
@@ -83,7 +83,7 @@
 - **Nodemailer**: Contact form email delivery
 
 #### AI & External APIs
-- **Google Gemini AI**: Conversational AI chatbot
+- **Ollama**: Conversational AI chatbot
 - **GitHub REST API**: Live repository and profile stats
 - **Google reCAPTCHA v3**: Form spam protection
 
@@ -125,7 +125,9 @@ Required environment variables:
 - `NEXT_PUBLIC_SANITY_DATASET`:  Sanity dataset (e.g. `production`) 
 - `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`:  Google reCAPTCHA v3 site key 
 - `RECAPTCHA_SECRET_KEY`:  Google reCAPTCHA v3 secret key 
-- `GEMINI_API_KEY`:  Google Gemini AI API key 
+- `OLLAMA_API_KEY`:  Ollama API key
+- `OLLAMA_BASE_URL`:  Ollama API base URL, defaults to `https://ollama.com/v1`
+- `OLLAMA_MODEL`:  Ollama model name, defaults to `gpt-oss:120b` 
 - `GITHUB_TOKEN`:  GitHub personal access token (for stats API) 
 - `EMAIL_USER`:  SMTP email address for contact form 
 - `EMAIL_PASS`:  SMTP password / app password 
