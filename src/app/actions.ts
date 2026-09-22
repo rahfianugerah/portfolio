@@ -35,8 +35,12 @@ type ChatTurn = { role: "user" | "assistant"; content: string };
 export async function generateChatResponse(history: ChatTurn[], currentMessage: string) {
   // This reads the secure key from Vercel/Local .env
   const apiKey = process.env.OLLAMA_API_KEY;
-  const baseUrl = process.env.OLLAMA_BASE_URL || "https://ollama.com/v1";
   const model = process.env.OLLAMA_MODEL || "gpt-oss:120b";
+
+  // Accept the host with or without the /v1 suffix: both forms are written in the wild, and the
+  // host alone answers 404 on every chat path.
+  const configuredUrl = (process.env.OLLAMA_BASE_URL || "https://ollama.com").replace(/\/+$/, "");
+  const baseUrl = configuredUrl.endsWith("/v1") ? configuredUrl : `${configuredUrl}/v1`;
 
   if (!apiKey) {
     return { error: "Server Error: API Key missing." };
