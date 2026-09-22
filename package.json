@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "env:push": "node scripts/vercel-env.mjs"
+    "env:push": "node scripts/vercel-env.mjs",
+    "env:reset": "node scripts/vercel-env.mjs --clear"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

@@ -144,6 +144,13 @@ npm run env:push -- --env production   # one environment only
 npm run env:push -- --file .env.local  # a different source file
 ```
 
+To make Vercel match the file exactly, `npm run env:reset` removes every variable the project holds first, then pushes:
+
+```bash
+npm run env:reset -- --dry-run         # list what would be removed and sent
+npm run env:reset                      # remove all, then push .env
+```
+
 Each variable is replaced if it already exists, and values are piped to the CLI over stdin so they are never printed or logged. Redeploy afterwards for the new values to take effect. To go the other way, `vercel env pull` writes the project settings into a local file.
 
 </div>

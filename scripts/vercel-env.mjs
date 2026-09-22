@@ -6,6 +6,7 @@
 //   node scripts/vercel-env.mjs --env production     push to production only
 //   node scripts/vercel-env.mjs --file .env.local    push a different file
 //   node scripts/vercel-env.mjs --dry-run            list the keys, change nothing
+//   node scripts/vercel-env.mjs --clear              remove every remote variable first, then push
 //   node scripts/vercel-env.mjs --self-test          check the parser
 
 import { existsSync, readFileSync } from "node:fs";
@@ -41,6 +42,23 @@ function run(args, input) {
   return spawnSync(VERCEL, args, { input, shell: true, encoding: "utf8" });
 }
 
+// Names Vercel currently holds, read from the table `vercel env ls` prints.
+function listRemoteKeys() {
+  const listed = run(["env", "ls"]);
+  if (listed.status !== 0) {
+    console.error(`Could not list variables. Run "${VERCEL} link" if the project is not linked yet.`);
+    process.exit(1);
+  }
+
+  const headings = new Set(["NAME", "VALUE", "ENVIRONMENTS", "CREATED", "UPDATED", "VERCEL", "ENVIRONMENT", "VARIABLES"]);
+  const keys = new Set();
+  for (const line of (listed.stdout || "").split(/\r?\n/)) {
+    const first = line.trim().split(/\s+/)[0] || "";
+    if (first.length > 1 && /^[A-Z][A-Z0-9_]*$/.test(first) && !headings.has(first)) keys.add(first);
+  }
+  return [...keys];
+}
+
 function selfTest() {
   const parsed = parseEnvFile(
     ["# comment", "", "PLAIN=value", 'QUOTED="has=equals"', "export EXPORTED=ok", "EMPTY=", "not a var"].join("\n")
@@ -73,6 +91,19 @@ function main() {
   if (!entries.length) {
     console.error(`${file} holds no variables with a value.`);
     process.exit(1);
+  }
+
+  if (process.argv.includes("--clear")) {
+    const remote = listRemoteKeys();
+    console.log(`${remote.length} variables to remove from ${targets.join(", ")}`);
+    for (const key of remote) {
+      if (dryRun) {
+        console.log(`  ${key}`);
+        continue;
+      }
+      for (const target of targets) run(["env", "rm", key, target, "--yes"]);
+      console.log(`  ${key} removed`);
+    }
   }
 
   console.log(`${entries.length} variables from ${file} -> ${targets.join(", ")}`);
