@@ -104,7 +104,7 @@ export const DATA = {
       start: "Jul 2026",
       end: "Present",
       description: [
-        "Answered the board's need for an enterprise-grade internal AI system by building MAIA (Maharum AI for Everything), the single AI entry point for ring-one leadership across every internal application in the group.",
+        "Answered the board's need for an enterprise-grade internal AI system by building MAIA (Maharum AI Automation), the single AI entry point for ring-one leadership across every internal application in the group.",
         "Engineered MAIA's brain as a Cognee-backed RAG pipeline, replacing whole-document context stuffing with a knowledge graph over company data, which significantly accelerated query retrieval times and drastically reduced token consumption per answer.",
         "Protected board-only material inside an AI that reads company-wide data by enforcing confidentiality in one shared query filter, so a record reaches only its author, an admin, or the author's division, and CEO-only notes never enter a response.",
         "Stopped long analyses being silently truncated at the 60-second platform default by raising the request budget to 900 seconds and wrapping every chat stream so a dying generator still emits a terminal error event instead of a stream the browser waits on forever."
