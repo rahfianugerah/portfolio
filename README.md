@@ -132,6 +132,20 @@ Required environment variables:
 - `EMAIL_USER`:  SMTP email address for contact form 
 - `EMAIL_PASS`:  SMTP password / app password 
 
+#### Syncing Variables To Vercel
+
+Vercel does not read `.env` at deploy time, so the values have to live in the project settings. `npm run env:push` copies them there from a local env file using the Vercel CLI:
+
+```bash
+npm i -g vercel && vercel link          # once per machine
+npm run env:push -- --dry-run          # list the keys that would be sent
+npm run env:push                       # push .env to production, preview, development
+npm run env:push -- --env production   # one environment only
+npm run env:push -- --file .env.local  # a different source file
+```
+
+Each variable is replaced if it already exists, and values are piped to the CLI over stdin so they are never printed or logged. Redeploy afterwards for the new values to take effect. To go the other way, `vercel env pull` writes the project settings into a local file.
+
 </div>
 
 ### Project Structure
