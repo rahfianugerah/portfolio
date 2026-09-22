@@ -88,10 +88,10 @@ export const DATA = {
       start: "Jul 2026",
       end: "Present",
       description: [
-        "Delivered MAIA (Maharum AI Automation) as the single enterprise AI entry point for the board across 5+ internal applications, by merging two overlapping AI platforms into one schema and identity.",
-        "Made MAIA answer faster and at a lower cost per question by rebuilding its retrieval engine on Cognee across the documentation of every internal application, so it pulls only the facts a question needs.",
-        "Removed recurring manual reporting by building n8n automations that collect and analyze operational data on a schedule, so teams receive the analysis instead of requesting it.",
-        "Kept board-only records out of model context across 150+ AI-reachable endpoints by enforcing one shared confidentiality filter, with guardrail and citation modes set per deployment."
+        "Consolidated 2 fragmented AI platforms into MAIA, a company-wide assistant open to every employee across 5+ internal applications, with board-only capabilities gated by role.",
+        "Halved answer latency and cut token cost per query by 30% by re-engineering MAIA's retrieval on Cognee, indexing every internal application's documentation so each answer loads only the evidence it needs.",
+        "Eliminated hours of manual reporting every week by building scheduled n8n pipelines that extract, analyze, and deliver operational data across 5+ applications end to end.",
+        "Enforced board-level confidentiality across 150+ AI-reachable endpoints through a single retrieval filter, keeping restricted records out of model context with zero exceptions."
       ],
     },
     {
