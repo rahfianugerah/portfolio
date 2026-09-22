@@ -93,8 +93,14 @@ function main() {
         console.log(`  ${key} -> ${target}`);
       } else {
         failed++;
-        // stderr can echo the value back on some errors, so only the key is reported.
-        console.error(`  ${key} -> ${target} FAILED`);
+        // stderr can echo the value back, so it is redacted before anything is printed.
+        const reason = (added.stderr || added.stdout || "no output from the CLI")
+          .split(value).join("***")
+          .trim()
+          .split(/\r?\n/)
+          .slice(0, 3)
+          .join(" ");
+        console.error(`  ${key} -> ${target} FAILED: ${reason}`);
       }
     }
   }
