@@ -81,16 +81,16 @@ export const DATA = {
     {
       company: "Maharum Group",
       href: "#",
-      badges: ["Generative AI", "RAG", "LLM", "Knowledge Graph"],
+      badges: ["Generative AI", "RAG", "LLM", "Automation"],
       location: "Jakarta, Indonesia",
       title: "AI/ML Engineer",
       logoUrl: "",
       start: "Jul 2026",
       end: "Present",
       description: [
-        "Delivered MAIA (Maharum AI Automation) as the single enterprise AI entry point for the board across 14 internal applications, by merging two overlapping AI platforms into one schema and identity.",
-        "Made MAIA answer faster and at a lower cost per question by rebuilding its retrieval engine on Cognee, so it pulls only the facts a question needs instead of reading whole documents.",
-        "Raised answer accuracy for every internal application by curating MAIA's company knowledge base to 120+ verified content chunks across 17 documents, replacing guesswork with sourced answers.",
+        "Delivered MAIA (Maharum AI Automation) as the single enterprise AI entry point for the board across 5+ internal applications, by merging two overlapping AI platforms into one schema and identity.",
+        "Made MAIA answer faster and at a lower cost per question by rebuilding its retrieval engine on Cognee across the documentation of every internal application, so it pulls only the facts a question needs.",
+        "Removed recurring manual reporting by building n8n automations that collect and analyze operational data on a schedule, so teams receive the analysis instead of requesting it.",
         "Kept board-only records out of model context across 150+ AI-reachable endpoints by enforcing one shared confidentiality filter, with guardrail and citation modes set per deployment."
       ],
     },
@@ -105,8 +105,8 @@ export const DATA = {
       end: "Present",
       description: [
         "Migrated 9+ years of financial records out of Mekari Jurnal into our in-house ERP with 100% month-by-month reconciliation, ending all third-party accounting dependence.",
-        "Built Maharum's entire Google Cloud estate from zero as the founding engineer, now serving 14 applications across 2 environments on Cloud Run, Cloud SQL, Secret Manager, and Cloud Build.",
-        "Moved a legacy production database off AWS EC2 into a normalized 31-table Cloud SQL schema with zero data loss, by running the transfer as one row-count verified transaction.",
+        "Built Maharum's entire Google Cloud estate from zero as the founding engineer, now serving 5+ applications across 2 environments on Cloud Run, Cloud SQL, Secret Manager, and Cloud Build.",
+        "Moved the ERP database of 140+ tables off AWS into Cloud SQL with zero data loss, by running the transfer as one row-count verified transaction.",
         "Reduced an 11-minute production outage window to a 5-second bounded failure by enforcing a lock timeout on every pooled database connection."
       ],
     },
