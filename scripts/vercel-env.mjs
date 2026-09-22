@@ -87,7 +87,11 @@ function main() {
     for (const target of targets) {
       // Remove first: vercel env add refuses a name that already exists in that environment.
       run(["env", "rm", key, target, "--yes"]);
-      const added = run(["env", "add", key, target], value);
+
+      // NEXT_PUBLIC_ values are inlined into the browser bundle by Next, so they are config by
+      // definition. Everything else stays server side. The CLI refuses to guess for either.
+      const type = key.startsWith("NEXT_PUBLIC_") ? "config" : "secret";
+      const added = run(["env", "add", key, target, "--type", type], value);
 
       if (added.status === 0) {
         console.log(`  ${key} -> ${target}`);
