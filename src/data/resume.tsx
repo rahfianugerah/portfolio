@@ -88,10 +88,10 @@ export const DATA = {
       start: "Jul 2026",
       end: "Present",
       description: [
-        "Delivered MAIA (Maharum AI Automation) as the single enterprise AI entry point for the board across 14 internal applications, by merging two overlapping platforms into one schema and identity.",
+        "Delivered MAIA (Maharum AI Automation) as the single enterprise AI entry point for the board across 14 internal applications, by merging two overlapping AI platforms into one schema and identity.",
         "Accelerated query retrieval and cut token consumption per answer by engineering MAIA's brain as a Cognee-backed RAG pipeline over a knowledge graph instead of whole-document context.",
-        "Eliminated silent truncation on long analyses by raising the streaming budget from 60 to 900 seconds and emitting a terminal event on every chat stream.",
-        "Enforced board-level confidentiality across 159 endpoints through a single shared query filter, keeping CEO-only notes out of every AI response."
+        "Turned an assistant that answered every question with 'I don't know' into a grounded one by building its retrieval corpus of 120+ chunks across 17 documents, matched on content rather than file path.",
+        "Kept board-only records out of model context across 150+ AI-reachable endpoints by enforcing one shared confidentiality filter, with guardrail and citation modes set per deployment."
       ],
     },
     {
@@ -104,9 +104,9 @@ export const DATA = {
       start: "Jul 2026",
       end: "Present",
       description: [
-        "Migrated 117 months (9+ years) of financial records out of Mekari Jurnal into our in-house ERP with 100% month-by-month reconciliation, ending all third-party accounting dependence.",
+        "Migrated 9+ years of financial records out of Mekari Jurnal into our in-house ERP with 100% month-by-month reconciliation, ending all third-party accounting dependence.",
         "Built Maharum's entire Google Cloud estate from zero as the founding engineer, now serving 14 applications across 2 environments on Cloud Run, Cloud SQL, Secret Manager, and Cloud Build.",
-        "Normalized the HRIS database from 26 mixed tables to 31 on Cloud SQL with zero data loss, by moving 9 years of AWS EC2 data through one row-count verified transaction.",
+        "Normalized the HRIS database from 26 mixed tables to 31 on Cloud SQL with zero data loss, by moving every table off AWS EC2 through one row-count verified transaction.",
         "Reduced an 11-minute production outage window to a 5-second bounded failure by enforcing a lock timeout on every pooled database connection."
       ],
     },
