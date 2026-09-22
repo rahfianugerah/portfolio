@@ -6,6 +6,16 @@ import nodemailer from "nodemailer";
 import { z } from "zod";
 import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { checkChatRateLimit } from "@/lib/chat-rate-limit";
+
+const MAX_CHAT_MESSAGE_LENGTH = 1000;
+const MAX_CHAT_HISTORY_TURNS = 20;
+
+// The first entry of x-forwarded-for is the client; the rest are proxies.
+function readClientIp(): string {
+  const forwarded = headers().get("x-forwarded-for");
+  return forwarded ? forwarded.split(",")[0].trim() : "anonymous";
+}
 
 // Contact form validation schema
 const contactSchema = z.object({
@@ -32,7 +42,38 @@ const contactSchema = z.object({
 
 type ChatTurn = { role: "user" | "assistant"; content: string };
 
+// The browser is untrusted: a server action is a public endpoint, callable without the UI.
+const chatSchema = z.object({
+  history: z
+    .array(
+      z.object({
+        role: z.enum(["user", "assistant"]),
+        content: z.string().min(1).max(MAX_CHAT_MESSAGE_LENGTH),
+      })
+    )
+    .max(MAX_CHAT_HISTORY_TURNS),
+  message: z.string().trim().min(1).max(MAX_CHAT_MESSAGE_LENGTH),
+});
+
 export async function generateChatResponse(history: ChatTurn[], currentMessage: string) {
+  const validation = chatSchema.safeParse({ history, message: currentMessage });
+
+  if (!validation.success) {
+    console.error("Chat validation failed:", validation.error.issues[0].message);
+    return { error: "That message could not be processed. Keep it under 1000 characters." };
+  }
+
+  const rateLimit = await checkChatRateLimit(readClientIp());
+
+  if (!rateLimit.available) {
+    return { error: "The chat is temporarily unavailable. Please try again later." };
+  }
+
+  if (!rateLimit.allowed) {
+    const minutes = Math.ceil(rateLimit.resetSeconds / 60);
+    return { error: `Too many messages. Please try again in ${minutes} minute(s).` };
+  }
+
   // This reads the secure key from Vercel/Local .env
   const apiKey = process.env.OLLAMA_API_KEY;
   const model = process.env.OLLAMA_MODEL || "gpt-oss:120b";
@@ -70,8 +111,8 @@ export async function generateChatResponse(history: ChatTurn[], currentMessage: 
         stream: false,
         messages: [
           { role: "system", content: systemPrompt },
-          ...history,
-          { role: "user", content: currentMessage },
+          ...validation.data.history,
+          { role: "user", content: validation.data.message },
         ],
       }),
     });
@@ -142,9 +183,7 @@ export async function submitContactForm(formData: {
     }
 
     // Get client IP for rate limiting
-    const headersList = headers();
-    const forwarded = headersList.get("x-forwarded-for");
-    const ip = forwarded ? forwarded.split(",")[0] : "anonymous";
+    const ip = readClientIp();
 
     // Rate limit check: 3 submissions per hour per IP
     const rateLimit = await checkRateLimit(ip, 3, 60 * 60 * 1000);

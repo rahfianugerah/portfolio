@@ -46,7 +46,7 @@
 
 | Feature | Description |
 |---|---|
-| **AI Chatbot** | Floating chatbot powered by Ollama that answers questions about skills, projects, and experience. Chat history is persisted per browser session. |
+| **AI Chatbot** | Floating chatbot powered by Ollama that answers questions about skills, projects, and experience. Chat history is persisted per browser session. Requests are rate limited per visitor in Supabase. |
 | **Blog** | Full blog system with Sanity CMS as the headless CMS. Posts are rendered with Portable Text and support syntax-highlighted code blocks via Shiki. |
 | **Analytics Dashboard** | Real-time visitor tracking widget backed by Supabase (PostgreSQL). Tracks unique sessions, daily/weekly deltas, and displays a sparkline chart. |
 | **GitHub Stats** | Live GitHub stats widget (public repos, latest repositories) fetched from the GitHub API with hourly caching. |
@@ -117,6 +117,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+Run `supabase-schema.sql` and `supabase-chat-rate-limit.sql` in the Supabase SQL editor before the first deploy. The chatbot fails closed without the second one.
 
 Required environment variables:
 - `NEXT_PUBLIC_SUPABASE_URL`:  Supabase project URL 
