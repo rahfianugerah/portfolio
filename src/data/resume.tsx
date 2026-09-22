@@ -89,8 +89,8 @@ export const DATA = {
       end: "Present",
       description: [
         "Delivered MAIA (Maharum AI Automation) as the single enterprise AI entry point for the board across 14 internal applications, by merging two overlapping AI platforms into one schema and identity.",
-        "Accelerated query retrieval and cut token consumption per answer by engineering MAIA's brain as a Cognee-backed RAG pipeline over a knowledge graph instead of whole-document context.",
-        "Turned an assistant that answered every question with 'I don't know' into a grounded one by building its retrieval corpus of 120+ chunks across 17 documents, matched on content rather than file path.",
+        "Made MAIA answer faster and at a lower cost per question by rebuilding its retrieval engine on Cognee, so it pulls only the facts a question needs instead of reading whole documents.",
+        "Raised answer accuracy for every internal application by curating MAIA's company knowledge base to 120+ verified content chunks across 17 documents, replacing guesswork with sourced answers.",
         "Kept board-only records out of model context across 150+ AI-reachable endpoints by enforcing one shared confidentiality filter, with guardrail and citation modes set per deployment."
       ],
     },
@@ -106,7 +106,7 @@ export const DATA = {
       description: [
         "Migrated 9+ years of financial records out of Mekari Jurnal into our in-house ERP with 100% month-by-month reconciliation, ending all third-party accounting dependence.",
         "Built Maharum's entire Google Cloud estate from zero as the founding engineer, now serving 14 applications across 2 environments on Cloud Run, Cloud SQL, Secret Manager, and Cloud Build.",
-        "Normalized the HRIS database from 26 mixed tables to 31 on Cloud SQL with zero data loss, by moving every table off AWS EC2 through one row-count verified transaction.",
+        "Moved a legacy production database off AWS EC2 into a normalized 31-table Cloud SQL schema with zero data loss, by running the transfer as one row-count verified transaction.",
         "Reduced an 11-minute production outage window to a 5-second bounded failure by enforcing a lock timeout on every pooled database connection."
       ],
     },
