@@ -79,6 +79,38 @@ export const DATA = {
 
   work: [
     {
+      company: "Maharum Group",
+      href: "#",
+      badges: ["Founding Engineer", "Google Cloud", "Data Migration", "ERP"],
+      location: "Jakarta, Indonesia",
+      title: "Cloud & Data Engineer",
+      logoUrl: "",
+      start: "Jul 2026",
+      end: "Present",
+      description: [
+        "Unlocked 9+ years of financial and operational records trapped in Mekari Jurnal, a third-party SaaS, by engineering an archive loader that reconciled all 117 months against the source balance sheet before writing, landing the full 2017 to 2026 ledger in our in-house ERP with verified integrity and no dependence on third-party accounting software.",
+        "Built Maharum's entire cloud estate from an empty account as the founding engineer, designing the Google Cloud architecture of Cloud Run services, Cloud SQL, Secret Manager, Cloud Tasks, and Cloud Build promotion paths that now carries 14 internal applications across separate staging and production environments.",
+        "Moved the HRIS database off a single AWS EC2 PostgreSQL box whose 26 tables mixed identity, contract, and attendance data, transferring it through an SSH tunnel and the Cloud SQL Auth Proxy into a normalized 31-table schema inside one transaction that verifies row counts before it commits, so the cutover completed with zero data loss.",
+        "Ended production outages that were invisible outside the GCP console by defining Cloud Monitoring dashboards as version-controlled definitions and bounding every pooled database connection with a lock timeout, converting an 11-minute full outage during a data sync into a 503 answered within 5 seconds."
+      ],
+    },
+    {
+      company: "Maharum Group",
+      href: "#",
+      badges: ["Generative AI", "RAG", "LLM", "Knowledge Graph"],
+      location: "Jakarta, Indonesia",
+      title: "AI/ML Engineer",
+      logoUrl: "",
+      start: "Jul 2026",
+      end: "Present",
+      description: [
+        "Answered the board's need for an enterprise-grade internal AI system by building MAIA (Maharum AI for Everything), the single AI entry point for ring-one leadership across every internal application in the group.",
+        "Engineered MAIA's brain as a Cognee-backed RAG pipeline, replacing whole-document context stuffing with a knowledge graph over company data, which significantly accelerated query retrieval times and drastically reduced token consumption per answer.",
+        "Protected board-only material inside an AI that reads company-wide data by enforcing confidentiality in one shared query filter, so a record reaches only its author, an admin, or the author's division, and CEO-only notes never enter a response.",
+        "Stopped long analyses being silently truncated at the 60-second platform default by raising the request budget to 900 seconds and wrapping every chat stream so a dying generator still emits a terminal error event instead of a stream the browser waits on forever."
+      ],
+    },
+    {
       company: "PT Arsa Muda Nawasena",
       href: "#",
       badges: [],
