@@ -11,8 +11,8 @@ export const DATA = {
   url: "https://rahfi.pro",
   location: "Jakarta, Indonesia",
   locationLink: "https://www.google.com/maps/place/jakarta",
-  description: "AI Software Engineer",
-  summary: "I am an AI Software Engineer and recent Computer Science graduate, majoring in Information Systems from Mercu Buana University who loves bridging the gap between complex tech and real business value. My expertise lies at the intersection of AI and Cloud Computing, where I focus on taking from experimental AI models and turning them into production-ready systems. As a generalist with a product-first mindset, I care deeply about code quality and scalable architecture, and I am eager to apply my skills in AI and Cloud to collaborate on meaningful, high-impact projects",
+  description: "AI/ML Engineer",
+  summary: "I am an AI/ML Engineer and recent Computer Science graduate, majoring in Information Systems from Mercu Buana University who loves bridging the gap between complex tech and real business value. My expertise lies at the intersection of AI and Cloud Computing, where I focus on taking from experimental AI models and turning them into production-ready systems. As a generalist with a product-first mindset, I care deeply about code quality and scalable architecture, and I am eager to apply my skills in AI and Cloud to collaborate on meaningful, high-impact projects",
   avatarUrl: "",
   programmingLanguages: [
     "Python",
