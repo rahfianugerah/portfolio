@@ -81,22 +81,6 @@ export const DATA = {
     {
       company: "Maharum Group",
       href: "#",
-      badges: ["Founding Engineer", "Google Cloud", "Data Migration", "ERP"],
-      location: "Jakarta, Indonesia",
-      title: "Cloud & Data Engineer",
-      logoUrl: "",
-      start: "Jul 2026",
-      end: "Present",
-      description: [
-        "Unlocked 9+ years of financial and operational records trapped in Mekari Jurnal, a third-party SaaS, by engineering an archive loader that reconciled all 117 months against the source balance sheet before writing, landing the full 2017 to 2026 ledger in our in-house ERP with verified integrity and no dependence on third-party accounting software.",
-        "Built Maharum's entire cloud estate from an empty account as the founding engineer, designing the Google Cloud architecture of Cloud Run services, Cloud SQL, Secret Manager, Cloud Tasks, and Cloud Build promotion paths that now carries 14 internal applications across separate staging and production environments.",
-        "Moved the HRIS database off a single AWS EC2 PostgreSQL box whose 26 tables mixed identity, contract, and attendance data, transferring it through an SSH tunnel and the Cloud SQL Auth Proxy into a normalized 31-table schema inside one transaction that verifies row counts before it commits, so the cutover completed with zero data loss.",
-        "Ended production outages that were invisible outside the GCP console by defining Cloud Monitoring dashboards as version-controlled definitions and bounding every pooled database connection with a lock timeout, converting an 11-minute full outage during a data sync into a 503 answered within 5 seconds."
-      ],
-    },
-    {
-      company: "Maharum Group",
-      href: "#",
       badges: ["Generative AI", "RAG", "LLM", "Knowledge Graph"],
       location: "Jakarta, Indonesia",
       title: "AI/ML Engineer",
@@ -104,10 +88,26 @@ export const DATA = {
       start: "Jul 2026",
       end: "Present",
       description: [
-        "Answered the board's need for an enterprise-grade internal AI system by building MAIA (Maharum AI Automation), the single AI entry point for ring-one leadership across every internal application in the group.",
-        "Engineered MAIA's brain as a Cognee-backed RAG pipeline, replacing whole-document context stuffing with a knowledge graph over company data, which significantly accelerated query retrieval times and drastically reduced token consumption per answer.",
-        "Protected board-only material inside an AI that reads company-wide data by enforcing confidentiality in one shared query filter, so a record reaches only its author, an admin, or the author's division, and CEO-only notes never enter a response.",
-        "Stopped long analyses being silently truncated at the 60-second platform default by raising the request budget to 900 seconds and wrapping every chat stream so a dying generator still emits a terminal error event instead of a stream the browser waits on forever."
+        "Delivered MAIA (Maharum AI Automation) as the single enterprise AI entry point for the board across 14 internal applications, by merging two overlapping platforms into one schema and identity.",
+        "Accelerated query retrieval and cut token consumption per answer by engineering MAIA's brain as a Cognee-backed RAG pipeline over a knowledge graph instead of whole-document context.",
+        "Eliminated silent truncation on long analyses by raising the streaming budget from 60 to 900 seconds and emitting a terminal event on every chat stream.",
+        "Enforced board-level confidentiality across 159 endpoints through a single shared query filter, keeping CEO-only notes out of every AI response."
+      ],
+    },
+    {
+      company: "Maharum Group",
+      href: "#",
+      badges: ["Founding Engineer", "Google Cloud", "Data Migration", "ERP"],
+      location: "Jakarta, Indonesia",
+      title: "Cloud & Data Engineer",
+      logoUrl: "",
+      start: "Jul 2026",
+      end: "Present",
+      description: [
+        "Migrated 117 months (9+ years) of financial records out of Mekari Jurnal into our in-house ERP with 100% month-by-month reconciliation, ending all third-party accounting dependence.",
+        "Built Maharum's entire Google Cloud estate from zero as the founding engineer, now serving 14 applications across 2 environments on Cloud Run, Cloud SQL, Secret Manager, and Cloud Build.",
+        "Normalized the HRIS database from 26 mixed tables to 31 on Cloud SQL with zero data loss, by moving 9 years of AWS EC2 data through one row-count verified transaction.",
+        "Reduced an 11-minute production outage window to a 5-second bounded failure by enforcing a lock timeout on every pooled database connection."
       ],
     },
     {
