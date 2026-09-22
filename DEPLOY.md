@@ -186,6 +186,7 @@ the question of which one was pasted into the console last.
 | File | Adds |
 | :- | :- |
 | `0001_analytics_baseline.sql` | `counters`, `daily_stats`, `sessions` |
+| `0002_chat_rate_limit.sql` | `chat_requests`, and `check_chat_rate_limit`, the limit behind Ashley |
 
 Those three tables are exactly the three the code queries. Supabase does one job here, counting
 visitors. The media migrations that briefly sat beside this one are deleted with the storage

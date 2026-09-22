@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { checkChatRateLimit } from "@/lib/chat-rate-limit";
 import { streamChat, type ChatMessage } from "@/lib/ollama";
 import {
   getAchievements,
@@ -12,6 +13,20 @@ import {
 } from "@/lib/content";
 
 export const runtime = "nodejs";
+
+// A question is a sentence, not an essay. Anything longer is someone using the key as a
+// general purpose model rather than asking about Rahfi.
+const MAX_MESSAGE_LENGTH = 1000;
+
+// Ashley's own answers land back here as history, and they are longer than a question, so a
+// turn is trimmed rather than refused. The prompt stays bounded either way.
+const MAX_TURN_LENGTH = 4000;
+
+// The first entry is the client; the rest are proxies it passed through.
+function readClientIp(request: Request): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  return forwarded ? forwarded.split(",")[0].trim() : "anonymous";
+}
 
 /**
  * Ashley, the assistant on this site.
@@ -38,9 +53,39 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Nothing to answer." }, { status: 400 });
   }
 
+  if (message.length > MAX_MESSAGE_LENGTH) {
+    console.error(`Chat message rejected at ${message.length} characters`);
+    return NextResponse.json(
+      { error: `Please keep a question under ${MAX_MESSAGE_LENGTH} characters.` },
+      { status: 400 }
+    );
+  }
+
+  // This route is reachable without the page, so the limit is applied before any work is
+  // done and before the key is spent.
+  const rateLimit = await checkChatRateLimit(readClientIp(request));
+
+  if (!rateLimit.available) {
+    return NextResponse.json(
+      { error: "Ashley is unavailable just now. Please try again later." },
+      { status: 503 }
+    );
+  }
+
+  if (!rateLimit.allowed) {
+    const minutes = Math.ceil(rateLimit.resetSeconds / 60);
+    return NextResponse.json(
+      { error: `That is a lot of questions. Please come back in ${minutes} minute(s).` },
+      { status: 429 }
+    );
+  }
+
   // A long transcript is a long prompt on someone else's hardware, and the recent turns
   // carry the thread.
-  const history = (body.history ?? []).filter((m) => m.content?.trim()).slice(-12);
+  const history = (body.history ?? [])
+    .filter((m) => m.content?.trim())
+    .slice(-12)
+    .map((m) => ({ ...m, content: m.content.slice(0, MAX_TURN_LENGTH) }));
 
   try {
     const [profile, roles, education, achievements, projects, certificates, skills] =
