@@ -84,7 +84,9 @@ export async function generateChatResponse(history: ChatTurn[], currentMessage: 
   const baseUrl = configuredUrl.endsWith("/v1") ? configuredUrl : `${configuredUrl}/v1`;
 
   if (!apiKey) {
-    return { error: "Server Error: API Key missing." };
+    // The variable name belongs in the log, not on the page.
+    console.error("Chat disabled: OLLAMA_API_KEY is not set on this deployment.");
+    return { error: "The assistant is not configured yet." };
   }
 
   try {

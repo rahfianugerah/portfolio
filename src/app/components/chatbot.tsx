@@ -64,13 +64,18 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
 
       const result = await generateChatResponse(historyForServer, text);
 
+      // The server's errors are written for a visitor to read: whether the allowance is spent,
+      // whether the assistant is unconfigured, or whether the model refused. Showing one beats a
+      // single sentence that hides which of them fired.
       if (result.error) {
-        throw new Error(result.error);
+        setMessages((m) => [...m, { role: "assistant", content: String(result.error) }]);
+        return;
       }
 
       setMessages((m) => [...m, { role: "assistant", content: result.success || "" }]);
 
     } catch (error) {
+      // Only an unexpected throw reaches here now, such as the request never arriving.
       console.error("Chat Error:", error);
       setMessages((m) => [
         ...m,
