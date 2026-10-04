@@ -11,6 +11,13 @@ import { checkChatRateLimit } from "@/lib/chat-rate-limit";
 const MAX_CHAT_MESSAGE_LENGTH = 1000;
 const MAX_CHAT_HISTORY_TURNS = 20;
 
+// A carried turn is the assistant's own earlier answer, which is longer than any question, so a
+// turn is trimmed rather than refused: refusing it fails every follow-up after the first reply.
+const MAX_CHAT_TURN_LENGTH = 4000;
+
+// Caps what one answer can cost, and keeps the history it becomes inside MAX_CHAT_TURN_LENGTH.
+const MAX_CHAT_OUTPUT_TOKENS = 1000;
+
 // The first entry of x-forwarded-for is the client; the rest are proxies.
 function readClientIp(): string {
   const forwarded = headers().get("x-forwarded-for");
@@ -48,7 +55,7 @@ const chatSchema = z.object({
     .array(
       z.object({
         role: z.enum(["user", "assistant"]),
-        content: z.string().min(1).max(MAX_CHAT_MESSAGE_LENGTH),
+        content: z.string().min(1).transform((turn) => turn.slice(0, MAX_CHAT_TURN_LENGTH)),
       })
     )
     .max(MAX_CHAT_HISTORY_TURNS),
@@ -91,11 +98,16 @@ export async function generateChatResponse(history: ChatTurn[], currentMessage: 
 
   try {
     const systemPrompt = `
-      You are a helpful AI assistant for Rahfi's personal portfolio website.
-      Your goal is to answer questions about Rahfi based STRICTLY on the data provided below.
+      You are the AI assistant on Naufal Rahfi Anugerah's portfolio website. You are an AI, not
+      Rahfi: always refer to him in the third person, and never say "my experience" or "my
+      projects". If asked who you are, say you are the AI assistant on his portfolio.
 
-      If the user asks about something not in this data, simply say you don't know or ask them to email him.
-      Be concise, professional, and friendly.
+      Answer questions about Rahfi based STRICTLY on the data below. Never add a fact, number,
+      employer, award, or link that is not in it, and never fill a gap with a plausible guess. If
+      the answer is not in the data, say you do not know and suggest the contact page.
+
+      Keep every answer under 120 words, in plain text, with no emoji. Lead with the answer. Use a
+      short list only when asked for several items.
 
       Here is the Resume Data:
       ${JSON.stringify(DATA)}
@@ -111,6 +123,10 @@ export async function generateChatResponse(history: ChatTurn[], currentMessage: 
       body: JSON.stringify({
         model,
         stream: false,
+        max_tokens: MAX_CHAT_OUTPUT_TOKENS,
+        // gpt-oss spends part of the token budget thinking, and a portfolio question does not
+        // need much of it. An ignored field on a host that lacks it costs nothing.
+        reasoning_effort: "low",
         messages: [
           { role: "system", content: systemPrompt },
           ...validation.data.history,

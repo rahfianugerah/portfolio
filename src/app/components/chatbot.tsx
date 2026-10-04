@@ -10,7 +10,12 @@ type ChatbotProps = {
   minimal?: boolean;
 };
 
-type Message = { role: "user" | "assistant" | "model"; content: string };
+// isError marks a notice from the server, such as a spent allowance. It is shown to the visitor
+// but never sent back, since the model would read it as something it had said.
+type Message = { role: "user" | "assistant" | "model"; content: string; isError?: boolean };
+
+// The recent turns carry the thread, and a long transcript is a long prompt on someone else's bill.
+const MAX_HISTORY_TURNS = 12;
 
 export default function Chatbot({ minimal = false }: ChatbotProps) {
   const [messages, setMessages] = useState<Message[]>([
@@ -57,10 +62,14 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
     setBusy(true);
 
     try {
-      const historyForServer = messages.slice(1).map(m => ({
-        role: m.role === "user" ? ("user" as const) : ("assistant" as const),
-        content: m.content
-      }));
+      const historyForServer = messages
+        .slice(1)
+        .filter(m => !m.isError)
+        .slice(-MAX_HISTORY_TURNS)
+        .map(m => ({
+          role: m.role === "user" ? ("user" as const) : ("assistant" as const),
+          content: m.content
+        }));
 
       const result = await generateChatResponse(historyForServer, text);
 
@@ -68,7 +77,7 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
       // whether the assistant is unconfigured, or whether the model refused. Showing one beats a
       // single sentence that hides which of them fired.
       if (result.error) {
-        setMessages((m) => [...m, { role: "assistant", content: String(result.error) }]);
+        setMessages((m) => [...m, { role: "assistant", content: String(result.error), isError: true }]);
         return;
       }
 
@@ -79,7 +88,7 @@ export default function Chatbot({ minimal = false }: ChatbotProps) {
       console.error("Chat Error:", error);
       setMessages((m) => [
         ...m,
-        { role: "assistant", content: "Sorry, something went wrong. Please try again." },
+        { role: "assistant", content: "Sorry, something went wrong. Please try again.", isError: true },
       ]);
     } finally {
       setBusy(false);
