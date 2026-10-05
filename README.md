@@ -5,16 +5,13 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.3.3-06B6D4?logo=tailwindcss&logoColor=white)
 ![HeroUI](https://img.shields.io/badge/HeroUI-3.2.5-000000)
-![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.142-009688?logo=fastapi&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-2.116.0-3FCF8E?logo=supabase&logoColor=white)
 ![Node](https://img.shields.io/badge/Node-20-5FA04E?logo=nodedotjs&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-Managed-000000?logo=vercel&logoColor=white)
-![pytest](https://img.shields.io/badge/pytest-9.1.1-0A9EDC?logo=pytest&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Active-2EA043)
 ![License](https://img.shields.io/badge/License-Private-750014)
 
-Live at [rahfi.pro](https://rahfi.pro). Intent is in `PRD.md`; deployment is in `DEPLOY.md`; every endpoint is in `API.md`.
+Live at [rahfi.pro](https://rahfi.pro). **This branch is the frontend only.** The backend lives on the `backend-main` and `backend-dev` branches of the same repository, and `API.md` is there with it. Intent is in `PRD.md`; deployment of the site is in `DEPLOY.md`.
 
 ## Table of Contents
 
@@ -106,39 +103,56 @@ The home page ends on a Magic UI bento grid of live cards, spanned so every row 
 | Data fetching | Server Components, `fetch` | 16.3.5 |
 | Styling | Tailwind CSS, shadcn token layer, HeroUI theme | 4.3.3 |
 | Icons | Lucide, React Icons | 1.46.0, 5.7.0 |
-| Backend | FastAPI on Python, as one Vercel function | 0.142, 3.12 |
+| Backend | FastAPI, a separate deployment on the `backend-main` branch | Not in this branch |
 | Content | Supabase PostgreSQL rows, Markdown through `react-markdown` | 10.1.0 |
 | Database | Supabase, PostgreSQL | 2.116.0 |
-| File storage | Google Cloud Storage, through `google-cloud-storage` | 3.16.0 |
-| Password and secrets | Argon2id through `argon2-cffi`, AES-256-GCM through `cryptography` | 25.1.0, 50.0.2 |
-| AI | Any OpenAI-compatible endpoint, over HTTP with an API key | No client library |
+| File storage | Google Cloud Storage, read by public URL. The backend does the writing | Managed |
+| AI | Any OpenAI-compatible endpoint, called by the backend | No client library |
 | Animation | Framer Motion | 13.3.0 |
 | UI components | HeroUI | 3.2.5 |
 | Copied components | Magic UI, Aceternity UI, shadcn/ui | Source in the repository |
-| Testing | pytest, for the backend. The frontend has none | 9.1.1 |
+| Testing | None in this branch. The backend's suite is on its own branches | |
 | Deployment | Vercel | Managed |
 
 ## 4. Frontend Architecture
 
 ### Architecture Type
 
-Hybrid. Most routes are static React Server Components; the assistant, the widgets, and the studio are client components. A FastAPI backend does every write and every call that needs a secret.
+Hybrid. Most routes are static React Server Components; the assistant, the widgets, and the studio are client components. A FastAPI backend, deployed separately, does every write and every call that needs a secret.
 
 ### Architecture Description
 
 A single shell in `src/app/components/layout-content.tsx` supplies the top bar, a full-width page, and the footer for every public route. The studio under `/studio` has its own shell.
 
-**Reading and writing take two different paths.** Pages read published content straight from Supabase, with the anon key, through `src/lib/content.ts` and `src/data/blog.ts`, because they are rendered at build time, before the backend exists. Row-level security limits that key to every document and to published posts. Everything else goes to the backend: the studio's saves, Ashley, the consulting site's assistant, and the contact form.
+**Reading and writing take two different paths.** Pages read published content straight from Supabase, with the anon key, through `src/lib/content.ts` and `src/data/blog.ts`, because they are rendered at build time, when the backend cannot be asked. Row-level security limits that key to every document and to published posts. Everything else goes to the backend: the studio's saves, Ashley, the consulting site's assistant, and the contact form.
 
-The backend is one FastAPI application in `backend/`. In production it is a Vercel Python function entered through `api/index.py`; locally it is uvicorn on port 8000. `next.config.mjs` rewrites `/api/*` to it. Four Next route handlers under `src/app/api` are files, so they are matched before the rewrite and keep answering: analytics, GitHub statistics, the content payload for client components, and the blog list. All four only read.
+**The browser only ever talks to this origin.** `next.config.mjs` rewrites `/api/:path*` to `${BACKEND_URL}/api/:path*`, so this server passes a request for `/api` on to the backend. That keeps the studio's session cookie first-party and needs no CORS. Four Next route handlers under `src/app/api` are files, so they are matched before the rewrite and keep answering: analytics, GitHub statistics, the content payload for client components, and the blog list. All four only read.
 
-`src/proxy.ts` sits in front of every page. It turns away crawlers that identify themselves, and sends a visitor with no session cookie from `/studio` to the sign-in page.
+**The rewrite needs `BACKEND_URL` when the site is built.** Unset in development, it falls back to `http://127.0.0.1:8000`. Unset in a production build, the build logs `BACKEND_URL is not set: /api is not forwarded, so the studio, chat and contact form will not work.` and adds no rewrite, so the backend's paths are not forwarded until the variable is set and the site is built again. That is deliberate: a build says so instead of shipping a rewrite to nothing.
+
+`src/proxy.ts` sits in front of every request and does three things. It turns away crawlers that identify themselves, on every path including `/api`. It sends a visitor with no session cookie from `/studio` to the sign-in page. On a request for `/api/*` it sets two headers before the request is forwarded: `x-client-ip`, the first entry of `x-forwarded-for`, and `x-service-key`, the value of `STUDIO_SERVICE_KEY`. Both are set unconditionally, so a value the browser sent is overwritten.
+
+### The Backend Lives on Other Branches
+
+The backend is one FastAPI application. For this site it signs the owner in, does every studio save, signs the file uploads, answers as Ashley, sends the contact form's mail, and holds the credentials saved in the studio. **None of its code is in this branch.**
+
+| Item | Where |
+| :- | :- |
+| Its code, tests, `requirements.txt`, and `supabase/migrations/` | The `backend-dev` and `backend-main` branches of this repository |
+| Its documentation | Its own `README.md` and `API.md`, on those branches |
+| A local checkout | A second working tree beside this one, `../portfolio-backend`, on `backend-dev` |
+| Its deployment | A Vercel project of its own on this repository, with `backend-main` as the production branch, intended for `api.rahfi.pro` |
+
+**The backend branches share no history with `main` and `dev`, and are never merged with them.** A merge in either direction would put every file of one side into the other.
+
+**The backend believes `x-client-ip` only when `x-service-key` matches its own `STUDIO_SERVICE_KEY`.** Seen from the backend, every forwarded request arrives from this site's server, so without the stated address every visitor would share one rate limit. A missing or mismatched key raises no error: the backend falls back to the address that connected, and the allowances for chat, the contact form, and sign-in are spent by all visitors together.
 
 ### Main Layers
 
 | Layer | Responsibility |
 | :- | :- |
-| `src/proxy.ts` | The crawler gate and the studio redirect |
+| `next.config.mjs` | The rewrite of `/api/*` to the backend |
+| `src/proxy.ts` | The crawler gate, the studio redirect, and the two headers a forwarded `/api` request carries |
 | `src/app/layout.tsx` | Fonts, metadata, providers |
 | `src/app/components/layout-content.tsx` | Top bar, full-width page, footer |
 | `src/app/(site)/` | The public pages |
@@ -147,9 +161,6 @@ The backend is one FastAPI application in `backend/`. In production it is a Verc
 | `src/components/` | Shared components and primitives, and `studio/` for the panel's own |
 | `src/lib/` | Content readers, the crawler list, Supabase, helpers |
 | `src/data/` | The origin and navigation, and the post reader |
-| `backend/` | The FastAPI application: authentication, credentials, files, posts, documents, the assistants, mail |
-| `api/index.py` | The Vercel function's entry. One line, importing the application |
-| `supabase/migrations/` | The schema |
 
 ### Application Flow
 
@@ -170,20 +181,8 @@ Static generation for the content routes, with a read revalidated every 60 secon
 ## 5. Project Structure
 
 ```text
-api/
-└── index.py                  # The Vercel Python function: imports the app from backend/
-backend/
-├── main.py                   # Routers, CORS, the one shape every error takes
-├── routes/                   # public, account, files, content
-├── auth.py                   # The owner account: sign-in, lockout, sessions, reset codes
-├── crypto.py                 # Argon2id and AES-256-GCM
-├── vault.py                  # The credentials saved in the studio
-├── storage.py                # Google Cloud Storage as a drive
-├── db.py, llm.py, mail.py, ratelimit.py, config.py
-├── sanity_import.py          # The one-time import
-└── tests/                    # pytest
 src/
-├── proxy.ts                  # Crawler gate, studio redirect
+├── proxy.ts                  # Crawler gate, studio redirect, headers for the backend
 ├── app/
 │   ├── layout.tsx            # Fonts, metadata, providers
 │   ├── robots.ts             # robots.txt
@@ -195,23 +194,20 @@ src/
 ├── components/               # Shared components, magicui, ui primitives, studio
 ├── data/                     # site.ts, blog.ts
 └── lib/                      # content, published, crawlers, group-roles, supabase, helpers
-supabase/
-└── migrations/               # 0001 to 0003, applied in filename order
+next.config.mjs               # The rewrite of /api to the backend
+vercel.json                   # Region, branch deployment, the build skip, headers
 ```
 
 ### Directory Explanation
 
 | Directory | Purpose | In git |
 | :- | :- | :- |
-| `backend/` | Every write and every call that needs a secret | Committed |
-| `api/` | The function entry and nothing else. A second Python file here becomes a second function | Committed |
 | `src/components/studio/` | The studio's forms, file browser, editor, and `content-schema.ts`, which describes every content type once | Committed |
 | `src/data/` | The origin and the navigation. Everything else is a row in the database | Committed |
 | `src/app/components/widgets/` | The signals grid cells, all on one shared frame | Committed |
 | `src/lib/` | Everything with no JSX in it | Committed |
-| `supabase/migrations/` | The schema, forward-only | Committed |
-| `.venv/` | The Python environment | Gitignored |
-| `.env`, `.env.local` | Local values | Gitignored |
+| `.env`, `.env.local` | Local values for the site. The backend's are in its own checkout | Gitignored |
+| `backend/`, `api/`, `supabase/` | The backend, its function entry, and the schema | Not in this branch. Committed on the backend branches |
 
 > [!note]
 > Five things are superseded by the backend and await removal by the owner: `src/app/api/chat/route.ts`, `src/lib/ollama.ts`, `src/lib/chat-rate-limit.ts`, `src/lib/rate-limit.ts`, and the `submitContactForm` action in `src/app/actions.ts`, with the `nodemailer` dependency it uses. Nothing calls them.
@@ -224,32 +220,25 @@ supabase/
 | :- | :- |
 | `.env.example` | Environment variable reference |
 | `next.config.mjs` | The rewrite of `/api/*` to the backend, unoptimized images, and the `/service` redirect |
-| `vercel.json` | Region, the Python function, branch deployment, and response headers |
-| `requirements.txt` | What the deployed backend installs |
-| `requirements-dev.txt` | The same, plus uvicorn, pytest, and `python-dotenv` for a local machine |
+| `vercel.json` | Region, branch deployment, the `ignoreCommand` that makes the backend's Vercel project skip this branch, and response headers |
 | `eslint.config.mjs` | ESLint flat config, extending Next's core web vitals rules |
-| `supabase/migrations/` | Every table, policy, and function |
-| `.github/workflows/migrate.yml` | Applies the migrations on a push to `main` |
 
 ### Environment Variables
 
 | Variable | Required | Description | Example |
 | :- | :- | :- | :- |
+| `BACKEND_URL` | In production | Where `/api` is forwarded. Read when the site is built. Unset in development, it is `http://127.0.0.1:8000` | `https://api.rahfi.pro` |
+| `STUDIO_SERVICE_KEY` | Yes | Sent to the backend with every forwarded request. The same string as the backend's and the consulting site's | `your_long_random_service_key_here` |
 | `SUPABASE_URL` | Yes | The Supabase project | `https://your_project_ref.supabase.co` |
 | `SUPABASE_ANON_KEY` | Yes | Reads published content and counts visitors | `your_supabase_anon_key_here` |
-| `SUPABASE_SERVICE_ROLE_KEY` | Yes | The backend's database access. Bypasses row-level security | `your_supabase_service_role_key_here` |
-| `STUDIO_ENCRYPTION_KEY` | Yes | 32 random bytes, base64. Seals the password digest and every saved credential | `your_base64_32_byte_key_here` |
-| `STUDIO_SERVICE_KEY` | Yes | Shared with the consulting deployment, which sends it to reach the model | `your_long_random_service_key_here` |
-| `ALLOWED_ORIGINS` | Yes | The origins allowed to make a studio write. Comma separated, no trailing slash | `https://rahfi.pro,https://consulting.rahfi.pro` |
-| `GMAIL_USER` | Until SMTP is saved in the studio | Mail fallback, so the first reset code can be sent | `your_email@example.com` |
-| `GMAIL_APP_PASSWORD` | Until SMTP is saved in the studio | The app password for that address | `your_16_character_app_password` |
 | `GITHUB_TOKEN` | Yes | Read-only token for the GitHub statistics | `your_github_token_here` |
-| `RECAPTCHA_SECRET_KEY` | Yes | Captcha verification | `your_recaptcha_secret_key_here` |
-| `RECAPTCHA_SITE_KEY` | Yes | Captcha site key | `your_recaptcha_site_key_here` |
+| `RECAPTCHA_SITE_KEY` | Yes | Captcha site key. The matching secret is the backend's | `your_recaptcha_site_key_here` |
+
+The service role key, the sealing key, `ALLOWED_ORIGINS`, the mail fallback, and the captcha secret belong to the backend's environment. They are listed in the `.env.example` on its branches, and none of them is set for this site.
 
 ### Credentials Saved in the Studio
 
-These are not environment variables. They are entered under `/studio/settings`, sealed with AES-256-GCM, and used on the next request with no redeploy.
+These are not environment variables. They are entered under `/studio/settings`, sealed by the backend before they reach the database, and used on the next request with no redeploy.
 
 | Name | Holds | Default |
 | :- | :- | :- |
@@ -264,20 +253,17 @@ These are not environment variables. They are entered under `/studio/settings`, 
 > [!danger]
 > No variable here carries the `NEXT_PUBLIC_` prefix, and none may be given it: a prefixed value is compiled into the bundle the browser downloads. Every variable is read on the server. The one value the browser needs, the captcha site key, is handed to its page as a prop, and it is an identifier rather than a secret.
 
-> [!warning]
-> **Losing `STUDIO_ENCRYPTION_KEY` makes every saved credential unreadable and the password unusable.** Nothing can recover them, because the key is the only thing that opens them and it is deliberately not in the database. Set a new key, reset the password by emailed code, and enter the credentials again. Keep a copy in a password manager.
-
 > [!note]
-> `SUPABASE_ANON_KEY` is read by the analytics route and by the content readers. It would be safe in the browser anyway, because row-level security is what protects the data behind it; the policies are in `supabase/migrations/`.
+> `SUPABASE_ANON_KEY` is read by the analytics route and by the content readers. It would be safe in the browser anyway, because row-level security is what protects the data behind it; the policies are on the backend branches, in `supabase/migrations/`.
 
 ### Environments
 
 | Environment | Purpose | Branch |
 | :- | :- | :- |
-| Development | Local development, on two local servers | `dev` |
+| Development | Local development, on two local servers from two checkouts | `dev` here, `backend-dev` for the backend |
 | Production | Live at `rahfi.pro` | `main` |
 
-There is no preview environment. `vercel.json` disables deployment for `dev`.
+There is no preview environment. `vercel.json` disables deployment for `dev`, and the backend's does the same for `backend-dev`.
 
 ## 7. Routing, Pages, and Components
 
@@ -306,7 +292,7 @@ Next App Router, file-based.
 | `/studio/content`, `/studio/content/[type]` | The content types and the documents of one | Owner |
 | `/studio/settings` | Credentials, the password, the one-time import | Owner |
 
-Endpoints are in `API.md`.
+Endpoints are in `API.md`, on the backend branches.
 
 Home carries anchored sections: `#hero`, `#experience`, `#education`, `#signals`, `#achievements`, `#contact`.
 
@@ -386,7 +372,7 @@ User Action > Handler > Route Handler or Backend > State Update > Render
 
 ### Content Source
 
-Everything lives in Supabase PostgreSQL, in two tables that `supabase/migrations/0003_studio.sql` creates. `documents` holds one row per content document, with its fields as JSON. `posts` holds one row per post, with its body as Markdown.
+Everything lives in Supabase PostgreSQL, in two tables that `supabase/migrations/0003_studio.sql`, on the backend branches, creates. `documents` holds one row per content document, with its fields as JSON. `posts` holds one row per post, with its body as Markdown.
 
 | Content | Lives in | Edited through |
 | :- | :- | :- |
@@ -420,7 +406,7 @@ What is left in `src/data/` is `site.ts`, which holds the origin and the navigat
 > A project link carries an `icon` string, `github` or `globe`, and `ProjectShowcase` decides which component that means. Content holds no React element, which is what lets it live in a database at all.
 
 > [!note]
-> One studio and one database serve both sites. `consulting.rahfi.pro` reads the same `documents` rows with the anon key, redirects its own `/studio` here, and reaches the model through this backend with a shared service key, so a model change in the studio reaches both assistants.
+> One studio and one database serve both sites. `consulting.rahfi.pro` reads the same `documents` rows with the anon key, redirects its own `/studio` here, and reaches the model through the same backend with a shared service key, so a model change in the studio reaches both assistants.
 
 > [!important]
 > The existing content came out of Sanity once, from the import under `/studio/settings`. Each document is written under an id derived from its Sanity id, so running it twice adds nothing. Nothing keeps the two in step afterwards, and the importer is to be deleted once it has run.
@@ -462,24 +448,20 @@ machine. **No token is stored in browser storage.** The studio's session is a co
 
 ### Authentication Method
 
-A visitor never signs in. The studio has one account, the owner's, and there is no sign-up route.
+A visitor never signs in. The studio has one account, the owner's, and there is no sign-up route. The backend does the authenticating; this site draws the forms and carries the cookie.
 
 | Part | How it works |
 | :- | :- |
 | The account | One row in `studio_owner`, created by hand with an email address and nothing else |
-| The password | Of the owner's choosing, at least 12 characters. Stored as an Argon2id digest, and that digest sealed with AES-256-GCM under a key that is in the deployment environment and never in the database |
-| A forgotten or first password | A six-digit code emailed to the address in that row and to no other. A request can neither choose the address nor learn it. The code lasts 10 minutes, works once, and dies after 5 wrong attempts |
-| The session | An opaque random token in an `HttpOnly`, `SameSite=Lax` cookie, for 12 hours. The database holds only its SHA-256. Signing out revokes it, and changing the password revokes every session |
-| Failed sign-ins | Every failure gets the same reply. Five lock the account for 15 minutes, and a reset code lifts the lock |
+| The password | Of the owner's choosing, at least 12 characters. A forgotten password, and the first one, is set with a six-digit code emailed to the address in that row and to no other |
+| The session | An opaque random token in an `HttpOnly`, `SameSite=Lax` cookie, for 12 hours. It is first-party because the browser only ever calls this origin, which forwards the request |
 | The check | `src/proxy.ts` redirects a visitor without the cookie from `/studio` to `/studio/login`. That is a convenience. The backend verifies the session on every request, and a write must also come from an allowed `Origin` |
 
-### What Is Sealed at Rest
-
-The password digest, the model key, the mail password, and the storage service account key are AES-256-GCM ciphertext in the database, each under its own nonce and bound to the row it belongs to, so a blob lifted from one row cannot be pasted into another. A dump of the database yields nothing usable without `STUDIO_ENCRYPTION_KEY`. The studio shows only whether a secret is set, never its value.
+How the password is stored, how a code expires, the lockout, and what is sealed at rest are the backend's, and are documented on its branches. The studio shows only whether a secret is set, never its value.
 
 ### AI Crawlers Are Refused, Search Engines Are Not
 
-`src/lib/crawlers.ts` holds one list that both `src/app/robots.ts` and `src/proxy.ts` read. A crawler that collects pages for a model, a scraping library, a headless browser, or a request with no `User-Agent` receives 403, and the AI crawlers are disallowed by name in `robots.txt`. Every response carries `X-Robots-Tag: noai, noimageai`. Search engines and link previews are deliberately left alone, because the site is meant to be found and shared. `robots.txt` also disallows `/studio` and `/api/` for everyone.
+`src/lib/crawlers.ts` holds one list that both `src/app/robots.ts` and `src/proxy.ts` read. A crawler that collects pages for a model, a scraping library, a headless browser, or a request with no `User-Agent` receives 403 on every path, `/api` included, and the AI crawlers are disallowed by name in `robots.txt`. Every response carries `X-Robots-Tag: noai, noimageai`. Search engines and link previews are deliberately left alone, because the site is meant to be found and shared. `robots.txt` also disallows `/studio` and `/api/` for everyone.
 
 **This stops a crawler that says who it is, and nothing else.** A scraper that sends a browser's `User-Agent` walks past both, and nothing served to the public can prevent that.
 
@@ -554,14 +536,15 @@ Not formally audited.
 
 ### Testing Strategy
 
-The backend has a pytest suite in `backend/tests`, 124 tests. It runs against an in-memory stand-in for Supabase, so it needs no database, no network, and no credential. The frontend has no test suite: it is verified with `npx tsc --noEmit`, `npm run lint`, and by checking the routes.
+This branch has no test suite. It is verified with `npx tsc --noEmit`, `npm run lint`, and by checking the routes. The backend's pytest suite lives on the backend branches and runs from that checkout.
 
 ### Running Tests
 
-With the Python environment activated:
+Neither command writes to `.next/`, so both are safe beside a running dev server.
 
 ```bash
-npm run test:api
+npx tsc --noEmit
+npm run lint
 ```
 
 ### Error Categories
@@ -587,7 +570,7 @@ Error > Try/Catch or Boundary > Fallback Component > Console Log
 - Font optimization through `next/font`, self-hosted
 - Caching: GitHub stats revalidate hourly
 - Published content cached for 60 seconds
-- Rate limiting on sign-in, reset codes, the contact form, and both assistants, counted in PostgreSQL
+- Rate limiting on sign-in, reset codes, the contact form, and both assistants, counted in PostgreSQL by the backend
 
 ### Performance Monitoring
 
@@ -601,65 +584,69 @@ Error > Try/Catch or Boundary > Fallback Component > Console Log
 ### Requirements
 
 - Node 20 or newer, and npm
-- Python 3.12
-- A Supabase project, and the Supabase CLI to apply the migrations
-- A Google Cloud Storage bucket, for files. `DEPLOY.md` says what it needs
+- A second checkout of this repository on `backend-dev`, running the backend. Its Python version and packages are in its own README
+- A Supabase project, with the backend's migrations applied
+- A Google Cloud Storage bucket, for files. The backend's deployment guide says what it needs
 - A current browser
 
 ### Setup
 
-Eight steps. Steps 1 to 5 get the site and the studio running; steps 6 to 8 are done once, in the studio.
+Eight steps. Step 1 is already done on the owner's machine. Steps 2 to 5 get the site and the studio running; steps 6 to 8 are done once, in the studio.
 
-**1. Install.** The Node packages, and a Python environment named `.venv` for the backend.
+**1. Two checkouts.** This directory holds the site. The backend is a second working tree of the same repository, beside it.
+
+```bash
+git worktree add ../portfolio-backend backend-dev
+```
+
+**Never check a backend branch out in this directory.** The two sides share no history, so each stays in its own directory and neither is merged into the other.
+
+**2. Install.** The Node packages, here. The backend's Python environment is set up in its own checkout, per its README.
 
 ```bash
 npm install
-python -m venv .venv
-source .venv/Scripts/activate
-pip install -r requirements-dev.txt
 ```
 
-On macOS or Linux the activation script is `.venv/bin/activate`.
-
-**2. Configuration.** Copy the template and fill it in by hand. Do not commit the local file.
+**3. Configuration.** Two environment files, one per checkout. Copy each template and fill it in by hand. Neither local file is committed.
 
 ```bash
 cp .env.example .env
+cp ../portfolio-backend/.env.example ../portfolio-backend/.env
 ```
 
-Generate `STUDIO_ENCRYPTION_KEY` with:
+| File | Read by | Holds |
+| :- | :- | :- |
+| `.env` in this checkout | `npm run dev` | The six variables in "Environment Variables" above |
+| `.env` in `../portfolio-backend` | The backend | The service role key, the sealing key, `STUDIO_SERVICE_KEY`, `ALLOWED_ORIGINS`, the mail fallback, and the captcha secret |
 
-```bash
-python -c "import os,base64;print(base64.b64encode(os.urandom(32)).decode())"
+`BACKEND_URL` can be left out of the local file. Unset in development, the rewrite points at `http://127.0.0.1:8000`, which is where the backend's uvicorn runs.
+
+**`STUDIO_SERVICE_KEY` must be the same string in both files.** The site sends it with every forwarded request, and the backend believes the visitor's address only when it matches. A mismatch prints nothing: every visitor is counted as one, and the rate limits run out for all of them at once.
+
+**`ALLOWED_ORIGINS`, in the backend's file, must include `http://localhost:3000` for local work.** The backend refuses a studio write from any origin not on that list, so without it sign-in works and every save fails with `That request did not come from the studio.` That is deliberate: the `Origin` check is what stands in for a CSRF token.
+
+**4. The database.** The migrations and the owner's row belong to the backend. Apply the migrations from its checkout and create the one row in `studio_owner`, per its README. There is no sign-up, and the address in that row is the only one a reset code is ever sent to.
+
+**5. Start both servers**, each in its own shell. The backend first, from its checkout, in PowerShell:
+
+```powershell
+cd ..\portfolio-backend
+.venv\Scripts\python -m uvicorn api.index:app --reload --port 8000
 ```
 
-**`ALLOWED_ORIGINS` must include `http://localhost:3000` for local work.** The backend refuses a studio write from any origin not on that list, so without it sign-in works and every save fails with `That request did not come from the studio.` That is deliberate: the `Origin` check is what stands in for a CSRF token.
-
-**3. Apply the migrations.** They create every table. `SUPABASE_DB_URL` is the pooler connection string from the Supabase dashboard.
-
-```bash
-supabase db push --db-url "$SUPABASE_DB_URL"
-```
-
-**4. Create the owner row.** In the Supabase table editor, insert one row into `studio_owner` with the `email` column filled and nothing else. There is no sign-up, and this address is the only one a reset code is ever sent to.
-
-**5. Start both servers**, each in its own shell.
-
-```bash
-npm run dev:api
-```
+Then the site, from this one:
 
 ```bash
 npm run dev
 ```
 
-The site is at `http://localhost:3000` and the backend at `http://127.0.0.1:8000`. Next rewrites `/api/*` to the backend, so the browser only ever talks to port 3000.
+The site is at `http://localhost:3000` and the backend at `http://127.0.0.1:8000`. Next forwards `/api/*` to the backend, so the browser only ever talks to port 3000.
 
-**Activate `.venv` in the shell that runs `npm run dev:api`.** The script calls bare `python`, which outside the environment is the system interpreter and fails with `No module named uvicorn`. The backend loads `.env.local` and then `.env` itself.
+**The site starts without the backend, and that hides the fault.** Pages read Supabase directly and the four route handlers answer on their own, so the home page renders either way. The studio, the assistant, and the contact form are what fail. The backend reads the `.env` of the directory it is started in, which is why it is started from its own checkout.
 
 **6. Set the first password.** Open `http://localhost:3000/studio/login`, choose **Forgot password**, then **Send code**. Enter the six-digit code from the email with a password of at least 12 characters, then sign in with it.
 
-**The page says a code was sent whether or not one was.** The reply is identical by design, so that it reveals nothing about the account. If no email arrives, the reason is in the backend's log: `The reset code could not be mailed`. The usual cause is a missing `GMAIL_USER` or `GMAIL_APP_PASSWORD`, which carry the mail until SMTP is saved in the studio.
+**The page says a code was sent whether or not one was.** The reply is identical by design, so that it reveals nothing about the account. If no email arrives, the reason is in the backend's log: `The reset code could not be mailed`. The usual cause is a missing `GMAIL_USER` or `GMAIL_APP_PASSWORD` in the backend's `.env`, which carry the mail until SMTP is saved in the studio.
 
 **7. Configure storage and the model.** Under **Settings**, save `GCS_BUCKET` and `GCS_SERVICE_ACCOUNT`, then `LLM_API_KEY`. `LLM_MODEL` and `LLM_BASE_URL` have defaults. Until the model key is saved Ashley answers `The assistant is not configured yet.`, and until storage is saved the file manager answers `Storage is not configured.`
 
@@ -669,9 +656,13 @@ The site is at `http://localhost:3000` and the backend at `http://127.0.0.1:8000
 
 ### Start the Development Server
 
-```bash
-npm run dev:api
+The backend, from `../portfolio-backend`:
+
+```powershell
+.venv\Scripts\python -m uvicorn api.index:app --reload --port 8000
 ```
+
+The site, from this checkout:
 
 ```bash
 npm run dev
@@ -696,21 +687,21 @@ npm run build
 
 | Item | Description |
 | :- | :- |
-| Platform | Vercel: the Next application and one Python function |
-| Trigger | Push to `main`. `dev` is not deployed |
-| Migrations | Applied by `.github/workflows/migrate.yml` on the same push, before the deploy |
-| Build-time config | None. No variable is compiled into the browser bundle |
-| Health check | Vercel deployment status, and the backend's health endpoint |
+| Platform | Vercel. This site is one project; the backend is a second project on the same repository |
+| Trigger | Push to `main`. `dev` is not deployed, and a push to a backend branch is skipped by this project |
+| Migrations | Not this project's. They are applied from the backend branches |
+| Build-time config | `BACKEND_URL`, read when `next.config.mjs` builds the rewrite. No variable is compiled into the browser bundle |
+| Health check | Vercel deployment status, and `/api/health` on this origin, which answers only when the rewrite and the backend both work |
 | Rollback process | Promote a previous deployment in the Vercel dashboard |
 
 The full procedure is in `DEPLOY.md`.
 
 > [!warning]
-> **The backend's first deployment is production.** With `dev` not deployed there is no preview, so the Python function is packaged and routed for the first time on `main`. The local servers prove the application, not the packaging.
+> **The two deployments first meet in production.** Neither `dev` nor `backend-dev` is deployed, so there is no preview in which this site forwards to a deployed backend. The local servers prove the application, not the rewrite between two Vercel projects.
 
 ### Branching
 
-Two branches, and a change moves one way.
+Two branches hold the site, and a change moves one way.
 
 | Branch | Holds | Accepts a merge from |
 | :- | :- | :- |
@@ -720,6 +711,8 @@ Two branches, and a change moves one way.
 A change moves one way: `local work > dev > main`, through a pull request with a recorded human
 approval.
 
+The backend has the same pair, `backend-dev` and `backend-main`, in the same repository. They share no history with these two and are never merged with them.
+
 ### Known Limitations
 
 | Limitation | Impact | Planned resolution |
@@ -728,16 +721,18 @@ approval.
 | No image exists until one is uploaded | Logos, achievement photos and carousel images render as their placeholder | Upload under Files in the studio |
 | Images are served at the size they were uploaded | A large upload weighs on every page that shows it | Put a resizing proxy in front of the bucket if image weight shows in load time |
 | Only crawlers that identify themselves are refused | A scraper that sends a browser's `User-Agent` reads everything a visitor can | None. Nothing served to the public can be made uncopyable |
-| The backend cannot be rehearsed before production | A packaging or routing fault first shows on the live site | Check the health endpoint after every deployment, and promote the previous one if it fails |
+| Neither `dev` nor `backend-dev` is deployed | The rewrite between the two deployments first runs on the live site | Check `/api/health` on this origin after either project deploys, and promote the previous deployment if it fails |
+| `/api` depends on a variable read at build time | A production build without `BACKEND_URL` ships with no rewrite, and changing the variable does nothing until the site is built again | Set it before the first build, and redeploy after changing it |
+| A route handler under `src/app/api` wins over the rewrite | A backend path that a file here also takes is never reached, and nothing reports it | Check `API.md` on the backend branches before adding a handler |
+| The backend's rate limits depend on two headers this site sets | Without a matching `STUDIO_SERVICE_KEY` every visitor shares one allowance | Keep the key identical in both projects |
 | One owner, one account | There are no roles, invitations, or second sign-in | None planned |
 | A post has no revision history and no scheduled publishing | It is a draft or it is published, and a save overwrites | None planned |
-| Losing `STUDIO_ENCRYPTION_KEY` loses every saved credential | The password and every credential must be entered again | Keep the key in a password manager |
-| The storage service account key is stored, sealed, in the database | A leak of both the database and the encryption key exposes the bucket | Keyless access from Vercel to Google Cloud, if the owner chooses it |
+| Saved credentials are sealed under a key only the backend holds | Losing that key means the password and every credential must be entered again | Keep the key in a password manager. The detail is on the backend branches |
 | Superseded files are still in the repository | `src/app/api/chat/route.ts` still answers at its path, though nothing calls it | The owner removes them, with `nodemailer` |
 | The home carousels are empty until something is published | Two cards on the home page show a placeholder line | Add `moment` and `quote` documents in the studio |
 | The résumé download has no place of its own | It is a link among the profile's social links, so replacing the CV means uploading a file and editing that link | Open in `PRD.md` |
 | TypeScript and ESLint are held a major behind | typescript-eslint supports TypeScript up to 6.0, and the React, import, and accessibility plugins in eslint-config-next do not yet run on ESLint 10 | Move to TypeScript 7 and ESLint 10 once those packages support them |
 | The GitHub activity graph is decorative | The squares are randomised, not real contribution data | Use the GitHub contributions API |
-| No frontend test suite | Frontend regressions are caught by review only | Add end-to-end coverage of the routes |
+| No test suite in this branch | Frontend regressions are caught by review only | Add end-to-end coverage of the routes |
 | Ashley needs a model key saved in the studio | Without it every question is answered with "The assistant is not configured yet." | Save `LLM_API_KEY` under Settings. No restart is needed |
 | Ashley keeps no memory between sessions | The transcript is in `sessionStorage` and only the last twelve turns are sent back | A stored conversation, if it is ever worth the privacy question |

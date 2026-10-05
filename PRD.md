@@ -291,6 +291,8 @@ A visitor, meanwhile, sees two things change:
 
 - **Platforms set by the owner:** Supabase for the account and the data, Google Cloud Storage for files, Markdown for posts, Vercel for hosting, and FastAPI for the backend. Both sites are Next.js on Vercel.
 - **The backend is FastAPI, at the owner's direction.** The draft of this phase argued against a second runtime. The owner chose one, so the cost it named is accepted: one more runtime to deploy, and pages that cannot ask the backend for content at build time and so read published rows from the database directly.
+- **The backend lives on its own branches, decided by the owner on 2026-10-05 after the first build.** `backend-main` and `backend-dev` hold it, with a Vercel deployment of its own, and the site's branches, `main` and `dev`, hold the frontend only.
+- **Only `main` and `backend-main` deploy.** Neither `dev` nor `backend-dev` is deployed.
 - **Storing a service-account key in the studio departs from `secret.rules.md`.** That standard wants such a key in a secret manager, and prefers no key at all. It is stored here at the owner's direction: encrypted at rest, decrypted only on the server, never sent to a browser, and recorded as a decision rather than a drift.
 - **This reverses the Phase 3 decision.** Phase 3 removed a Google Cloud Storage CMS in favour of Sanity, citing two CMSs, two sign-in paths, and the service-account key. This phase answers the first two by retiring Sanity entirely rather than running both, and the third by encryption.
 - **A password is hashed, never encrypted, and then sealed**, exactly as `security.rules.md` sets out: an Argon2id digest, with AES-256-GCM over the digest under a key that is not in the database.
@@ -298,8 +300,8 @@ A visitor, meanwhile, sees two things change:
 - **Uploads are checked by content, not by name or declared type,** and are size-limited. Rendered Markdown cannot run script.
 - **What visitors see stays public and fast.** The read path for published content is not behind authentication, and it is cached.
 - **The import runs before either site is promoted.** Sanity is removed in one step rather than one type at a time, so until the one-time import has run against a database, that database's sites are empty. `main` is not updated until it has.
-- **Migrations are forward-only and additive**, in `supabase/migrations/`, as Phase 3 set.
-- **Two repositories change:** the portfolio, on `dev`, and the consulting site.
+- **Migrations are forward-only and additive**, in `supabase/migrations/` on the backend branches, as Phase 3 set.
+- **Two repositories change:** the portfolio, on `dev` for the site and `backend-dev` for the backend, and the consulting site.
 - **No environment file is read, printed, or copied** by any tool or agent, per `env.rules.md`.
 
 ## Data
