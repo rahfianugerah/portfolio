@@ -303,6 +303,19 @@ export const CONTENT_TYPES: ContentType[] = [
       { name: "suffix", label: "Suffix", kind: "text", help: "Shown right after the number, for example +." },
     ],
   },
+  {
+    type: "pricingTier",
+    label: "Consulting pricing",
+    title: (data) => `${text(data.name)} ${text(data.price)}`.trim(),
+    fields: [
+      { name: "name", label: "Name", kind: "text", required: true, help: "The engagement, for example Technical Audit." },
+      { name: "price", label: "Price", kind: "text", required: true, help: "Written the way it should read, for example $2,500 or Custom. The assistant quotes it as written." },
+      { name: "cycle", label: "Billing", kind: "text", help: "Shown beside the price, for example one-time or per month." },
+      { name: "description", label: "Description", kind: "textarea" },
+      { name: "features", label: "What is included", kind: "stringList" },
+      { name: "recommended", label: "Mark as popular", kind: "boolean" },
+    ],
+  },
 ];
 
 export function findContentType(type: string): ContentType | undefined {
