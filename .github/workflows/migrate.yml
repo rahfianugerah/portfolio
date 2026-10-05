@@ -3,10 +3,12 @@ name: Database migrations
 # Applied automatically on a merge to backend-main, but never blind. There is no staging branch to
 # rehearse against, so the other three properties carry the whole risk:
 #
-#   1. A failure stops the job before anything else runs, so a half-applied schema never gets
-#      a matching app shipped on top of it.
-#   2. Migrations are forward-only and additive. Add a column, backfill, and drop it in a
-#      LATER migration, never the same one, so a rollback of the app does not require a
+#   1. A failure stops this job and marks the commit red. It does NOT stop Vercel: the
+#      deployment starts from the same push and runs beside this job, so for a minute the new
+#      code can meet the old schema, or the old code the new one.
+#   2. Migrations are forward-only and additive, which is what makes point 1 survivable. Add a
+#      column, backfill, and drop it in a LATER migration, never the same one, so code of
+#      either age works against either schema, and a rollback of the app never needs a
 #      rollback of the schema.
 #   3. concurrency will not cancel a run in progress, so two merges cannot both apply.
 #
