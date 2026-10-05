@@ -223,7 +223,7 @@ They are Sanity assets on Sanity's CDN: server-generated names that cannot be gu
 
 **Owner:** Naufal Rahfi Anugerah
 **Date:** 2026-10-05
-**Status:** Draft, awaiting the owner's approval. Once built, it supersedes the Sanity decision recorded in Phase 3.
+**Status:** Approved by the owner on 2026-10-05, with the changes recorded below, and built on `dev`. It supersedes the Sanity decision recorded in Phase 3.
 
 ## Problem
 
@@ -245,7 +245,9 @@ The cost is friction on the three things the owner does most: writing, adding fi
 
 Once this exists, the owner can:
 
-- **Sign in to one private studio at `/studio`** with a Supabase account, and run both sites from it. It works as a personal SaaS: one account, one panel, two sites.
+- **Sign in to one private studio at `/studio`** with a password of the owner's own choosing, and run both sites from it. It works as a personal SaaS: one account, one panel, two sites. The account is one row in Supabase, created by hand.
+- **Recover a forgotten password with a six-digit code** sent to the address in that row and to no other. A request can neither choose the address nor learn it. The same code is how the first password is set.
+- **Change where mail is sent from** in the studio, alongside the model and storage credentials.
 - **Write a post in Markdown**, either typed in the studio with a live preview or dropped in as a `.md` file, and publish it to `rahfi.pro/blog` with no commit, build, or deploy. A post can be saved as a draft first.
 - **Manage files the way Google Drive works**: folders, drag-and-drop upload of one file or many, preview, rename, move, and delete, for images and Markdown files alike, stored in Google Cloud Storage.
 - **Edit every kind of content either site shows today**: the profile, roles, education, achievements, certificates, projects, services, client engagements, counters, quotes, moments, organizations, skill groups, and page metadata.
@@ -253,18 +255,25 @@ Once this exists, the owner can:
 - **Add the Google Cloud Storage service-account key through the studio** when it is needed, never through a file in the repository or an environment file.
 - **Change one thing once and see it on both sites**, because `consulting.rahfi.pro` reads from the same store.
 
-Once every content type has moved, Sanity is removed from both repositories.
+Sanity is removed from both repositories, entirely and at once, at the owner's direction.
+
+A visitor, meanwhile, sees two things change:
+
+- **Neither site has an icon.** No favicon is served, and a browser is told not to ask for one.
+- **Crawlers that identify themselves as AI collectors or scraping tools are refused.** Search engines and link previews are not, because the sites are meant to be found and shared.
 
 ## What Is Not Built
 
-- **No separate Express or FastAPI service.** The Next.js app already runs server code on Vercel. A second backend would add a second deployment, cross-origin configuration, and a second place to check authentication, for no capability the app lacks today. Revisit only if a need appears that only Python can meet.
-- **No second account, roles, invitations, or public sign-up.** One owner, allowlisted by identity. Sign-up stays disabled.
+- **No guarantee against copying.** A page a visitor can read is a page a program can read. What is built refuses crawlers that announce themselves; a scraper that pretends to be a browser is not stopped, and nothing served to the public can stop it.
+- **No second account, roles, invitations, or public sign-up.** One owner, one row. There is no sign-up route.
+- **No magic link.** Phase 3 chose one so that no password would exist. The owner prefers a password, so there is one, stored as the house standard requires.
 - **No rich-text editor.** Markdown with a preview, and nothing else. A WYSIWYG editor is the format problem this phase removes.
 - **No revision history, scheduled publishing, or collaborative editing.** A post is a draft or published.
 - **No sharing model.** The file manager looks and behaves like Drive for upload and organisation. It has no share links, permissions, or comments.
 - **No way to read a saved key back.** A credential can be replaced or removed. After saving, the studio shows only that one is set, never the value.
 - **Not every secret can live in the studio.** The deployment must still hold the credential the studio itself uses to reach its database. A vault cannot hold the key that opens it.
-- **No continuous sync with Sanity.** Existing content is moved once, and then Sanity is retired, rather than kept in step.
+- **No continuous sync with Sanity.** Existing content is copied across once, from a button in the studio, and nothing keeps the two in step.
+- **The GitHub token and the reCAPTCHA secret stay in the environment.** Only the model, mail, and storage credentials moved.
 
 ## Success Measure
 
@@ -274,33 +283,34 @@ Once every content type has moved, Sanity is removed from both repositories.
 - A saved credential's value appears in no browser response, no page source, and no log line.
 - An unauthenticated request to any studio page or studio action is refused, and so is a signed-in request from any account other than the owner's.
 - Neither repository depends on Sanity, and no deployment reads a `SANITY_*` or `OLLAMA_*` variable.
-- Through every step of the move, neither site shows an empty section that had content before it.
+- After the one-time import, neither site shows an empty section that had content before it.
+- A request announcing itself as a known AI crawler receives a refusal from either site, and a search engine's crawler does not.
+- A dump of the database yields no password and no credential that can be used without the deployment's key.
 
 ## Constraints
 
-- **Platforms set by the owner:** Supabase for sign-in and data, Google Cloud Storage for files, Markdown for posts, Vercel for hosting. Both sites are Next.js on Vercel.
-- **Storing a service-account key in the studio departs from `secret.rules.md`.** That standard wants such a key in a secret manager, and prefers no key at all. It is stored here at the owner's direction: encrypted at rest, decrypted only on the server, never sent to a browser, and recorded as a decision rather than a drift. A keyless alternative is listed under Open Questions.
-- **This reverses the Phase 3 decision.** Phase 3 removed a Google Cloud Storage CMS in favour of Sanity, citing two CMSs, two sign-in paths, and the service-account key. This phase answers the first two by retiring Sanity entirely rather than running both, and the third by the encryption and keyless options above.
-- **Authentication follows `auth.rules.md`.** One identity source, keyed on the stable user identifier rather than the email address. The browser holds an `HttpOnly` cookie and nothing else. Every studio request is checked on the server, not only redirected by the page.
+- **Platforms set by the owner:** Supabase for the account and the data, Google Cloud Storage for files, Markdown for posts, Vercel for hosting, and FastAPI for the backend. Both sites are Next.js on Vercel.
+- **The backend is FastAPI, at the owner's direction.** The draft of this phase argued against a second runtime. The owner chose one, so the cost it named is accepted: one more runtime to deploy, and pages that cannot ask the backend for content at build time and so read published rows from the database directly.
+- **Storing a service-account key in the studio departs from `secret.rules.md`.** That standard wants such a key in a secret manager, and prefers no key at all. It is stored here at the owner's direction: encrypted at rest, decrypted only on the server, never sent to a browser, and recorded as a decision rather than a drift.
+- **This reverses the Phase 3 decision.** Phase 3 removed a Google Cloud Storage CMS in favour of Sanity, citing two CMSs, two sign-in paths, and the service-account key. This phase answers the first two by retiring Sanity entirely rather than running both, and the third by encryption.
+- **A password is hashed, never encrypted, and then sealed**, exactly as `security.rules.md` sets out: an Argon2id digest, with AES-256-GCM over the digest under a key that is not in the database.
+- **The account is a row of this project's own, which departs from `auth.rules.md`.** That standard forbids a bespoke account table. One exists here at the owner's direction, for a single owner, behind one swappable check. The browser still holds an `HttpOnly` cookie and nothing else, and every studio request is checked on the server, not only redirected by the page.
 - **Uploads are checked by content, not by name or declared type,** and are size-limited. Rendered Markdown cannot run script.
 - **What visitors see stays public and fast.** The read path for published content is not behind authentication, and it is cached.
-- **Nothing visitor-facing may break during the move.** Each content type keeps being read from Sanity until its replacement is live, and both sites are cut over one type at a time.
+- **The import runs before either site is promoted.** Sanity is removed in one step rather than one type at a time, so until the one-time import has run against a database, that database's sites are empty. `main` is not updated until it has.
 - **Migrations are forward-only and additive**, in `supabase/migrations/`, as Phase 3 set.
 - **Two repositories change:** the portfolio, on `dev`, and the consulting site.
 - **No environment file is read, printed, or copied** by any tool or agent, per `env.rules.md`.
 
 ## Data
 
-- **Supabase Postgres:** visitor analytics and the chat rate limit, as now. New: every content document both sites show, the index of posts with their metadata, and the stored credentials, encrypted.
-- **Supabase Auth:** the owner's account.
-- **Google Cloud Storage:** image files and Markdown post files.
-- **Secrets at rest:** the model key and, when added, the service-account key. Both encrypted, both server-only.
-- **Personal data:** the resume's name, contact details, and employment history, as before; the owner's email address in Supabase Auth; and a one-way digest of a visitor's address in the chat rate limit, as now.
+- **Supabase Postgres:** visitor analytics and the chat rate limit, as now. New: every content document both sites show, every post with its Markdown, the owner's account, its sessions and reset codes, and the stored credentials.
+- **Google Cloud Storage:** images, PDFs, and any Markdown file the owner keeps there.
+- **Secrets at rest:** the password digest, the model key, the mail password, and the service-account key. All sealed, all server-only.
+- **Personal data:** the resume's name, contact details, and employment history, as before; the owner's email address in the account row; and a one-way digest of a visitor's address in the rate limits.
 
 ## Open Questions
 
-- **Which other credentials move into the studio?** The GitHub token, the Gmail app password, and the reCAPTCHA secret could follow the model key. Owner to decide.
-- **Keyless access to Google Cloud Storage?** Vercel can authenticate to Google Cloud without any key file, which is what `secret.rules.md` prefers and removes the most dangerous secret entirely. Owner to decide whether that replaces the service-account key.
-- **How does `consulting.rahfi.pro` read content?** Directly from the shared database, or through a read endpoint on `rahfi.pro`. Owner to decide.
-- **What happens to existing Sanity posts?** Converted to Markdown, or the blog starts fresh. Owner to decide.
-- **Do the skills lists and the resume download move into the studio now?** Both are open since Phase 3. Owner to decide.
+- **Keyless access to Google Cloud Storage?** Vercel can authenticate to Google Cloud without any key file, which is what `secret.rules.md` prefers and would remove the most dangerous secret entirely. Owner to decide whether it replaces the service-account key later.
+- **Do the analytics and GitHub routes move to the backend too?** They only read, and they work, so they were left as they are. Owner to decide.
+- **Does the resume download move into the studio?** Open since Phase 3. Owner to decide.
