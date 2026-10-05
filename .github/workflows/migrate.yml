@@ -27,7 +27,7 @@ concurrency:
 jobs:
   migrate:
     runs-on: ubuntu-latest
-    environment: production
+    environment: supabase
     steps:
       - uses: actions/checkout@v4
 

@@ -133,7 +133,7 @@ The model key, the model name, the mail settings, the bucket name, and the servi
 
 ### 5. Give the migration workflow its secret
 
-Per "How They Are Applied" below: one secret, `SUPABASE_DB_URL`, on a GitHub environment named `production`.
+Per "How They Are Applied" below: one secret, `SUPABASE_DB_URL`, on a GitHub environment named `supabase`, which only `backend-main` may deploy to.
 
 ### 6. Prepare the bucket
 
@@ -227,7 +227,7 @@ The schema lives in `supabase/migrations/`, applied in filename order. Nothing e
 
 ### How They Are Applied
 
-`.github/workflows/migrate.yml` runs on a push to `backend-main`. It lists what is pending, applies it with `supabase db push`, and lists again. It needs one secret, `SUPABASE_DB_URL`, set on a GitHub **environment** named `production` and not repository-wide, so a workflow outside that environment cannot read it. Take the value from the Supabase dashboard's database connection string, with the password filled in and percent-encoded.
+`.github/workflows/migrate.yml` runs on a push to `backend-main`. It lists what is pending, applies it with `supabase db push`, and lists again. It needs one secret, `SUPABASE_DB_URL`, set on a GitHub **environment** named `supabase` and not repository-wide, so a workflow outside that environment cannot read it, and restricted to the `backend-main` branch. It is not the `Production` environment: Vercel records the site's deployments there, and a branch rule on it would reject them. Take the value from the Supabase dashboard, **Connect**, **Session pooler**, with the password filled in and percent-encoded. The direct connection is IPv6 only and GitHub's runners cannot reach it.
 
 If the `production` environment restricts which branches may deploy to it, `backend-main` has to be on that list, or the job is refused before it starts.
 
