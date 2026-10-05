@@ -1,5 +1,6 @@
 import React from "react";
 import { SITE_URL } from "@/data/site";
+import { backendUrl } from "@/lib/backend";
 import { getProfile } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -90,7 +91,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(sourceCodePro.variable, inter.variable)} suppressHydrationWarning>
+    <html lang="en" data-backend-url={backendUrl()} className={cn(sourceCodePro.variable, inter.variable)} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

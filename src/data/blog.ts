@@ -3,8 +3,8 @@ import { readPublished } from "@/lib/published";
 /**
  * Posts, read from the posts table. Each is Markdown, written or dropped into /studio.
  *
- * Only a published post can be read here: the anon key's row-level policy filters on it, so a
- * draft is not something this file could return even by mistake.
+ * Only a published post can be read here: the backend reads with the anon key, whose row-level
+ * policy filters on it, so a draft is not something this file could return even by mistake.
  */
 
 // Emoji, and the joiners and variation selectors that dress them, are stripped from every post
@@ -51,20 +51,12 @@ function toSummary(row: PostRow): PostSummary {
 
 /** Every published post, newest first, without its body. */
 export async function getBlogPosts(): Promise<PostSummary[]> {
-  const rows = await readPublished<PostRow>(
-    "posts",
-    "published=is.true&select=slug,title,summary,cover_url,published_at&order=published_at.desc"
-  );
-  return rows.map(toSummary);
+  return ((await readPublished<PostRow[]>("posts")) ?? []).map(toSummary);
 }
 
 /** One published post by its slug, with its Markdown. Null when there is none. */
 export async function getPost(slug: string): Promise<Post | null> {
-  const [row] = await readPublished<PostRow>(
-    "posts",
-    `published=is.true&slug=eq.${encodeURIComponent(slug)}` +
-      "&select=slug,title,summary,cover_url,published_at,body_md&limit=1"
-  );
+  const row = await readPublished<PostRow>(`posts/${encodeURIComponent(slug)}`);
   if (!row) return null;
 
   // Only the emoji go. Collapsing whitespace across a whole body would flatten the

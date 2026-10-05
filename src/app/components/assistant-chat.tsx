@@ -15,6 +15,7 @@ import remarkGfm from "remark-gfm";
 import { motion } from "framer-motion";
 
 import { AssistantAvatar, VisitorAvatar } from "@/components/assistant-avatar";
+import { backendUrl } from "@/lib/backend";
 import { cn } from "@/lib/utils";
 
 type Message = { role: "user" | "assistant"; content: string };
@@ -218,7 +219,7 @@ export default function AssistantChat() {
     let started = false;
 
     try {
-      const response = await fetch("/api/assistant/chat", {
+      const response = await fetch(`${backendUrl()}/api/assistant/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ history, message: trimmed }),

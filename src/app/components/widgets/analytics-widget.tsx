@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { WidgetFallback } from "@/components/widget-error-boundary";
+import { backendUrl } from "@/lib/backend";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { barHeight, pointX, pointY } from "@/lib/chart";
 import { cn } from "@/lib/utils";
@@ -79,7 +80,7 @@ export default function AnalyticsWidget() {
       try {
         const sessionId = getSessionId();
         // Increment visitor count with session ID
-        const res = await fetch(`/api/analytics?action=visit&session=${sessionId}`);
+        const res = await fetch(`${backendUrl()}/api/analytics?action=visit&session=${sessionId}`);
         const json = await res.json();
 
         if (!json.success) {

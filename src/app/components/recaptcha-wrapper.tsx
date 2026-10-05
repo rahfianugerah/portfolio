@@ -4,9 +4,8 @@ import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { ReactNode } from "react";
 
 /**
- * The contact page reads the site key on the server and passes it in. It still reaches the
- * browser, because Google's script needs it there, but it is no longer a NEXT_PUBLIC_ variable
- * compiled into every bundle.
+ * The contact page reads the site key from the backend on the server and passes it in. It still
+ * reaches the browser, because Google's script needs it there, but no variable here holds it.
  */
 export default function ReCaptchaWrapper({
   siteKey,

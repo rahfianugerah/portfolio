@@ -1,4 +1,5 @@
-const BASE = "/api/studio";
+import { backendUrl } from "@/lib/backend";
+
 const LOGIN_PATH = "/studio/login";
 
 export class ApiError extends Error {
@@ -82,9 +83,10 @@ export async function api<T = void>(
   path: string,
   options: { method?: string; body?: unknown } = {},
 ): Promise<T> {
-  const response = await fetch(BASE + path, {
+  // The session cookie is on the backend's host, so a cross-origin call has to ask for it.
+  const response = await fetch(`${backendUrl()}/api/studio${path}`, {
     method: options.method ?? (options.body === undefined ? "GET" : "POST"),
-    credentials: "same-origin",
+    credentials: "include",
     headers: options.body === undefined ? undefined : { "Content-Type": "application/json" },
     body: options.body === undefined ? undefined : JSON.stringify(options.body),
   });

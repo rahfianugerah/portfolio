@@ -1,6 +1,7 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { InteractiveHexagonPattern } from "@/components/magicui/interactive-hexagon-pattern";
 import { getPageMeta } from "@/lib/content";
+import { readPublished } from "@/lib/published";
 import ContactForm from "@/app/components/contact-form";
 import HirePlatforms from "@/app/components/hire-platforms";
 import ReCaptchaWrapper from "@/app/components/recaptcha-wrapper";
@@ -15,7 +16,10 @@ export async function generateMetadata() {
   };
 }
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  // The site key belongs to the backend's environment, beside the secret it pairs with.
+  const config = await readPublished<{ recaptchaSiteKey: string | null }>("config");
+
   return (
     <section id="contact" className="flex w-full flex-col gap-12 pb-12">
       {/* The heading band runs to both edges and up under the top bar, over the interactive hexagons. */}
@@ -38,7 +42,7 @@ export default function ContactPage() {
       </div>
 
       <BlurFade delay={BLUR_FADE_DELAY * 2}>
-        <ReCaptchaWrapper siteKey={process.env.RECAPTCHA_SITE_KEY}>
+        <ReCaptchaWrapper siteKey={config?.recaptchaSiteKey ?? undefined}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
             {/* Left Column - Contact Form */}
             <div className="w-full h-full">

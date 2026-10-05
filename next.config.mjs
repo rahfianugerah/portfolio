@@ -10,26 +10,6 @@ const nextConfig = {
     unoptimized: true,
   },
 
-  async rewrites() {
-    // The backend is FastAPI, on the backend-main and backend-dev branches and deployed as a
-    // project of its own. The browser never talks to it directly: it asks this origin, and
-    // the request is passed on, which keeps the studio's cookie first-party and needs no CORS.
-    const backend =
-      process.env.BACKEND_URL?.replace(/\/+$/, "") ??
-      (process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000" : null);
-
-    // Without an address there is nowhere to send /api, and a build should say so rather
-    // than ship a rewrite to nothing.
-    if (!backend) {
-      console.warn("BACKEND_URL is not set: /api is not forwarded, so the studio, chat and contact form will not work.");
-      return [];
-    }
-
-    // A route handler under src/app/api is a file, so it is matched before this and keeps
-    // answering.
-    return [{ source: "/api/:path*", destination: `${backend}/api/:path*` }];
-  },
-
   async redirects() {
     return [
       // Services are the consulting practice's, not this site's. /service was a page here

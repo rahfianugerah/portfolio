@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSiteContent } from "@/lib/use-site-content";
+import { backendUrl } from "@/lib/backend";
 import { WidgetFallback } from "@/components/widget-error-boundary";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { FolderGit2, Eye } from "lucide-react";
@@ -29,7 +30,7 @@ export default function ProjectsCounter() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        const res = await fetch("/api/analytics");
+        const res = await fetch(`${backendUrl()}/api/analytics`);
         const json = await res.json();
 
         if (!json.success) {

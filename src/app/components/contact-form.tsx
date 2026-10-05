@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { backendUrl } from "@/lib/backend";
 import {
   Form,
   FormControl,
@@ -78,7 +79,7 @@ export default function ContactForm() {
 
       // The backend sends the mail, with credentials the studio holds. It answers a body
       // with either sentence whatever the status, so the status is not read here.
-      const response = await fetch("/api/contact", {
+      const response = await fetch(`${backendUrl()}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...data, honeypot, captchaToken }),

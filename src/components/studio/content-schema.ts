@@ -316,6 +316,49 @@ export const CONTENT_TYPES: ContentType[] = [
       { name: "recommended", label: "Mark as popular", kind: "boolean" },
     ],
   },
+  {
+    type: "consultingService",
+    label: "Consulting services",
+    title: byField("title"),
+    fields: [
+      { name: "title", label: "Title", kind: "text", required: true },
+      { name: "body", label: "Description", kind: "textarea", required: true },
+      {
+        name: "icon",
+        label: "Icon",
+        kind: "select",
+        required: true,
+        help: "Which icon the consulting site draws beside the service.",
+        options: [
+          { value: "code", label: "Code" },
+          { value: "zap", label: "Lightning" },
+          { value: "brain", label: "Brain" },
+          { value: "chart", label: "Chart" },
+          { value: "database", label: "Database" },
+          { value: "cloud", label: "Cloud" },
+        ],
+      },
+    ],
+  },
+  {
+    type: "principle",
+    label: "Consulting principles",
+    title: byField("title"),
+    fields: [
+      { name: "title", label: "Title", kind: "text", required: true },
+      { name: "body", label: "Description", kind: "textarea", required: true },
+    ],
+  },
+  {
+    type: "processStep",
+    label: "Consulting process",
+    title: (data) => `${text(data.step)} ${text(data.title)}`.trim(),
+    fields: [
+      { name: "step", label: "Step", kind: "text", required: true, help: "Written the way it should read, for example 01." },
+      { name: "title", label: "Title", kind: "text", required: true },
+      { name: "body", label: "Description", kind: "textarea", required: true },
+    ],
+  },
 ];
 
 export function findContentType(type: string): ContentType | undefined {

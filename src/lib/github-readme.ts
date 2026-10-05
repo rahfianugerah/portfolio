@@ -2,9 +2,8 @@
  * A repository's README, as markdown.
  *
  * The GitHub API returns it base64-encoded in JSON, and asking for the raw media type gets
- * the file itself, which is what the renderer wants. GITHUB_TOKEN is optional here: without
- * one the rate limit is sixty requests an hour per IP, which the revalidate window makes
- * plenty, and with one it is five thousand.
+ * the file itself, which is what the renderer wants. It is asked without a token, since this site
+ * holds none: sixty requests an hour per IP, which the hour-long revalidate window makes plenty.
  *
  * Relative links and images in a README point at paths inside the repository. The page resolves
  * them with inRepo as it renders each one, which covers raw HTML tags as well as markdown syntax.
@@ -14,12 +13,10 @@ export async function fetchReadme(repo: string): Promise<string | null> {
   if (!match) return null;
 
   const [, owner, name] = match;
-  const headers: Record<string, string> = { Accept: "application/vnd.github.raw+json" };
-  if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
 
   try {
     const response = await fetch(`https://api.github.com/repos/${owner}/${name}/readme`, {
-      headers,
+      headers: { Accept: "application/vnd.github.raw+json" },
       next: { revalidate: 3600 },
     });
 

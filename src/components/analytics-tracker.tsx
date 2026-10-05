@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 
+import { backendUrl } from "@/lib/backend";
+
 type TrackerProps = {
   type: "visit";
 };
@@ -11,7 +13,7 @@ export function AnalyticsTracker({ type }: TrackerProps) {
     // Only track visits on initial page load (not route changes)
     // This runs once when component mounts
     if (type === "visit") {
-      fetch("/api/analytics?action=visit").catch((err) => {
+      fetch(`${backendUrl()}/api/analytics?action=visit`).catch((err) => {
         console.error("Failed to track visit:", err);
       });
     }

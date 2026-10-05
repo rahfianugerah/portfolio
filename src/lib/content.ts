@@ -139,14 +139,11 @@ export type Certificate = {
   externalUrl: string | null;
 };
 
-/** A row as the database returns it. `data` is whatever the studio saved for that type. */
+/** A row as the backend returns it. `data` is whatever the studio saved for that type. */
 type Row = { id: string; data: Record<string, unknown>; sort_order: number };
 
 async function documents(type: string): Promise<Row[]> {
-  return readPublished<Row>(
-    "documents",
-    `type=eq.${type}&select=id,data,sort_order&order=sort_order.asc`
-  );
+  return (await readPublished<Row[]>(`documents?type=${type}`)) ?? [];
 }
 
 // The studio saves what was typed, so a field can be missing or empty. These three read one

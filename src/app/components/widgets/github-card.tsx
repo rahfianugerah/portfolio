@@ -1,6 +1,7 @@
 "use client";
 
 import { useMounted } from "@/lib/use-mounted";
+import { backendUrl } from "@/lib/backend";
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -46,18 +47,18 @@ export default function GitHubCard() {
   const containerRef = useRef<HTMLDivElement>(null);
 
 
-  // Fetch from the internal API, which holds the token, on mount
+  // Fetch from the backend, which holds the token, on mount
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
-        const res = await fetch("/api/github/stats");
+        const res = await fetch(`${backendUrl()}/api/github/stats`);
         const data = await res.json();
 
         if (data.user) setUser(data.user);
         if (Array.isArray(data.repos)) setRepos(data.repos);
       } catch (error) {
-        console.error("Failed to fetch GitHub data via proxy", error);
+        console.error("Failed to fetch GitHub data from the backend", error);
       } finally {
         setLoading(false);
       }
