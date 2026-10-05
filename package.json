@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
-    "dev:api": ".venv\\Scripts\\python -m uvicorn api.index:app --reload --port 8000",
-    "test:api": ".venv\\Scripts\\python -m pytest backend/tests -q"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@heroui/react": "^3.2.5",

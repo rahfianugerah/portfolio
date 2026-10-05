@@ -3,19 +3,22 @@ import { NextResponse, type NextRequest } from "next/server";
 import { isBlockedCrawler } from "@/lib/crawlers";
 
 /**
- * Two gates in front of every page.
+ * Three things happen in front of every request.
  *
- * The first turns away crawlers that identify themselves; crawlers.ts says what that is
- * worth. The second sends a visitor without a session cookie from the studio to its sign-in
- * page. That second gate is a convenience and not the lock: it only checks that a cookie is
- * present, and the backend verifies it on every request the studio makes.
+ * Crawlers that identify themselves are turned away; crawlers.ts says what that is worth.
+ *
+ * A visitor without a session cookie is sent from the studio to its sign-in page. That is a
+ * convenience and not the lock: it only checks that a cookie is present, and the backend
+ * verifies it on every request the studio makes.
+ *
+ * A request for /api is about to be rewritten to the backend, which is a deployment of its
+ * own. From there the visitor's address is gone, replaced by this server's, so it is stated
+ * here, together with the key that makes the backend believe it.
  */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // The consulting site's server calls the backend with its own key and no browser
-  // User-Agent, and the backend authenticates that call itself.
-  if (!pathname.startsWith("/api/") && isBlockedCrawler(request.headers.get("user-agent"))) {
+  if (isBlockedCrawler(request.headers.get("user-agent"))) {
     return new NextResponse("Automated access to this site is not permitted.", { status: 403 });
   }
 
@@ -25,6 +28,14 @@ export function proxy(request: NextRequest) {
     !request.cookies.has("studio_session")
   ) {
     return NextResponse.redirect(new URL("/studio/login", request.url));
+  }
+
+  if (pathname.startsWith("/api/")) {
+    const headers = new Headers(request.headers);
+    // Set unconditionally, so neither header can be supplied by the browser and passed on.
+    headers.set("x-client-ip", request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "anonymous");
+    headers.set("x-service-key", process.env.STUDIO_SERVICE_KEY ?? "");
+    return NextResponse.next({ request: { headers } });
   }
 
   return NextResponse.next();

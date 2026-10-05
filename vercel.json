@@ -2,18 +2,13 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "regions": ["sin1"],
-  "functions": {
-    "api/index.py": {
-      "maxDuration": 60,
-      "excludeFiles": "{.next,node_modules,src,public,supabase,.venv}/**"
-    }
-  },
   "git": {
     "deploymentEnabled": {
       "main": true,
       "dev": false
     }
   },
+  "ignoreCommand": "[ \"$IS_BACKEND\" = \"1\" ]",
   "github": {
     "silent": true,
     "autoJobCancelation": true
