@@ -49,6 +49,10 @@ export async function generateMetadata(): Promise<Metadata> {
     publisher: "Naufal Rahfi Anugerah",
     category: "technology",
 
+    // The site has no icon, on purpose. An empty data URL is what stops a browser asking for
+    // /favicon.ico anyway and a search engine caching whatever once answered there.
+    icons: { icon: "data:," },
+
     alternates: {
       canonical: SITE_URL,
     },
