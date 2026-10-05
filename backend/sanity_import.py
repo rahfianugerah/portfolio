@@ -1,4 +1,4 @@
-"""The one-time move out of Sanity. Delete this module once it has run."""
+"""The one-time move out of Sanity. Not safe to delete once it has run: routes/content.py takes its list of document types from SHAPES."""
 
 import copy
 import json
