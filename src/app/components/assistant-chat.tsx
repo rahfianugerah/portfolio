@@ -218,7 +218,7 @@ export default function AssistantChat() {
     let started = false;
 
     try {
-      const response = await fetch("/api/chat", {
+      const response = await fetch("/api/assistant/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ history, message: trimmed }),

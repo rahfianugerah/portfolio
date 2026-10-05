@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { submitContactForm } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -77,12 +76,14 @@ export default function ContactForm() {
         }
       }
 
-      // Submit form with honeypot and captcha token
-      const result = await submitContactForm({
-        ...data,
-        honeypot,
-        captchaToken,
+      // The backend sends the mail, with credentials the studio holds. It answers a body
+      // with either sentence whatever the status, so the status is not read here.
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, honeypot, captchaToken }),
       });
+      const result: { success?: string; error?: string } = await response.json();
 
       if (result.error) {
         setSubmitMessage({
