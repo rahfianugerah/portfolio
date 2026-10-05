@@ -2,8 +2,25 @@
 
 import logging
 import os
+import sys
 
 log = logging.getLogger("backend")
+
+# Vercel injects the environment. Locally uvicorn does not, so the same two files Next reads
+# are loaded here, .env.local first because a value already set is never overridden. The
+# import is optional on purpose: python-dotenv is a development requirement and is absent
+# from the deployed function.
+#
+# Never under pytest: a test that reached a real database because a real key happened to be
+# on disk would be a test that writes to production.
+if not os.environ.get("VERCEL_ENV") and "pytest" not in sys.modules:
+    try:
+        from dotenv import load_dotenv
+
+        load_dotenv(".env.local")
+        load_dotenv(".env")
+    except ImportError:
+        pass
 
 
 class ApiError(Exception):

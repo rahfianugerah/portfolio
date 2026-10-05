@@ -44,3 +44,4 @@ next-env.d.ts
 __pycache__/
 .pytest_cache/
 .next-dev.log
+.next-dev-api.log
