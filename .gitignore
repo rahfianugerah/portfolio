@@ -1,0 +1,28 @@
+# python
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# local env files: only the example is ever committed
+.env*
+!.env.example
+
+# credentials, per docs/rules/commit.rules.md
+*.pem
+*.key
+*.p12
+*.pfx
+keys/
+key/
+secrets/
+credentials/
+*service-account*.json
+*service_account*.json
+client_secret*.json
+
+# vercel
+.vercel
+
+# logs
+*.log
