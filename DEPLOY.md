@@ -13,15 +13,14 @@ subdomain.
 | Branch | Vercel environment | URL |
 | :- | :- | :- |
 | `main` | Production | `rahfi.pro` |
-| `dev` | Preview | `preview-rahfi-portfolio.vercel.app` |
+| `dev` | None. It is not deployed | |
 
 A change moves one way: `local work > dev > main`, through a pull request with a recorded human
 approval. Never push directly to `main`.
 
-**`dev` has a fixed preview URL, not a generated one.** Vercel gives every branch deployment a
-URL containing the commit, which changes on every push and cannot be bookmarked or shared ahead
-of time. A domain assigned to a git branch always points at that branch's latest deployment, so
-`preview-rahfi-portfolio.vercel.app` is stable. Adding it is step 6 of First-Time Setup.
+**Only `main` is deployed.** `vercel.json` sets `git.deploymentEnabled` to `false` for `dev`, so a
+push there builds nothing and publishes nothing. Work is reviewed on the local servers, and the
+first deployment a change gets is production.
 
 ## What Is Already in the Repository
 
@@ -110,48 +109,19 @@ project for preview** if you do not want preview traffic writing to production a
 > `SUPABASE_ANON_KEY` is read only on the server. It is the anon key, and row-level security
 > is what protects the data behind it. Its policies live in `supabase/migrations/`.
 
-### 6. Give `dev` a fixed preview URL
+### 6. Remove the old preview domain
 
-Under **Settings > Domains**, add `preview-rahfi-portfolio.vercel.app`. Vercel accepts a second
-`.vercel.app` name if nobody has taken it. In the row it creates, open **Edit**, set **Git
-Branch** to `dev`, and save.
-
-**Do this from the dashboard, not the CLI.** `vercel domains add` registers a domain on the
-account; it does not attach it to a branch, and the branch field is what makes the URL follow
-`dev` instead of pointing at one deployment.
-
-From then on every push to `dev` is reachable at that address. Without it Vercel still builds a
-preview, but its URL contains the commit, so it changes on every push and cannot be shared before
-the push exists.
-
-### 7. Give the migration workflow its secret
-
-The database migrations in `supabase/migrations/` are applied by
-`.github/workflows/migrate.yml` on every push to `main`. It reads one secret from a GitHub
-environment.
-
-On GitHub, open **Settings > Environments**, create one named `production`, and add a secret
-called `SUPABASE_DB_URL`. Its value is the pooler connection string from the Supabase dashboard
-under **Project Settings > Database**, with the password filled in.
-
-**The environment name has to be exactly `production`.** The workflow names it, and a secret added
-repository-wide instead is not visible to a job that declares an environment.
-
-Check it before you rely on it:
-
-```bash
-supabase migration list --db-url "$SUPABASE_DB_URL"
-```
-
-That reads and changes nothing. Four rows means the CLI parsed all four migration files.
+If `preview-rahfi-portfolio.vercel.app` is still listed under **Settings > Domains**, remove it. It was
+assigned to `dev` while that branch was deployed, and it now points at a deployment that no
+longer updates.
 
 ## Routine Deployment
 
-Once linked, Vercel builds on every push.
+Once linked, Vercel builds on every push to `main`.
 
 | Action | Result |
 | :- | :- |
-| Push to `dev` | Preview deployment, at `preview-rahfi-portfolio.vercel.app` |
+| Push to `dev` | Nothing is built or deployed |
 | Merge `dev` into `main` | Production deployment, at `rahfi.pro`, and Supabase migrations applied first |
 
 To deploy manually:

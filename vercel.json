@@ -2,10 +2,16 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "regions": ["sin1"],
+  "functions": {
+    "api/index.py": {
+      "maxDuration": 60,
+      "excludeFiles": "{.next,node_modules,src,public,supabase,.venv}/**"
+    }
+  },
   "git": {
     "deploymentEnabled": {
       "main": true,
-      "dev": true
+      "dev": false
     }
   },
   "github": {
@@ -20,7 +26,8 @@
         { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "X-Robots-Tag", "value": "noai, noimageai" }
       ]
     }
   ]
