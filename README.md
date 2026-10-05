@@ -6,7 +6,7 @@
 ![Vercel](https://img.shields.io/badge/Vercel-Functions-000000?logo=vercel&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Active-2EA043)
 
-One FastAPI application behind two sites, `rahfi.pro` and `consulting.rahfi.pro`. It serves the owner's studio (sign-in, a credential vault, a file manager on Google Cloud Storage, Markdown posts, content documents, a one-time import from Sanity), the portfolio assistant's chat, a model proxy for the consulting site, and the contact form. **It is the only deployment that holds the key which can write to the database**, and neither site does.
+One FastAPI application behind two sites, `rahfi.pro` and `consulting.rahfi.pro`. It serves the owner's studio (sign-in, a credential vault, a file manager on Google Cloud Storage, Markdown posts, content documents, a one-time import from Sanity), both assistants (Ashley on the portfolio, Zoey on the consulting site), the published content both sites render, the portfolio's visitor counts and GitHub card, and the contact form. **It is the only deployment that holds a secret.** Each site holds one setting, this backend's address.
 
 It exists as its own deployable because it used to ship inside the portfolio site: every site change redeployed it, and the consulting site reached its model through another site's deployment. Split out, it releases on its own branch, with its own environment, and a change to a page no longer restarts the thing that holds the secrets.
 
@@ -19,33 +19,32 @@ It exists as its own deployable because it used to ship inside the portfolio sit
 5. [Configuration](#configuration)
 6. [Tests](#tests)
 7. [Project Structure](#project-structure)
-8. [What Is Sealed, and Who Is Believed](#what-is-sealed-and-who-is-believed)
+8. [What Is Sealed, and Who Is Counted](#what-is-sealed-and-who-is-counted)
 9. [The First Run, in Order](#the-first-run-in-order)
 10. [Known Limitations](#known-limitations)
 
 ## Who Calls It, and How
 
-**A browser is never pointed at this backend.** The portfolio forwards its own `/api/*` paths here, so the browser only ever sees `rahfi.pro`.
+**Browsers call this backend directly**, at the address each site holds as `BACKEND_URL`: `https://api.rahfi.pro` in production, `http://localhost:8000` locally. Nothing forwards `/api` and nothing adds a header on the way.
 
 ```text
-Browser > rahfi.pro (Next) > rewrite of /api/* > this backend > Supabase, with the service role key
-                                                              > Google Cloud Storage
-                                                              > the model endpoint
-                                                              > the mail server
+Browser on either site > this backend > Supabase, anon key: published content, visitor counts
+                                      > Supabase, service role key: the studio, rate limits
+                                      > Google Cloud Storage
+                                      > the model endpoint, for Ashley and Zoey
+                                      > GitHub, the mail server
 
-Browser > Google Cloud Storage                  file bytes, through a signed URL this backend issued
-consulting.rahfi.pro (server) > this backend    the model proxy, with the service key
-Pages of both sites > Supabase                  published content, with the anon key, not through here
+Browser > Google Cloud Storage        file bytes, through a signed URL this backend issued
+Either site's server > this backend   the public reads, when a page is rendered
 ```
 
 | Caller | How it reaches the backend | What that buys |
 | :- | :- | :- |
-| A visitor's browser on `rahfi.pro` | The site rewrites `/api/*` to `${BACKEND_URL}/api/*` | The studio cookie is first-party on `rahfi.pro`, and the `Origin` the backend sees is the site's own. No cross-site cookie |
-| The portfolio's server | Adds two headers to every request it forwards: the visitor's address and the service key | Rate limits count the visitor, not the site's server |
-| The consulting site's server | Calls the model proxy directly, with the service key | One model key, saved once, serves both assistants |
-| Pages rendering content | They do not call it. They read published rows from Supabase with the anon key | A page renders even when this backend is down |
+| A visitor's browser on either site | Straight to `BACKEND_URL`, allowed by CORS for the origins in `ALLOWED_ORIGINS` | The backend sees the visitor's own address, so rate limits count the visitor and no one can claim to be someone else |
+| The owner's browser in the studio on `rahfi.pro` | The same, with `credentials: "include"` | The session cookie lives on the backend's own host, which is the same site as `rahfi.pro`, so a `SameSite=Lax` cookie rides along |
+| Either site's server, rendering a page | The public reads, cached for a minute | Neither site holds a database key, a token, or any other secret |
 
-The backend reaches four things: Supabase through its REST interface, Google Cloud Storage with a service account, any OpenAI-compatible model endpoint, and an SMTP server. The model key, the mail password, and the service account are not in its environment. The owner saves them in the studio, and they are sealed in the database.
+The backend reaches five things: Supabase through its REST interface, Google Cloud Storage with a service account, any OpenAI-compatible model endpoint, GitHub's API, and an SMTP server. The model key, the mail password, and the service account are not in its environment. The owner saves them in the studio, and they are sealed in the database.
 
 Every endpoint is in [API.md](API.md). Deployment is in [DEPLOY.md](DEPLOY.md). The intent is in [PRD.md](PRD.md).
 
@@ -101,7 +100,7 @@ Copy-Item .env.example .env
 
 Two values have a trap of their own:
 
-- **`ALLOWED_ORIGINS` needs `http://localhost:3000` for local work.** Signing in works without it, and then every save, upload, and sign-out fails with `403 {"error": "That request did not come from the studio."}`, because a state-changing studio request must carry an `Origin` on the list. No trailing slash.
+- **`ALLOWED_ORIGINS` needs `http://localhost:3000,http://localhost:3001` for local work**, one per site. Without them the browser refuses every reply to a page on that port, and a studio write is `403 {"error": "That request did not come from the studio."}`. No trailing slash, and always `localhost`, never `127.0.0.1`: the two are different sites to a browser, and the studio cookie would not be sent.
 - **`STUDIO_ENCRYPTION_KEY` must be exactly 32 bytes, base64 encoded.** Any other length is refused with the same `503`, and the log says `STUDIO_ENCRYPTION_KEY must be 32 bytes, base64 encoded`. That is deliberate: 16 bytes would be accepted by the cipher and silently give AES-128. Generate one with:
 
 ```powershell
@@ -118,21 +117,21 @@ Two values have a trap of their own:
 .venv\Scripts\python -m uvicorn api.index:app --reload --port 8000
 ```
 
-**Port 8000 is the one the site expects.** The site's development server forwards `/api` to `http://127.0.0.1:8000` when its own `BACKEND_URL` is unset. If the port is taken, usually by a copy of this server already running, `uvicorn` exits with `[Errno 10048] error while attempting to bind on address ('127.0.0.1', 8000)`.
+**Port 8000 is the one the sites expect.** In development both sites use `http://localhost:8000` when their own `BACKEND_URL` is unset. If the port is taken, usually by a copy of this server already running, `uvicorn` exits with `[Errno 10048] error while attempting to bind on address ('127.0.0.1', 8000)`.
 
 ## Usage
 
 With the server running, the health check answers without a database or a credential:
 
 ```powershell
-curl.exe -s http://127.0.0.1:8000/api/health
+curl.exe -s http://localhost:8000/api/health
 ```
 
 ```json
 {"status":"ok"}
 ```
 
-Everything past that is used through the studio, which is part of the site. Start the site's development server from a checkout of `dev`, open `http://localhost:3000/studio`, and it reaches this process through the forward described above.
+Everything past that is used through the two sites. Start the portfolio's development server from a checkout of `dev` and open `http://localhost:3000/studio`; the consulting site runs on `http://localhost:3001`. Both call this process at `http://localhost:8000` directly.
 
 ## Configuration
 
@@ -141,13 +140,15 @@ Every variable the backend reads, by name. What each one is for, and where its v
 | Variable | Required | Description |
 | :- | :- | :- |
 | `SUPABASE_URL` | Yes | The Supabase project the backend reads and writes |
-| `SUPABASE_SERVICE_ROLE_KEY` | Yes | The backend's database access. It bypasses every row-level policy, and it exists in this deployment only |
+| `SUPABASE_ANON_KEY` | Yes | The public key, for the public reads and the visitor counts, so row-level security still applies to them |
+| `SUPABASE_SERVICE_ROLE_KEY` | Yes | The backend's own database access. It bypasses every row-level policy, and it exists in this deployment only |
 | `STUDIO_ENCRYPTION_KEY` | Yes | 32 random bytes, base64. Seals the owner's password digest and every saved credential |
-| `STUDIO_SERVICE_KEY` | Yes | Shared with the two sites. A request carrying it is believed about which visitor it acts for, and may call the model proxy |
-| `ALLOWED_ORIGINS` | Yes | The origins whose pages may make a state-changing studio request. Comma separated, no trailing slash |
+| `ALLOWED_ORIGINS` | Yes | The origins whose pages may call the backend from a browser and make a state-changing studio request. Comma separated, no trailing slash |
 | `GMAIL_USER` | Until mail is set in the studio | Mail fallback, so the code that sets the first password can be sent |
 | `GMAIL_APP_PASSWORD` | Until mail is set in the studio | The app password for that account, not the account password |
 | `RECAPTCHA_SECRET_KEY` | No | Verifies the contact form's token. Without it the check is skipped |
+| `RECAPTCHA_SITE_KEY` | No | The public site key the contact form needs, served by `/api/public/config`. Without it the form sends no token |
+| `GITHUB_TOKEN` | For the GitHub card | Read access to GitHub's API. Without it `/api/github/stats` answers `503` |
 | `IS_BACKEND` | On Vercel only | Read by `vercel.json`, never by the code. It tells the repository's two Vercel projects apart |
 
 `VERCEL_ENV` is set by Vercel, not by you. The backend reads it for two things: to skip the environment files, and to mark the session cookie `Secure`.
@@ -160,7 +161,7 @@ Every variable the backend reads, by name. What each one is for, and where its v
 .venv\Scripts\python -m pytest backend/tests -q
 ```
 
-127 tests, a few seconds. **They need no database, no network, and no credential**: `backend/tests/conftest.py` replaces the database module with an in-memory stand-in, and `backend/config.py` refuses to load an environment file when `pytest` is running, so a real key on disk cannot turn a test into a write to production.
+159 tests, a few seconds. **They need no database, no network, and no credential**: `backend/tests/conftest.py` replaces the database module with an in-memory stand-in, and `backend/config.py` refuses to load an environment file when `pytest` is running, so a real key on disk cannot turn a test into a write to production.
 
 ## Project Structure
 
@@ -173,13 +174,13 @@ backend/
   auth.py              # the owner account: sign-in, lockout, sessions, reset codes
   crypto.py            # Argon2id for the password, AES-256-GCM for everything at rest
   vault.py             # the credentials saved in the studio
-  ratelimit.py         # per-visitor allowances, and who is believed about the visitor
-  db.py                # Supabase through its REST interface
+  ratelimit.py         # per-visitor allowances, and who counts as the visitor
+  db.py                # Supabase through its REST interface, with either key
   storage.py           # Google Cloud Storage as a drive
   llm.py               # one streamed call to an OpenAI-compatible endpoint
   mail.py              # outgoing mail
   sanity_import.py     # the one-time import, and the list of document types
-  routes/              # public.py, account.py, files.py, content.py
+  routes/              # public.py, reads.py, analytics.py, account.py, files.py, content.py
   tests/
 supabase/migrations/   # the schema, applied in filename order
 .github/workflows/
@@ -200,21 +201,19 @@ requirements-dev.txt   # the above plus uvicorn, pytest, python-dotenv
 
 **`api/` holds one file and stays that way.** Vercel turns every Python file in that directory into a function of its own, so a helper placed there is deployed as a second endpoint. Code goes in `backend/`.
 
-## What Is Sealed, and Who Is Believed
+## What Is Sealed, and Who Is Counted
 
 **What is sealed.** Two kinds of value are encrypted with AES-256-GCM under `STUDIO_ENCRYPTION_KEY` before they reach the database: the owner's password digest, and every credential saved in the studio. The password is first hashed with Argon2id, and the digest is what gets sealed, so a dump of the database is not even material for offline guessing. Each value is bound to its row: the password to the owner's id, a credential to its name. A blob lifted from one row does not open in another. The key is in the deployment's environment and never in the database.
 
 **What is never returned.** A saved secret can be replaced or removed, not read back. The studio is told only whether one is set. The owner's address is never returned or logged either: a reset code goes to the address in the owner row, and a request can neither choose that address nor learn it.
 
-**The session cookie.** Signing in sets `studio_session`, an opaque random token: `HttpOnly`, `SameSite=Lax`, `Secure` on Vercel, 12 hours. The database keeps only its SHA-256, so the table cannot be replayed as a set of cookies. The cookie is checked against the database on every studio request. Signing out revokes it, and setting or changing the password revokes every session.
+**The session cookie.** Signing in sets `studio_session`, an opaque random token: `HttpOnly`, `SameSite=Lax`, `Secure` on Vercel, 12 hours, with no `Domain`, so only the backend's own host holds it. The database keeps only its SHA-256, so the table cannot be replayed as a set of cookies. The cookie is checked against the database on every studio request. Signing out revokes it, and setting or changing the password revokes every session.
 
-**The Origin check.** A `SameSite=Lax` cookie still rides along on some cross-site requests, so a state-changing studio request must also carry an `Origin` listed in `ALLOWED_ORIGINS`. That check is what stands in for a CSRF token. It works because the browser's request passes through the site's rewrite with its `Origin` intact.
+**The Origin check.** A `SameSite=Lax` cookie still rides along on some cross-site requests, so a state-changing studio request must also carry an `Origin` listed in `ALLOWED_ORIGINS`. That check is what stands in for a CSRF token. It works because a browser always sends the page's own `Origin` with a cross-origin request, and a page cannot change it.
 
 **Lockout.** Five failed sign-ins lock the account for 15 minutes, and during the lock the right password is refused too. Every failure gets the same reply at the same cost in time, whether the address, the password, or the lock was the cause, and a wrong address counts toward the lock, because counting only the right one would reveal it. A reset code lifts the lock.
 
-**What the service key is trusted for.** `STUDIO_SERVICE_KEY` proves a request came from one of the two sites' servers and not straight from a browser. It buys two things and nothing else: the caller's statement of the visitor's address is believed, and the caller may use the model proxy. It does not open the studio. A request with the key and no session cookie is still signed out.
-
-**Why the visitor's address is believed only with the key.** The backend is a deployment of its own, so the address it sees connecting is the site's server, and every visitor would share one allowance. The site therefore states the visitor's address in an `x-client-ip` header. Believed from anyone, that header would let a caller name a fresh address on every request and never be limited, so `backend/ratelimit.py` accepts it only when `x-service-key` matches, compared in constant time. Without a match it falls back to the first address in `x-forwarded-for`. An unset key trusts nobody.
+**Who counts as the visitor.** Browsers connect to the backend themselves, so the first address in `x-forwarded-for`, which Vercel overwrites with whoever connected, is the visitor. Without it, the connection's own address is. No header a caller sends can name a different visitor: `x-client-ip` and the old service key are not read, so there is no shared secret whose leak would defeat the limits.
 
 **Rate limits fail closed.** Every allowance is counted in Postgres, because a serverless instance forgets. If the count cannot be read, the request is refused and not let through. A visitor's address is hashed before it is stored.
 
@@ -239,8 +238,8 @@ A database that has not been set up has no owner and no content, so the studio c
 - **Losing `STUDIO_ENCRYPTION_KEY` loses every saved credential and the password.** Nothing can re-derive it. The way back is a new key, a password reset by emailed code, and entering each credential again.
 - **A stranger can lock the owner out for 15 minutes.** Five wrong sign-ins from anywhere trip the lock. A reset code lifts it.
 - **The failure counters are read and then written.** Two simultaneous wrong sign-ins, or two wrong codes, can count as one. The per-visitor rate limit bounds what that is worth.
-- **The service key is one shared value in three deployments.** Whoever holds it can state any visitor address, which defeats the per-visitor limits, and can spend the model key through the proxy. Rotating it means changing all three at once.
-- **The backend answers on its own domain too.** The forward through the site is how browsers are meant to reach it, not a wall. A direct caller skips whatever the site does in front of a request and is held only by the checks described above.
+- **The backend answers anyone who calls it.** CORS only decides which pages a browser lets read a reply. A direct caller is held by the checks described above and nothing else.
+- **A backend outage now reaches the pages.** Both sites read their content here. The consulting site falls back to the copy it shipped with; the portfolio has no such fallback.
 - **The service account key is stored, sealed, in the database.** There is no keyless path to the bucket.
 - **The bucket's upload rule follows `ALLOWED_ORIGINS` only at the moment a storage credential is saved.** Changing the origins later does not update the bucket.
 - **The import module cannot be deleted once it has run.** `backend/routes/content.py` takes its list of document types from `SHAPES` in `backend/sanity_import.py`, so removing the file breaks the application at import. `SHAPES` has to move out first.

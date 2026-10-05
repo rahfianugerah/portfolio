@@ -1,6 +1,6 @@
 # Studio Backend
 
-One FastAPI application behind `rahfi.pro` and `consulting.rahfi.pro`: the owner's studio, both assistants, and the contact form.
+One FastAPI application behind `rahfi.pro` and `consulting.rahfi.pro`: the owner's studio, both assistants, the content and visitor counts both sites render, and the contact form. Browsers call it directly.
 
 @README.md
 @PRD.md
@@ -20,6 +20,8 @@ Never read the whole vault to answer a question about this code. Read this file,
 
 **A Python file under `api/` becomes its own Vercel function.** Vercel turns every file in that directory into an endpoint, so a helper there is deployed as a second function with its own URL. `api/index.py` is one line that imports the application. All code goes in `backend/`.
 
+**Neither site holds a secret.** Each holds `BACKEND_URL` and nothing else, per the 2026-10-05 amendment in `PRD.md`. When a site needs something a key would unlock, it becomes an endpoint here; the key never goes to the site.
+
 **Migrations are forward-only and additive.** A schema change is a new file in `supabase/migrations/` with the next number, never an edit to one that exists. Add a column, backfill it, and drop the old one in a later migration. The deployment and the migration job start from the same push and neither waits for the other, so old code must run on the new schema and new code on the old.
 
 **`backend/sanity_import.py` cannot be deleted after the import has run.** Its docstring says to delete it, and that is not yet safe: `backend/routes/content.py` builds `DOCUMENT_TYPES` from `sanity_import.SHAPES`, so removing the module breaks the application at import. Move `SHAPES` out first, then remove the module and its two routes in the same change, and update `API.md`.
@@ -31,11 +33,11 @@ Never read the whole vault to answer a question about this code. Read this file,
 ## Where Things Live
 
 - **`backend/main.py` is the application.** It mounts the routers, sets CORS from `ALLOWED_ORIGINS`, and turns every failure into `{"error": "<sentence>"}`. Raise `ApiError(status, message)` from `backend/config.py`; do not build a response by hand.
-- **`backend/routes/` holds every endpoint**, in four files: `public.py` (health, the portfolio assistant, the model proxy, the contact form), `account.py` (sign-in, password, credentials), `files.py`, and `content.py` (posts, documents, the import).
+- **`backend/routes/` holds every endpoint**, in six files: `public.py` (health, Ashley and Zoey, the contact form), `reads.py` (the public config, published documents and posts, the GitHub summary), `analytics.py` (the portfolio's visitor counts), `account.py` (sign-in, password, credentials), `files.py`, and `content.py` (the studio's posts, documents, the import).
 - **`backend/auth.py` is the lock.** `require_owner` checks the session cookie against the database on every studio request and checks `Origin` on every write. A studio route that is not on a router carrying that dependency is open to anyone.
-- **`backend/ratelimit.py` decides who a request is counted as.** `x-client-ip` is believed only alongside a matching `x-service-key`. Do not read a client address anywhere else, and call `enforce` on any new route a stranger can reach.
+- **`backend/ratelimit.py` decides who a request is counted as**: the first `x-forwarded-for` entry, else the connection. No header a caller chooses is believed. Do not read a client address anywhere else, and call `enforce` on any new route a stranger can reach.
 - **`backend/crypto.py` and `backend/vault.py` are the only places a secret is sealed or opened.** The list of credential names is `KNOWN` in `vault.py`.
-- **`backend/db.py` is the only thing that talks to Supabase**, through its REST interface with the service role key. Filters are PostgREST's own syntax.
+- **`backend/db.py` is the only thing that talks to Supabase**, through its REST interface, with the service role key by default. Pass `anon=True` for what a stranger may already read or write, the public reads and the visitor counts, so row-level security still applies. Filters are PostgREST's own syntax.
 - **`backend/storage.py` is the only thing that talks to the bucket.** Bytes never pass through a route: the browser uploads through a signed URL, because a Vercel function body stops at 4.5 MB.
 - **`API.md` and `supabase/migrations/` are the contract.** An endpoint that changes is changed in `API.md` in the same commit.
 - **`.env.example` lists every variable the code reads.** A new one is added there in the same commit that introduces it. The model, mail, and storage settings are not variables: they are saved in the studio and sealed in the `credentials` table.
@@ -48,7 +50,7 @@ Never read the whole vault to answer a question about this code. Read this file,
 .venv\Scripts\python -m pytest backend/tests -q
 ```
 
-127 tests pass before a change, and every one passes after it. They use an in-memory stand-in for the database from `backend/tests/conftest.py`, so they need no credential and no network, and `backend/config.py` loads no environment file under `pytest`. On macOS or Linux the interpreter is `.venv/bin/python`.
+159 tests pass before a change, and every one passes after it. They use an in-memory stand-in for the database from `backend/tests/conftest.py`, so they need no credential and no network, and `backend/config.py` loads no environment file under `pytest`. On macOS or Linux the interpreter is `.venv/bin/python`.
 
 A change to behavior comes with a test. A change to an endpoint comes with its line in `API.md`.
 

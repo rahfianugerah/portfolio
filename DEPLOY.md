@@ -3,7 +3,7 @@
 > [!important]
 > The backend is one Python function in a Vercel project of its own. The repository has two Vercel projects, one for the site and one for this, and each ignores the other's branches.
 
-Target domain: **`api.rahfi.pro`**. The portfolio at `rahfi.pro` forwards its `/api/*` paths to it, and the consulting site's server calls it directly.
+Target domain: **`api.rahfi.pro`**. Browsers on `rahfi.pro` and `consulting.rahfi.pro` call it directly, and so do both sites' servers when they render a page. Neither site holds a secret: each holds this address and nothing else.
 
 ## Table of Contents
 
@@ -111,25 +111,28 @@ vercel link
 
 ```bash
 vercel env add SUPABASE_URL production
+vercel env add SUPABASE_ANON_KEY production
 vercel env add SUPABASE_SERVICE_ROLE_KEY production
 vercel env add STUDIO_ENCRYPTION_KEY production
-vercel env add STUDIO_SERVICE_KEY production
 vercel env add ALLOWED_ORIGINS production
 vercel env add GMAIL_USER production
 vercel env add GMAIL_APP_PASSWORD production
 vercel env add RECAPTCHA_SECRET_KEY production
+vercel env add RECAPTCHA_SITE_KEY production
+vercel env add GITHUB_TOKEN production
 vercel env add IS_BACKEND production
 vercel env add IS_BACKEND preview
 ```
 
-Each command prompts for the value. What each holds is in `.env.example`. Four of them have a condition attached:
+Each command prompts for the value. What each holds is in `.env.example`. Three of them have a condition attached:
 
 - **`STUDIO_ENCRYPTION_KEY` must be the value that sealed the rows already in the database.** If the first run was done from a local machine, it is the key that machine used. A deployment with a different key cannot open the password digest or any saved credential, so sign-in fails with `Invalid email or password.` and every credential reads as broken. Keep a copy in a password manager.
-- **`STUDIO_SERVICE_KEY` is the same value in three projects**: this one, the portfolio's, and the consulting site's. If the portfolio's differs, nothing errors. The backend stops believing the visitor address the site states and counts every visitor as the site's own server, so one shared allowance is spent quickly and visitors see `Too many requests.` on the assistant and the contact form. If the consulting site's differs, its assistant gets `401 {"error": "A valid service key is required."}`.
-- **`ALLOWED_ORIGINS` has no trailing slash and no space.** A studio write from an origin not on the list is refused with `That request did not come from the studio.`
+- **`ALLOWED_ORIGINS` is `https://rahfi.pro,https://consulting.rahfi.pro`**, with no trailing slash and no space. It is also the CORS list, so a site missing from it cannot read a single reply in the browser, and a studio write from an origin not on it is refused with `That request did not come from the studio.`
 - **`IS_BACKEND` goes in both environments**, per the section above.
 
 The model key, the model name, the mail settings, the bucket name, and the service account key are not set here. They are saved in the studio under Settings, sealed, and take effect on the next request with no redeploy.
+
+**A project set up before 2026-10-05 holds `STUDIO_SERVICE_KEY`.** Remove it with `vercel env rm STUDIO_SERVICE_KEY production`: nothing reads it any more. Add the three it lacks, `SUPABASE_ANON_KEY`, `RECAPTCHA_SITE_KEY` and `GITHUB_TOKEN`, which used to live in the sites.
 
 ### 5. Give the migration workflow its secret
 
@@ -156,14 +159,18 @@ In the backend project, under **Settings > Domains**, add `api.rahfi.pro` and as
 
 ### 9. Point the two sites at it
 
-Both sites are configured in their own projects, and their own documents name the variables. What they need from this deployment is two things:
+Both sites are configured in their own projects. Each needs exactly one variable:
 
-| Site | Needs |
-| :- | :- |
-| Portfolio | `BACKEND_URL`, the backend's origin with no path, and `STUDIO_SERVICE_KEY` |
-| Consulting | The backend's address for the model proxy, and the same service key |
+| Site project | Variable | Value |
+| :- | :- | :- |
+| Portfolio | `BACKEND_URL` | `https://api.rahfi.pro`, the origin with no path and no trailing slash |
+| Consulting | `BACKEND_URL` | The same |
 
-**Deploy the backend first, then redeploy the portfolio.** The portfolio reads `BACKEND_URL` when it builds, so a deployment built before the variable was set keeps forwarding `/api` to nothing.
+**Why the sites need no secret.** Browsers call this backend directly, so it sees each visitor's own address and needs no site to vouch for it; that is what the shared service key was for. Every read a site used to make with its own key, published content, the visitor counts, the GitHub card, and the reCAPTCHA site key, is now an endpoint here, and the keys behind them live only in this project. A leaked site deployment now gives away an address that is public anyway.
+
+**Remove what the sites no longer read**, in each site's project: `STUDIO_SERVICE_KEY`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `GITHUB_TOKEN` and `RECAPTCHA_SITE_KEY` from the portfolio, and `STUDIO_SERVICE_KEY`, `STUDIO_API_URL`, `SUPABASE_URL` and `SUPABASE_ANON_KEY` from the consulting site. A value left behind is a secret kept for no reason.
+
+**Deploy the backend first, then redeploy both sites.** A site reads `BACKEND_URL` when it builds and renders, so a deployment built before the variable was set calls nothing.
 
 ### A Preview by Hand
 
@@ -223,7 +230,8 @@ The schema lives in `supabase/migrations/`, applied in filename order. Nothing e
 | :- | :- |
 | `0001_analytics_baseline.sql` | `counters`, `daily_stats`, `sessions`: the site's visitor counts, open to the anon key for exactly the verbs the site issues |
 | `0002_chat_rate_limit.sql` | `chat_requests` and `check_chat_rate_limit`. Superseded by `check_rate_limit` in `0003`, and left in place because migrations are additive |
-| `0003_studio.sql` | `documents` and `posts`, readable with the anon key, a post only once published; `studio_owner`, `studio_sessions`, `studio_otps`, `credentials`, and `rate_limit_events`, closed to it; and `check_rate_limit`, the one limiter behind sign-in, reset codes, the contact form, and both assistants, callable by the service role only |
+| `0003_studio.sql` | `documents` and `posts`, readable with the anon key, a post only once published; `studio_owner`, `studio_sessions`, `studio_otps`, `credentials`, and `rate_limit_events`, closed to it; and `check_rate_limit`, the one limiter behind sign-in, reset codes, the contact form, the visitor counts, and both assistants, callable by the service role only |
+| `0004_consulting_copy.sql` | No schema. The consulting site's services, principles, process steps, and prices as `documents`, each type inserted only while it has no document, so a studio edit is never overwritten |
 
 ### How They Are Applied
 
@@ -253,9 +261,9 @@ supabase db push --db-url "$SUPABASE_DB_URL"
 
 This is what the workflow runs. `SUPABASE_DB_URL` here is a variable in your own shell, set for the session and never written to a file in the repository.
 
-**Do not paste a migration into the SQL editor in the Supabase dashboard.** It works, and it leaves no record. The migration history stays empty, `migration list` shows the migration as still pending, and the next `db push` applies it a second time. `0001` to `0003` are written with `if not exists` and `create or replace` and survive that; do not assume a later one will. If one was run by hand, reconcile with `supabase migration repair --status applied <version> --db-url "$SUPABASE_DB_URL"`.
+**Do not paste a migration into the SQL editor in the Supabase dashboard.** It works, and it leaves no record. The migration history stays empty, `migration list` shows the migration as still pending, and the next `db push` applies it a second time. `0001` to `0003` are written with `if not exists` and `create or replace`, and `0004` inserts nothing a second time, so all four survive that; do not assume a later one will. If one was run by hand, reconcile with `supabase migration repair --status applied <version> --db-url "$SUPABASE_DB_URL"`.
 
-The filenames use a `0001` prefix where the CLI generates a 14-digit timestamp. `supabase migration list` prints one row per local migration it parsed, so three rows means it read all three. Confirm that once before relying on the workflow.
+The filenames use a `0001` prefix where the CLI generates a 14-digit timestamp. `supabase migration list` prints one row per local migration it parsed, so four rows means it read all four. Confirm that once before relying on the workflow.
 
 ### Adding One
 
@@ -305,13 +313,14 @@ curl -s -o /dev/null -w "%{http_code}\n" https://api.rahfi.pro/docs
 
 The first prints `401`, the second `404`.
 
-3. **The service key reached the runtime.**
+3. **The public reads reached the database with the anon key.**
 
 ```bash
-curl -s -X POST https://api.rahfi.pro/api/llm/chat -H "Content-Type: application/json" -d '{"messages":[],"client_ip":"x"}'
+curl -s https://api.rahfi.pro/api/public/config
+curl -s "https://api.rahfi.pro/api/public/documents?type=pricingTier"
 ```
 
-Prints `{"error":"A valid service key is required."}`. If it prints `{"error":"The server is not configured for this yet."}`, `STUDIO_SERVICE_KEY` is not set in this project.
+The first prints `{"recaptchaSiteKey":"..."}`; `null` means `RECAPTCHA_SITE_KEY` is not set. The second prints a list of price tiers. `{"error":"The server is not configured for this yet."}` means `SUPABASE_URL` or `SUPABASE_ANON_KEY` is not set in this project.
 
 4. **The response headers are present.**
 
@@ -321,11 +330,11 @@ curl -s -D - -o /dev/null https://api.rahfi.pro/api/health
 
 The output includes `strict-transport-security`, `x-frame-options: DENY`, `x-content-type-options: nosniff`, and `x-robots-tag`.
 
-5. **The portfolio forwards to it.** Open `https://rahfi.pro/api/health` in a browser. It shows the same `{"status":"ok"}`. Use a browser, because the site turns away tools that announce themselves, `curl` among them.
+5. **Both sites reach it from the browser.** Open `https://rahfi.pro`: the visitor counts and the GitHub card fill in, which proves the portfolio's `BACKEND_URL`, its place in `ALLOWED_ORIGINS`, and `GITHUB_TOKEN`. Open `https://consulting.rahfi.pro`: the services and prices render from the studio.
 6. **The database and the sealing key work.** Sign in to the studio on `rahfi.pro`. This proves the service role key and the encryption key reached the runtime and match the database.
 7. **A save is accepted.** Change anything in the studio and save it. This proves `ALLOWED_ORIGINS` holds the production origin.
 8. **A file uploads** under Files in the studio, which proves the bucket's CORS rule covers the production origin.
-9. **The assistant answers** on the portfolio, which proves the model key saved in the studio can be opened and the model accepts it. Then ask it something on the consulting site, which proves that site's service key matches.
+9. **The assistant answers** on the portfolio, which proves the model key saved in the studio can be opened and the model accepts it. Then ask Zoey something on the consulting site, which proves her brief is read from the studio's documents.
 10. **The contact form sends**, which proves the mail settings work.
 
 ## Rollback
