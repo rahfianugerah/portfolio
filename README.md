@@ -58,8 +58,8 @@ The home page ends on a Magic UI bento grid of live cards, spanned so every row 
 
 | Card | Source |
 | :- | :- |
-| Website visitors | Supabase, first-party, counted on this site |
-| GitHub activity and latest repositories | The GitHub API, cached for an hour |
+| Website visitors | The backend, which counts them in Supabase |
+| GitHub activity and latest repositories | The backend, which asks the GitHub API and caches it for an hour |
 | Experiences velocity | Derived from the résumé data |
 | Tech stack and specialties | The résumé data |
 | Moments and quotations | Supabase, edited in the studio |
@@ -105,7 +105,7 @@ The home page ends on a Magic UI bento grid of live cards, spanned so every row 
 | Icons | Lucide, React Icons | 1.46.0, 5.7.0 |
 | Backend | FastAPI, a separate deployment on the `backend-main` branch | Not in this branch |
 | Content | Supabase PostgreSQL rows, Markdown through `react-markdown` | 10.1.0 |
-| Database | Supabase, PostgreSQL | 2.116.0 |
+| Database | Supabase, PostgreSQL, reached only through the backend | Managed |
 | File storage | Google Cloud Storage, read by public URL. The backend does the writing | Managed |
 | AI | Any OpenAI-compatible endpoint, called by the backend | No client library |
 | Animation | Framer Motion | 13.3.0 |
@@ -124,17 +124,19 @@ Hybrid. Most routes are static React Server Components; the assistant, the widge
 
 A single shell in `src/app/components/layout-content.tsx` supplies the top bar, a full-width page, and the footer for every public route. The studio under `/studio` has its own shell.
 
-**Reading and writing take two different paths.** Pages read published content straight from Supabase, with the anon key, through `src/lib/content.ts` and `src/data/blog.ts`, because they are rendered at build time, when the backend cannot be asked. Row-level security limits that key to every document and to published posts. Everything else goes to the backend: the studio's saves, Ashley, the consulting site's assistant, and the contact form.
+**This site holds one environment variable, `BACKEND_URL`, and no secret.** Everything that needs a key is the backend's: the database, the GitHub statistics, the captcha, the mail, and the model.
 
-**The browser only ever talks to this origin.** `next.config.mjs` rewrites `/api/:path*` to `${BACKEND_URL}/api/:path*`, so this server passes a request for `/api` on to the backend. That keeps the studio's session cookie first-party and needs no CORS. Four Next route handlers under `src/app/api` are files, so they are matched before the rewrite and keep answering: analytics, GitHub statistics, the content payload for client components, and the blog list. All four only read.
+**Pages read published content from the backend.** `src/lib/content.ts` and `src/data/blog.ts` go through `src/lib/published.ts`, which asks the backend's public endpoints on the server, with a 60-second revalidate. The backend reads with the anon key, so row-level security still limits it to every document and to published posts.
 
-**The rewrite needs `BACKEND_URL` when the site is built.** Unset in development, it falls back to `http://127.0.0.1:8000`. Unset in a production build, the build logs `BACKEND_URL is not set: /api is not forwarded, so the studio, chat and contact form will not work.` and adds no rewrite, so the backend's paths are not forwarded until the variable is set and the site is built again. That is deliberate: a build says so instead of shipping a rewrite to nothing.
+**The browser calls the backend directly**, at `BACKEND_URL`. `src/lib/backend.ts` exports `backendUrl()`: on the server it reads the variable, and in the browser it reads `<html data-backend-url>`, which the root layout writes, because no variable here is compiled into a bundle. The studio, Ashley, the contact form, the visitor counter, and the GitHub card all call it. The backend allows this origin by CORS, and a studio call sends its cookie with `credentials: "include"`. Two Next route handlers remain under `src/app/api`, and both only reshape the published reads for client components: `/api/content` and `/api/blog`.
 
-`src/proxy.ts` sits in front of every request and does three things. It turns away crawlers that identify themselves, on every path including `/api`. It sends a visitor with no session cookie from `/studio` to the sign-in page. On a request for `/api/*` it sets two headers before the request is forwarded: `x-client-ip`, the first entry of `x-forwarded-for`, and `x-service-key`, the value of `STUDIO_SERVICE_KEY`. Both are set unconditionally, so a value the browser sent is overwritten.
+**`BACKEND_URL` has to be set when the site is built.** Static pages are rendered during the build, so they carry the address and the content they were built with. Unset in development, it is `http://localhost:8000`. Unset in a production build, the build logs `BACKEND_URL is not set: content, the studio, the assistant and the contact form will not work.` and still succeeds, so the site ships empty until the variable is set and the site is built again.
+
+`src/proxy.ts` sits in front of every request and does one thing: it turns away crawlers that identify themselves. It cannot guard the studio, because the session cookie lives on the backend's host, which this site never sees. A studio page sends a signed-out visitor to `/studio/login` when the backend answers 401.
 
 ### The Backend Lives on Other Branches
 
-The backend is one FastAPI application. For this site it signs the owner in, does every studio save, signs the file uploads, answers as Ashley, sends the contact form's mail, and holds the credentials saved in the studio. **None of its code is in this branch.**
+The backend is one FastAPI application. For this site it serves the published content, signs the owner in, does every studio save, signs the file uploads, answers as Ashley, sends the contact form's mail, counts visitors, serves the GitHub statistics and the captcha site key, and holds the credentials saved in the studio. **None of its code is in this branch.**
 
 | Item | Where |
 | :- | :- |
@@ -145,21 +147,21 @@ The backend is one FastAPI application. For this site it signs the owner in, doe
 
 **The backend branches share no history with `main` and `dev`, and are never merged with them.** A merge in either direction would put every file of one side into the other.
 
-**The backend believes `x-client-ip` only when `x-service-key` matches its own `STUDIO_SERVICE_KEY`.** Seen from the backend, every forwarded request arrives from this site's server, so without the stated address every visitor would share one rate limit. A missing or mismatched key raises no error: the backend falls back to the address that connected, and the allowances for chat, the contact form, and sign-in are spent by all visitors together.
+**The backend sees each visitor's own address**, because the browser connects to it directly. That is what its rate limits count, so nothing on this site has to state the address or vouch for it.
 
 ### Main Layers
 
 | Layer | Responsibility |
 | :- | :- |
-| `next.config.mjs` | The rewrite of `/api/*` to the backend |
-| `src/proxy.ts` | The crawler gate, the studio redirect, and the two headers a forwarded `/api` request carries |
+| `next.config.mjs` | Unoptimized images and the `/service` redirect |
+| `src/proxy.ts` | The crawler gate |
 | `src/app/layout.tsx` | Fonts, metadata, providers |
 | `src/app/components/layout-content.tsx` | Top bar, full-width page, footer |
 | `src/app/(site)/` | The public pages |
 | `src/app/studio/` | The owner's panel |
-| `src/app/api/` | The four read-only route handlers |
+| `src/app/api/` | The two read-only route handlers, `content` and `blog` |
 | `src/components/` | Shared components and primitives, and `studio/` for the panel's own |
-| `src/lib/` | Content readers, the crawler list, Supabase, helpers |
+| `src/lib/` | The backend's address, the content readers, the crawler list, helpers |
 | `src/data/` | The origin and navigation, and the post reader |
 
 ### Application Flow
@@ -182,19 +184,19 @@ Static generation for the content routes, with a read revalidated every 60 secon
 
 ```text
 src/
-├── proxy.ts                  # Crawler gate, studio redirect, headers for the backend
+├── proxy.ts                  # Crawler gate
 ├── app/
 │   ├── layout.tsx            # Fonts, metadata, providers
 │   ├── robots.ts             # robots.txt
 │   ├── globals.css           # Tokens
 │   ├── (site)/               # Home, project, blog, contact, experience, chat
 │   ├── studio/               # login, posts, files, content, settings
-│   ├── api/                  # analytics, blog, github/stats, content
+│   ├── api/                  # blog, content
 │   └── components/           # Page-level components and widgets
 ├── components/               # Shared components, magicui, ui primitives, studio
 ├── data/                     # site.ts, blog.ts
-└── lib/                      # content, published, crawlers, group-roles, supabase, helpers
-next.config.mjs               # The rewrite of /api to the backend
+└── lib/                      # backend, content, published, crawlers, group-roles, helpers
+next.config.mjs               # Images and the /service redirect
 vercel.json                   # Region, branch deployment, the build skip, headers
 ```
 
@@ -210,7 +212,7 @@ vercel.json                   # Region, branch deployment, the build skip, heade
 | `backend/`, `api/`, `supabase/` | The backend, its function entry, and the schema | Not in this branch. Committed on the backend branches |
 
 > [!note]
-> Five things are superseded by the backend and await removal by the owner: `src/app/api/chat/route.ts`, `src/lib/ollama.ts`, `src/lib/chat-rate-limit.ts`, `src/lib/rate-limit.ts`, and the `submitContactForm` action in `src/app/actions.ts`, with the `nodemailer` dependency it uses. Nothing calls them.
+> Six files are superseded by the backend and await removal by the owner, because a permission rule stops an agent deleting them: `src/app/api/chat/route.ts`, `src/lib/ollama.ts`, `src/lib/chat-rate-limit.ts`, `src/lib/rate-limit.ts`, `src/app/actions.ts`, and `src/lib/supabase.ts`, with the `nodemailer` and `@supabase/supabase-js` dependencies only they use. Nothing imports them, and nothing may. **Delete them before the next production build:** `src/app/api/chat/route.ts` is still a route, and through `src/lib/supabase.ts` it reads Supabase variables this site no longer has, so building it is expected to fail.
 
 ## 6. Configuration
 
@@ -219,7 +221,7 @@ vercel.json                   # Region, branch deployment, the build skip, heade
 | File | Purpose |
 | :- | :- |
 | `.env.example` | Environment variable reference |
-| `next.config.mjs` | The rewrite of `/api/*` to the backend, unoptimized images, and the `/service` redirect |
+| `next.config.mjs` | Unoptimized images and the `/service` redirect |
 | `vercel.json` | Region, branch deployment, the `ignoreCommand` that makes the backend's Vercel project skip this branch, and response headers |
 | `eslint.config.mjs` | ESLint flat config, extending Next's core web vitals rules |
 
@@ -227,14 +229,9 @@ vercel.json                   # Region, branch deployment, the build skip, heade
 
 | Variable | Required | Description | Example |
 | :- | :- | :- | :- |
-| `BACKEND_URL` | In production | Where `/api` is forwarded. Read when the site is built. Unset in development, it is `http://127.0.0.1:8000` | `https://api.rahfi.pro` |
-| `STUDIO_SERVICE_KEY` | Yes | Sent to the backend with every forwarded request. The same string as the backend's and the consulting site's | `your_long_random_service_key_here` |
-| `SUPABASE_URL` | Yes | The Supabase project | `https://your_project_ref.supabase.co` |
-| `SUPABASE_ANON_KEY` | Yes | Reads published content and counts visitors | `your_supabase_anon_key_here` |
-| `GITHUB_TOKEN` | Yes | Read-only token for the GitHub statistics | `your_github_token_here` |
-| `RECAPTCHA_SITE_KEY` | Yes | Captcha site key. The matching secret is the backend's | `your_recaptcha_site_key_here` |
+| `BACKEND_URL` | In production | The backend's origin, with no path. Not a secret. Read when the site is built and when it runs. Unset in development, it is `http://localhost:8000` | `https://api.rahfi.pro` |
 
-The service role key, the sealing key, `ALLOWED_ORIGINS`, the mail fallback, and the captcha secret belong to the backend's environment. They are listed in the `.env.example` on its branches, and none of them is set for this site.
+That is the only one. The variables this site used to hold went to the backend's environment: `SUPABASE_URL` and `SUPABASE_ANON_KEY` for the published reads and the visitor counter, `GITHUB_TOKEN` for the GitHub statistics, and `RECAPTCHA_SITE_KEY`, which the contact page now asks the backend for. `STUDIO_SERVICE_KEY` was removed, since nothing forwards a visitor's address any more. The service role key, the sealing key, `ALLOWED_ORIGINS`, the mail fallback, and the captcha secret were always the backend's. All of them are listed in the `.env.example` on its branches.
 
 ### Credentials Saved in the Studio
 
@@ -251,10 +248,7 @@ These are not environment variables. They are entered under `/studio/settings`, 
 | `GCS_SERVICE_ACCOUNT` | The service account's JSON key | |
 
 > [!danger]
-> No variable here carries the `NEXT_PUBLIC_` prefix, and none may be given it: a prefixed value is compiled into the bundle the browser downloads. Every variable is read on the server. The one value the browser needs, the captcha site key, is handed to its page as a prop, and it is an identifier rather than a secret.
-
-> [!note]
-> `SUPABASE_ANON_KEY` is read by the analytics route and by the content readers. It would be safe in the browser anyway, because row-level security is what protects the data behind it; the policies are on the backend branches, in `supabase/migrations/`.
+> No variable here carries the `NEXT_PUBLIC_` prefix, and none may be given it: a prefixed value is compiled into the bundle the browser downloads. The browser learns the backend's address from `<html data-backend-url>` instead, and the captcha site key from the contact page's props; both are identifiers rather than secrets.
 
 ### Environments
 
@@ -383,6 +377,7 @@ Everything lives in Supabase PostgreSQL, in two tables that `supabase/migrations
 | Home carousel quotations | `documents`, type `quote` | `/studio/content` |
 | Consulting engagements | `documents`, type `clientProject` | `/studio/content` |
 | Consulting track record figures | `documents`, type `counter` | `/studio/content` |
+| Consulting services, principles, process steps, and pricing | `documents`, types `consultingService`, `principle`, `processStep`, `pricingTier` | `/studio/content` |
 | Companies and schools | `documents`, type `organization` | `/studio/content` |
 | Work and leadership | `documents`, type `role`, each pointing at an organization | `/studio/content` |
 | Education | `documents`, type `education`, pointing at the same organizations | `/studio/content` |
@@ -393,9 +388,9 @@ Everything lives in Supabase PostgreSQL, in two tables that `supabase/migrations
 | Page titles and descriptions, for both sites | `documents`, type `pageMeta` | `/studio/content` |
 | Images, PDFs, Markdown files | The Google Cloud Storage bucket, referenced by public URL | `/studio/files` |
 
-`src/lib/content.ts` is the only place that reads `documents`, `src/data/blog.ts` is the only place that reads `posts`, and both go through `src/lib/published.ts`. **Nothing has a fallback.** That is deliberate: a fallback would be a second copy of every project, role and photograph living in the repository. An unreachable database renders an empty section and logs why.
+`src/lib/content.ts` is the only place that reads `documents`, `src/data/blog.ts` is the only place that reads `posts`, and both go through `src/lib/published.ts`, which asks the backend. **Nothing has a fallback.** That is deliberate: a fallback would be a second copy of every project, role and photograph living in the repository. An unreachable backend renders an empty section and logs why.
 
-A read is cached for 60 seconds, so a save in the studio is on the site within a minute, with no commit and no deploy. A draft post cannot be read at all: the anon key's policy filters on `published`.
+A read is cached for 60 seconds, so a save in the studio is on the site within a minute, with no commit and no deploy. A draft post cannot be read at all: the backend reads with the anon key, whose policy filters on `published`.
 
 What is left in `src/data/` is `site.ts`, which holds the origin and the navigation. Neither is content: the origin is needed synchronously by `metadataBase`, and the navigation is a map of this application's own routes.
 
@@ -406,14 +401,14 @@ What is left in `src/data/` is `site.ts`, which holds the origin and the navigat
 > A project link carries an `icon` string, `github` or `globe`, and `ProjectShowcase` decides which component that means. Content holds no React element, which is what lets it live in a database at all.
 
 > [!note]
-> One studio and one database serve both sites. `consulting.rahfi.pro` reads the same `documents` rows with the anon key, redirects its own `/studio` here, and reaches the model through the same backend with a shared service key, so a model change in the studio reaches both assistants.
+> One studio and one backend serve both sites. `consulting.rahfi.pro` holds only `BACKEND_URL` too, reads the same `documents` rows through the backend, and redirects its own `/studio` here. Its assistant, Zoey, runs in the backend beside Ashley, so a model change in the studio reaches both. Its services, principles, process steps, and pricing are documents of their own, edited here under `/studio/content`.
 
 > [!important]
 > The existing content came out of Sanity once, from the import under `/studio/settings`. Each document is written under an id derived from its Sanity id, so running it twice adds nothing. Nothing keeps the two in step afterwards, and the importer is to be deleted once it has run.
 
 ### Data Fetching Method
 
-Server Components read résumé content and posts from Supabase. Client components `fetch` the internal route handlers for the widgets, and the backend for the assistant, the contact form, and everything in the studio.
+Server Components read résumé content and posts from the backend's public endpoints. Client components `fetch` the two internal route handlers for the content payload and the post list, and the backend, at `backendUrl()`, for everything else: the assistant, the contact form, the visitor counter, the GitHub card, and the studio.
 
 ### Data Request Flow
 
@@ -454,8 +449,8 @@ A visitor never signs in. The studio has one account, the owner's, and there is 
 | :- | :- |
 | The account | One row in `studio_owner`, created by hand with an email address and nothing else |
 | The password | Of the owner's choosing, at least 12 characters. A forgotten password, and the first one, is set with a six-digit code emailed to the address in that row and to no other |
-| The session | An opaque random token in an `HttpOnly`, `SameSite=Lax` cookie, for 12 hours. It is first-party because the browser only ever calls this origin, which forwards the request |
-| The check | `src/proxy.ts` redirects a visitor without the cookie from `/studio` to `/studio/login`. That is a convenience. The backend verifies the session on every request, and a write must also come from an allowed `Origin` |
+| The session | An opaque random token in an `HttpOnly`, `SameSite=Lax` cookie, for 12 hours, set on the backend's own host. `rahfi.pro` and `api.rahfi.pro` are the same site, so the cookie rides every studio call, which asks for it with `credentials: "include"` |
+| The check | The backend verifies the session on every request, and a write must also come from an allowed `Origin`. A studio page that receives 401 sends the visitor to `/studio/login` |
 
 How the password is stored, how a code expires, the lockout, and what is sealed at rest are the backend's, and are documented on its branches. The studio shows only whether a secret is set, never its value.
 
@@ -568,7 +563,7 @@ Error > Try/Catch or Boundary > Fallback Component > Console Log
 - Code splitting and tree shaking
 - Images served from public Google Cloud Storage URLs at the size they were uploaded, with `images.unoptimized` set
 - Font optimization through `next/font`, self-hosted
-- Caching: GitHub stats revalidate hourly
+- Caching: the backend caches GitHub stats for an hour
 - Published content cached for 60 seconds
 - Rate limiting on sign-in, reset codes, the contact form, and both assistants, counted in PostgreSQL by the backend
 
@@ -576,7 +571,7 @@ Error > Try/Catch or Boundary > Fallback Component > Console Log
 
 | Metric or area | Tool or method |
 | :- | :- |
-| Visitor analytics | Supabase, first-party |
+| Visitor analytics | The backend, in Supabase |
 | Deployment analytics | Vercel |
 
 ## 11. Development and Deployment
@@ -616,14 +611,14 @@ cp ../portfolio-backend/.env.example ../portfolio-backend/.env
 
 | File | Read by | Holds |
 | :- | :- | :- |
-| `.env` in this checkout | `npm run dev` | The six variables in "Environment Variables" above |
-| `.env` in `../portfolio-backend` | The backend | The service role key, the sealing key, `STUDIO_SERVICE_KEY`, `ALLOWED_ORIGINS`, the mail fallback, and the captcha secret |
+| `.env` in this checkout | `npm run dev` | `BACKEND_URL`, and nothing else. It can be left out locally |
+| `.env` in `../portfolio-backend` | The backend | Every key: Supabase's, the sealing key, `ALLOWED_ORIGINS`, the mail fallback, both captcha keys, and the GitHub token |
 
-`BACKEND_URL` can be left out of the local file. Unset in development, the rewrite points at `http://127.0.0.1:8000`, which is where the backend's uvicorn runs.
+`BACKEND_URL` can be left out of the local file. Unset in development, it is `http://localhost:8000`, which is where the backend's uvicorn runs.
 
-**`STUDIO_SERVICE_KEY` must be the same string in both files.** The site sends it with every forwarded request, and the backend believes the visitor's address only when it matches. A mismatch prints nothing: every visitor is counted as one, and the rate limits run out for all of them at once.
+**Always `localhost`, never `127.0.0.1`.** The site is `http://localhost:3000`, the consulting site `http://localhost:3001`, and the backend `http://localhost:8000`. A browser treats `localhost` and `127.0.0.1` as two different sites, so a page on one name calling the backend on the other loses the studio's cookie, and every studio page falls back to sign-in with nothing logged.
 
-**`ALLOWED_ORIGINS`, in the backend's file, must include `http://localhost:3000` for local work.** The backend refuses a studio write from any origin not on that list, so without it sign-in works and every save fails with `That request did not come from the studio.` That is deliberate: the `Origin` check is what stands in for a CSRF token.
+**`ALLOWED_ORIGINS`, in the backend's file, must be `http://localhost:3000,http://localhost:3001` for local work.** The browser calls the backend from those origins, so without them every call is refused by CORS, and a studio write from any other origin fails with `That request did not come from the studio.` That is deliberate: the `Origin` check is what stands in for a CSRF token.
 
 **4. The database.** The migrations and the owner's row belong to the backend. Apply the migrations from its checkout and create the one row in `studio_owner`, per its README. There is no sign-up, and the address in that row is the only one a reset code is ever sent to.
 
@@ -640,9 +635,9 @@ Then the site, from this one:
 npm run dev
 ```
 
-The site is at `http://localhost:3000` and the backend at `http://127.0.0.1:8000`. Next forwards `/api/*` to the backend, so the browser only ever talks to port 3000.
+The site is at `http://localhost:3000` and the backend at `http://localhost:8000`. The browser calls the backend there directly, so open the site as `localhost` and never as `127.0.0.1`.
 
-**The site starts without the backend, and that hides the fault.** Pages read Supabase directly and the four route handlers answer on their own, so the home page renders either way. The studio, the assistant, and the contact form are what fail. The backend reads the `.env` of the directory it is started in, which is why it is started from its own checkout.
+**The site starts without the backend, and renders empty.** Every page reads its content from the backend, so with it down every section is empty and the console says which read failed, and the studio, the assistant, the contact form, and the widgets fail as well. The backend reads the `.env` of the directory it is started in, which is why it is started from its own checkout.
 
 **6. Set the first password.** Open `http://localhost:3000/studio/login`, choose **Forgot password**, then **Send code**. Enter the six-digit code from the email with a password of at least 12 characters, then sign in with it.
 
@@ -690,14 +685,14 @@ npm run build
 | Platform | Vercel. This site is one project; the backend is a second project on the same repository |
 | Trigger | Push to `main`. `dev` is not deployed, and a push to a backend branch is skipped by this project |
 | Migrations | Not this project's. They are applied from the backend branches |
-| Build-time config | `BACKEND_URL`, read when `next.config.mjs` builds the rewrite. No variable is compiled into the browser bundle |
-| Health check | Vercel deployment status, and `/api/health` on this origin, which answers only when the rewrite and the backend both work |
+| Build-time config | `BACKEND_URL`, read while static pages are rendered and written on `<html data-backend-url>`. No variable is compiled into the browser bundle |
+| Health check | Vercel deployment status, `/api/health` on the backend's own domain, and a page here that shows content |
 | Rollback process | Promote a previous deployment in the Vercel dashboard |
 
 The full procedure is in `DEPLOY.md`.
 
 > [!warning]
-> **The two deployments first meet in production.** Neither `dev` nor `backend-dev` is deployed, so there is no preview in which this site forwards to a deployed backend. The local servers prove the application, not the rewrite between two Vercel projects.
+> **The two deployments first meet in production.** Neither `dev` nor `backend-dev` is deployed, so there is no preview in which this site calls a deployed backend. The local servers prove the application, not `BACKEND_URL`, CORS, or the cookie between two Vercel projects.
 
 ### Branching
 
@@ -721,14 +716,13 @@ The backend has the same pair, `backend-dev` and `backend-main`, in the same rep
 | No image exists until one is uploaded | Logos, achievement photos and carousel images render as their placeholder | Upload under Files in the studio |
 | Images are served at the size they were uploaded | A large upload weighs on every page that shows it | Put a resizing proxy in front of the bucket if image weight shows in load time |
 | Only crawlers that identify themselves are refused | A scraper that sends a browser's `User-Agent` reads everything a visitor can | None. Nothing served to the public can be made uncopyable |
-| Neither `dev` nor `backend-dev` is deployed | The rewrite between the two deployments first runs on the live site | Check `/api/health` on this origin after either project deploys, and promote the previous deployment if it fails |
-| `/api` depends on a variable read at build time | A production build without `BACKEND_URL` ships with no rewrite, and changing the variable does nothing until the site is built again | Set it before the first build, and redeploy after changing it |
-| A route handler under `src/app/api` wins over the rewrite | A backend path that a file here also takes is never reached, and nothing reports it | Check `API.md` on the backend branches before adding a handler |
-| The backend's rate limits depend on two headers this site sets | Without a matching `STUDIO_SERVICE_KEY` every visitor shares one allowance | Keep the key identical in both projects |
+| Neither `dev` nor `backend-dev` is deployed | The browser first calls the deployed backend on the live site | Check `/api/health` on the backend and the studio on this origin after either project deploys, and promote the previous deployment if it fails |
+| `BACKEND_URL` is read at build time | A production build without it succeeds and ships empty pages, and changing the variable does nothing until the site is built again | Set it before the first build, and redeploy after changing it |
+| A relative `/api/` path reaches this site, not the backend | A `fetch("/api/...")` for a backend path returns 404 | Build every backend call on `backendUrl()`, and every studio call through `api()` |
 | One owner, one account | There are no roles, invitations, or second sign-in | None planned |
 | A post has no revision history and no scheduled publishing | It is a draft or it is published, and a save overwrites | None planned |
 | Saved credentials are sealed under a key only the backend holds | Losing that key means the password and every credential must be entered again | Keep the key in a password manager. The detail is on the backend branches |
-| Superseded files are still in the repository | `src/app/api/chat/route.ts` still answers at its path, though nothing calls it | The owner removes them, with `nodemailer` |
+| Six superseded files are still in the repository | `src/app/api/chat/route.ts` is still a route and reads Supabase variables this site no longer has, so a production build is expected to fail on it | The owner deletes the six, with `nodemailer` and `@supabase/supabase-js`, before the next production build |
 | The home carousels are empty until something is published | Two cards on the home page show a placeholder line | Add `moment` and `quote` documents in the studio |
 | The résumé download has no place of its own | It is a link among the profile's social links, so replacing the CV means uploading a file and editing that link | Open in `PRD.md` |
 | TypeScript and ESLint are held a major behind | typescript-eslint supports TypeScript up to 6.0, and the React, import, and accessibility plugins in eslint-config-next do not yet run on ESLint 10 | Move to TypeScript 7 and ESLint 10 once those packages support them |

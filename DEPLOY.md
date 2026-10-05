@@ -3,7 +3,7 @@
 > [!important]
 > This guide deploys the site only. Vercel runs the Next application from `main`, so there is no container to build and no server to keep alive between requests. The backend is a second Vercel project on the same repository, deployed from `backend-main`, and its own guide is on the backend branches.
 
-Target domain: **`rahfi.pro`** (the apex). The consulting site deploys to the `consulting.rahfi.pro` subdomain, reads the same database, and reaches the model through the same backend.
+Target domain: **`rahfi.pro`** (the apex). The consulting site deploys to the `consulting.rahfi.pro` subdomain and calls the same backend for its content and its assistant.
 
 ## Two Vercel Projects on One Repository
 
@@ -37,16 +37,17 @@ A change to the site moves one way: `local work > dev > main`, through a pull re
 **Only `main` and `backend-main` are deployed.** This branch's `vercel.json` sets `git.deploymentEnabled` to `false` for `dev`, and the backend's does the same for `backend-dev`, so a push to either builds nothing and publishes nothing. Work is reviewed on the local servers, and the first deployment a change gets is production.
 
 > [!warning]
-> **The two deployments first meet in production.** With neither `dev` branch deployed there is no preview in which this site forwards `/api` to a deployed backend. `npm run dev` beside a local backend proves the application; it proves nothing about `BACKEND_URL`, the rewrite between two Vercel projects, or the service key reaching the backend. Check `/api/health` on `rahfi.pro` the moment a deployment of either project finishes, and be ready to promote the previous one. The only rehearsal there is has to be made by hand: `vercel` from a checkout builds a preview, but that environment has none of the variables until they are added to it, and with them it talks to the production backend and the production database.
+> **The two deployments first meet in production.** With neither `dev` branch deployed there is no preview in which this site calls a deployed backend. `npm run dev` beside a local backend proves the application; it proves nothing about `BACKEND_URL`, the backend's CORS list, or the studio's cookie between two Vercel projects. Check `/api/health` on the backend's domain and the studio on `rahfi.pro` the moment a deployment of either project finishes, and be ready to promote the previous one. The only rehearsal there is has to be made by hand: `vercel` from a checkout builds a preview, but that environment has none of the variables until they are added to it, and with them it talks to the production backend and the production database.
 
 ## What Is Already in the Repository
 
 | File | Purpose |
 | :- | :- |
 | `vercel.json` | Region, per-branch deployment, the `ignoreCommand`, and security headers |
-| `next.config.mjs` | The rewrite of `/api/:path*` to the backend |
-| `src/proxy.ts` | The crawler gate, the studio redirect, and the two headers a forwarded request carries |
-| `.env.example` | The variable names. Values are never committed |
+| `next.config.mjs` | Unoptimized images and the `/service` redirect |
+| `src/proxy.ts` | The crawler gate |
+| `src/lib/backend.ts` | The backend's address, for the server and, through `<html data-backend-url>`, for the browser |
+| `.env.example` | The one variable name. Its value is never committed |
 | `.gitignore` | Already ignores `.vercel` and `.env` |
 
 `vercel.json` pins the region to `sin1` (Singapore) and sets `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, `Strict-Transport-Security`, and `X-Robots-Tag: noai, noimageai` on every response.
@@ -63,13 +64,13 @@ None of these is part of this project, and none of them is in this branch.
 | `supabase/migrations/` and the workflow that applies them | The backend branches, with the backend's deployment guide |
 | Every endpoint | `API.md` on the backend branches |
 
-## How `/api` Reaches the Backend
+## How the Site Reaches the Backend
 
-The browser only ever talks to `rahfi.pro`. `next.config.mjs` rewrites `/api/:path*` to `${BACKEND_URL}/api/:path*`, so the studio's session cookie stays first-party and no CORS is needed. Four paths are Next route handlers in this branch and answer before the rewrite: `/api/analytics`, `/api/github/stats`, `/api/content`, `/api/blog`.
+**The site holds one variable, `BACKEND_URL`, and no secret.** The browser calls the backend at that address directly: the studio, the assistant, the contact form, the visitor counter, and the GitHub card. The site's server calls it too, for every page's content and for the contact page's captcha site key. Two Next route handlers remain here, `/api/content` and `/api/blog`, and both only reshape the published reads for client components.
 
-**`BACKEND_URL` is read when the site is built, not when a request arrives.** A production build without it logs `BACKEND_URL is not set: /api is not forwarded, so the studio, chat and contact form will not work.` and adds no rewrite. The build still succeeds, so the only signs are that line in the build log and a site whose studio, assistant, and contact form do not work. Setting or changing the variable in Vercel does nothing until the project is deployed again.
+**`BACKEND_URL` has to be set before the site is built.** Static pages are rendered during the build, with the content and the address they find then, and the root layout writes the address on `<html data-backend-url>`, where the browser reads it. A production build without it logs `BACKEND_URL is not set: content, the studio, the assistant and the contact form will not work.` and still succeeds, so the only signs are that line and a site with every section empty. Setting or changing the variable in Vercel does nothing until the project is deployed again.
 
-On the way through, `src/proxy.ts` sets two headers on every `/api/*` request: `x-client-ip`, the visitor's address, and `x-service-key`, the value of `STUDIO_SERVICE_KEY`. The backend believes the address only when the key matches its own. **A missing or mismatched key raises no error.** The backend falls back to the address that connected to it, so all visitors share one rate limit and it runs out for everyone at once.
+**The backend has to allow this origin.** Its `ALLOWED_ORIGINS` must contain `https://rahfi.pro`, or the browser refuses every reply. The studio's session cookie is set on the backend's own host; `rahfi.pro` and `api.rahfi.pro` are the same site, so the cookie rides each studio call, which asks for it with `credentials: "include"`. A backend on a domain that is not a subdomain of `rahfi.pro` would break the studio.
 
 ## First-Time Setup
 
@@ -111,30 +112,21 @@ Under **Settings > Domains**, assign `rahfi.pro` to **Production** and redirect 
 
 ### 5. Environment variables
 
-Six, all for production. `dev` is not deployed, so there is no preview environment to fill.
+One, for production. `dev` is not deployed, so there is no preview environment to fill.
 
 ```bash
 vercel env add BACKEND_URL production
-vercel env add STUDIO_SERVICE_KEY production
-vercel env add SUPABASE_URL production
-vercel env add SUPABASE_ANON_KEY production
-vercel env add GITHUB_TOKEN production
-vercel env add RECAPTCHA_SITE_KEY production
 ```
 
-What each holds is in `.env.example`. Three conditions:
+What it holds is in `.env.example`. Two conditions:
 
-- **`BACKEND_URL` is the backend's origin, with no path.** `/api` is added by the rewrite. It has to be set before the first build, per "How `/api` Reaches the Backend" above.
-- **`STUDIO_SERVICE_KEY` is the same value in three places:** this project, the backend project, and the consulting project.
+- **`BACKEND_URL` is the backend's origin, with no path.** Every call adds its own `/api/...`. It has to be set before the first build, per "How the Site Reaches the Backend" above.
 - **`IS_BACKEND` is not set here.** It belongs to the backend project alone.
 
-The service role key, the sealing key, `ALLOWED_ORIGINS`, the mail fallback, and the reCAPTCHA secret are the backend project's and are not set in this one. The model key, the model name, the mail settings, the bucket name, and the service account key are not environment variables at all. They are saved in `/studio` under Settings and take effect on the next request with no redeploy.
+**Remove every other variable this project used to hold**: `STUDIO_SERVICE_KEY`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `GITHUB_TOKEN`, and `RECAPTCHA_SITE_KEY`. The Supabase keys, the GitHub token, and both reCAPTCHA keys are the backend project's now, beside the service role key, the sealing key, `ALLOWED_ORIGINS`, and the mail fallback. `STUDIO_SERVICE_KEY` no longer exists anywhere. The model key, the model name, the mail settings, the bucket name, and the service account key are not environment variables at all. They are saved in `/studio` under Settings and take effect on the next request with no redeploy.
 
 > [!danger]
-> None of these may be given a `NEXT_PUBLIC_` prefix. A prefixed value is compiled into the bundle the browser downloads and is public the moment it ships; every variable here is read on the server instead.
-
-> [!note]
-> `SUPABASE_ANON_KEY` is read only on the server. It is the anon key, and row-level security is what protects the data behind it. Its policies live on the backend branches, in `supabase/migrations/`. The service role key is the opposite: it bypasses every policy, and this project never holds it.
+> `BACKEND_URL` may not be given a `NEXT_PUBLIC_` prefix. A prefixed value is compiled into the bundle the browser downloads; the browser reads the address from `<html data-backend-url>` instead.
 
 ### 6. Remove the old preview domain
 
@@ -157,7 +149,7 @@ The detail of each step is in the backend's deployment guide, on the backend bra
 
 Done on a local machine, with the backend's `.env` holding the production Supabase values and the sealing key production uses.
 
-5. **Start both local servers.** The commands are in `README.md`.
+5. **Start both local servers.** The commands are in `README.md`. Open the site as `http://localhost:3000` with the backend at `http://localhost:8000`, never `127.0.0.1`: the two names are different sites to a browser, and the studio's cookie would not be sent.
 6. **Set the first password.** Open `/studio/login`, choose **Forgot password**, then **Send code**, and enter the code with a password of at least 12 characters. The code is mailed through the backend's mail fallback, because SMTP is not set in the studio yet.
 7. **Save the credentials in Settings**: `GCS_BUCKET` and `GCS_SERVICE_ACCOUNT` first, then `LLM_API_KEY` with `LLM_MODEL` and `LLM_BASE_URL` if the defaults are not wanted, then the `SMTP_*` values and `CONTACT_TO`.
 8. **Run the one-time import** under Settings, **Import from Sanity**, with the project id and the dataset. It copies every document and post, and every image into the bucket under `imported/`. Running it again changes nothing already imported. Check the local site: no section that had content is empty.
@@ -166,11 +158,12 @@ Done on a local machine, with the backend's `.env` holding the production Supaba
 
 ### Then this site
 
-9. **Set this project's environment variables**, per step 5 of the setup, with `BACKEND_URL` pointing at the backend deployed in step 3.
-10. **Merge `dev` into `main`.**
-11. **Verify the deployment**, per the section below, starting with `/api/health` on `rahfi.pro`.
+9. **Set this project's environment variable**, per step 5 of the setup, with `BACKEND_URL` pointing at the backend deployed in step 3, and confirm the backend's `ALLOWED_ORIGINS` contains `https://rahfi.pro`.
+10. **Delete the six left-behind files**: `src/app/api/chat/route.ts`, `src/lib/ollama.ts`, `src/lib/chat-rate-limit.ts`, `src/lib/rate-limit.ts`, `src/app/actions.ts`, and `src/lib/supabase.ts`, with the `nodemailer` and `@supabase/supabase-js` dependencies. A permission rule stops an agent deleting them. The chat route is still built, and through `src/lib/supabase.ts` it reads Supabase variables this project no longer has, so the build is expected to fail until they are gone.
+11. **Merge `dev` into `main`.**
+12. **Verify the deployment**, per the section below, starting with `/api/health` on the backend's domain.
 
-**Step 9 has to come before step 10.** The rewrite is decided during the build, so a build that runs before `BACKEND_URL` exists ships a site that forwards nothing, and it has to be deployed again after the variable is set.
+**Step 9 has to come before step 11.** Pages are rendered during the build, so a build that runs before `BACKEND_URL` exists ships every page empty and a browser that does not know where the backend is, and it has to be deployed again after the variable is set.
 
 ## Routine Deployment
 
@@ -197,13 +190,13 @@ Content, posts, files, and credentials are not part of a deployment. A save in t
 
 Use a browser for every check that is not marked otherwise. `curl` is one of the scraping tools the site turns away, and the gate covers `/api` as well, so it receives 403 on every path except `/robots.txt`.
 
-1. The backend answers through this site: `rahfi.pro/api/health` returns `{"status": "ok"}`. This is the first proof that `BACKEND_URL` was set when the site was built and that the backend is up.
-2. Every route returns 200: `/`, `/project`, `/blog`, `/experience`, `/contact`, `/chat`. `/service` redirects to `consulting.rahfi.pro/#services`.
-3. The four route handlers respond: `/api/analytics`, `/api/blog`, `/api/content`, `/api/github/stats`.
-4. `/studio` redirects to `/studio/login` when signed out, and signing in opens the studio. This proves the session cookie is set on this origin through the rewrite.
+1. The backend answers: `/api/health` on its own domain returns `{"status": "ok"}`.
+2. Every route returns 200 and shows content: `/`, `/project`, `/blog`, `/experience`, `/contact`, `/chat`. `/service` redirects to `consulting.rahfi.pro/#services`. Content proves `BACKEND_URL` was set when the site was built.
+3. The two route handlers respond: `/api/blog`, `/api/content`. The visitor counter and the GitHub card on the home page fill in, which proves the backend allows this origin.
+4. `/studio` sends a signed-out visitor to `/studio/login`, and signing in opens the studio and keeps it open from page to page. This proves the session cookie is set on the backend's host and sent with each studio call.
 5. A file uploads under Files in the studio, which proves the bucket's CORS rule covers the production origin.
 6. The assistant answers at `/chat`, which proves the model key saved in the studio can be opened and the model accepts it.
-7. The contact form sends, which proves the captcha site key here matches the secret the backend holds, and that the mail values work.
+7. The contact form sends, which proves the two captcha keys in the backend's environment are a pair, and that the mail values work.
 8. No icon is served: `/favicon.ico` returns 404 in a browser.
 9. The signals grid renders all twelve cells, and the analytics and velocity charts draw.
 10. A crawler that names itself is refused, and `robots.txt` stays readable:
@@ -234,10 +227,10 @@ To roll back in git as well, revert the merge commit on `main` through a pull re
 
 | Gap | Consequence |
 | :- | :- |
-| The two deployments have no rehearsal together | Neither `dev` branch is deployed, so a fault in the rewrite, `BACKEND_URL`, or the service key first shows in production unless a preview is pushed by hand. `/api/health` and a promoted rollback are the safety net |
-| `BACKEND_URL` is read at build time | A build without it succeeds and forwards nothing. The build log carries the only warning |
-| A mismatched `STUDIO_SERVICE_KEY` is silent | Every visitor shares one rate limit, and nothing logs why |
-| `api.rahfi.pro` is the intended backend domain, not a confirmed one | `BACKEND_URL` has to be set to wherever the backend project is served |
+| The two deployments have no rehearsal together | Neither `dev` branch is deployed, so a fault in `BACKEND_URL`, the backend's CORS list, or the studio's cookie first shows in production unless a preview is pushed by hand. `/api/health` and a promoted rollback are the safety net |
+| `BACKEND_URL` is read at build time | A build without it succeeds and ships empty pages. The build log carries the only warning |
+| Six superseded files are still in the repository | The chat route among them is expected to fail the build. The owner deletes them before the next production deployment |
+| `api.rahfi.pro` is the intended backend domain, not a confirmed one | `BACKEND_URL` has to be set to wherever the backend project is served, and it has to be a subdomain of `rahfi.pro` for the studio's cookie to be sent |
 | Branch protection is not configured on the remote | The promotion path is a convention, not enforced. Set it under **Settings > Branches** on GitHub |
 | `dev` is not the remote default branch | A fresh clone lands on `main` |
 | Local `main` is one commit ahead of `origin/main` | Predates this work; resolve before the first production deploy |

@@ -1,8 +1,8 @@
 # PRD: Portfolio Visual Unification with Rahfi Consulting
 
-**Owner:** Naufal Rahfi Anugerah
-**Date:** 2026-08-26
-**Status:** Approved - built on `dev`, not yet promoted to `main`
+- **Owner:** Naufal Rahfi Anugerah
+- **Date:** 2026-08-26
+- **Status:** Approved - built on `dev`, not yet promoted to `main`
 
 ## Problem
 
@@ -254,6 +254,8 @@ Once this exists, the owner can:
 - **Set the assistant's model and key from the studio**, under provider-neutral names, `LLM_MODEL` and `LLM_API_KEY`. Both assistants, Ashley on the portfolio and the consulting assistant, use the new value on their next answer, with no redeploy.
 - **Add the Google Cloud Storage service-account key through the studio** when it is needed, never through a file in the repository or an environment file.
 - **Change one thing once and see it on both sites**, because `consulting.rahfi.pro` reads from the same store.
+- **Edit the consulting site's services, principles, and process steps in the studio**, as its pricing already is. Zoey, the consulting assistant, runs in the backend beside Ashley and answers from those same documents.
+- **Run each site with one setting and no secret.** Each site's deployment holds only the backend's address. Every key either site once held lives in the backend's deployment or in the studio, so rotating one never touches a site.
 
 Sanity is removed from both repositories, entirely and at once, at the owner's direction.
 
@@ -273,7 +275,8 @@ A visitor, meanwhile, sees two things change:
 - **No way to read a saved key back.** A credential can be replaced or removed. After saving, the studio shows only that one is set, never the value.
 - **Not every secret can live in the studio.** The deployment must still hold the credential the studio itself uses to reach its database. A vault cannot hold the key that opens it.
 - **No continuous sync with Sanity.** Existing content is copied across once, from a button in the studio, and nothing keeps the two in step.
-- **The GitHub token and the reCAPTCHA secret stay in the environment.** Only the model, mail, and storage credentials moved.
+- **The GitHub token and both reCAPTCHA keys stay in an environment, the backend's.** Only the model, mail, and storage credentials moved into the studio, and neither site holds any of them.
+- **No forwarding through the site.** The portfolio used to pass `/api` on to the backend and vouch for each visitor's address with a key it shared with the backend. The browser now calls the backend at its own address, so neither the forwarding nor the shared key exists.
 
 ## Success Measure
 
@@ -286,11 +289,13 @@ A visitor, meanwhile, sees two things change:
 - After the one-time import, neither site shows an empty section that had content before it.
 - A request announcing itself as a known AI crawler receives a refusal from either site, and a search engine's crawler does not.
 - A dump of the database yields no password and no credential that can be used without the deployment's key.
+- Each site's deployment holds exactly one environment variable, the backend's address, and a search of either site's code finds no other variable read.
 
 ## Constraints
 
 - **Platforms set by the owner:** Supabase for the account and the data, Google Cloud Storage for files, Markdown for posts, Vercel for hosting, and FastAPI for the backend. Both sites are Next.js on Vercel.
-- **The backend is FastAPI, at the owner's direction.** The draft of this phase argued against a second runtime. The owner chose one, so the cost it named is accepted: one more runtime to deploy, and pages that cannot ask the backend for content at build time and so read published rows from the database directly.
+- **The backend is FastAPI, at the owner's direction.** The draft of this phase argued against a second runtime. The owner chose one, so the cost it named is accepted: one more runtime to deploy. Since 2026-10-05 every page, including one rendered while a site is built, reads published content from the backend, so the backend has to be up whenever either site builds.
+- **Each site holds one environment variable, decided by the owner on 2026-10-05.** Both sites hold only `BACKEND_URL`, which is not a secret, and a visitor's browser calls the backend at that address itself. The published reads, the visitor analytics, the GitHub statistics, and Zoey moved into the backend; the database keys, the GitHub token, and the reCAPTCHA keys went with them, and the key the sites shared with the backend was removed. No secret remains in either site.
 - **The backend lives on its own branches, decided by the owner on 2026-10-05 after the first build.** `backend-main` and `backend-dev` hold it, with a Vercel deployment of its own, and the site's branches, `main` and `dev`, hold the frontend only.
 - **Only `main` and `backend-main` deploy.** Neither `dev` nor `backend-dev` is deployed.
 - **Storing a service-account key in the studio departs from `secret.rules.md`.** That standard wants such a key in a secret manager, and prefers no key at all. It is stored here at the owner's direction: encrypted at rest, decrypted only on the server, never sent to a browser, and recorded as a decision rather than a drift.
@@ -314,5 +319,4 @@ A visitor, meanwhile, sees two things change:
 ## Open Questions
 
 - **Keyless access to Google Cloud Storage?** Vercel can authenticate to Google Cloud without any key file, which is what `secret.rules.md` prefers and would remove the most dangerous secret entirely. Owner to decide whether it replaces the service-account key later.
-- **Do the analytics and GitHub routes move to the backend too?** They only read, and they work, so they were left as they are. Owner to decide.
 - **Does the resume download move into the studio?** Open since Phase 3. Owner to decide.
