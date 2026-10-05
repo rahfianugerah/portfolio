@@ -8,13 +8,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import BlogPostWrapper from "@/app/components/blog-post-wrapper";
-import CustomPortableText from "@/components/component-portable-text";
+import Markdown from "@/components/markdown";
 
 export const revalidate = 60;
 
 export async function generateStaticParams() {
   const posts = await getBlogPosts();
-  return posts.map((post: { slug: any; }) => ({ slug: post.slug }));
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata(
@@ -116,7 +116,7 @@ export default async function Blog(
           {post.metadata.title}
         </h1>
 
-        {/* The main image from the studio, when the post has one. */}
+        {/* The cover image from the studio, when the post has one. */}
         {post.metadata.image && (
           <div className="relative mb-8 aspect-video w-full overflow-hidden rounded-lg border border-border">
             <Image
@@ -131,8 +131,7 @@ export default async function Blog(
         )}
 
         <article className="prose dark:prose-invert">
-          {/* 2. Use the wrapper here. It safely handles the component mapping on the client. */}
-          <CustomPortableText value={post.content} />
+          <Markdown>{post.content}</Markdown>
           <hr/><br/>
           Authored by Naufal Rahfi Anugerah
         </article>

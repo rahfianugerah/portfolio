@@ -1,19 +1,15 @@
-import { client } from "@/sanity/lib/client";
+import { readPublished } from "@/lib/published";
 
 /**
- * Every piece of content the site renders, read from Sanity.
+ * Every piece of content the site renders, read from the documents table.
  *
- * All of it used to live in src/data/resume.tsx, so adding a project or fixing a date was a
- * commit, a build and a deploy. That file is gone; what it held was exported once to
- * sanity/exports/resume.ndjson and imported into the dataset.
+ * It lived in src/data/resume.tsx once, then in Sanity. It is edited in /studio now, and this
+ * file is still the only thing that reads it: every page and every widget goes through here,
+ * which is why the store could change twice without a page noticing.
  *
- * There is no fallback any more, and that is deliberate. A fallback was worth having while
- * the dataset was empty; keeping one now would mean a second copy of the content in the
- * repository, which is the thing this change removed. An unreachable Sanity renders an
- * empty section, and the console says why.
- *
- * The link icons that made the old data unserialisable are gone. A link carries a string
- * and the renderer decides which component that means.
+ * There is no fallback, and that is deliberate. A fallback would be a second copy of the
+ * content in the repository. An unreachable database renders an empty section, and the
+ * console says why.
  */
 
 /** Which component the renderer draws. The label beside it is free text. */
@@ -137,232 +133,221 @@ export type Certificate = {
   issuer: string;
   kind: "professional" | "learning";
   categories: string[];
-  /** A PDF uploaded to Sanity, which the page can render in place. */
+  /** A PDF uploaded in the studio, which the page can render in place. */
   fileUrl: string | null;
   /** A certificate that only exists on the issuer's site, which the page links to. */
   externalUrl: string | null;
 };
 
-const PROJECT_FIELDS = `
-  "id": _id,
-  "slug": slug.current,
-  title,
-  "status": coalesce(status, ""),
-  "description": coalesce(description, ""),
-  "technologies": coalesce(technologies, []),
-  "image": coalesce(image.asset->url, imageUrl),
-  video,
-  "gallery": coalesce(gallery[].asset->url, []),
-  readmeRepo,
-  "links": coalesce(links[]{label, icon, href}, [])
-`;
+/** A row as the database returns it. `data` is whatever the studio saved for that type. */
+type Row = { id: string; data: Record<string, unknown>; sort_order: number };
 
-const PROJECT_QUERY = `*[_type == "project"]|order(order asc, title asc){${PROJECT_FIELDS}}`;
+async function documents(type: string): Promise<Row[]> {
+  return readPublished<Row>(
+    "documents",
+    `type=eq.${type}&select=id,data,sort_order&order=sort_order.asc`
+  );
+}
 
-const PROJECT_BY_SLUG_QUERY = `*[_type == "project" && slug.current == $slug][0]{${PROJECT_FIELDS}}`;
+// The studio saves what was typed, so a field can be missing or empty. These three read one
+// defensively, which is the job coalesce() did in every query this replaced.
+const text = (value: unknown): string => (typeof value === "string" ? value : "");
+const optional = (value: unknown): string | null =>
+  typeof value === "string" && value ? value : null;
+const list = <T = string>(value: unknown): T[] => (Array.isArray(value) ? (value as T[]) : []);
 
-const PAGE_META_QUERY = `*[_type == "pageMeta" && site == "portfolio" && route == $route][0]{
-  title,
-  description,
-  heading,
-  subtitle
-}`;
+/** Studio order first, then a name, so rows at the same position do not shuffle between reads. */
+const byName = (key: string) => (a: Row, b: Row) =>
+  a.sort_order - b.sort_order || text(a.data[key]).localeCompare(text(b.data[key]));
 
-const CERTIFICATE_QUERY = `*[_type == "certificate"]|order(order asc, title asc){
-  "id": _id,
-  title,
-  issuer,
-  "kind": coalesce(kind, "professional"),
-  "categories": coalesce(categories, []),
-  "fileUrl": file.asset->url,
-  externalUrl
-}`;
+type Organization = { name: string; website: string | null; logo: string | null };
 
-const MOMENT_QUERY = `*[_type == "moment" && defined(image.asset)]|order(order asc){
-  "id": _id,
-  "image": image.asset->url,
-  "alt": coalesce(alt, ""),
-  caption
-}`;
+/** Organizations by id. A role and a course both point at one rather than repeating it. */
+async function organizations(): Promise<Map<string, Organization>> {
+  const rows = await documents("organization");
+  return new Map(
+    rows.map(({ id, data }) => [
+      id,
+      { name: text(data.name), website: optional(data.website), logo: optional(data.logo) },
+    ])
+  );
+}
 
-const QUOTE_QUERY = `*[_type == "quote"]|order(order asc){
-  "id": _id,
-  text,
-  author,
-  role,
-  "image": image.asset->url
-}`;
-
-const PROFILE_QUERY = `*[_type == "profile"][0]{
-  name,
-  "initials": coalesce(initials, ""),
-  role,
-  "summary": coalesce(summary, ""),
-  location,
-  locationLink,
-  "avatar": avatar.asset->url,
-  "logo": logo.asset->url,
-  "social": coalesce(social[]{name, url, icon, "inNavbar": coalesce(inNavbar, true)}, [])
-}`;
-
-const SKILL_QUERY = `*[_type == "skillGroup"]|order(order asc){
-  "id": _id,
-  title,
-  "items": coalesce(items, [])
-}`;
-
-const SERVICE_QUERY = `*[_type == "service"]|order(order asc){
-  "id": _id,
-  title,
-  description
-}`;
-
-const ROLE_QUERY = `*[_type == "role"]|order(order asc){
-  "id": _id,
-  kind,
-  "company": organization->name,
-  title,
-  "href": organization->website,
-  location,
-  "logo": organization->logo.asset->url,
-  start,
-  end,
-  "badges": coalesce(badges, []),
-  "description": coalesce(description, [])
-}`;
-
-const EDUCATION_QUERY = `*[_type == "education"]|order(order asc){
-  "id": _id,
-  "school": organization->name,
-  degree,
-  "href": organization->website,
-  "logo": organization->logo.asset->url,
-  start,
-  end,
-  "description": coalesce(description, [])
-}`;
-
-const ACHIEVEMENT_QUERY = `*[_type == "achievement"]|order(order asc){
-  "id": _id,
-  title,
-  issuer,
-  dates,
-  location,
-  "description": coalesce(description, ""),
-  "image": image.asset->url,
-  "links": coalesce(links[]{title, href}, [])
-}`;
-
-// Content changes when its author saves, and the author wants to see it. A minute is short
-// enough that an edit shows up without a deploy and long enough that a visitor is not
-// paying for a round trip per request. A studio webhook would make it immediate.
-const REVALIDATE = 60;
-
-async function query<T>(groq: string, fallback: T[]): Promise<T[]> {
-  if (!process.env.SANITY_PROJECT_ID) return fallback;
-
-  try {
-    const rows = await client.fetch<T[]>(
-      groq,
-      {},
-      { next: { revalidate: REVALIDATE } }
-    );
-    return rows?.length ? rows : fallback;
-  } catch (error) {
-    console.error("Sanity content fetch failed, using resume data:", error);
-    return fallback;
-  }
+function toProject({ id, data }: Row): Project {
+  return {
+    id,
+    slug: text(data.slug),
+    title: text(data.title),
+    status: text(data.status),
+    description: text(data.description),
+    technologies: list(data.technologies),
+    image: optional(data.image),
+    video: optional(data.video),
+    gallery: list(data.gallery),
+    readmeRepo: optional(data.readmeRepo),
+    links: list<ProjectLink>(data.links),
+  };
 }
 
 export async function getProjects(): Promise<Project[]> {
-  return query<Project>(PROJECT_QUERY, []);
-}
-
-export async function getCertificates(): Promise<Certificate[]> {
-  return query<Certificate>(CERTIFICATE_QUERY, []);
-}
-
-/**
- * The site's identity. Unlike every list here it is a single document, so an empty dataset
- * has nothing to return: the caller gets null and decides what to render. There is no
- * fallback, because the copy that used to be one lives in this dataset now.
- */
-export async function getProfile(): Promise<Profile | null> {
-  if (!process.env.SANITY_PROJECT_ID) return null;
-
-  try {
-    return await client.fetch<Profile | null>(
-      PROFILE_QUERY,
-      {},
-      { next: { revalidate: REVALIDATE } }
-    );
-  } catch (error) {
-    console.error("Sanity profile fetch failed:", error);
-    return null;
-  }
-}
-
-export async function getSkillGroups(): Promise<SkillGroup[]> {
-  return query<SkillGroup>(SKILL_QUERY, []);
+  return (await documents("project")).sort(byName("title")).map(toProject);
 }
 
 /** One project, by the slug in its URL. Null when there is no such document. */
 export async function getProject(slug: string): Promise<Project | null> {
-  if (!process.env.SANITY_PROJECT_ID) return null;
+  // The list is one cached read that the index page makes anyway, so finding the project in
+  // it costs nothing a second query would save.
+  return (await getProjects()).find((project) => project.slug === slug) ?? null;
+}
 
-  try {
-    return await client.fetch<Project | null>(
-      PROJECT_BY_SLUG_QUERY,
-      { slug },
-      { next: { revalidate: REVALIDATE } }
-    );
-  } catch (error) {
-    console.error("Sanity project fetch failed:", error);
-    return null;
-  }
+export async function getCertificates(): Promise<Certificate[]> {
+  return (await documents("certificate")).sort(byName("title")).map(({ id, data }) => ({
+    id,
+    title: text(data.title),
+    issuer: text(data.issuer),
+    kind: data.kind === "learning" ? "learning" : "professional",
+    categories: list(data.categories),
+    fileUrl: optional(data.fileUrl),
+    externalUrl: optional(data.externalUrl),
+  }));
+}
+
+/**
+ * The site's identity. Unlike every list here it is a single document, so an empty table has
+ * nothing to return: the caller gets null and decides what to render.
+ */
+export async function getProfile(): Promise<Profile | null> {
+  const [row] = await documents("profile");
+  if (!row) return null;
+
+  const { data } = row;
+  return {
+    name: text(data.name),
+    initials: text(data.initials),
+    role: text(data.role),
+    summary: text(data.summary),
+    location: optional(data.location),
+    locationLink: optional(data.locationLink),
+    avatar: optional(data.avatar),
+    logo: optional(data.logo),
+    social: list<Partial<SocialLink>>(data.social).map((link) => ({
+      name: text(link.name),
+      url: text(link.url),
+      icon: text(link.icon),
+      inNavbar: link.inNavbar ?? true,
+    })),
+  };
+}
+
+export async function getSkillGroups(): Promise<SkillGroup[]> {
+  return (await documents("skillGroup")).map(({ id, data }) => ({
+    id,
+    title: text(data.title),
+    items: list(data.items),
+  }));
 }
 
 /**
  * The title, description and heading of one route.
  *
  * Null when nothing has been written for it, which is the normal case: a page keeps the
- * words it shipped with until someone decides to change them in the studio.
+ * words it shipped with until someone decides to change them in the studio. Both sites'
+ * routes are stored together and collide, so the site is part of the key.
  */
 export async function getPageMeta(route: string): Promise<PageMeta | null> {
-  if (!process.env.SANITY_PROJECT_ID) return null;
+  const row = (await documents("pageMeta")).find(
+    ({ data }) => data.site === "portfolio" && data.route === route
+  );
+  if (!row) return null;
 
-  try {
-    return await client.fetch<PageMeta | null>(
-      PAGE_META_QUERY,
-      { route },
-      { next: { revalidate: REVALIDATE } }
-    );
-  } catch (error) {
-    console.error("Sanity page metadata fetch failed:", error);
-    return null;
-  }
+  return {
+    title: text(row.data.title),
+    description: optional(row.data.description),
+    heading: optional(row.data.heading),
+    subtitle: optional(row.data.subtitle),
+  };
 }
 
 export async function getServices(): Promise<Service[]> {
-  return query<Service>(SERVICE_QUERY, []);
+  return (await documents("service")).map(({ id, data }) => ({
+    id,
+    title: text(data.title),
+    description: text(data.description),
+  }));
 }
 
 export async function getRoles(): Promise<Role[]> {
-  return query<Role>(ROLE_QUERY, []);
+  const [rows, orgs] = await Promise.all([documents("role"), organizations()]);
+
+  return rows.map(({ id, data }) => {
+    const organization = orgs.get(text(data.organization));
+    return {
+      id,
+      kind: data.kind === "leadership" ? "leadership" : "work",
+      company: organization?.name ?? "",
+      title: text(data.title),
+      href: organization?.website ?? null,
+      location: optional(data.location),
+      logo: organization?.logo ?? null,
+      start: text(data.start),
+      end: optional(data.end),
+      badges: list(data.badges),
+      description: list(data.description),
+    };
+  });
 }
 
 export async function getEducation(): Promise<Education[]> {
-  return query<Education>(EDUCATION_QUERY, []);
+  const [rows, orgs] = await Promise.all([documents("education"), organizations()]);
+
+  return rows.map(({ id, data }) => {
+    const organization = orgs.get(text(data.organization));
+    return {
+      id,
+      school: organization?.name ?? "",
+      degree: text(data.degree),
+      href: organization?.website ?? null,
+      logo: organization?.logo ?? null,
+      start: text(data.start),
+      end: optional(data.end),
+      description: list(data.description),
+    };
+  });
 }
 
 export async function getAchievements(): Promise<Achievement[]> {
-  return query<Achievement>(ACHIEVEMENT_QUERY, []);
+  return (await documents("achievement")).map(({ id, data }) => ({
+    id,
+    title: text(data.title),
+    issuer: optional(data.issuer),
+    dates: optional(data.dates),
+    location: optional(data.location),
+    description: text(data.description),
+    image: optional(data.image),
+    links: list<{ title: string; href: string }>(data.links),
+  }));
 }
 
 export async function getMoments(): Promise<Moment[]> {
-  return query<Moment>(MOMENT_QUERY, []);
+  return (
+    (await documents("moment"))
+      // A moment is its photograph, so one without an image has nothing to show.
+      .filter(({ data }) => optional(data.image))
+      .map(({ id, data }) => ({
+        id,
+        image: text(data.image),
+        alt: text(data.alt),
+        caption: optional(data.caption),
+      }))
+  );
 }
 
 export async function getQuotes(): Promise<Quote[]> {
-  return query<Quote>(QUOTE_QUERY, []);
+  return (await documents("quote")).map(({ id, data }) => ({
+    id,
+    text: text(data.text),
+    author: text(data.author),
+    role: optional(data.role),
+    image: optional(data.image),
+  }));
 }

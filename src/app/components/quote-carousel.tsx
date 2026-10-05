@@ -9,7 +9,7 @@ import { useSiteContent } from "@/lib/use-site-content";
 export default function QuoteCarousel() {
   const [position, setIndex] = useState(0);
   const content = useSiteContent();
-  // Sanity is the only source, as it is for the photographs beside this.
+  // The studio is the only source, as it is for the photographs beside this.
   const quotes = content?.quotes ?? [];
   // Clamped while rendering rather than corrected in an effect, so a shorter list never shows an
   // empty card for one render first.

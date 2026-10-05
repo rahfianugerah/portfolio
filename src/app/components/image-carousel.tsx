@@ -9,7 +9,7 @@ type ImageCarouselProps = {
 };
 
 export default function ImageCarousel({ intervalMs = 3000 }: ImageCarouselProps) {
-  // Sanity is the only source. There is no committed photograph to fall back to, so an
+  // The studio is the only source. There is no committed photograph to fall back to, so an
   // empty studio shows an empty frame rather than an image nobody chose to publish.
   const content = useSiteContent();
   const moments = content?.moments ?? [];

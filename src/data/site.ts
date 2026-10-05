@@ -1,7 +1,7 @@
 /**
  * The few constants that are configuration rather than content.
  *
- * Everything a visitor reads lives in Sanity. What is left here is the origin, which
+ * Everything a visitor reads lives in the studio. What is left here is the origin, which
  * `metadataBase` needs synchronously at module scope, and the navigation, which is a map of
  * this application's routes rather than anything about the person.
  */

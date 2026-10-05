@@ -1,79 +1,73 @@
-import { client } from "@/sanity/lib/client";
-import { urlFor } from "@/sanity/lib/image";
+import { readPublished } from "@/lib/published";
+
+/**
+ * Posts, read from the posts table. Each is Markdown, written or dropped into /studio.
+ *
+ * Only a published post can be read here: the anon key's row-level policy filters on it, so a
+ * draft is not something this file could return even by mistake.
+ */
 
 // Emoji, and the joiners and variation selectors that dress them, are stripped from every post
 // as it is read. They are in the text in the studio; this is the one place the site reads it, so
 // the words keep their meaning and nothing has to be edited twice.
-const EMOJI = /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\uFE0F\u200D]/gu;
+const EMOJI = /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}️‍]/gu;
 
-function withoutEmoji<T>(value: T): T {
-  if (typeof value === "string") {
-    return value.replace(EMOJI, "").replace(/[ \t]{2,}/g, " ").trim() as T;
-  }
-  if (Array.isArray(value)) {
-    return value.map(withoutEmoji) as T;
-  }
-  if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.entries(value as Record<string, unknown>).map(([key, one]) => [key, withoutEmoji(one)])
-    ) as T;
-  }
-  return value;
-}
+const withoutEmoji = (value: string): string =>
+  value.replace(EMOJI, "").replace(/[ \t]{2,}/g, " ").trim();
 
-// 1. Fetch all posts for the list view
-export async function getBlogPosts() {
-  const query = `*[_type == "post"] | order(publishedAt desc) {
-    title,
-    "slug": slug.current,
-    publishedAt,
-    summary,
-    mainImage
-  }`;
+type PostRow = {
+  slug: string;
+  title: string;
+  summary: string | null;
+  cover_url: string | null;
+  published_at: string | null;
+  body_md?: string;
+};
 
-  const posts = await client.fetch(query);
+export type PostMetadata = {
+  title: string;
+  publishedAt: string;
+  summary: string;
+  image: string | null;
+};
 
-  // Map Sanity data to match your existing interface
-  return posts.map((post: any) => ({
-    slug: post.slug,
-    metadata: {
-      title: withoutEmoji(post.title),
-      publishedAt: post.publishedAt?.split("T")[0] || new Date().toISOString().split("T")[0],
-      summary: withoutEmoji(post.summary),
-      image: post.mainImage ? urlFor(post.mainImage).url() : null,
-    },
-  }));
-}
+export type PostSummary = { slug: string; metadata: PostMetadata };
 
-// 2. Fetch a single post for the detail view
-export async function getPost(slug: string) {
-  const query = `*[_type == "post" && slug.current == $slug][0] {
-    title,
-    "slug": slug.current,
-    publishedAt,
-    summary,
-    mainImage,
-    body[]{
-      ...,
-      _type == "image" => {
-        "url": asset->url,
-        "dimensions": asset->metadata.dimensions
-      }
-    }
-  }`;
+export type Post = PostSummary & { content: string };
 
-  const post = await client.fetch(query, { slug });
+const today = () => new Date().toISOString().split("T")[0];
 
-  if (!post) return null;
-
+function toSummary(row: PostRow): PostSummary {
   return {
-    slug: post.slug,
+    slug: row.slug,
     metadata: {
-      title: withoutEmoji(post.title),
-      publishedAt: post.publishedAt?.split("T")[0],
-      summary: withoutEmoji(post.summary),
-      image: post.mainImage ? urlFor(post.mainImage).url() : null,
+      title: withoutEmoji(row.title),
+      publishedAt: row.published_at?.split("T")[0] ?? today(),
+      summary: withoutEmoji(row.summary ?? ""),
+      image: row.cover_url || null,
     },
-    content: withoutEmoji(post.body),
   };
+}
+
+/** Every published post, newest first, without its body. */
+export async function getBlogPosts(): Promise<PostSummary[]> {
+  const rows = await readPublished<PostRow>(
+    "posts",
+    "published=is.true&select=slug,title,summary,cover_url,published_at&order=published_at.desc"
+  );
+  return rows.map(toSummary);
+}
+
+/** One published post by its slug, with its Markdown. Null when there is none. */
+export async function getPost(slug: string): Promise<Post | null> {
+  const [row] = await readPublished<PostRow>(
+    "posts",
+    `published=is.true&slug=eq.${encodeURIComponent(slug)}` +
+      "&select=slug,title,summary,cover_url,published_at,body_md&limit=1"
+  );
+  if (!row) return null;
+
+  // Only the emoji go. Collapsing whitespace across a whole body would flatten the
+  // indentation a code block and a nested list are made of.
+  return { ...toSummary(row), content: (row.body_md ?? "").replace(EMOJI, "") };
 }
