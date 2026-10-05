@@ -1,6 +1,8 @@
+import json
 import re
 
 import pytest
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.testclient import TestClient
 
 from backend import auth, crypto, llm, mail, vault
@@ -170,19 +172,65 @@ def test_unknown_credential_is_404(fake_db):
     assert response.status_code == 404
 
 
-def test_llm_proxy_needs_the_service_key(fake_db):
+def test_the_model_proxy_is_gone(fake_db):
     body = {"messages": [{"role": "user", "content": "Hi"}], "client_ip": "203.0.113.9"}
-    assert client.post("/api/llm/chat", json=body).status_code == 401
-    wrong = client.post("/api/llm/chat", json=body, headers={"x-service-key": "wrong"})
-    assert (wrong.status_code, wrong.json()) == (401, {"error": "A valid service key is required."})
+    response = client.post("/api/llm/chat", json=body, headers={"x-service-key": "anything"})
+    assert (response.status_code, response.json()) == (404, {"error": "Not Found"})
 
 
-def test_llm_proxy_streams_with_the_service_key(fake_db, monkeypatch):
-    monkeypatch.setattr(llm, "stream_chat", lambda messages: iter(["Hel", "lo"]))
-    body = {"messages": [{"role": "user", "content": "Hi"}], "client_ip": "203.0.113.9"}
-    response = client.post("/api/llm/chat", json=body, headers={"x-service-key": "service-key-for-tests"})
-    assert (response.status_code, response.text) == (200, "Hello")
-    assert fake_db.rate_limit_calls[0]["p_bucket"] == "llm"
+def test_cors_allows_only_the_content_type_header():
+    [cors] = [middleware for middleware in app.user_middleware if middleware.cls is CORSMiddleware]
+    assert cors.kwargs["allow_headers"] == ["Content-Type"]
+    assert cors.kwargs["allow_credentials"] is True
+    assert cors.kwargs["allow_methods"] == ["GET", "POST", "PUT", "DELETE"]
+
+
+def test_a_stated_client_ip_is_not_believed(fake_db):
+    fake_db.is_allowed = False
+    headers = {"x-client-ip": "203.0.113.7", "x-service-key": "anything", "x-forwarded-for": "198.51.100.1"}
+    client.post("/api/assistant/chat", json={"message": "Hi"}, headers=headers)
+    assert fake_db.rate_limit_calls[0]["p_key_hash"] == crypto.sha256_hex("198.51.100.1")
+
+
+def test_zoey_is_told_the_brief_and_nothing_else(fake_db, monkeypatch):
+    fake_db.insert("documents", {"type": "consultingService", "data": {"title": "Audit", "body": "B", "icon": "zap"}})
+    fake_db.insert("documents", {"type": "pricingTier", "data": {"name": "Sprint", "price": "$8,000"}})
+    fake_db.insert("documents", {"type": "clientProject", "data": {"client": "Acme", "image": "https://x.test/a.png"}})
+    fake_db.insert("documents", {"type": "profile", "data": {"name": "not for Zoey"}})
+    seen = {}
+
+    def fake_stream(messages):
+        seen["messages"] = messages
+        return iter(["Good ", "evening"])
+
+    monkeypatch.setattr(llm, "stream_chat", fake_stream)
+    history = [{"role": "assistant", "content": "y" * 5000}] * 20
+    response = client.post("/api/consulting/chat", json={"message": "I need an audit", "history": history})
+    assert (response.status_code, response.text) == (200, "Good evening")
+    assert response.headers["content-type"] == "text/plain; charset=utf-8"
+    system, *turns, question = seen["messages"]
+    prompt, brief = system["content"].split("\n\nBrief: ")
+    assert prompt.startswith("You are Zoey, the butler of Rahfi Consulting")
+    assert prompt.endswith("   contact form is where anything becomes real.")
+    assert json.loads(brief) == {
+        "services": [{"title": "Audit", "body": "B"}],
+        "principles": [],
+        "process": [],
+        "pricing": [{"name": "Sprint", "price": "$8,000"}],
+        "engagements": [{"client": "Acme"}],
+    }
+    assert len(turns) == 12 and len(turns[0]["content"]) == 4000
+    assert question == {"role": "user", "content": "I need an audit"}
+    [limit] = fake_db.rate_limit_calls
+    assert (limit["p_bucket"], limit["p_limit"]) == ("consulting", 20)
+
+
+@pytest.mark.parametrize("body", [{"message": "   "}, {"message": "x" * 1001}, {}])
+def test_zoey_bad_input_is_400(fake_db, body):
+    response = client.post("/api/consulting/chat", json=body)
+    assert response.status_code == 400
+    assert set(response.json()) == {"error"}
+    assert not fake_db.rate_limit_calls
 
 
 def test_assistant_streams_plain_text_built_from_documents(fake_db, monkeypatch):
@@ -290,6 +338,15 @@ def test_post_lifecycle(fake_db):
     assert again["publishedAt"] == published["publishedAt"]
 
     assert "bodyMd" not in client.get("/api/studio/posts").json()[0]
+
+
+@pytest.mark.parametrize("document_type", ["consultingService", "principle", "processStep", "pricingTier"])
+def test_consulting_document_types_are_accepted(fake_db, document_type):
+    sign_in(fake_db)
+    response = client.post(
+        "/api/studio/documents", json={"type": document_type, "data": {"title": "T"}}, headers={"Origin": ORIGIN}
+    )
+    assert response.status_code == 201
 
 
 def test_document_type_must_be_known(fake_db):

@@ -1,8 +1,6 @@
 """Per-visitor allowances, counted in Postgres because a serverless instance forgets."""
 
-import hmac
 import math
-import os
 
 import httpx
 from fastapi import Request
@@ -14,24 +12,9 @@ from backend.crypto import sha256_hex
 HOUR = 3600
 
 
-def is_trusted_caller(request: Request) -> bool:
-    """Whether the request came through one of the two sites' servers, not straight from a browser."""
-    expected = os.environ.get("STUDIO_SERVICE_KEY", "")
-    given = request.headers.get("x-service-key", "")
-    return bool(expected) and hmac.compare_digest(given.encode(), expected.encode())
-
-
 def client_ip(request: Request) -> str:
-    # The backend is a deployment of its own, and the portfolio reaches it through a rewrite.
-    # A platform overwrites x-forwarded-for with whoever connected, which here is the site's
-    # server, so every visitor would share one allowance. The site therefore states the
-    # visitor's address itself, and it is believed only alongside the service key: without
-    # that check anyone could name a fresh address per request and never be limited.
-    stated = request.headers.get("x-client-ip", "").strip()
-    if stated and is_trusted_caller(request):
-        return stated
-
-    # The first entry is the client; the rest are proxies it passed through.
+    # Browsers connect to this deployment themselves, and Vercel overwrites x-forwarded-for
+    # with whoever connected, so its first entry is the visitor and cannot be chosen by them.
     forwarded = request.headers.get("x-forwarded-for")
     if forwarded:
         return forwarded.split(",")[0].strip()

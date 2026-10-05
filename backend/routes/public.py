@@ -1,6 +1,5 @@
-"""What anyone may call: health, Ashley, the model proxy, the contact form."""
+"""What anyone may call: health, the two assistants, the contact form."""
 
-import hmac
 import html
 import json
 import os
@@ -15,13 +14,13 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from backend import db, llm, mail, ratelimit
-from backend.config import ApiError, env, log
+from backend.config import ApiError, log
 
 router = APIRouter()
 
 # A question is a sentence, not an essay.
 MAX_MESSAGE_LENGTH = 1000
-# Ashley's own answers come back as history and run longer, so a turn is trimmed, not refused.
+# An assistant's own answers come back as history and run longer, so a turn is trimmed, not refused.
 MAX_TURN_LENGTH = 4000
 MAX_TURNS = 12
 
@@ -46,6 +45,39 @@ ASHLEY_PROMPT = "\n".join(
     ]
 )
 
+# Zoey's brief, by the key she is shown and the document type it is read from.
+ZOEY_BRIEF = {
+    "services": "consultingService",
+    "principles": "principle",
+    "process": "processStep",
+    "pricing": "pricingTier",
+    "engagements": "clientProject",
+}
+# An image URL or an icon name is nothing Zoey can use, and she would pay tokens to read it.
+NOT_FOR_ZOEY = ("image", "icon")
+
+# Word for word what the consulting site's own route used to send.
+ZOEY_PROMPT = "\n".join(
+    [
+        "You are Zoey, the butler of Rahfi Consulting, which offers independent IT consulting.",
+        "She/her. Courteous, precise, never pushy. Short answers unless asked for detail.",
+        "",
+        "You discuss two things only: the problem a visitor is trying to solve, and which",
+        "engagement and price fits it. Anything else, including questions about Rahfi",
+        "himself, his CV, or his personal projects, you decline in one line and point at",
+        "the portfolio at rahfi.pro.",
+        "",
+        "How you work:",
+        "1. If the problem is vague, ask one short question before recommending anything.",
+        "2. Once you understand it, name the tier that fits and say in one sentence why.",
+        "3. Recommend more than one tier when the work genuinely spans them, for example an",
+        "   audit first and a sprint after, and say what each one buys.",
+        "4. Quote a price only if it appears in the brief. Never invent or discount one.",
+        "5. Never promise a timeline or an outcome on Rahfi's behalf. A brief through the",
+        "   contact form is where anything becomes real.",
+    ]
+)
+
 
 class Turn(BaseModel):
     role: Literal["user", "assistant"]
@@ -55,16 +87,6 @@ class Turn(BaseModel):
 class AssistantRequest(BaseModel):
     message: str
     history: list[Turn] = []
-
-
-class ProxyMessage(BaseModel):
-    role: Literal["system", "user", "assistant"]
-    content: str
-
-
-class ProxyRequest(BaseModel):
-    messages: list[ProxyMessage]
-    client_ip: str
 
 
 class ContactRequest(BaseModel):
@@ -111,6 +133,36 @@ def build_resume(documents: list[dict]) -> dict:
     }
 
 
+def build_brief(documents: list[dict]) -> dict:
+    """What Zoey is told: the consulting copy, the prices, and the engagements, in studio order."""
+    key_for_type = {document_type: key for key, document_type in ZOEY_BRIEF.items()}
+    brief: dict[str, list[dict]] = {key: [] for key in ZOEY_BRIEF}
+    for document in documents:
+        data = {field: value for field, value in document["data"].items() if field not in NOT_FOR_ZOEY}
+        brief[key_for_type[document["type"]]].append(data)
+    return brief
+
+
+def question(body: AssistantRequest) -> str:
+    """The visitor's message, or 400. Checked before the rate limit, so a bad request costs nothing."""
+    message = body.message.strip()
+    if not message:
+        raise ApiError(400, "Nothing to answer.")
+    if len(message) > MAX_MESSAGE_LENGTH:
+        raise ApiError(400, f"Please keep a question under {MAX_MESSAGE_LENGTH} characters.")
+    return message
+
+
+def conversation(system: str, history: list[Turn], message: str) -> list[dict[str, str]]:
+    """The prompt, the recent turns trimmed to size, and the new question."""
+    turns = [turn for turn in history if turn.content.strip()][-MAX_TURNS:]
+    return [
+        {"role": "system", "content": system},
+        *({"role": turn.role, "content": turn.content[:MAX_TURN_LENGTH]} for turn in turns),
+        {"role": "user", "content": message},
+    ]
+
+
 def streamed_reply(messages: list[dict[str, str]]) -> StreamingResponse:
     """Answer with the model's text as it arrives, or with 502 if it never starts."""
     fragments = llm.stream_chat(messages)
@@ -143,11 +195,7 @@ def streamed_reply(messages: list[dict[str, str]]) -> StreamingResponse:
 
 @router.post("/api/assistant/chat")
 def assistant_chat(body: AssistantRequest, request: Request) -> StreamingResponse:
-    message = body.message.strip()
-    if not message:
-        raise ApiError(400, "Nothing to answer.")
-    if len(message) > MAX_MESSAGE_LENGTH:
-        raise ApiError(400, f"Please keep a question under {MAX_MESSAGE_LENGTH} characters.")
+    message = question(body)
     ratelimit.enforce("assistant", ratelimit.client_ip(request), 20)
 
     documents = db.select(
@@ -155,26 +203,21 @@ def assistant_chat(body: AssistantRequest, request: Request) -> StreamingRespons
         {"type": f"in.({','.join(RESUME_TYPES)})", "order": "sort_order.asc,data->>title.asc"},
     )
     system = f"{ASHLEY_PROMPT}Data: {json.dumps(build_resume(documents), ensure_ascii=False)}"
-    turns = [turn for turn in body.history if turn.content.strip()][-MAX_TURNS:]
-    messages = [
-        {"role": "system", "content": system},
-        *({"role": turn.role, "content": turn.content[:MAX_TURN_LENGTH]} for turn in turns),
-        {"role": "user", "content": message},
-    ]
-    return streamed_reply(messages)
+    return streamed_reply(conversation(system, body.history, message))
 
 
-@router.post("/api/llm/chat")
-def llm_chat(body: ProxyRequest, request: Request) -> StreamingResponse:
-    given = request.headers.get("x-service-key", "")
-    if not hmac.compare_digest(given.encode(), env("STUDIO_SERVICE_KEY").encode()):
-        raise ApiError(401, "A valid service key is required.")
-    if not body.messages or not body.client_ip.strip():
-        raise ApiError(400, "Messages and a client address are required.")
-    ratelimit.enforce("llm", body.client_ip.strip(), 20)
+@router.post("/api/consulting/chat")
+def consulting_chat(body: AssistantRequest, request: Request) -> StreamingResponse:
+    message = question(body)
+    ratelimit.enforce("consulting", ratelimit.client_ip(request), 20)
 
-    # The caller is our own server and bounds its own prompt, so this forwards it whole.
-    return streamed_reply([{"role": m.role, "content": m.content} for m in body.messages])
+    documents = db.select(
+        "documents",
+        {"type": f"in.({','.join(ZOEY_BRIEF.values())})", "order": "sort_order.asc,created_at.asc"},
+    )
+    # Compact, as JSON.stringify wrote it when the prompt lived on the consulting site.
+    brief = json.dumps(build_brief(documents), ensure_ascii=False, separators=(",", ":"))
+    return streamed_reply(conversation(f"{ZOEY_PROMPT}\n\nBrief: {brief}", body.history, message))
 
 
 def _contact_problem(body: ContactRequest) -> str | None:

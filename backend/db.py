@@ -1,4 +1,8 @@
-"""Supabase through PostgREST, with the service-role key. Filters are PostgREST's own."""
+"""Supabase through PostgREST. Filters are PostgREST's own.
+
+The service-role key bypasses row-level security and is the default. `anon=True` uses the
+public key instead, for what a stranger may already read or write, so the policies still hold.
+"""
 
 from typing import Any
 
@@ -13,8 +17,8 @@ class Conflict(Exception):
     """A unique constraint refused the write."""
 
 
-def _request(method: str, path: str, **kwargs: Any) -> Any:
-    key = env("SUPABASE_SERVICE_ROLE_KEY")
+def _request(method: str, path: str, anon: bool = False, **kwargs: Any) -> Any:
+    key = env("SUPABASE_ANON_KEY" if anon else "SUPABASE_SERVICE_ROLE_KEY")
     headers = {"apikey": key, "Authorization": f"Bearer {key}", **kwargs.pop("headers", {})}
     url = f"{env('SUPABASE_URL').rstrip('/')}/rest/v1/{path}"
     response = _http.request(method, url, headers=headers, **kwargs)
@@ -26,19 +30,19 @@ def _request(method: str, path: str, **kwargs: Any) -> Any:
     return response.json() if response.content else None
 
 
-def select(table: str, params: dict[str, Any] | None = None) -> list[dict]:
-    return _request("GET", table, params=params or {})
+def select(table: str, params: dict[str, Any] | None = None, anon: bool = False) -> list[dict]:
+    return _request("GET", table, anon, params=params or {})
 
 
-def insert(table: str, row: dict, upsert: bool = False) -> dict:
+def insert(table: str, row: dict, upsert: bool = False, anon: bool = False) -> dict:
     prefer = "return=representation" + (",resolution=merge-duplicates" if upsert else "")
-    return _request("POST", table, json=row, headers={"Prefer": prefer})[0]
+    return _request("POST", table, anon, json=row, headers={"Prefer": prefer})[0]
 
 
-def update(table: str, filters: dict[str, Any], values: dict) -> list[dict]:
+def update(table: str, filters: dict[str, Any], values: dict, anon: bool = False) -> list[dict]:
     """The rows that were changed, so a caller can tell a conditional update that lost."""
     return _request(
-        "PATCH", table, params=filters, json=values, headers={"Prefer": "return=representation"}
+        "PATCH", table, anon, params=filters, json=values, headers={"Prefer": "return=representation"}
     )
 
 

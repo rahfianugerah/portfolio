@@ -14,8 +14,10 @@ from backend.config import ApiError
 router = APIRouter(prefix="/api/studio", dependencies=[Depends(auth.require_owner)])
 
 # Every type the old dataset had, plus the ones the studio has gained since, which have
-# nothing to import and so no shape to map.
-DOCUMENT_TYPES = frozenset(sanity_import.SHAPES) | {"pricingTier"}
+# nothing to import and so no shape to map. The public read accepts exactly these too.
+DOCUMENT_TYPES = frozenset(sanity_import.SHAPES) | {
+    "pricingTier", "consultingService", "principle", "processStep",
+}
 POST_LIST_COLUMNS = "id,slug,title,summary,cover_url,tags,published,published_at,created_at,updated_at"
 SLUG_TAKEN = ApiError(409, "Another post already uses that slug.")
 NO_POST = ApiError(404, "There is no post with that id.")
@@ -127,7 +129,7 @@ def create_post(body: PostBody) -> dict:
     values = _post_values(body)
     if not (values.get("title") or "").strip():
         raise ApiError(400, "A post needs a title.")
-    values["slug"] = values.get("slug") or slugify(values["title"])
+    values["slug"] = slugify(values.get("slug") or values["title"])
     if not values["slug"]:
         raise ApiError(400, "A post needs a slug made of letters or numbers.")
     if values.get("published"):
@@ -179,7 +181,7 @@ def _document_out(row: dict) -> dict:
     }
 
 
-def _check_type(document_type: str) -> None:
+def check_type(document_type: str) -> None:
     if document_type not in DOCUMENT_TYPES:
         raise ApiError(400, "That is not a type of document.")
 
@@ -188,14 +190,14 @@ def _check_type(document_type: str) -> None:
 def list_documents(type: str | None = None) -> list[dict]:
     params = {"order": "type.asc,sort_order.asc"}
     if type is not None:
-        _check_type(type)
+        check_type(type)
         params["type"] = f"eq.{type}"
     return [_document_out(row) for row in db.select("documents", params)]
 
 
 @router.post("/documents", status_code=201)
 def create_document(body: DocumentCreate) -> dict:
-    _check_type(body.type)
+    check_type(body.type)
     if body.type == "profile" and db.select("documents", {"type": "eq.profile", "limit": 1}):
         raise ApiError(409, "There is already a profile. Edit that one.")
     row = {"type": body.type, "data": body.data}

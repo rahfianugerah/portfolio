@@ -9,7 +9,7 @@ from google.auth.exceptions import GoogleAuthError
 from starlette.exceptions import HTTPException
 
 from backend.config import ApiError, allowed_origins, log
-from backend.routes import account, content, files, public
+from backend.routes import account, analytics, content, files, public, reads
 
 # The interactive docs would publish the studio's whole surface to anyone who asked.
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
@@ -19,10 +19,14 @@ app.add_middleware(
     allow_origins=allowed_origins(),
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["Content-Type", "X-Service-Key"],
+    allow_headers=["Content-Type"],
 )
 
-for router in (public.router, account.open_router, account.router, files.router, content.router):
+ROUTERS = (
+    public.router, reads.router, analytics.router, account.open_router, account.router, files.router,
+    content.router,
+)
+for router in ROUTERS:
     app.include_router(router)
 
 
