@@ -13,7 +13,9 @@ from backend.config import ApiError
 
 router = APIRouter(prefix="/api/studio", dependencies=[Depends(auth.require_owner)])
 
-DOCUMENT_TYPES = frozenset(sanity_import.SHAPES)
+# Every type the old dataset had, plus the ones the studio has gained since, which have
+# nothing to import and so no shape to map.
+DOCUMENT_TYPES = frozenset(sanity_import.SHAPES) | {"pricingTier"}
 POST_LIST_COLUMNS = "id,slug,title,summary,cover_url,tags,published,published_at,created_at,updated_at"
 SLUG_TAKEN = ApiError(409, "Another post already uses that slug.")
 NO_POST = ApiError(404, "There is no post with that id.")
