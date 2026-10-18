@@ -8,7 +8,6 @@
       "dev": false
     }
   },
-  "ignoreCommand": "[ \"$IS_BACKEND\" = \"1\" ]",
   "github": {
     "silent": true,
     "autoJobCancelation": true

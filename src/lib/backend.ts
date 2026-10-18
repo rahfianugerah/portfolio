@@ -12,7 +12,7 @@ export function backendUrl(): string {
   if (process.env.NODE_ENV === "development") return "http://localhost:8000";
 
   // An empty origin makes every call fail where it can be seen, rather than go somewhere else.
-  if (!warned) console.error("BACKEND_URL is not set: content, the studio, the assistant and the contact form will not work.");
+  if (!warned) console.error("BACKEND_URL is not set: content, the assistant and the contact form will not work.");
   warned = true;
   return "";
 }

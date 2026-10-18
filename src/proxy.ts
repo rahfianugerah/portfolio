@@ -5,8 +5,8 @@ import { isBlockedCrawler } from "@/lib/crawlers";
 /**
  * Crawlers that identify themselves are turned away; crawlers.ts says what that is worth.
  *
- * The studio is not guarded here: its session cookie lives on the backend's host, which this
- * site cannot see, and a studio page sends a signed-out visitor to /studio/login on a 401.
+ * Nothing here needs signing in. The studio is the console at cloud.rahfi.pro, its own
+ * application, and next.config.mjs sends /studio there.
  */
 export function proxy(request: NextRequest) {
   if (isBlockedCrawler(request.headers.get("user-agent"))) {

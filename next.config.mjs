@@ -4,7 +4,7 @@ const nextConfig = {
   images: {
     // Every image is a public Google Cloud Storage object, uploaded in the studio. Next's
     // optimizer refuses any host it resolves to a private address, and on a NAT64 network
-    // that is every host, which is the failure the Sanity loader was written around.
+    // that is every host.
     // ponytail: no resizing, so a large upload is served at full size. Put a resizing proxy
     // in front of the bucket if image weight ever shows up in a page's load time.
     unoptimized: true,
@@ -17,6 +17,13 @@ const nextConfig = {
       {
         source: "/service",
         destination: "https://consulting.rahfi.pro/#services",
+        permanent: false,
+      },
+      // The studio is its own application now, the console at cloud.rahfi.pro, where its pages
+      // sit at the root: /studio/posts here is /posts there.
+      {
+        source: "/studio/:path*",
+        destination: "https://cloud.rahfi.pro/:path*",
         permanent: false,
       },
     ];

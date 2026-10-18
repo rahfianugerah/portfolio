@@ -17,9 +17,6 @@ import TopNavbar from "@/components/top-navbar";
 export default function LayoutContent({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
-  // The studio renders its own chrome and expects the whole viewport.
-  if (pathname?.startsWith("/studio")) return <>{children}</>;
-
   // The chat is a room: the viewport below the bar, and nothing else. No dock either, because
   // a dock floating over a composer is a second thing to reach past to type.
   if (pathname === "/chat") {
