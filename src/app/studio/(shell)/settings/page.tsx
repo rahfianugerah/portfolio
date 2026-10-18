@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 
 import { api, errorMessage, type Credential } from "@/components/studio/api";
 import { CredentialField } from "@/components/studio/credential-field";
-import { SanityImport } from "@/components/studio/sanity-import";
 import { Button, Field, Notice, PageHeader, SectionLabel, inputClass } from "@/components/studio/ui";
 
 const MIN_PASSWORD_LENGTH = 12;
@@ -113,11 +112,6 @@ export default function SettingsPage() {
       <section aria-label="Change password" className="space-y-4">
         <SectionLabel>Change password</SectionLabel>
         <ChangePassword />
-      </section>
-
-      <section aria-label="Import from Sanity" className="space-y-4">
-        <SectionLabel>Import from Sanity</SectionLabel>
-        <SanityImport />
       </section>
     </>
   );

@@ -72,12 +72,6 @@ export interface StudioDocument {
   updatedAt: string;
 }
 
-export interface SanityPlanItem {
-  id: string;
-  type: string;
-  title: string;
-}
-
 /** Calls a studio endpoint. Throws an ApiError carrying the API's own sentence. */
 export async function api<T = void>(
   path: string,

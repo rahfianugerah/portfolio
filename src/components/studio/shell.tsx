@@ -12,7 +12,7 @@ export const SECTIONS = [
   { href: "/studio/posts", label: "Posts", detail: "Write, publish and unpublish blog posts." },
   { href: "/studio/files", label: "Files", detail: "Images, PDFs and Markdown in the bucket." },
   { href: "/studio/content", label: "Content", detail: "Profile, roles, projects and the rest of both sites." },
-  { href: "/studio/settings", label: "Settings", detail: "Credentials, the password, and the Sanity import." },
+  { href: "/studio/settings", label: "Settings", detail: "Credentials and the password." },
 ];
 
 const itemClass =
