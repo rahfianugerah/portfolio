@@ -122,6 +122,12 @@ What it holds is in `.env.example`.
 
 If `preview-rahfi-portfolio.vercel.app` is still listed under **Settings > Domains**, remove it. It was assigned to `dev` while that branch was deployed, and it now points at a deployment that no longer updates.
 
+### 7. Turn on the firewall's bot rules
+
+Under **Firewall**, **Rules**, **Bot Management**, set **Bot Protection** to **Challenge** and **AI Bots** to **Deny**. Bot Protection serves a JavaScript challenge to a client that does not behave like a browser, and leaves verified search engines such as Google alone, so the site can still be found. AI Bots refuses the known AI crawlers, a list Vercel keeps current. To watch what would be challenged before anyone is, set Bot Protection to **Log** for a day first.
+
+**This makes scraping harder, not impossible**, and nothing served to the public can stop a screenshot.
+
 ## The First Run, in Order
 
 The site ships with no content, so a database that has not been filled renders every section empty. The backend goes first, then the database is filled from the studio, and this site is deployed last.

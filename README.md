@@ -454,7 +454,11 @@ How the password is stored, how a code expires, the lockout, and what is sealed 
 
 `src/lib/crawlers.ts` holds one list that both `src/app/robots.ts` and `src/proxy.ts` read. A crawler that collects pages for a model, a scraping library, a headless browser, or a request with no `User-Agent` receives 403 on every path, `/api` included, and the AI crawlers are disallowed by name in `robots.txt`. Every response carries `X-Robots-Tag: noai, noimageai`. Search engines and link previews are deliberately left alone, because the site is meant to be found and shared. `robots.txt` also disallows `/api/` for everyone.
 
-**This stops a crawler that says who it is, and nothing else.** A scraper that sends a browser's `User-Agent` walks past both, and nothing served to the public can prevent that.
+**Copying is discouraged, not prevented.** `src/components/copy-guard.tsx`, mounted in the site's layout, refuses copy, cut, dragging, and the context menu, and `src/app/globals.css` turns off text selection. A visitor can still copy from an input, the chat box, or a code block, and a link keeps its menu unless it is a picture. View Source, reader mode, or a browser with JavaScript off still reads every word.
+
+**Vercel's Bot Protection challenges clients that do not behave like a browser**, set in the project's Firewall per `DEPLOY.md`, with verified search engines left alone.
+
+**Together these stop a crawler that says who it is and slow one that does not, and nothing else.** A scraper driving a real browser still reads the page, and nothing served to the public can stop that or a screenshot.
 
 ### No Site Icon
 

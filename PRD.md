@@ -351,6 +351,7 @@ Once this exists:
 - **One backend serves both sites and the console**, as it does today, under its own name.
 - **Every table both sites read and the console writes lives in the database on the owner's VPS**, which is never reachable from the internet. The backend reaches it through one narrow, authenticated path, with no change to how it reads or writes, and its settings are named for that path rather than for Supabase.
 - **The schema keeps coming from the backend's migrations**, applied as a job when its production branch moves, and before the code that needs them.
+- **Both sites discourage copying and challenge bots**, at the owner's direction on 2026-10-18. Text and pictures resist selection, copying, dragging, and the context menu, except where a visitor types or reads code, and a client that does not behave like a browser is challenged before it reaches either site.
 
 ## What Is Not Built
 
@@ -363,6 +364,7 @@ Once this exists:
 - **No files on the VPS.** They stay in the bucket they are in.
 - **No staging database, and no deletion of the Supabase project**, which stays untouched for a week as the way back.
 - **No move of anything off Vercel.**
+- **No protection against screenshots, and no lock against copying.** Nothing a web page does stops a screenshot, and View Source, reader mode, or a scraper driving a real browser still reads every word. Search engines are not challenged, so both sites can still be found.
 
 ## Success Measure
 
