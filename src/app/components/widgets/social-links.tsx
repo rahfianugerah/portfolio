@@ -1,7 +1,6 @@
 "use client";
 
 import { ArrowUpRight, MapPin } from "lucide-react";
-import { SiDiscord, SiInstagram, SiThreads } from "react-icons/si";
 
 import { SOCIAL_ICON } from "@/components/social-icon";
 import { WidgetFallback } from "@/components/widget-error-boundary";
@@ -13,14 +12,6 @@ type Row = {
   handle: string;
   Icon: React.ComponentType<{ className?: string }>;
 };
-
-// ponytail: these three are not in the studio's profile yet, whose link icons cover GitHub,
-// LinkedIn, email, a file, and a website. Move them there once it has icons for them.
-const EXTRA_LINKS: Row[] = [
-  { name: "Instagram", url: "https://instagram.com/nrhfx", handle: "nrhfx", Icon: SiInstagram },
-  { name: "Threads", url: "https://threads.net/@nrhfx", handle: "@nrhfx", Icon: SiThreads },
-  { name: "Discord", url: "https://discord.com/users/rhfx", handle: "rhfx", Icon: SiDiscord },
-];
 
 // A link comes from the dataset, so only a web or mail link is ever rendered into an href.
 const SAFE_URL = /^(https?:|mailto:)/i;
@@ -37,8 +28,8 @@ function handleOf(icon: string, url: string): string {
 }
 
 /**
- * Where to find Rahfi: the city, every profile link from the studio with the account it points
- * at, the networks not in the studio yet, and the contact form.
+ * Where to find Rahfi: the city, and every profile link from the studio with the account it
+ * points at.
  */
 export default function SocialLinks() {
   const content = useSiteContent();
@@ -53,7 +44,6 @@ export default function SocialLinks() {
         handle: handleOf(link.icon, link.url),
         Icon: SOCIAL_ICON[link.icon] ?? SOCIAL_ICON.globe,
       })),
-    ...EXTRA_LINKS,
   ];
 
   if (rows.length === 0) {

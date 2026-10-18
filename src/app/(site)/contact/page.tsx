@@ -1,6 +1,6 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { InteractiveHexagonPattern } from "@/components/magicui/interactive-hexagon-pattern";
-import { getPageMeta } from "@/lib/content";
+import { getHirePlatforms, getPageMeta } from "@/lib/content";
 import { readPublished } from "@/lib/published";
 import ContactForm from "@/app/components/contact-form";
 import HirePlatforms from "@/app/components/hire-platforms";
@@ -18,7 +18,10 @@ export async function generateMetadata() {
 
 export default async function ContactPage() {
   // The site key belongs to the backend's environment, beside the secret it pairs with.
-  const config = await readPublished<{ recaptchaSiteKey: string | null }>("config");
+  const [config, platforms] = await Promise.all([
+    readPublished<{ recaptchaSiteKey: string | null }>("config"),
+    getHirePlatforms(),
+  ]);
 
   return (
     <section id="contact" className="flex w-full flex-col gap-12 pb-12">
@@ -51,7 +54,7 @@ export default async function ContactPage() {
 
             {/* Right Column - Hire Platforms */}
             <div className="w-full h-full">
-              <HirePlatforms />
+              <HirePlatforms platforms={platforms} />
             </div>
           </div>
 

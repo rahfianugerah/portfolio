@@ -197,6 +197,24 @@ export async function getProject(slug: string): Promise<Project | null> {
   return (await getProjects()).find((project) => project.slug === slug) ?? null;
 }
 
+export type HirePlatform = {
+  id: string;
+  name: string;
+  url: string;
+  /** Which icon the contact page draws. Null shows the name's first letter. */
+  icon: string | null;
+};
+
+/** Where Rahfi can be hired, in the studio's order. */
+export async function getHirePlatforms(): Promise<HirePlatform[]> {
+  return (await documents("hirePlatform")).sort(byName("name")).map(({ id, data }) => ({
+    id,
+    name: text(data.name),
+    url: text(data.url),
+    icon: optional(data.icon),
+  }));
+}
+
 export async function getCertificates(): Promise<Certificate[]> {
   return (await documents("certificate")).sort(byName("title")).map(({ id, data }) => ({
     id,
@@ -218,6 +236,16 @@ export async function getProfile(): Promise<Profile | null> {
   if (!row) return null;
 
   const { data } = row;
+  const social = list<Partial<SocialLink>>(data.social).map((link) => ({
+    name: text(link.name),
+    url: text(link.url),
+    icon: text(link.icon),
+    inNavbar: link.inNavbar ?? true,
+  }));
+
+  // The CV is a file of its own on the profile. It joins the links as "CV", replacing a link of
+  // that name, so the hero, the dock, the footer and the links card all open the current file.
+  const cv = optional(data.cv);
   return {
     name: text(data.name),
     initials: text(data.initials),
@@ -227,12 +255,9 @@ export async function getProfile(): Promise<Profile | null> {
     locationLink: optional(data.locationLink),
     avatar: optional(data.avatar),
     logo: optional(data.logo),
-    social: list<Partial<SocialLink>>(data.social).map((link) => ({
-      name: text(link.name),
-      url: text(link.url),
-      icon: text(link.icon),
-      inNavbar: link.inNavbar ?? true,
-    })),
+    social: cv
+      ? [...social.filter((link) => link.name !== "CV"), { name: "CV", url: cv, icon: "file", inNavbar: true }]
+      : social,
   };
 }
 

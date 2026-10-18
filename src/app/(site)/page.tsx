@@ -97,6 +97,7 @@ export default async function Page() {
     ]);
 
   const linkedIn = profile?.social.find((link) => link.icon === "linkedin")?.url;
+  const gitHub = profile?.social.find((link) => link.icon === "github")?.url;
   const companies = groupRolesByCompany(roles.filter((role) => role.kind === "work"));
   const skills = Array.from(new Set(skillGroups.flatMap((group) => group.items)));
 
@@ -277,7 +278,7 @@ export default async function Page() {
               Icon={Icons.github}
               name="GitHub"
               description="The profile, the activity, and the latest repositories."
-              href="https://github.com/rahfianugerah"
+              href={gitHub}
               cta="Open GitHub"
               className="lg:col-span-2"
             >

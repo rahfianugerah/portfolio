@@ -1,3 +1,5 @@
+import { SiDiscord, SiInstagram, SiThreads } from "react-icons/si";
+
 import { Icons } from "@/components/icons";
 
 /**
@@ -7,9 +9,12 @@ import { Icons } from "@/components/icons";
  * database: a React element does not serialise. The document stores a string and this table
  * turns it back into something renderable.
  */
-export const SOCIAL_ICON: Record<string, (props: { className?: string }) => React.JSX.Element> = {
+export const SOCIAL_ICON: Record<string, React.ComponentType<{ className?: string }>> = {
   github: Icons.github,
   linkedin: Icons.linkedin,
+  instagram: SiInstagram,
+  threads: SiThreads,
+  discord: SiDiscord,
   email: Icons.email,
   file: Icons.file,
   globe: Icons.globe,
