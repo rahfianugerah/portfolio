@@ -5,7 +5,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.3.3-06B6D4?logo=tailwindcss&logoColor=white)
 ![HeroUI](https://img.shields.io/badge/HeroUI-3.2.5-000000)
-![Supabase](https://img.shields.io/badge/Supabase-2.116.0-3FCF8E?logo=supabase&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-4169E1?logo=postgresql&logoColor=white)
 ![Node](https://img.shields.io/badge/Node-20-5FA04E?logo=nodedotjs&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-Managed-000000?logo=vercel&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Active-2EA043)
@@ -58,12 +58,12 @@ The home page ends on a Magic UI bento grid of live cards, spanned so every row 
 
 | Card | Source |
 | :- | :- |
-| Website visitors | The backend, which counts them in Supabase |
+| Website visitors | The backend, which counts them in the database on the VPS |
 | GitHub activity and latest repositories | The backend, which asks the GitHub API and caches it for an hour |
 | Experiences velocity | Derived from the résumé data |
 | Tech stack and specialties | The résumé data |
-| Moments and quotations | Supabase, edited in the studio |
-| Latest writing | Supabase, the `posts` table |
+| Moments and quotations | The database, edited in the studio |
+| Latest writing | The database, the `posts` table |
 | Projects overview and social links | Mixed |
 | Clock | The browser, in Asia/Jakarta |
 
@@ -105,8 +105,8 @@ The home page ends on a Magic UI bento grid of live cards, spanned so every row 
 | Styling | Tailwind CSS, shadcn token layer, HeroUI theme | 4.3.3 |
 | Icons | Lucide, React Icons | 1.46.0, 5.7.0 |
 | Backend | FastAPI, its own repository, `cloud-backend` | Not in this repository |
-| Content | Supabase PostgreSQL rows, Markdown through `react-markdown` | 10.1.0 |
-| Database | Supabase, PostgreSQL, reached only through the backend | Managed |
+| Content | PostgreSQL rows, Markdown through `react-markdown` | 10.1.0 |
+| Database | PostgreSQL in Docker on the owner's VPS, reached only through the backend | 18 |
 | File storage | Google Cloud Storage, read by public URL. The backend does the writing | Managed |
 | AI | Any OpenAI-compatible endpoint, called by the backend | No client library |
 | Animation | Framer Motion | 13.3.0 |
@@ -209,7 +209,7 @@ vercel.json                   # Region, branch deployment, headers
 | `src/app/components/widgets/` | The signals grid cells, all on one shared frame | Committed |
 | `src/lib/` | Everything with no JSX in it | Committed |
 | `.env`, `.env.local` | Local values for the site. The backend's are in `../cloud-backend` | Gitignored |
-| `backend/`, `api/`, `supabase/` | The backend, its function entry, and the schema | Not in this repository. Committed in `cloud-backend` |
+| `backend/`, `api/`, `alembic/` | The backend, its function entry, and the schema | Not in this repository. Committed in `cloud-backend` |
 | The studio's pages and `content-schema.ts` | The forms, the file browser, the editor, and the one description of every content type | Not in this repository. Committed in `cloud-frontend` |
 
 > [!note]
@@ -232,7 +232,7 @@ vercel.json                   # Region, branch deployment, headers
 | :- | :- | :- | :- |
 | `BACKEND_URL` | In production | The backend's origin, with no path. Not a secret. Read when the site is built and when it runs. Unset in development, it is `http://localhost:8000` | `https://api.rahfi.pro` |
 
-That is the only one. The variables this site used to hold went to the backend's environment: `SUPABASE_URL` and `SUPABASE_ANON_KEY` for the published reads and the visitor counter, `GITHUB_TOKEN` for the GitHub statistics, and `RECAPTCHA_SITE_KEY`, which the contact page now asks the backend for. `STUDIO_SERVICE_KEY` was removed, since nothing forwards a visitor's address any more. The service role key, the sealing key, `ALLOWED_ORIGINS`, the mail fallback, and the captcha secret were always the backend's. All of them are listed in the `.env.example` in `cloud-backend`.
+That is the only one. The variables this site used to hold went to the backend's environment: the database's address and public key, which the backend now holds as `POSTGREST_URL` and `POSTGREST_ANON_KEY`, for the published reads and the visitor counter, `GITHUB_TOKEN` for the GitHub statistics, and `RECAPTCHA_SITE_KEY`, which the contact page now asks the backend for. `STUDIO_SERVICE_KEY` was removed, since nothing forwards a visitor's address any more. The service role key, the sealing key, `ALLOWED_ORIGINS`, the mail fallback, and the captcha secret were always the backend's. All of them are listed in the `.env.example` in `cloud-backend`.
 
 ### Credentials Saved in the Studio
 
@@ -357,7 +357,7 @@ User Action > Handler > Route Handler or Backend > State Update > Render
 
 ### Content Source
 
-Everything lives in the backend's PostgreSQL database, in two tables that the Alembic revision `0003_studio`, in `cloud-backend`, creates. That database is Supabase until the backend is switched to PostgreSQL on the owner's VPS, per Phase 5 of `PRD.md`. `documents` holds one row per content document, with its fields as JSON. `posts` holds one row per post, with its body as Markdown.
+Everything lives in the backend's PostgreSQL database, in two tables that the Alembic revision `0003_studio`, in `cloud-backend`, creates. That database is PostgreSQL 18 in Docker on the owner's VPS, reached only through the backend. `documents` holds one row per content document, with its fields as JSON. `posts` holds one row per post, with its body as Markdown.
 
 | Content | Lives in | Edited in the studio under |
 | :- | :- | :- |
@@ -567,7 +567,7 @@ Error > Try/Catch or Boundary > Fallback Component > Console Log
 
 | Metric or area | Tool or method |
 | :- | :- |
-| Visitor analytics | The backend, in Supabase |
+| Visitor analytics | The backend, in the database on the VPS |
 | Deployment analytics | Vercel |
 
 ## 11. Development and Deployment
@@ -577,7 +577,7 @@ Error > Try/Catch or Boundary > Fallback Component > Console Log
 - Node 20 or newer, and npm
 - The backend, `cloud-backend`, cloned beside this folder and running. Its Python version and packages are in its own README
 - The studio, `cloud-frontend`, cloned beside it, to sign in and edit the content
-- A Supabase project, with the backend's migrations applied
+- The database on the VPS, set up per the owner's private VPS guide, with the backend's migrations applied
 - A Google Cloud Storage bucket, for files. The backend's deployment guide says what it needs
 - A current browser
 
@@ -615,7 +615,7 @@ cp ../cloud-backend/.env.example ../cloud-backend/.env
 | :- | :- | :- |
 | `.env` in this folder | `npm run dev` | `BACKEND_URL`, and nothing else. It can be left out locally |
 | `.env` in `../cloud-frontend` | The studio's `npm run dev` | `BACKEND_URL`, and nothing else. It can be left out locally |
-| `.env` in `../cloud-backend` | The backend | Every key: Supabase's, the sealing key, `ALLOWED_ORIGINS`, the mail fallback, both captcha keys, and the GitHub token |
+| `.env` in `../cloud-backend` | The backend | Every key: the database's two, the sealing key, `ALLOWED_ORIGINS`, the mail fallback, both captcha keys, and the GitHub token |
 
 `BACKEND_URL` can be left out of both local files. Unset in development, it is `http://localhost:8000`, which is where the backend's uvicorn runs.
 

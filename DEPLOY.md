@@ -137,7 +137,7 @@ The detail of each step is in the backend's deployment guide, in `cloud-backend`
 
 ### Then fill the database, from the local studio
 
-Done on a local machine, with the backend's `.env` holding the production Supabase values and the sealing key production uses.
+Done on a local machine, with the backend's `.env` holding the production database values, the three `POSTGREST_*`, and the sealing key production uses.
 
 5. **Start the local servers.** The commands are in `README.md`. Open the studio as `http://localhost:3002` with the backend at `http://localhost:8000`, never `127.0.0.1`: the two names are different sites to a browser, and the studio's cookie would not be sent.
 6. **Set the first password.** Open `/login` in the studio, choose **Forgot password**, then **Send code**, and enter the code with a password of at least 12 characters. The code is mailed through the backend's mail fallback, because SMTP is not set in the studio yet.

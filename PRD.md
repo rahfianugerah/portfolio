@@ -349,7 +349,7 @@ Once this exists:
 - **The console at `cloud.rahfi.pro` is where everything both sites show is edited**: posts, photographs and every other image, the CV, skills, and every other document type, along with the files, the credentials, and the password. It is an application of its own, not a page of the portfolio, and `rahfi.pro/studio` and `consulting.rahfi.pro/studio` send the owner there.
 - **The CV is an upload of its own on the profile.** Replacing it is one upload, and the portfolio's CV button and dock read it from there.
 - **One backend serves both sites and the console**, as it does today, under its own name.
-- **Every table both sites read and the console writes lives in the database on the owner's VPS**, which is never reachable from the internet. The backend reaches it through one narrow, authenticated path, with no change to its code, so returning to Supabase is three values put back.
+- **Every table both sites read and the console writes lives in the database on the owner's VPS**, which is never reachable from the internet. The backend reaches it through one narrow, authenticated path, with no change to how it reads or writes, and its settings are named for that path rather than for Supabase.
 - **The schema keeps coming from the backend's migrations**, applied as a job when its production branch moves, and before the code that needs them.
 
 ## What Is Not Built
@@ -361,7 +361,7 @@ Once this exists:
 - **No rewritten history.** The backend keeps its history in its new repository. The console starts afresh, and its earlier history stays readable in the portfolio's.
 - **No new data layer in the backend**, no direct database connection from Vercel, and no database port open to the internet.
 - **No files on the VPS.** They stay in the bucket they are in.
-- **No staging database, no rename of the backend's database variables, and no deletion of the Supabase project**, which stays untouched as the way back.
+- **No staging database, and no deletion of the Supabase project**, which stays untouched for a week as the way back.
 - **No move of anything off Vercel.**
 
 ## Success Measure
