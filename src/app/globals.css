@@ -305,3 +305,26 @@ body {
 .grecaptcha-badge {
   visibility: hidden !important;
 }
+
+/* With CopyGuard: text and media resist selection and dragging, except where a visitor types or
+   reads code. A deterrent only, as copy-guard.tsx says. */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable="true"],
+pre,
+code {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+img,
+video {
+  -webkit-user-drag: none;
+}
