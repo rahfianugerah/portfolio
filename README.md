@@ -146,7 +146,7 @@ Four products, four repositories, cloned side by side in one parent folder. **No
 | The studio | `rahfianugerah/cloud-frontend`, `../cloud-frontend` | `cloud.rahfi.pro` | `http://localhost:3002` |
 | The backend | `rahfianugerah/cloud-backend`, `../cloud-backend` | `api.rahfi.pro` | `http://localhost:8000` |
 
-The backend is one FastAPI application, for both sites and the studio. For this site it serves the published content, answers as Ashley, sends the contact form's mail, counts visitors, and serves the GitHub statistics and the captcha site key. For the studio it signs the owner in, does every save, signs the file uploads, and holds the saved credentials. Its code, tests, `requirements.txt`, `supabase/migrations/`, `README.md`, and `API.md` are all in `cloud-backend`.
+The backend is one FastAPI application, for both sites and the studio. For this site it serves the published content, answers as Ashley, sends the contact form's mail, counts visitors, and serves the GitHub statistics and the captcha site key. For the studio it signs the owner in, does every save, signs the file uploads, and holds the saved credentials. Its code, tests, `requirements.txt`, `alembic/`, `README.md`, and `API.md` are all in `cloud-backend`.
 
 **The studio holds only `BACKEND_URL` too.** It is a Next application of its own, with its pages at the root of `cloud.rahfi.pro`, and each of the four deploys from the `main` branch of its own repository.
 
@@ -357,7 +357,7 @@ User Action > Handler > Route Handler or Backend > State Update > Render
 
 ### Content Source
 
-Everything lives in the backend's PostgreSQL database, in two tables that `supabase/migrations/0003_studio.sql`, in `cloud-backend`, creates. That database is Supabase until the backend is switched to PostgreSQL on the owner's VPS, per Phase 5 of `PRD.md`. `documents` holds one row per content document, with its fields as JSON. `posts` holds one row per post, with its body as Markdown.
+Everything lives in the backend's PostgreSQL database, in two tables that the Alembic revision `0003_studio`, in `cloud-backend`, creates. That database is Supabase until the backend is switched to PostgreSQL on the owner's VPS, per Phase 5 of `PRD.md`. `documents` holds one row per content document, with its fields as JSON. `posts` holds one row per post, with its body as Markdown.
 
 | Content | Lives in | Edited in the studio under |
 | :- | :- | :- |

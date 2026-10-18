@@ -52,7 +52,7 @@ None of these is part of this project, and none of them is in this repository.
 | The Python function and its packaging | The backend's deployment guide |
 | The backend project's environment variables, `ALLOWED_ORIGINS` among them | The backend's `.env.example` and its deployment guide |
 | The Google Cloud Storage bucket: its roles and its CORS rule | The backend's deployment guide |
-| `supabase/migrations/` and the GitHub Actions job that applies them on a push to `main`, over an SSH tunnel to the VPS | `cloud-backend`, with the backend's deployment guide |
+| The Alembic migrations in `alembic/versions/` and the GitHub Actions job that applies them on a push to `main`, over an SSH tunnel to the VPS | `cloud-backend`, with the backend's deployment guide |
 | Every endpoint | `API.md` in `cloud-backend` |
 
 ## How the Site Reaches the Backend
