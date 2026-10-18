@@ -320,3 +320,78 @@ A visitor, meanwhile, sees two things change:
 
 - **Keyless access to Google Cloud Storage?** Vercel can authenticate to Google Cloud without any key file, which is what `secret.rules.md` prefers and would remove the most dangerous secret entirely. Owner to decide whether it replaces the service-account key later.
 - **Does the resume download move into the studio?** Open since Phase 3. Owner to decide.
+
+# PRD Phase 5: One Cloud Behind Both Sites
+
+**Owner:** Naufal Rahfi Anugerah
+**Date:** 2026-10-18
+**Status:** Draft, awaiting the owner's approval. It replaces the draft of 2026-10-17, which kept the studio inside the portfolio. The database server is written up in `cloud/FLOW.md`, steps 22 to 29.
+
+## Problem
+
+Four things that are separate products are tangled into two repositories and one site.
+
+- **The backend shares a repository with the portfolio's frontend.** It lives on branches with no history in common with the site's, and the two Vercel projects tell each other apart by a variable each one sets. One merge in the wrong direction pours every file of one into the other, and each side's documentation spends its first warnings explaining the other's branches.
+- **The studio lives inside one of the two sites it runs.** It is at `rahfi.pro/studio`, and `consulting.rahfi.pro` sends its own `/studio` there. The control panel for both sites reads as a page of the portfolio, and there is no address that is simply the owner's console.
+- **The CV has no place of its own.** It is a social link named "CV", so replacing it means uploading a file and then editing a link, an open question since Phase 3.
+- **The data sits on Supabase.** Its plan, its limits, and its rules about idle projects bound both sites, which is the argument Phase 4 made against Sanity, while the owner now runs a server built, hardened, and backed up to hold it.
+
+## Users
+
+- **Naufal Rahfi Anugerah**, the only person who signs in. Edits both sites' posts, photographs, CV, skills, and every other piece of content, and applies every schema change.
+- **Visitors to both sites**, indirectly: they read what the console publishes, and notice only if it is slow or gone.
+
+## What Is Built
+
+Once this exists:
+
+- **Four products, each in a repository of its own and deployed on its own:** the portfolio, the consulting site, the console at `cloud.rahfi.pro`, and the one backend that both sites and the console call. No repository holds two products, so no merge can mix them.
+- **The console at `cloud.rahfi.pro` is where everything both sites show is edited**: posts, photographs and every other image, the CV, skills, and every other document type, along with the files, the credentials, and the password. It is an application of its own, not a page of the portfolio, and `rahfi.pro/studio` and `consulting.rahfi.pro/studio` send the owner there.
+- **The CV is an upload of its own on the profile.** Replacing it is one upload, and the portfolio's CV button and dock read it from there.
+- **One backend serves both sites and the console**, as it does today, under its own name.
+- **Every table both sites read and the console writes lives in the database on the owner's VPS**, which is never reachable from the internet. The backend reaches it through one narrow, authenticated path, with no change to its code, so returning to Supabase is three values put back.
+- **The schema keeps coming from the backend's migrations**, applied as a job when its production branch moves, and before the code that needs them.
+
+## What Is Not Built
+
+- **No change to what either site shows or how it looks**, beyond the CV button reading from its new place.
+- **No second backend.** The portfolio and the consulting site keep sharing one.
+- **No monorepo and no shared package.** The console copies the sites' look rather than importing it, as Phase 1 decided for the two sites.
+- **No new environment variable.** Each site still holds only the backend's address, and so does the console.
+- **No rewritten history.** The backend keeps its history in its new repository. The console starts afresh, and its earlier history stays readable in the portfolio's.
+- **No new data layer in the backend**, no direct database connection from Vercel, and no database port open to the internet.
+- **No files on the VPS.** They stay in the bucket they are in.
+- **No staging database, no rename of the backend's database variables, and no deletion of the Supabase project**, which stays untouched as the way back.
+- **No move of anything off Vercel.**
+
+## Success Measure
+
+- Each of the four products has its own repository, and the portfolio's repository holds no backend branch and no studio code.
+- `cloud.rahfi.pro` opens the console, signing in there works, and a post, a photograph, the CV, or a skill saved there appears on its site within a minute.
+- `rahfi.pro/studio` and `consulting.rahfi.pro/studio` both land on `cloud.rahfi.pro`.
+- Replacing the CV is a single upload, and the portfolio's CV button opens the new file.
+- Each site and the console hold exactly one environment variable.
+- After the database switch, every section that showed content before shows the same content, a connection to the database port from outside the VPS fails, and pointing the backend back at Supabase restores the previous behaviour.
+- A migration merged to the backend's production branch is applied without anyone running a command by hand, and a failing one marks the commit red.
+
+## Constraints
+
+- **Platforms set by the owner:** Vercel for both sites, the console, and the backend; the VPS for the database; Google Cloud Storage for files. The database choice reverses Phase 4's Supabase, at the owner's direction.
+- **The console keeps the sites' design language**: black, white, and the greys between, as Phase 1 set.
+- **The studio's cookie lives on the backend's host.** `cloud.rahfi.pro` is the same site as that host, so the cookie still rides every console call, and the backend's allowed origins gain the new address.
+- **No public IP on the database**, per `database.rules.md`, and the backend reaches it under least-privilege roles, never as the superuser.
+- **The sealing key does not change.** The owner's password and every saved credential are sealed under it.
+- **Only each repository's production branch deploys.**
+- **Migrations are forward-only and additive**, and applied before the code that needs them is deployed.
+- **No environment file is read, printed, copied, or moved** by any tool or agent, per `env.rules.md`, and no tool or agent touches the owner's keys. The owner moves the backend's environment file to its new home by hand.
+
+## Data
+
+- **Unchanged in kind.** Posts, documents, the owner's account, sessions, reset codes, credentials, rate limits, and visitor counts, all as Phase 4 describes. The CV becomes a file in the bucket that the profile points at.
+- **VPS PostgreSQL:** the same tables Supabase holds, created by the same migrations, with the content copied once. Sessions, reset codes, and rate-limit events are not copied, so the owner signs in again.
+- **New secrets, on the VPS only:** the password the data path logs in with, and the secret that signs the backend's keys. The keys themselves are held by the backend's deployment and the owner's password manager.
+- **Personal data:** unchanged in kind. It now also rests on the VPS's disk, in its daily backups, and in the backup copy on the owner's laptop.
+
+## Open Questions
+
+- **When is the Supabase project paused or deleted?** Recommended: after both sites have run from the VPS for a week.
